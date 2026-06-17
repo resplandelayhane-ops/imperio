@@ -1,0 +1,1766 @@
+ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Imperium StoryForge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap');
+        .isf-root { font-family: 'Inter', sans-serif; background: radial-gradient(ellipse at top, #14110a 0%, #0a0908 55%, #050505 100%); color: #ece6d8; }
+        .isf-display { font-family: 'Cinzel', serif; }
+        .isf-serif { font-family: 'Cormorant Garamond', serif; }
+        .isf-glass { background: linear-gradient(135deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012)); border: 1px solid rgba(212,175,55,0.15); backdrop-filter: blur(16px); }
+        .isf-glow { box-shadow: 0 0 28px rgba(212,175,55,0.08), inset 0 1px 0 rgba(255,255,255,0.04); }
+        .isf-input { width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.18); border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-size: 0.875rem; color: #ece6d8; outline: none; }
+        .isf-input:focus { border-color: rgba(212,175,55,0.5); }
+        .isf-input::placeholder { color: #6b6760; }
+        @keyframes isf-pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+        .isf-seal { animation: isf-pulse 3s ease-in-out infinite; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.25); border-radius: 3px; }
+        select.isf-input option { background: #0e0c08; color: #ece6d8; }
+      
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:#050505;color:#ece6d8}
+#root{display:flex;min-height:100vh}
+#_isf_load{position:fixed;inset:0;background:radial-gradient(ellipse at top,#14110a 0%,#0a0908 55%,#050505 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;z-index:9999}
+._isf_ring{width:72px;height:72px;border-radius:50%;border:1.5px solid rgba(212,175,55,0.5);display:flex;align-items:center;justify-content:center;animation:_isfp 2.5s ease-in-out infinite}
+._isf_t1{font-family:"Cinzel",serif;font-size:12px;letter-spacing:.35em;color:#d4af37;text-transform:uppercase}
+._isf_t2{font-size:10px;letter-spacing:.2em;color:#6b6760;font-family:sans-serif}
+@keyframes _isfp{0%,100%{opacity:.25;transform:scale(.96)}50%{opacity:1;transform:scale(1)}}
+.animate-spin{animation:_spin 1s linear infinite}
+@keyframes _spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-4{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+</head>
+<body>
+
+<div id="_isf_load">
+  <div class="_isf_ring">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 20h20M5 20V10l7-7 7 7v10"/><path d="M9 20v-5h6v5"/>
+    </svg>
+  </div>
+  <div class="_isf_t1">Imperium StoryForge</div>
+  <div class="_isf_t2">Iniciando plataforma...</div>
+</div>
+
+<div id="root"></div>
+
+<!-- 1. React e ReactDOM PRIMEIRO -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<!-- 2. Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- 3. Tudo o mais DEPOIS que React existe -->
+<script>
+// Ícones SVG - dependem de React disponível
+window._ISF_ICONS = {};
+
+window._ISF_ICONS["Crown"] = function(CrownProps) {
+  var _p = CrownProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M2 20h20M5 20V10l7-7 7 7v10"}));
+};
+
+window._ISF_ICONS["LayoutDashboard"] = function(LayoutDashboardProps) {
+  var _p = LayoutDashboardProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M4 4h6v7H4zM14 4h6v4h-6zM14 12h6v8h-6zM4 15h6v5H4z"}));
+};
+
+window._ISF_ICONS["Library"] = function(LibraryProps) {
+  var _p = LibraryProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M16 6l4 14M12 6v14M8 8v12M4 4v16"}));
+};
+
+window._ISF_ICONS["PenTool"] = function(PenToolProps) {
+  var _p = PenToolProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 19l7-7 3 3-7 7-3-3zm6-11l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zm-16-6l7.586 7.586M11 11m-2 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0"}));
+};
+
+window._ISF_ICONS["Settings"] = function(SettingsProps) {
+  var _p = SettingsProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"}));
+};
+
+window._ISF_ICONS["Brain"] = function(BrainProps) {
+  var _p = BrainProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"}));
+};
+
+window._ISF_ICONS["BookOpen"] = function(BookOpenProps) {
+  var _p = BookOpenProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"}));
+};
+
+window._ISF_ICONS["Map"] = function(MapProps) {
+  var _p = MapProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3zm6 0v15M9 3v15"}));
+};
+
+window._ISF_ICONS["GitBranch"] = function(GitBranchProps) {
+  var _p = GitBranchProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9"}));
+};
+
+window._ISF_ICONS["GraduationCap"] = function(GraduationCapProps) {
+  var _p = GraduationCapProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M22 10v6M2 10l10-5 10 5-10 5-10-5zM6 12v5c3 3 9 3 12 0v-5"}));
+};
+
+window._ISF_ICONS["Armchair"] = function(ArmchairProps) {
+  var _p = ArmchairProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3 M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H7v-2a2 2 0 0 0-4 0z M5 18v2M19 18v2"}));
+};
+
+window._ISF_ICONS["Lock"] = function(LockProps) {
+  var _p = LockProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4"}));
+};
+
+window._ISF_ICONS["Plus"] = function(PlusProps) {
+  var _p = PlusProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 5v14M5 12h14"}));
+};
+
+window._ISF_ICONS["Trash2"] = function(Trash2Props) {
+  var _p = Trash2Props || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"}));
+};
+
+window._ISF_ICONS["ChevronRight"] = function(ChevronRightProps) {
+  var _p = ChevronRightProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M9 18l6-6-6-6"}));
+};
+
+window._ISF_ICONS["X"] = function(XProps) {
+  var _p = XProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M18 6L6 18M6 6l12 12"}));
+};
+
+window._ISF_ICONS["Loader2"] = function(Loader2Props) {
+  var _p = Loader2Props || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M21 12a9 9 0 1 1-6.219-8.56"}));
+};
+
+window._ISF_ICONS["Key"] = function(KeyProps) {
+  var _p = KeyProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"}));
+};
+
+window._ISF_ICONS["AlertCircle"] = function(AlertCircleProps) {
+  var _p = AlertCircleProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v4M12 16h.01"}));
+};
+
+window._ISF_ICONS["Save"] = function(SaveProps) {
+  var _p = SaveProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8"}));
+};
+
+window._ISF_ICONS["Sparkles"] = function(SparklesProps) {
+  var _p = SparklesProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3zM19 3v4M21 5h-4M5 19v2M6 20H4"}));
+};
+
+window._ISF_ICONS["ArrowLeft"] = function(ArrowLeftProps) {
+  var _p = ArrowLeftProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M19 12H5M12 19l-7-7 7-7"}));
+};
+
+window._ISF_ICONS["Menu"] = function(MenuProps) {
+  var _p = MenuProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M4 6h16M4 12h16M4 18h16"}));
+};
+
+window._ISF_ICONS["Feather"] = function(FeatherProps) {
+  var _p = FeatherProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8L2 22M17.5 15H9"}));
+};
+
+window._ISF_ICONS["Check"] = function(CheckProps) {
+  var _p = CheckProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M20 6L9 17l-5-5"}));
+};
+
+window._ISF_ICONS["Eye"] = function(EyeProps) {
+  var _p = EyeProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 12m-3 0a3 3 0 1 0 6 0 3 3 0 0 0-6 0"}));
+};
+
+window._ISF_ICONS["EyeOff"] = function(EyeOffProps) {
+  var _p = EyeOffProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"}));
+};
+
+window._ISF_ICONS["Pause"] = function(PauseProps) {
+  var _p = PauseProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M10 4H6v16h4V4zM18 4h-4v16h4V4z"}));
+};
+
+window._ISF_ICONS["Play"] = function(PlayProps) {
+  var _p = PlayProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M5 3l14 9-14 9V3z"}));
+};
+
+window._ISF_ICONS["Users"] = function(UsersProps) {
+  var _p = UsersProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"}));
+};
+
+window._ISF_ICONS["MapPin"] = function(MapPinProps) {
+  var _p = MapPinProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"}));
+};
+
+window._ISF_ICONS["Shield"] = function(ShieldProps) {
+  var _p = ShieldProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"}));
+};
+
+window._ISF_ICONS["Package"] = function(PackageProps) {
+  var _p = PackageProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"}));
+};
+
+window._ISF_ICONS["Clock"] = function(ClockProps) {
+  var _p = ClockProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"}));
+};
+
+window._ISF_ICONS["ShieldCheck"] = function(ShieldCheckProps) {
+  var _p = ShieldCheckProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4"}));
+};
+
+window._ISF_ICONS["Zap"] = function(ZapProps) {
+  var _p = ZapProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M13 2L3 14h9l-1 8 10-12h-9l1-8z"}));
+};
+
+window._ISF_ICONS["Skull"] = function(SkullProps) {
+  var _p = SkullProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 4a7 7 0 0 1 7 7c0 2.5-1 4.5-3 6v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2c-2-1.5-3-3.5-3-6a7 7 0 0 1 7-7zM9 21h6M10 17v-2M14 17v-2"}));
+};
+
+window._ISF_ICONS["Heart"] = function(HeartProps) {
+  var _p = HeartProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"}));
+};
+
+window._ISF_ICONS["Layers"] = function(LayersProps) {
+  var _p = LayersProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 2l10 6.5v7L12 22 2 15.5v-7L12 2zM12 22v-7M22 8.5l-10 7-10-7"}));
+};
+
+window._ISF_ICONS["Flag"] = function(FlagProps) {
+  var _p = FlagProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"}));
+};
+
+window._ISF_ICONS["KeyRound"] = function(KeyRoundProps) {
+  var _p = KeyRoundProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4zm16.5-10.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"}));
+};
+
+window._ISF_ICONS["Pencil"] = function(PencilProps) {
+  var _p = PencilProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"}));
+};
+
+window._ISF_ICONS["Milestone"] = function(MilestoneProps) {
+  var _p = MilestoneProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M18 6H5a1 1 0 0 0-.78 1.63l5 6a1 1 0 0 0 1.56 0l5-6A1 1 0 0 0 18 6zM12 22v-6M12 6V3"}));
+};
+
+window._ISF_ICONS["Wand2"] = function(Wand2Props) {
+  var _p = Wand2Props || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M15 4l5 5L7 22H2v-5L15 4zM14 7l3 3"}));
+};
+
+window._ISF_ICONS["MessageCircle"] = function(MessageCircleProps) {
+  var _p = MessageCircleProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"}));
+};
+
+window._ISF_ICONS["Send"] = function(SendProps) {
+  var _p = SendProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"}));
+};
+
+window._ISF_ICONS["StickyNote"] = function(StickyNoteProps) {
+  var _p = StickyNoteProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3zM15 3v5h5"}));
+};
+
+window._ISF_ICONS["RotateCcw"] = function(RotateCcwProps) {
+  var _p = RotateCcwProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M3 2v6h6M3.51 9a9 9 0 1 0 .49-3.2"}));
+};
+
+window._ISF_ICONS["Star"] = function(StarProps) {
+  var _p = StarProps || {};
+  var sz = _p.size || 24; var col = _p.color || "currentColor";
+  var sw = _p.strokeWidth !== undefined ? _p.strokeWidth : 1.6;
+  var cn = _p.className || "";
+  return React.createElement("svg", {
+    xmlns:"http://www.w3.org/2000/svg", width:sz, height:sz,
+    viewBox:"0 0 24 24", fill:"none", stroke:col,
+    strokeWidth:sw, strokeLinecap:"round", strokeLinejoin:"round",
+    className:cn, style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}
+  }, React.createElement("path", {d:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"}));
+};
+
+// Helpers esbuild
+var __defProp=Object.defineProperty,__defProps=Object.defineProperties,__getOwnPropDescs=Object.getOwnPropertyDescriptors,__getOwnPropSymbols=Object.getOwnPropertySymbols,__hasOwnProp=Object.prototype.hasOwnProperty,__propIsEnum=Object.prototype.propertyIsEnumerable;
+var __spreadValues=function(a,b){for(var p in b||(b={}))if(__hasOwnProp.call(b,p))__defProp(a,p,{value:b[p],enumerable:true,configurable:true,writable:true});if(__getOwnPropSymbols)for(var p of __getOwnPropSymbols(b))if(__propIsEnum.call(b,p))__defProp(a,p,{value:b[p],enumerable:true,configurable:true,writable:true});return a;};
+var __spreadProps=function(a,b){return __defProps(a,__getOwnPropDescs(b));};
+var __objRest=function(s,e){var t={};for(var p in s)if(__hasOwnProp.call(s,p)&&e.indexOf(p)<0)t[p]=s[p];if(s!=null&&__getOwnPropSymbols)for(var p of __getOwnPropSymbols(s))if(e.indexOf(p)<0&&__propIsEnum.call(s,p))t[p]=s[p];return t;};
+
+// Atribuir ícones às variáveis
+var Crown = window._ISF_ICONS["Crown"];
+var LayoutDashboard = window._ISF_ICONS["LayoutDashboard"];
+var Library = window._ISF_ICONS["Library"];
+var PenTool = window._ISF_ICONS["PenTool"];
+var Settings = window._ISF_ICONS["Settings"];
+var Brain = window._ISF_ICONS["Brain"];
+var BookOpen = window._ISF_ICONS["BookOpen"];
+var Map = window._ISF_ICONS["Map"];
+var GitBranch = window._ISF_ICONS["GitBranch"];
+var GraduationCap = window._ISF_ICONS["GraduationCap"];
+var Armchair = window._ISF_ICONS["Armchair"];
+var Lock = window._ISF_ICONS["Lock"];
+var Plus = window._ISF_ICONS["Plus"];
+var Trash2 = window._ISF_ICONS["Trash2"];
+var ChevronRight = window._ISF_ICONS["ChevronRight"];
+var X = window._ISF_ICONS["X"];
+var Loader2 = window._ISF_ICONS["Loader2"];
+var Key = window._ISF_ICONS["Key"];
+var AlertCircle = window._ISF_ICONS["AlertCircle"];
+var Save = window._ISF_ICONS["Save"];
+var Sparkles = window._ISF_ICONS["Sparkles"];
+var ArrowLeft = window._ISF_ICONS["ArrowLeft"];
+var Menu = window._ISF_ICONS["Menu"];
+var Feather = window._ISF_ICONS["Feather"];
+var Check = window._ISF_ICONS["Check"];
+var Eye = window._ISF_ICONS["Eye"];
+var EyeOff = window._ISF_ICONS["EyeOff"];
+var Pause = window._ISF_ICONS["Pause"];
+var Play = window._ISF_ICONS["Play"];
+var Users = window._ISF_ICONS["Users"];
+var MapPin = window._ISF_ICONS["MapPin"];
+var Shield = window._ISF_ICONS["Shield"];
+var Package = window._ISF_ICONS["Package"];
+var Clock = window._ISF_ICONS["Clock"];
+var ShieldCheck = window._ISF_ICONS["ShieldCheck"];
+var Zap = window._ISF_ICONS["Zap"];
+var Skull = window._ISF_ICONS["Skull"];
+var Heart = window._ISF_ICONS["Heart"];
+var Layers = window._ISF_ICONS["Layers"];
+var Flag = window._ISF_ICONS["Flag"];
+var KeyRound = window._ISF_ICONS["KeyRound"];
+var Pencil = window._ISF_ICONS["Pencil"];
+var Milestone = window._ISF_ICONS["Milestone"];
+var Wand2 = window._ISF_ICONS["Wand2"];
+var MessageCircle = window._ISF_ICONS["MessageCircle"];
+var Send = window._ISF_ICONS["Send"];
+var StickyNote = window._ISF_ICONS["StickyNote"];
+var RotateCcw = window._ISF_ICONS["RotateCcw"];
+var Star = window._ISF_ICONS["Star"];
+
+// Código da aplicação compilado
+(() => {
+  var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
+      }
+    return a;
+  };
+  var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+  function Crown(p) {
+    return null;
+  }
+  function LayoutDashboard(p) {
+    return null;
+  }
+  function Library(p) {
+    return null;
+  }
+  function PenTool(p) {
+    return null;
+  }
+  function Settings(p) {
+    return null;
+  }
+  function Brain(p) {
+    return null;
+  }
+  function BookOpen(p) {
+    return null;
+  }
+  function Map(p) {
+    return null;
+  }
+  function GitBranch(p) {
+    return null;
+  }
+  function GraduationCap(p) {
+    return null;
+  }
+  function Armchair(p) {
+    return null;
+  }
+  function Lock(p) {
+    return null;
+  }
+  function Plus(p) {
+    return null;
+  }
+  function Trash2(p) {
+    return null;
+  }
+  function ChevronRight(p) {
+    return null;
+  }
+  function X(p) {
+    return null;
+  }
+  function Loader2(p) {
+    return null;
+  }
+  function Key(p) {
+    return null;
+  }
+  function AlertCircle(p) {
+    return null;
+  }
+  function Save(p) {
+    return null;
+  }
+  function Sparkles(p) {
+    return null;
+  }
+  function ArrowLeft(p) {
+    return null;
+  }
+  function Menu(p) {
+    return null;
+  }
+  function Feather(p) {
+    return null;
+  }
+  function Check(p) {
+    return null;
+  }
+  function Eye(p) {
+    return null;
+  }
+  function EyeOff(p) {
+    return null;
+  }
+  function Pause(p) {
+    return null;
+  }
+  function Play(p) {
+    return null;
+  }
+  function Users(p) {
+    return null;
+  }
+  function MapPin(p) {
+    return null;
+  }
+  function Shield(p) {
+    return null;
+  }
+  function Package(p) {
+    return null;
+  }
+  function Clock(p) {
+    return null;
+  }
+  function ShieldCheck(p) {
+    return null;
+  }
+  function Zap(p) {
+    return null;
+  }
+  function Skull(p) {
+    return null;
+  }
+  function Heart(p) {
+    return null;
+  }
+  function Layers(p) {
+    return null;
+  }
+  function Flag(p) {
+    return null;
+  }
+  function KeyRound(p) {
+    return null;
+  }
+  function Pencil(p) {
+    return null;
+  }
+  function Milestone(p) {
+    return null;
+  }
+  function Wand2(p) {
+    return null;
+  }
+  function MessageCircle(p) {
+    return null;
+  }
+  function Send(p) {
+    return null;
+  }
+  function StickyNote(p) {
+    return null;
+  }
+  function RotateCcw(p) {
+    return null;
+  }
+  function Star(p) {
+    return null;
+  }
+  var useState = React.useState;
+  var useEffect = React.useEffect;
+  var useMemo = React.useMemo;
+  const SIDEBAR_ITEMS = [
+    { id: "painel", label: "Painel Imperial", icon: LayoutDashboard, active: true },
+    { id: "gaveta", label: "Gaveta Liter\xE1ria", icon: Library, active: true },
+    { id: "forjar", label: "Forjar Hist\xF3ria", icon: PenTool, active: true },
+    { id: "forjar-imperio", label: "Forjar Imp\xE9rio", icon: Crown, active: true },
+    { id: "biblioteca", label: "Biblioteca Imperial", icon: BookOpen, active: true },
+    { id: "atlas", label: "Atlas de Universos", icon: Map, active: true },
+    { id: "planejador", label: "Planejador de Saga", icon: GitBranch, active: true },
+    { id: "mentor", label: "Mentor Liter\xE1rio", icon: GraduationCap, active: true },
+    { id: "sala-autor", label: "Sala do Autor", icon: Armchair, active: true },
+    { id: "config", label: "Configura\xE7\xF5es", icon: Settings, active: true },
+    { id: "mente-suprema", label: "Mente Suprema", icon: Brain, active: true }
+  ];
+  const GENEROS = [
+    "Fantasia",
+    "Fic\xE7\xE3o Cient\xEDfica",
+    "Romance",
+    "Suspense/Thriller",
+    "Terror",
+    "Drama",
+    "Aventura",
+    "Mist\xE9rio",
+    "Hist\xF3rico",
+    "Distopia",
+    "Young Adult",
+    "Liter\xE1rio"
+  ];
+  const PONTOS_DE_VISTA = [
+    "Primeira Pessoa",
+    "Terceira Pessoa Limitada",
+    "Terceira Pessoa Onisciente",
+    "M\xFAltiplos Narradores (POV Alternado)"
+  ];
+  const TONS = [
+    "\xC9pico e Grandioso",
+    "Sombrio e Intenso",
+    "Leve e Esperan\xE7oso",
+    "Melanc\xF3lico e Reflexivo",
+    "Tenso e Urgente",
+    "Sat\xEDrico e Ir\xF4nico",
+    "Rom\xE2ntico",
+    "Filos\xF3fico"
+  ];
+  const CAPITULOS_SUGERIDOS = [5, 10, 20, 50, 100, 300, 500, 1e3];
+  const CAPA_GRADIENTES = {
+    "Fantasia": "linear-gradient(135deg,#3a2a0f,#7a5a1a,#1a1208)",
+    "Fic\xE7\xE3o Cient\xEDfica": "linear-gradient(135deg,#0a1a2a,#1a3a5a,#0a0a14)",
+    "Romance": "linear-gradient(135deg,#3a1020,#6a2030,#1a0a10)",
+    "Suspense/Thriller": "linear-gradient(135deg,#1a1a1a,#3a3a2a,#0a0a0a)",
+    "Terror": "linear-gradient(135deg,#1a0505,#3a0a0a,#050505)",
+    "Drama": "linear-gradient(135deg,#2a2010,#4a3a1a,#100a05)",
+    "Aventura": "linear-gradient(135deg,#1a2a10,#3a5a1a,#0a140a)",
+    "Mist\xE9rio": "linear-gradient(135deg,#15101f,#2f2040,#0a0510)",
+    "Hist\xF3rico": "linear-gradient(135deg,#2a1f10,#4a3520,#140d05)",
+    "Distopia": "linear-gradient(135deg,#1a1a1a,#3a2a1a,#0a0a0a)",
+    "Young Adult": "linear-gradient(135deg,#2a1530,#4a2550,#150a1a)",
+    "Liter\xE1rio": "linear-gradient(135deg,#1f1810,#3a2f1a,#0d0a05)"
+  };
+  const CAPA_DEFAULT = "linear-gradient(135deg,#1a1610,#2a2410,#0a0805)";
+  const STATUS_INFO = {
+    "em-andamento": { label: "Em Andamento", color: "#d4af37" },
+    "concluida": { label: "Conclu\xEDda", color: "#7fd49a" },
+    "pausada": { label: "Pausada", color: "#9a958a" }
+  };
+  const MEMORIA_VAZIA = { personagens: [], locais: [], faccoes: [], objetos: [], eventos: [] };
+  const MEMORIA_CATEGORIAS = [
+    { chave: "personagens", label: "Personagens", icon: Users },
+    { chave: "locais", label: "Locais", icon: MapPin },
+    { chave: "faccoes", label: "Fac\xE7\xF5es", icon: Shield },
+    { chave: "objetos", label: "Objetos", icon: Package },
+    { chave: "eventos", label: "Eventos", icon: Clock }
+  ];
+  const CAMPOS_IMPERIO = [
+    { chave: "descricaoMundo", label: "Mundo", icon: Map, tipo: "texto", placeholder: "Geografia, cosmologia e regras fundamentais deste universo..." },
+    { chave: "sistemaDePoder", label: "Sistema de Poder", icon: Zap, tipo: "texto", placeholder: "Magia, tecnologia, hierarquias de poder..." },
+    { chave: "reinos", label: "Reinos", icon: Crown, tipo: "lista", placeholder: "Um reino por linha" },
+    { chave: "faccoes", label: "Fac\xE7\xF5es", icon: Shield, tipo: "lista", placeholder: "Uma fac\xE7\xE3o por linha" },
+    { chave: "racas", label: "Ra\xE7as", icon: Users, tipo: "lista", placeholder: "Uma ra\xE7a por linha" },
+    { chave: "religioes", label: "Religi\xF5es", icon: BookOpen, tipo: "lista", placeholder: "Uma religi\xE3o por linha" },
+    { chave: "misterios", label: "Mist\xE9rios", icon: Eye, tipo: "texto", placeholder: "Mist\xE9rios n\xE3o resolvidos do universo..." },
+    { chave: "segredos", label: "Segredos", icon: KeyRound, tipo: "texto", placeholder: "Segredos guardados por personagens ou fac\xE7\xF5es..." },
+    { chave: "conflitos", label: "Conflitos", icon: Flag, tipo: "lista", placeholder: "Um conflito por linha" },
+    { chave: "antagonistas", label: "Antagonistas", icon: Skull, tipo: "lista", placeholder: "Um antagonista por linha" },
+    { chave: "romances", label: "Romances", icon: Heart, tipo: "texto", placeholder: "Rela\xE7\xF5es rom\xE2nticas planejadas..." },
+    { chave: "subtramas", label: "Subtramas", icon: Layers, tipo: "texto", placeholder: "Subtramas planejadas..." },
+    { chave: "plotTwists", label: "Plot Twists", icon: Sparkles, tipo: "texto", placeholder: "Reviravoltas planejadas (a IA usar\xE1 com o timing correto)..." },
+    { chave: "finalPlanejado", label: "Final Planejado", icon: Flag, tipo: "texto", placeholder: "Como esta saga deve terminar..." }
+  ];
+  function camposImperioVazios() {
+    const obj = {};
+    CAMPOS_IMPERIO.forEach((c) => {
+      obj[c.chave] = "";
+    });
+    return obj;
+  }
+  const ANALISE_CATEGORIAS = [
+    { chave: "ritmo", label: "Ritmo" },
+    { chave: "emocao", label: "Emo\xE7\xE3o" },
+    { chave: "dialogos", label: "Di\xE1logos" },
+    { chave: "tensao", label: "Tens\xE3o" },
+    { chave: "construcaoMundo", label: "Constru\xE7\xE3o de Mundo" },
+    { chave: "consistencia", label: "Consist\xEAncia" },
+    { chave: "qualidadeGeral", label: "Qualidade Geral" }
+  ];
+  const ACOES_MENTE_SUPREMA = [
+    { id: "planejar", label: "Planejar Pr\xF3ximos Cap\xEDtulos", icon: Milestone },
+    { id: "personagem", label: "Gerar Novo Personagem", icon: Users },
+    { id: "plottwist", label: "Criar Plot Twist", icon: Sparkles },
+    { id: "dialogos", label: "Melhorar Di\xE1logos do \xDAltimo Cap\xEDtulo", icon: Wand2 },
+    { id: "consistencia", label: "Analisar Consist\xEAncia Geral", icon: ShieldCheck }
+  ];
+  function paraTexto(v) {
+    if (v == null) return "";
+    if (typeof v === "string") return v;
+    if (Array.isArray(v)) return v.map((x) => typeof x === "string" ? x : JSON.stringify(x)).join(", ");
+    if (typeof v === "object") return JSON.stringify(v);
+    return String(v);
+  }
+  const NUCLEO_ESCRITORA_SUPREMA = [
+    "Voc\xEA \xE9 uma escritora liter\xE1ria de elite, com d\xE9cadas de experi\xEAncia publicando romances aclamados. Sua escrita NUNCA parece gerada por uma IA.",
+    "REGRAS ABSOLUTAS DE ESTILO:",
+    "- Mostre, n\xE3o explique. Emo\xE7\xF5es surgem atrav\xE9s de a\xE7\xF5es, express\xF5es, di\xE1logos e decis\xF5es - nunca por exposi\xE7\xE3o direta.",
+    "- Cada personagem tem voz pr\xF3pria: maneira de falar, pensar e agir reconhec\xEDvel mesmo sem identifica\xE7\xE3o de nome.",
+    "- Evite frases repetitivas, descri\xE7\xF5es gen\xE9ricas, di\xE1logos artificiais, emo\xE7\xF5es superficiais e finais vazios.",
+    "- Mantenha ritmo natural, tens\xE3o crescente e profundidade psicol\xF3gica.",
+    "- Cada cap\xEDtulo termina com prop\xF3sito narrativo - nunca enrola\xE7\xE3o ou preenchimento artificial.",
+    "- Lembre-se constantemente de medos, desejos, traumas, objetivos e relacionamentos estabelecidos anteriormente na hist\xF3ria.",
+    "- A qualidade deve permanecer id\xEAntica do primeiro ao \xFAltimo cap\xEDtulo, n\xE3o importa o tamanho da saga."
+  ].join("\n");
+  const STORAGE_KEYS = { stories: "isf_stories_v1", apiKey: "isf_api_key_v1", universos: "isf_universos_v1", notas: "isf_notas_v1" };
+  function carregarHistorias() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.stories);
+      const lista = raw ? JSON.parse(raw) : [];
+      return lista.map((s) => __spreadProps(__spreadValues({}, s), {
+        memoria: s.memoria || { personagens: [], locais: [], faccoes: [], objetos: [], eventos: [] },
+        planejamento: s.planejamento || { arcos: [] },
+        ultimaAnalise: s.ultimaAnalise || null
+      }));
+    } catch (e) {
+      return [];
+    }
+  }
+  function salvarHistorias(stories) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.stories, JSON.stringify(stories));
+    } catch (e) {
+    }
+  }
+  function carregarChaveApi() {
+    try {
+      return localStorage.getItem(STORAGE_KEYS.apiKey) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+  function salvarChaveApi(key) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.apiKey, key);
+    } catch (e) {
+    }
+  }
+  function carregarUniversos() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.universos);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function salvarUniversos(universos) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.universos, JSON.stringify(universos));
+    } catch (e) {
+    }
+  }
+  function carregarNotas() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.notas);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function salvarNotas(notas) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.notas, JSON.stringify(notas));
+    } catch (e) {
+    }
+  }
+  function novoId() {
+    return "story_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+  }
+  function contarPalavras(texto) {
+    return (texto || "").trim().split(/\s+/).filter(Boolean).length;
+  }
+  function formatarData(iso) {
+    if (!iso) return "-";
+    const d = new Date(iso);
+    return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  }
+  async function chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens }) {
+    const headers = {
+      "content-type": "application/json",
+      "anthropic-version": "2023-06-01"
+    };
+    if (apiKey) {
+      headers["x-api-key"] = apiKey;
+      headers["anthropic-dangerous-direct-browser-access"] = "true";
+    }
+    const maxTokensFinal = apiKey ? Math.min(8192, Math.max(512, maxTokens)) : 1e3;
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: maxTokensFinal,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userPrompt }]
+      })
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error("Erro " + res.status + ": " + txt.slice(0, 220));
+    }
+    const data = await res.json();
+    const bloco = (data.content || []).find((b) => b.type === "text");
+    return bloco ? bloco.text : "";
+  }
+  async function gerarCapitulo({ apiKey, systemPrompt, userPrompt, maxPalavras }) {
+    const maxTokens = Math.ceil(maxPalavras * 2.2);
+    return chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens });
+  }
+  function montarSecaoMundoExpandido(mundoAvancado) {
+    if (!mundoAvancado) return "";
+    const partes = [];
+    CAMPOS_IMPERIO.forEach((campo) => {
+      const valor = (mundoAvancado[campo.chave] || "").trim();
+      if (!valor) return;
+      if (campo.tipo === "lista") {
+        const itens = valor.split("\n").map((l) => l.trim()).filter(Boolean);
+        if (itens.length) partes.push(campo.label.toUpperCase() + ": " + itens.join("; "));
+      } else {
+        partes.push(campo.label.toUpperCase() + ": " + valor);
+      }
+    });
+    if (!partes.length) return "";
+    return "MUNDO EXPANDIDO (use estes elementos para enriquecer a hist\xF3ria, com timing e sutileza - n\xE3o despeje tudo de uma vez):\n" + partes.join("\n");
+  }
+  function montarPromptCapitulo(story, numero) {
+    const anterior = story.capitulos[story.capitulos.length - 1];
+    const contexto = anterior ? "CONTEXTO DO CAP\xCDTULO ANTERIOR (mantenha continuidade total - personagens, tom, eventos):\n" + anterior.conteudo.slice(-2500) : "Este \xE9 o cap\xEDtulo de abertura da hist\xF3ria. Estabele\xE7a o mundo, o tom e os protagonistas de forma envolvente.";
+    const linhas = [
+      "HIST\xD3RIA: " + story.titulo,
+      "G\xCANERO: " + story.genero,
+      "IDEIA PRINCIPAL / SINOPSE: " + story.sinopse,
+      "PROTAGONISTAS: " + story.protagonistas,
+      "PONTO DE VISTA: " + story.pov,
+      "TOM DA NARRATIVA: " + story.tom,
+      "OBJETIVO FINAL DA HIST\xD3RIA: " + story.objetivoFinal
+    ];
+    const secaoMundo = montarSecaoMundoExpandido(story.mundoAvancado);
+    if (secaoMundo) linhas.push(secaoMundo);
+    if (story.vozDoAutor && story.vozDoAutor.trim()) {
+      linhas.push("INSTRU\xC7\xD5ES ABSOLUTAS DO AUTOR - VOZ DO AUTOR (seguir rigorosamente, t\xEAm prioridade sobre tudo): " + story.vozDoAutor.trim());
+    }
+    linhas.push(contexto);
+    linhas.push("Escreva o CAP\xCDTULO " + numero + " de " + story.capitulosTotais + " desta hist\xF3ria, com aproximadamente " + story.palavrasPorCapitulo + " palavras.");
+    if (numero === story.capitulosTotais) {
+      linhas.push("Este \xE9 o cap\xEDtulo FINAL da saga. Conduza a hist\xF3ria ao objetivo final de forma satisfat\xF3ria e memor\xE1vel.");
+    }
+    linhas.push("Responda EXATAMENTE neste formato, sem nenhum texto, coment\xE1rio ou markdown adicional antes ou depois:");
+    linhas.push('T\xCDTULO: [t\xEDtulo do cap\xEDtulo, sem a palavra "Cap\xEDtulo"]');
+    linhas.push("---");
+    linhas.push("[conte\xFAdo integral do cap\xEDtulo]");
+    return linhas.join("\n");
+  }
+  function interpretarRespostaCapitulo(texto, numero) {
+    const partes = texto.split("---");
+    if (partes.length >= 2) {
+      const titulo = partes[0].replace(/TÍTULO:/i, "").trim();
+      const conteudo = partes.slice(1).join("---").trim();
+      return { titulo: titulo || "Cap\xEDtulo " + numero, conteudo };
+    }
+    return { titulo: "Cap\xEDtulo " + numero, conteudo: texto.trim() };
+  }
+  function montarPromptExtracaoMemoria(story, capitulo) {
+    const memoriaResumo = JSON.stringify(story.memoria || MEMORIA_VAZIA);
+    const linhas = [
+      "MEM\xD3RIA ATUAL DA HIST\xD3RIA (JSON):",
+      memoriaResumo,
+      "",
+      "NOVO CAP\xCDTULO (N\xBA " + capitulo.numero + ' - "' + capitulo.titulo + '"):',
+      capitulo.conteudo,
+      "",
+      "Analise o novo cap\xEDtulo e retorne APENAS um objeto JSON v\xE1lido, sem markdown, sem texto antes ou depois, com as chaves: personagens, locais, faccoes, objetos, eventos.",
+      "Cada chave deve conter um array com APENAS as entidades NOVAS ou ALTERADAS neste cap\xEDtulo (n\xE3o repita entidades sem mudan\xE7as).",
+      "Formato de cada item:",
+      '- personagens: {"nome","descricao","papel","status","tracos","relacionamentos"}',
+      '- locais: {"nome","descricao","tipo"}',
+      '- faccoes: {"nome","descricao"}',
+      '- objetos: {"nome","descricao","portador"}',
+      '- eventos: {"titulo","descricao"}',
+      "Todos os campos de texto devem ser strings simples (nunca objetos ou arrays aninhados).",
+      "Se nada novo ou alterado em uma categoria, retorne array vazio para ela."
+    ];
+    return linhas.join("\n");
+  }
+  function extrairJson(texto) {
+    try {
+      const limpo = texto.replace(/```json/gi, "").replace(/```/g, "").trim();
+      return JSON.parse(limpo);
+    } catch (e) {
+      return null;
+    }
+  }
+  function mesclarMemoria(memoriaAtual, delta, numeroCapitulo) {
+    const base = memoriaAtual || MEMORIA_VAZIA;
+    const resultado = {
+      personagens: [...base.personagens || []],
+      locais: [...base.locais || []],
+      faccoes: [...base.faccoes || []],
+      objetos: [...base.objetos || []],
+      eventos: [...base.eventos || []]
+    };
+    MEMORIA_CATEGORIAS.forEach((cat) => {
+      const novos = delta && Array.isArray(delta[cat.chave]) ? delta[cat.chave] : [];
+      novos.forEach((item) => {
+        if (!item) return;
+        const chaveNome = paraTexto(item.nome || item.titulo).trim().toLowerCase();
+        if (!chaveNome) return;
+        const idx = resultado[cat.chave].findIndex(
+          (e) => paraTexto(e.nome || e.titulo).trim().toLowerCase() === chaveNome
+        );
+        const entrada = __spreadProps(__spreadValues({}, item), { atualizadoNoCapitulo: numeroCapitulo });
+        if (idx >= 0) resultado[cat.chave][idx] = __spreadValues(__spreadValues({}, resultado[cat.chave][idx]), entrada);
+        else resultado[cat.chave].push(entrada);
+      });
+    });
+    return resultado;
+  }
+  async function extrairMemoria({ apiKey, story, capitulo }) {
+    const systemPrompt = "Voc\xEA \xE9 um sistema de extra\xE7\xE3o de mem\xF3ria narrativa. Responda SOMENTE com JSON v\xE1lido, sem markdown, sem coment\xE1rios, sem texto adicional antes ou depois.";
+    const userPrompt = montarPromptExtracaoMemoria(story, capitulo);
+    const resposta = await chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens: 2048 });
+    const json = extrairJson(resposta);
+    if (!json) return story.memoria || MEMORIA_VAZIA;
+    return mesclarMemoria(story.memoria, json, capitulo.numero);
+  }
+  function montarPromptConsistencia(story) {
+    const memoriaResumo = JSON.stringify(story.memoria || MEMORIA_VAZIA);
+    const ultimos = story.capitulos.slice(-2).map((c) => "CAP\xCDTULO " + c.numero + " - " + c.titulo + "\n" + c.conteudo).join("\n\n");
+    const linhas = [
+      "MEM\xD3RIA REGISTRADA DA HIST\xD3RIA (JSON):",
+      memoriaResumo,
+      "",
+      "CAP\xCDTULOS RECENTES:",
+      ultimos,
+      "",
+      "Revise os cap\xEDtulos recentes em busca de: contradi\xE7\xF5es, furos de roteiro, mudan\xE7as n\xE3o explicadas de apar\xEAncia/idade/personalidade, erros cronol\xF3gicos ou de continuidade em rela\xE7\xE3o \xE0 mem\xF3ria registrada.",
+      'Responda em portugu\xEAs, em formato de lista curta com marcadores "-". Se nada for encontrado, responda apenas: "Nenhuma inconsist\xEAncia detectada."'
+    ];
+    return linhas.join("\n");
+  }
+  async function verificarConsistencia({ apiKey, story }) {
+    const systemPrompt = NUCLEO_ESCRITORA_SUPREMA + "\n\nAl\xE9m de escrever, voc\xEA atua agora como revisora de continuidade meticulosa, comparando os cap\xEDtulos recentes com a mem\xF3ria registrada da hist\xF3ria.";
+    const userPrompt = montarPromptConsistencia(story);
+    const resposta = await chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens: 1024 });
+    return resposta.trim();
+  }
+  async function analisarComMentor({ apiKey, story, capitulo }) {
+    const systemPrompt = "Voc\xEA \xE9 uma mentora liter\xE1ria renomada, especialista em estrutura narrativa, ritmo, prosa e constru\xE7\xE3o de mundo. Responda SOMENTE com JSON v\xE1lido, sem markdown, sem texto adicional.";
+    const userPrompt = [
+      "HIST\xD3RIA: " + story.titulo,
+      "G\xCANERO: " + story.genero,
+      "CAP\xCDTULO ANALISADO (N\xBA " + capitulo.numero + " - " + capitulo.titulo + "):",
+      capitulo.conteudo,
+      "",
+      "Avalie este cap\xEDtulo e retorne APENAS um JSON com esta estrutura exata:",
+      '{"ritmo":0,"emocao":0,"dialogos":0,"tensao":0,"construcaoMundo":0,"consistencia":0,"qualidadeGeral":0,"pontosFortes":"","sugestoes":""}',
+      'Todas as notas de 0 a 10 (n\xFAmeros). Os textos "pontosFortes" e "sugestoes" em portugu\xEAs, concisos (2-4 frases cada).'
+    ].join("\n");
+    const resposta = await chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens: 1024 });
+    return extrairJson(resposta);
+  }
+  async function gerarPlanoSaga({ apiKey, story }) {
+    const systemPrompt = "Voc\xEA \xE9 uma planejadora narrativa especialista em estrutura de sagas longas. Responda SOMENTE com um array JSON v\xE1lido, sem markdown, sem texto adicional.";
+    const userPrompt = [
+      "HIST\xD3RIA: " + story.titulo,
+      "G\xCANERO: " + story.genero,
+      "SINOPSE: " + story.sinopse,
+      "OBJETIVO FINAL: " + story.objetivoFinal,
+      "TOTAL DE CAP\xCDTULOS DA SAGA: " + story.capitulosTotais,
+      "",
+      "Divida esta saga em arcos narrativos cobrindo do cap\xEDtulo 1 ao " + story.capitulosTotais + ", sem sobreposi\xE7\xE3o e em ordem.",
+      "Use entre 2 e 8 arcos, proporcional ao tamanho da saga.",
+      "Retorne APENAS um array JSON, cada item com a estrutura exata:",
+      '{"titulo":"","descricao":"","capituloInicio":1,"capituloFim":1}'
+    ].join("\n");
+    const resposta = await chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens: 1536 });
+    const json = extrairJson(resposta);
+    return Array.isArray(json) ? json : [];
+  }
+  function montarPromptMenteSuprema(acaoId, story, extra) {
+    const memoriaResumo = JSON.stringify(story.memoria || MEMORIA_VAZIA);
+    const ultimoCap = story.capitulos[story.capitulos.length - 1];
+    const base = [
+      "HIST\xD3RIA: " + story.titulo,
+      "G\xCANERO: " + story.genero,
+      "SINOPSE: " + story.sinopse,
+      "MEM\xD3RIA REGISTRADA (JSON): " + memoriaResumo
+    ];
+    if (acaoId === "planejar") {
+      base.push("PROGRESSO ATUAL: cap\xEDtulo " + story.capitulos.length + " de " + story.capitulosTotais);
+      base.push("OBJETIVO FINAL: " + story.objetivoFinal);
+      base.push('Sugira, em portugu\xEAs, um plano resumido para os pr\xF3ximos 3 a 5 cap\xEDtulos. Responda em lista com marcadores "-", uma linha por cap\xEDtulo sugerido.');
+    } else if (acaoId === "personagem") {
+      base.push("Crie um novo personagem secund\xE1rio coerente com este universo e mem\xF3ria registrada, que poderia ser introduzido em cap\xEDtulos futuros.");
+      base.push("Descreva, em um par\xE1grafo conciso: nome, papel na hist\xF3ria, apar\xEAncia, personalidade e motiva\xE7\xE3o.");
+    } else if (acaoId === "plottwist") {
+      if (ultimoCap) base.push("\xDALTIMO CAP\xCDTULO REGISTRADO (N\xBA " + ultimoCap.numero + "): " + ultimoCap.conteudo.slice(-1500));
+      base.push("Sugira UMA reviravolta (plot twist) coerente com a hist\xF3ria e a mem\xF3ria registrada, que poderia ser usada em cap\xEDtulos futuros. Explique a ideia e o impacto narrativo em at\xE9 4 frases.");
+    } else if (acaoId === "dialogos") {
+      if (ultimoCap) {
+        base.push("\xDALTIMO CAP\xCDTULO (N\xBA " + ultimoCap.numero + " - " + ultimoCap.titulo + "):");
+        base.push(ultimoCap.conteudo);
+      } else {
+        base.push("Esta hist\xF3ria ainda n\xE3o possui cap\xEDtulos gerados.");
+      }
+      base.push('Aponte 2-3 trechos de di\xE1logo deste cap\xEDtulo que poderiam ficar mais afiados, naturais ou reveladores de personalidade, e sugira vers\xF5es melhoradas. Responda em lista com marcadores "-".');
+    } else if (acaoId === "livre") {
+      base.push("PERGUNTA / PEDIDO DO AUTOR: " + extra);
+    }
+    return base.join("\n");
+  }
+  async function consultarMenteSuprema({ apiKey, story, acaoId, extra }) {
+    const systemPrompt = NUCLEO_ESCRITORA_SUPREMA + "\n\nVoc\xEA tamb\xE9m atua como diretora criativa estrat\xE9gica desta saga, oferecendo conselhos objetivos e acion\xE1veis ao autor.";
+    const userPrompt = montarPromptMenteSuprema(acaoId, story, extra);
+    const resposta = await chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens: 1280 });
+    return resposta.trim();
+  }
+  function montarPromptCorrecao(story, capitulo, instrucao) {
+    return [
+      "HIST\xD3RIA: " + story.titulo,
+      "MEM\xD3RIA REGISTRADA (JSON): " + JSON.stringify(story.memoria || MEMORIA_VAZIA),
+      "",
+      "CAP\xCDTULO ORIGINAL (N\xBA " + capitulo.numero + " - " + capitulo.titulo + "):",
+      capitulo.conteudo,
+      "",
+      "INSTRU\xC7\xC3O DE CORRE\xC7\xC3O: " + instrucao,
+      "",
+      "Reescreva o cap\xEDtulo aplicando a instru\xE7\xE3o, preservando o m\xE1ximo poss\xEDvel do que j\xE1 funciona e mantendo total consist\xEAncia com a mem\xF3ria registrada.",
+      "Responda EXATAMENTE neste formato, sem texto adicional:",
+      "T\xCDTULO: [t\xEDtulo do cap\xEDtulo]",
+      "---",
+      "[conte\xFAdo integral revisado]"
+    ].join("\n");
+  }
+  async function corrigirCapitulo({ apiKey, story, capitulo, instrucao }) {
+    const systemPrompt = NUCLEO_ESCRITORA_SUPREMA + "\n\nVoc\xEA tamb\xE9m atua como editora de texto, revisando e corrigindo cap\xEDtulos sem perder a ess\xEAncia original.";
+    const userPrompt = montarPromptCorrecao(story, capitulo, instrucao);
+    const maxTokens = Math.ceil(contarPalavras(capitulo.conteudo) * 2.5);
+    const resposta = await chamarIA({ apiKey, systemPrompt, userPrompt, maxTokens });
+    return interpretarRespostaCapitulo(resposta, capitulo.numero);
+  }
+  function SeloImperial({ size = 40 }) {
+    return /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        className: "isf-seal relative flex items-center justify-center rounded-full shrink-0",
+        style: {
+          width: size,
+          height: size,
+          background: "radial-gradient(circle, rgba(212,175,55,0.20), transparent 70%)",
+          border: "1px solid rgba(212,175,55,0.45)"
+        }
+      },
+      /* @__PURE__ */ React.createElement(Crown, { size: size * 0.5, color: "#d4af37", strokeWidth: 1.5 })
+    );
+  }
+  function Barra({ progresso }) {
+    const p = Math.max(0, Math.min(100, progresso));
+    return /* @__PURE__ */ React.createElement("div", { className: "w-full h-1.5 rounded-full overflow-hidden", style: { background: "rgba(255,255,255,0.06)" } }, /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        className: "h-full rounded-full",
+        style: {
+          width: p + "%",
+          background: "linear-gradient(90deg, #8b6914, #d4af37, #f4e4a6)",
+          transition: "width 0.4s ease"
+        }
+      }
+    ));
+  }
+  function Etiqueta({ children, color }) {
+    return /* @__PURE__ */ React.createElement(
+      "span",
+      {
+        className: "text-[11px] px-2 py-0.5 rounded-full isf-display tracking-wider uppercase",
+        style: {
+          color: color || "#d4af37",
+          border: "1px solid " + (color || "#d4af37") + "40",
+          background: (color || "#d4af37") + "14"
+        }
+      },
+      children
+    );
+  }
+  function Sidebar({ view, setView, sidebarOpen, setSidebarOpen, apiConfigurada }) {
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, sidebarOpen && /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        className: "fixed inset-0 bg-black/70 z-40 md:hidden",
+        onClick: () => setSidebarOpen(false)
+      }
+    ), /* @__PURE__ */ React.createElement(
+      "aside",
+      {
+        className: "fixed md:static z-50 top-0 left-0 h-full w-[260px] flex flex-col isf-glass border-r transition-transform duration-300 " + (sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"),
+        style: { borderColor: "rgba(212,175,55,0.15)" }
+      },
+      /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3 px-5 py-6 border-b", style: { borderColor: "rgba(212,175,55,0.12)" } }, /* @__PURE__ */ React.createElement(SeloImperial, { size: 42 }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-sm tracking-[0.18em] text-[#f4e4a6]" }, "IMPERIUM"), /* @__PURE__ */ React.createElement("div", { className: "isf-display text-[10px] tracking-[0.3em] text-[#9a958a]" }, "STORYFORGE"))),
+      /* @__PURE__ */ React.createElement("nav", { className: "flex-1 overflow-y-auto py-3 px-3 space-y-1" }, SIDEBAR_ITEMS.map((item) => {
+        const Icon = item.icon;
+        const isActiveView = view === item.id;
+        return /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            key: item.id,
+            onClick: () => {
+              setView(item.id);
+              setSidebarOpen(false);
+            },
+            className: "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors text-left " + (isActiveView ? "isf-glow" : "hover:bg-white/[0.03]"),
+            style: {
+              color: isActiveView ? "#f4e4a6" : item.active ? "#d8d3c6" : "#7a766c",
+              background: isActiveView ? "rgba(212,175,55,0.08)" : "transparent",
+              border: isActiveView ? "1px solid rgba(212,175,55,0.25)" : "1px solid transparent"
+            }
+          },
+          /* @__PURE__ */ React.createElement(Icon, { size: 17, strokeWidth: 1.6 }),
+          /* @__PURE__ */ React.createElement("span", { className: "flex-1" }, item.label),
+          !item.active && /* @__PURE__ */ React.createElement(Lock, { size: 13, strokeWidth: 1.6 }),
+          item.id === "config" && /* @__PURE__ */ React.createElement(
+            "span",
+            {
+              className: "w-2 h-2 rounded-full",
+              style: { background: apiConfigurada ? "#7fd49a" : "#c0584a" },
+              title: apiConfigurada ? "Chave API configurada" : "Chave API ausente"
+            }
+          )
+        );
+      })),
+      /* @__PURE__ */ React.createElement("div", { className: "px-5 py-4 border-t text-[10px] text-[#6b6760] isf-display tracking-widest", style: { borderColor: "rgba(212,175,55,0.12)" } }, "PLATAFORMA COMPLETA")
+    ));
+  }
+  function Topbar({ setSidebarOpen, view, activeStory, apiConfigurada }) {
+    const titulos = {
+      painel: "Painel Imperial",
+      gaveta: activeStory ? activeStory.titulo : "Gaveta Liter\xE1ria",
+      forjar: "Forjar Hist\xF3ria",
+      config: "Configura\xE7\xF5es"
+    };
+    const titulo = titulos[view] || (SIDEBAR_ITEMS.find((i) => i.id === view) || {}).label || "";
+    return /* @__PURE__ */ React.createElement(
+      "header",
+      {
+        className: "sticky top-0 z-30 flex items-center justify-between gap-3 px-4 md:px-6 py-3 isf-glass border-b",
+        style: { borderColor: "rgba(212,175,55,0.12)" }
+      },
+      /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3 min-w-0" }, /* @__PURE__ */ React.createElement("button", { onClick: () => setSidebarOpen(true), className: "md:hidden text-[#d4af37]" }, /* @__PURE__ */ React.createElement(Menu, { size: 20 })), /* @__PURE__ */ React.createElement("h1", { className: "isf-display text-sm md:text-base tracking-wider text-[#f0ead8] truncate" }, titulo)),
+      /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2 md:gap-4 shrink-0" }, /* @__PURE__ */ React.createElement("div", { className: "hidden sm:flex items-center gap-1.5 text-xs text-[#9a958a]" }, /* @__PURE__ */ React.createElement(Save, { size: 14, strokeWidth: 1.6 }), /* @__PURE__ */ React.createElement("span", null, "Salvo automaticamente")), /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-1.5 text-xs" }, /* @__PURE__ */ React.createElement("span", { className: "w-2 h-2 rounded-full", style: { background: apiConfigurada ? "#7fd49a" : "#c0584a" } }), /* @__PURE__ */ React.createElement("span", { style: { color: apiConfigurada ? "#7fd49a" : "#c0584a" } }, apiConfigurada ? "IA Pronta" : "IA Inativa")))
+    );
+  }
+  function PainelImperial({ stats, stories, setView, setActiveStoryId }) {
+    const recentes = useMemo(
+      () => [...stories].sort((a, b) => new Date(b.atualizadoEm) - new Date(a.atualizadoEm)).slice(0, 3),
+      [stories]
+    );
+    const cards = [
+      { label: "Hist\xF3rias Ativas", valor: stats.historiasAtivas },
+      { label: "Cap\xEDtulos Gerados", valor: stats.capitulosGerados },
+      { label: "Palavras Escritas", valor: stats.palavrasEscritas.toLocaleString("pt-BR") },
+      { label: "Progresso M\xE9dio", valor: stats.progressoMedio + "%" }
+    ];
+    return /* @__PURE__ */ React.createElement("div", { className: "space-y-8" }, /* @__PURE__ */ React.createElement("div", { className: "isf-glass isf-glow rounded-2xl p-6 md:p-8 flex items-center gap-5" }, /* @__PURE__ */ React.createElement(SeloImperial, { size: 64 }), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-lg md:text-2xl text-[#f4e4a6] tracking-wide" }, "Bem-vindo ao seu Imp\xE9rio Liter\xE1rio"), /* @__PURE__ */ React.createElement("div", { className: "text-sm text-[#9a958a] mt-1" }, "Cada hist\xF3ria forjada aqui \xE9 registrada, versionada e mantida com consist\xEAncia absoluta."))), /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-4" }, cards.map((c) => /* @__PURE__ */ React.createElement("div", { key: c.label, className: "isf-glass rounded-xl p-4" }, /* @__PURE__ */ React.createElement("div", { className: "text-2xl md:text-3xl isf-display text-[#f4e4a6]" }, c.valor), /* @__PURE__ */ React.createElement("div", { className: "text-xs text-[#9a958a] mt-1" }, c.label)))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-sm tracking-widest text-[#d4af37] mb-3" }, "HIST\xD3RIAS RECENTES"), recentes.length === 0 ? /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-xl p-6 text-sm text-[#9a958a]" }, "Sua gaveta est\xE1 vazia. Forje sua primeira hist\xF3ria para come\xE7ar.") : /* @__PURE__ */ React.createElement("div", { className: "grid md:grid-cols-3 gap-4" }, recentes.map((s) => /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: s.id,
+        onClick: () => {
+          setActiveStoryId(s.id);
+          setView("gaveta");
+        },
+        className: "isf-glass rounded-xl p-4 text-left hover:isf-glow transition-shadow"
+      },
+      /* @__PURE__ */ React.createElement("div", { className: "isf-display text-sm text-[#f0ead8] truncate" }, s.titulo),
+      /* @__PURE__ */ React.createElement("div", { className: "text-xs text-[#9a958a] mt-1" }, s.capitulos.length, " / ", s.capitulosTotais, " cap\xEDtulos"),
+      /* @__PURE__ */ React.createElement("div", { className: "mt-3" }, /* @__PURE__ */ React.createElement(Barra, { progresso: s.capitulos.length / s.capitulosTotais * 100 }))
+    )))), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-sm tracking-widest text-[#d4af37] mb-3" }, "M\xD3DULOS DA PLATAFORMA"), /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3" }, SIDEBAR_ITEMS.filter((i) => i.id !== "config").map((item) => {
+      const Icon = item.icon;
+      return /* @__PURE__ */ React.createElement("div", { key: item.id, className: "isf-glass rounded-xl p-3 flex flex-col gap-2" }, /* @__PURE__ */ React.createElement(Icon, { size: 18, strokeWidth: 1.6, color: item.active ? "#d4af37" : "#6b6760" }), /* @__PURE__ */ React.createElement("div", { className: "text-xs text-[#d8d3c6]" }, item.label), /* @__PURE__ */ React.createElement(Etiqueta, { color: item.active ? "#7fd49a" : "#9a958a" }, item.active ? "Ativo" : "Em Breve"));
+    }))));
+  }
+  function GavetaLiteraria({ stories, setActiveStoryId, setView, excluirHistoria }) {
+    const [confirmarExclusao, setConfirmarExclusao] = useState(null);
+    if (stories.length === 0) {
+      return /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-2xl p-10 text-center space-y-4" }, /* @__PURE__ */ React.createElement(SeloImperial, { size: 56 }), /* @__PURE__ */ React.createElement("div", { className: "isf-display text-lg text-[#f0ead8]" }, "Sua gaveta est\xE1 vazia"), /* @__PURE__ */ React.createElement("div", { className: "text-sm text-[#9a958a] max-w-md mx-auto" }, "Toda grande saga come\xE7a com uma fa\xEDsca. Forje sua primeira hist\xF3ria e ela viver\xE1 aqui para sempre."), /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          onClick: () => setView("forjar"),
+          className: "isf-display text-xs tracking-widest uppercase px-5 py-2.5 rounded-lg isf-glow",
+          style: { background: "rgba(212,175,55,0.12)", border: "1px solid rgba(212,175,55,0.4)", color: "#f4e4a6" }
+        },
+        "Forjar Primeira Hist\xF3ria"
+      ));
+    }
+    return /* @__PURE__ */ React.createElement("div", { className: "grid sm:grid-cols-2 lg:grid-cols-3 gap-5" }, stories.map((s) => {
+      const progresso = s.capitulos.length / s.capitulosTotais * 100;
+      const status = STATUS_INFO[s.status] || STATUS_INFO["em-andamento"];
+      const palavras = s.capitulos.reduce((acc, c) => acc + contarPalavras(c.conteudo), 0);
+      return /* @__PURE__ */ React.createElement("div", { key: s.id, className: "isf-glass rounded-2xl overflow-hidden flex flex-col" }, /* @__PURE__ */ React.createElement(
+        "div",
+        {
+          className: "h-28 flex items-end p-4 relative",
+          style: { background: CAPA_GRADIENTES[s.genero] || CAPA_DEFAULT }
+        },
+        /* @__PURE__ */ React.createElement("div", { className: "absolute top-3 right-3" }, /* @__PURE__ */ React.createElement(Etiqueta, { color: status.color }, status.label)),
+        /* @__PURE__ */ React.createElement("div", { className: "isf-display text-[#f4e4a6] text-base leading-tight drop-shadow" }, s.titulo)
+      ), /* @__PURE__ */ React.createElement("div", { className: "p-4 flex-1 flex flex-col gap-3" }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-2 text-xs text-[#9a958a]" }, /* @__PURE__ */ React.createElement(Etiqueta, null, s.genero), /* @__PURE__ */ React.createElement("span", null, formatarData(s.atualizadoEm))), /* @__PURE__ */ React.createElement("p", { className: "text-sm text-[#c9c4b8] leading-relaxed line-clamp-3 isf-serif" }, s.sinopse), /* @__PURE__ */ React.createElement("div", { className: "mt-auto space-y-2" }, /* @__PURE__ */ React.createElement("div", { className: "flex justify-between text-xs text-[#9a958a]" }, /* @__PURE__ */ React.createElement("span", null, s.capitulos.length, " / ", s.capitulosTotais, " cap\xEDtulos"), /* @__PURE__ */ React.createElement("span", null, palavras.toLocaleString("pt-BR"), " palavras")), /* @__PURE__ */ React.createElement(Barra, { progresso }), /* @__PURE__ */ React.createElement("div", { className: "flex gap-2 pt-1" }, /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          onClick: () => {
+            setActiveStoryId(s.id);
+            setView("gaveta");
+          },
+          className: "flex-1 isf-display text-[11px] tracking-widest uppercase py-2 rounded-lg",
+          style: { background: "rgba(212,175,55,0.1)", border: "1px solid rgba(212,175,55,0.3)", color: "#f4e4a6" }
+        },
+        "Abrir"
+      ), confirmarExclusao === s.id ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("button", { onClick: () => excluirHistoria(s.id), className: "px-3 rounded-lg text-xs", style: { background: "rgba(192,88,74,0.18)", border: "1px solid rgba(192,88,74,0.5)", color: "#e0a094" } }, "Confirmar"), /* @__PURE__ */ React.createElement("button", { onClick: () => setConfirmarExclusao(null), className: "px-3 rounded-lg text-xs text-[#9a958a]", style: { border: "1px solid rgba(255,255,255,0.1)" } }, /* @__PURE__ */ React.createElement(X, { size: 14 }))) : /* @__PURE__ */ React.createElement("button", { onClick: () => setConfirmarExclusao(s.id), className: "px-3 rounded-lg", style: { border: "1px solid rgba(255,255,255,0.08)", color: "#9a958a" } }, /* @__PURE__ */ React.createElement(Trash2, { size: 14 }))))));
+    }));
+  }
+  function LeitorHistoria({ story, setActiveStoryId, atualizarHistoria, apiKey }) {
+    const [gerando, setGerando] = useState(false);
+    const [erro, setErro] = useState("");
+    const [vozDoAutor, setVozDoAutor] = useState(story.vozDoAutor || "");
+    const [capituloAberto, setCapituloAberto] = useState(story.capitulos.length ? story.capitulos.length - 1 : null);
+    const [verificando, setVerificando] = useState(false);
+    const [consistencia, setConsistencia] = useState(null);
+    const [mundoAvancado, setMundoAvancado] = useState(story.mundoAvancado || camposImperioVazios());
+    const [mundoAberto, setMundoAberto] = useState(false);
+    const proximo = story.capitulos.length + 1;
+    const concluida = story.capitulos.length >= story.capitulosTotais;
+    const palavras = story.capitulos.reduce((acc, c) => acc + contarPalavras(c.conteudo), 0);
+    const memoria = story.memoria || MEMORIA_VAZIA;
+    const totalMemoria = MEMORIA_CATEGORIAS.reduce((acc, cat) => acc + (memoria[cat.chave] || []).length, 0);
+    async function handleGerar() {
+      if (!apiKey) {
+        setErro("Configure sua chave API em Configura\xE7\xF5es antes de gerar cap\xEDtulos.");
+        return;
+      }
+      setErro("");
+      setConsistencia(null);
+      setGerando(true);
+      try {
+        const userPrompt = montarPromptCapitulo(__spreadProps(__spreadValues({}, story), { vozDoAutor, mundoAvancado }), proximo);
+        const resposta = await gerarCapitulo({
+          apiKey,
+          systemPrompt: NUCLEO_ESCRITORA_SUPREMA,
+          userPrompt,
+          maxPalavras: story.palavrasPorCapitulo
+        });
+        const { titulo, conteudo } = interpretarRespostaCapitulo(resposta, proximo);
+        const novoCapitulo = { numero: proximo, titulo, conteudo, geradoEm: (/* @__PURE__ */ new Date()).toISOString() };
+        const novosCapitulos = [...story.capitulos, novoCapitulo];
+        let novaMemoria = story.memoria || MEMORIA_VAZIA;
+        try {
+          novaMemoria = await extrairMemoria({ apiKey, story: __spreadProps(__spreadValues({}, story), { capitulos: novosCapitulos }), capitulo: novoCapitulo });
+        } catch (memErr) {
+        }
+        atualizarHistoria(story.id, {
+          capitulos: novosCapitulos,
+          memoria: novaMemoria,
+          vozDoAutor,
+          mundoAvancado,
+          status: novosCapitulos.length >= story.capitulosTotais ? "concluida" : story.status,
+          atualizadoEm: (/* @__PURE__ */ new Date()).toISOString()
+        });
+        setCapituloAberto(novosCapitulos.length - 1);
+      } catch (e) {
+        setErro(e.message || "Falha ao gerar cap\xEDtulo.");
+      } finally {
+        setGerando(false);
+      }
+    }
+    async function handleVerificarConsistencia() {
+      if (!apiKey) {
+        setErro("Configure sua chave API em Configura\xE7\xF5es para usar a verifica\xE7\xE3o de consist\xEAncia.");
+        return;
+      }
+      setErro("");
+      setVerificando(true);
+      try {
+        const resultado = await verificarConsistencia({ apiKey, story });
+        setConsistencia(resultado);
+      } catch (e) {
+        setErro(e.message || "Falha ao verificar consist\xEAncia.");
+      } finally {
+        setVerificando(false);
+      }
+    }
+    function alternarPausa() {
+      atualizarHistoria(story.id, {
+        status: story.status === "pausada" ? "em-andamento" : "pausada",
+        atualizadoEm: (/* @__PURE__ */ new Date()).toISOString()
+      });
+    }
+    return /* @__PURE__ */ React.createElement("div", { className: "space-y-5" }, /* @__PURE__ */ React.createElement("button", { onClick: () => setActiveStoryId(null), className: "flex items-center gap-2 text-sm text-[#9a958a] hover:text-[#d4af37]" }, /* @__PURE__ */ React.createElement(ArrowLeft, { size: 15 }), " Voltar \xE0 Gaveta"), /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-2xl p-5 md:p-6 space-y-4", style: { background: CAPA_GRADIENTES[story.genero] || CAPA_DEFAULT } }, /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap items-center gap-2" }, /* @__PURE__ */ React.createElement(Etiqueta, null, story.genero), /* @__PURE__ */ React.createElement(Etiqueta, null, story.pov), /* @__PURE__ */ React.createElement(Etiqueta, null, story.tom), /* @__PURE__ */ React.createElement(Etiqueta, { color: (STATUS_INFO[story.status] || STATUS_INFO["em-andamento"]).color }, (STATUS_INFO[story.status] || STATUS_INFO["em-andamento"]).label)), /* @__PURE__ */ React.createElement("div", { className: "isf-display text-xl md:text-2xl text-[#f4e4a6]" }, story.titulo), /* @__PURE__ */ React.createElement("p", { className: "text-sm text-[#e8e3d6] isf-serif leading-relaxed max-w-2xl" }, story.sinopse), /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap gap-6 text-xs text-[#e0dccf]" }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "text-[#9a958a]" }, "Cap\xEDtulos: "), story.capitulos.length, " / ", story.capitulosTotais), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "text-[#9a958a]" }, "Palavras: "), palavras.toLocaleString("pt-BR")), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { className: "text-[#9a958a]" }, "Criada em: "), formatarData(story.criadoEm))), /* @__PURE__ */ React.createElement(Barra, { progresso: story.capitulos.length / story.capitulosTotais * 100 })), /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-2xl p-5 space-y-3" }, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-xs tracking-widest text-[#d4af37]" }, "VOZ DO AUTOR (instru\xE7\xF5es absolutas para a IA)"), /* @__PURE__ */ React.createElement(
+      "textarea",
+      {
+        value: vozDoAutor,
+        onChange: (e) => setVozDoAutor(e.target.value),
+        onBlur: () => atualizarHistoria(story.id, { vozDoAutor, atualizadoEm: (/* @__PURE__ */ new Date()).toISOString() }),
+        placeholder: "Ex: nunca mate o personagem X antes do cap\xEDtulo 10. Mantenha di\xE1logos curtos e secos no estilo noir.",
+        className: "w-full bg-transparent border rounded-lg p-3 text-sm text-[#e8e3d6] placeholder:text-[#6b6760] resize-none isf-serif",
+        style: { borderColor: "rgba(212,175,55,0.2)", minHeight: "70px" }
+      }
+    )), /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-2xl p-5 space-y-3" }, /* @__PURE__ */ React.createElement("button", { onClick: () => setMundoAberto((v) => !v), className: "w-full flex items-center justify-between text-left" }, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-xs tracking-widest text-[#d4af37] flex items-center gap-2" }, /* @__PURE__ */ React.createElement(Crown, { size: 14 }), " MUNDO EXPANDIDO (Modo Avan\xE7ado)"), /* @__PURE__ */ React.createElement(ChevronRight, { size: 15, className: "transition-transform " + (mundoAberto ? "rotate-90" : "") })), mundoAberto && /* @__PURE__ */ React.createElement("div", { className: "space-y-3 pt-1" }, CAMPOS_IMPERIO.map((campo) => {
+      const Icon = campo.icon;
+      return /* @__PURE__ */ React.createElement("div", { key: campo.chave, className: "space-y-1" }, /* @__PURE__ */ React.createElement("div", { className: "text-[11px] isf-display tracking-widest text-[#b8a468] flex items-center gap-1.5" }, /* @__PURE__ */ React.createElement(Icon, { size: 12 }), " ", campo.label.toUpperCase()), /* @__PURE__ */ React.createElement(
+        "textarea",
+        {
+          value: mundoAvancado[campo.chave] || "",
+          onChange: (e) => setMundoAvancado((m) => __spreadProps(__spreadValues({}, m), { [campo.chave]: e.target.value })),
+          onBlur: () => atualizarHistoria(story.id, { mundoAvancado, atualizadoEm: (/* @__PURE__ */ new Date()).toISOString() }),
+          placeholder: campo.placeholder,
+          className: "w-full bg-transparent border rounded-lg p-2.5 text-sm text-[#e8e3d6] placeholder:text-[#6b6760] resize-none isf-serif",
+          style: { borderColor: "rgba(212,175,55,0.15)", minHeight: "50px" }
+        }
+      ));
+    }))), /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-2xl p-5 space-y-3" }, /* @__PURE__ */ React.createElement("div", { className: "flex items-center justify-between" }, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-xs tracking-widest text-[#d4af37]" }, "MEM\xD3RIA VIVA"), totalMemoria > 0 && /* @__PURE__ */ React.createElement(Etiqueta, { color: "#7fd49a" }, totalMemoria, " registros")), totalMemoria === 0 ? /* @__PURE__ */ React.createElement("p", { className: "text-sm text-[#9a958a]" }, "A mem\xF3ria desta hist\xF3ria ainda est\xE1 vazia. Ela \xE9 preenchida automaticamente ap\xF3s cada cap\xEDtulo forjado.") : /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-2 sm:grid-cols-5 gap-3" }, MEMORIA_CATEGORIAS.map((cat) => {
+      const Icon = cat.icon;
+      return /* @__PURE__ */ React.createElement("div", { key: cat.chave, className: "rounded-lg p-3 text-center", style: { border: "1px solid rgba(255,255,255,0.06)" } }, /* @__PURE__ */ React.createElement(Icon, { size: 16, strokeWidth: 1.6, color: "#d4af37", className: "mx-auto mb-1" }), /* @__PURE__ */ React.createElement("div", { className: "isf-display text-base text-[#f0ead8]" }, (memoria[cat.chave] || []).length), /* @__PURE__ */ React.createElement("div", { className: "text-[10px] text-[#9a958a]" }, cat.label));
+    }))), erro && /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-xl p-4 flex items-start gap-3 text-sm", style: { borderColor: "rgba(192,88,74,0.4)", color: "#e0a094" } }, /* @__PURE__ */ React.createElement(AlertCircle, { size: 16, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("span", null, erro)), consistencia && /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-xl p-5 space-y-2", style: { borderColor: "rgba(212,175,55,0.3)" } }, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-xs tracking-widest text-[#d4af37] flex items-center gap-2" }, /* @__PURE__ */ React.createElement(ShieldCheck, { size: 14 }), " RELAT\xD3RIO DE CONSIST\xCANCIA"), /* @__PURE__ */ React.createElement("div", { className: "text-sm text-[#d8d3c6] leading-relaxed whitespace-pre-wrap isf-serif" }, consistencia)), /* @__PURE__ */ React.createElement("div", { className: "flex flex-wrap gap-3" }, !concluida && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: handleGerar,
+        disabled: gerando || story.status === "pausada",
+        className: "isf-display text-xs tracking-widest uppercase px-5 py-3 rounded-lg isf-glow flex items-center gap-2 disabled:opacity-50",
+        style: { background: "rgba(212,175,55,0.12)", border: "1px solid rgba(212,175,55,0.4)", color: "#f4e4a6" }
+      },
+      gerando ? /* @__PURE__ */ React.createElement(Loader2, { size: 15, className: "animate-spin" }) : /* @__PURE__ */ React.createElement(Sparkles, { size: 15 }),
+      gerando ? "Forjando cap\xEDtulo..." : "Forjar Cap\xEDtulo " + proximo
+    ), story.capitulos.length > 0 && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: handleVerificarConsistencia,
+        disabled: verificando,
+        className: "text-xs tracking-widest uppercase px-5 py-3 rounded-lg flex items-center gap-2 disabled:opacity-50",
+        style: { border: "1px solid rgba(212,175,55,0.25)", color: "#d4af37" }
+      },
+      verificando ? /* @__PURE__ */ React.createElement(Loader2, { size: 14, className: "animate-spin" }) : /* @__PURE__ */ React.createElement(ShieldCheck, { size: 14 }),
+      "Verificar Consist\xEAncia"
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: alternarPausa,
+        className: "text-xs tracking-widest uppercase px-5 py-3 rounded-lg flex items-center gap-2 text-[#9a958a]",
+        style: { border: "1px solid rgba(255,255,255,0.1)" }
+      },
+      story.status === "pausada" ? /* @__PURE__ */ React.createElement(Play, { size: 14 }) : /* @__PURE__ */ React.createElement(Pause, { size: 14 }),
+      story.status === "pausada" ? "Retomar" : "Pausar"
+    )), /* @__PURE__ */ React.createElement("div", { className: "space-y-3" }, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-xs tracking-widest text-[#d4af37]" }, "CAP\xCDTULOS"), story.capitulos.length === 0 && /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-xl p-5 text-sm text-[#9a958a]" }, "Nenhum cap\xEDtulo forjado ainda."), story.capitulos.map((cap, idx) => /* @__PURE__ */ React.createElement("div", { key: cap.numero, className: "isf-glass rounded-xl overflow-hidden" }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setCapituloAberto(capituloAberto === idx ? null : idx),
+        className: "w-full flex items-center justify-between gap-3 px-4 py-3 text-left"
+      },
+      /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3 min-w-0" }, /* @__PURE__ */ React.createElement("span", { className: "isf-display text-[#d4af37] text-sm shrink-0" }, String(cap.numero).padStart(2, "0")), /* @__PURE__ */ React.createElement("span", { className: "text-sm text-[#f0ead8] truncate" }, cap.titulo)),
+      /* @__PURE__ */ React.createElement("div", { className: "flex items-center gap-3 text-xs text-[#9a958a] shrink-0" }, /* @__PURE__ */ React.createElement("span", null, contarPalavras(cap.conteudo).toLocaleString("pt-BR"), " palavras"), /* @__PURE__ */ React.createElement(ChevronRight, { size: 15, className: "transition-transform " + (capituloAberto === idx ? "rotate-90" : "") }))
+    ), capituloAberto === idx && /* @__PURE__ */ React.createElement("div", { className: "px-5 pb-5 pt-1 border-t", style: { borderColor: "rgba(212,175,55,0.1)" } }, /* @__PURE__ */ React.createElement("div", { className: "isf-serif text-[#d8d3c6] leading-8 text-base whitespace-pre-wrap" }, cap.conteudo))))));
+  }
+  function ForjarHistoria({ criarHistoria, setView, setActiveStoryId, apiConfigurada, universos }) {
+    const [modoAvancado, setModoAvancado] = useState(false);
+    const [form, setForm] = useState({
+      titulo: "",
+      genero: GENEROS[0],
+      sinopse: "",
+      protagonistas: "",
+      pov: PONTOS_DE_VISTA[0],
+      tom: TONS[0],
+      objetivoFinal: "",
+      capitulosTotais: 5,
+      palavrasPorCapitulo: 1500,
+      mundoAvancado: camposImperioVazios()
+    });
+    const [avisoSemChave, setAvisoSemChave] = useState(false);
+    function set(campo, valor) {
+      setForm((f) => __spreadProps(__spreadValues({}, f), { [campo]: valor }));
+    }
+    function setMundo(chave, valor) {
+      setForm((f) => __spreadProps(__spreadValues({}, f), { mundoAvancado: __spreadProps(__spreadValues({}, f.mundoAvancado), { [chave]: valor }) }));
+    }
+    function importarImperio(id) {
+      const imperio = universos.find((u) => u.id === id);
+      if (!imperio) return;
+      const novoMundo = camposImperioVazios();
+      CAMPOS_IMPERIO.forEach((c) => {
+        novoMundo[c.chave] = imperio[c.chave] || "";
+      });
+      setForm((f) => __spreadProps(__spreadValues({}, f), { mundoAvancado: novoMundo }));
+    }
+    function handleSubmit(e) {
+      e.preventDefault();
+      if (!form.titulo.trim() || !form.sinopse.trim() || !form.objetivoFinal.trim()) return;
+      const id = criarHistoria(__spreadProps(__spreadValues({}, form), { mundoAvancado: modoAvancado ? form.mundoAvancado : null }));
+      if (!apiConfigurada) setAvisoSemChave(true);
+      setActiveStoryId(id);
+      setView("gaveta");
+    }
+    return /* @__PURE__ */ React.createElement("div", { className: "max-w-2xl mx-auto space-y-6" }, /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-2xl p-5 md:p-6" }, /* @__PURE__ */ React.createElement("div", { className: "isf-display text-lg text-[#f4e4a6] mb-1" }, "Forjar Nova Hist\xF3ria"), /* @__PURE__ */ React.createElement("div", { className: "text-sm text-[#9a958a]" }, "Modo Simples - defina os pilares da sua obra. A IA escreve, voc\xEA comanda.")), !apiConfigurada && /* @__PURE__ */ React.createElement("div", { className: "isf-glass rounded-xl p-4 flex items-start gap-3 text-sm", style: { borderColor: "rgba(212,175,55,0.3)", color: "#e0c878" } }, /* @__PURE__ */ React.createElement(Key, { size: 16, className: "shrink-0 mt-0.5" }), /* @__PURE__ */ React.createElement("span", null, "Nenhuma chave API configurada. Voc\xEA pode criar a hist\xF3ria agora, mas precisar\xE1 configurar a chave em ", /* @__PURE__ */ React.createElement("b", null, "Configura\xE7\xF5es"), " antes de forjar o primeiro cap\xEDtulo.")), /* @__PURE__ */ React.createElement("form", { onSubmit: handleSubmit, className: "isf-glass rounded-2xl p-5 md:p-6 space-y-5" }, /* @__PURE__ */ React.createElement(Campo, { label: "T\xEDtulo" }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        value: form.titulo,
+        onChange: (e) => set("titulo", e.target.value),
+        required: true,
+        className: "isf-input",
+        placeholder: "O nome da sua obra"
+      }
+    )), /* @__PURE__ */ React.createElement(Campo, { label: "G\xEAnero" }, /* @__PURE__ */ React.createElement("select", { value: form.genero, onChange: (e) => set("genero", e.target.value), className: "isf-input" }, GENEROS.map((g) => /* @__PURE__ */ React.createElement("option", { key: g, value: g }, g)))), /* @__PURE__ */ React.createElement(Campo, { label: "Ideia Principal / Sinopse" }, /* @__PURE__ */ React.createElement(
+      "textarea",
+      {
+        value: form.sinopse,
+        onChange: (e) => set("sinopse", e.target.value),
+        required: true,
+        className: "isf-input resize-none",
+        style: { minHeight: "90px" },
+        placeholder:
