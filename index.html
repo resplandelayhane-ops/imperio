@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -930,10 +930,37 @@
   <div id="api-modal">
     <div class="crown">⚜️</div>
     <h2>IMPERIUM STORYFORGE</h2>
-    <p>Para ativar a Mente Suprema Literária, insira sua chave da API Anthropic. A chave é armazenada apenas no seu navegador e nunca enviada a terceiros.</p>
+    <p>Escolha seu provedor de IA e insira a chave API. A chave fica salva apenas no seu navegador.</p>
+
+    <!-- PROVEDOR -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <div id="btn-anthropic" onclick="selectProvider('anthropic')"
+        style="padding:12px;border:2px solid var(--gold3);border-radius:10px;cursor:pointer;transition:all 0.2s;background:var(--gold-glow);">
+        <div style="font-size:18px;margin-bottom:4px;">🤖</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:1px;">ANTHROPIC</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Claude Sonnet</div>
+      </div>
+      <div id="btn-google" onclick="selectProvider('google')"
+        style="padding:12px;border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all 0.2s;">
+        <div style="font-size:18px;margin-bottom:4px;">✨</div>
+        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--text2);letter-spacing:1px;">GOOGLE</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Gemini</div>
+      </div>
+    </div>
+
+    <!-- MODELO -->
+    <div id="model-row" style="margin-bottom:16px;">
+      <div style="font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;text-align:left;">Modelo</div>
+      <select id="model-select" style="width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;">
+        <option value="claude-sonnet-4-6">claude-sonnet-4-6 (recomendado)</option>
+      </select>
+    </div>
+
+    <!-- CHAVE -->
+    <div style="font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;text-align:left;">Chave API</div>
     <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
     <button class="btn-primary" onclick="saveApiKey()">⚡ ATIVAR SISTEMA</button>
-    <p class="note">Obtenha sua chave em console.anthropic.com</p>
+    <p class="note" id="api-note">Anthropic: console.anthropic.com · Google: aistudio.google.com</p>
   </div>
 </div>
 
@@ -1504,39 +1531,97 @@ function saveState() {
 }
 
 // ═══════════════════════════════════════════
-// API KEY
+// API KEY — MULTI-PROVEDOR
 // ═══════════════════════════════════════════
+let currentProvider = 'anthropic';
+
+const MODELS = {
+  anthropic: [
+    { value: 'claude-sonnet-4-6', label: 'claude-sonnet-4-6 (recomendado)' }
+  ],
+  google: [
+    { value: 'gemini-2.5-flash', label: 'gemini-2.5-flash (recomendado)' },
+    { value: 'gemini-1.5-pro',   label: 'gemini-1.5-pro' }
+  ]
+};
+
+function selectProvider(prov) {
+  currentProvider = prov;
+  // botões visuais
+  const bA = document.getElementById('btn-anthropic');
+  const bG = document.getElementById('btn-google');
+  if (prov === 'anthropic') {
+    bA.style.border = '2px solid var(--gold3)'; bA.style.background = 'var(--gold-glow)';
+    bA.querySelector('div:nth-child(2)').style.color = 'var(--gold)';
+    bG.style.border = '1px solid var(--border2)'; bG.style.background = 'transparent';
+    bG.querySelector('div:nth-child(2)').style.color = 'var(--text2)';
+    document.getElementById('api-key-input').placeholder = 'sk-ant-api03-...';
+  } else {
+    bG.style.border = '2px solid var(--gold3)'; bG.style.background = 'var(--gold-glow)';
+    bG.querySelector('div:nth-child(2)').style.color = 'var(--gold)';
+    bA.style.border = '1px solid var(--border2)'; bA.style.background = 'transparent';
+    bA.querySelector('div:nth-child(2)').style.color = 'var(--text2)';
+    document.getElementById('api-key-input').placeholder = 'AIza...';
+  }
+  // atualizar modelos
+  const sel = document.getElementById('model-select');
+  sel.innerHTML = '';
+  MODELS[prov].forEach(m => {
+    const o = document.createElement('option');
+    o.value = m.value; o.textContent = m.label;
+    sel.appendChild(o);
+  });
+}
+
 function saveApiKey() {
   const key = document.getElementById('api-key-input').value.trim();
-  if (!key || !key.startsWith('sk-ant')) {
-    showToast('⚠ Chave inválida. Deve começar com sk-ant');
-    return;
+  const model = document.getElementById('model-select').value;
+  if (!key) { showToast('⚠ Insira a chave API'); return; }
+  if (currentProvider === 'anthropic' && !key.startsWith('sk-ant')) {
+    showToast('⚠ Chave Anthropic inválida. Deve começar com sk-ant'); return;
   }
+  if (currentProvider === 'google' && !key.startsWith('AIza')) {
+    showToast('⚠ Chave Google inválida. Deve começar com AIza'); return;
+  }
+  localStorage.setItem('imp_provider', currentProvider);
   localStorage.setItem('imp_apikey', key);
+  localStorage.setItem('imp_model', model);
   document.getElementById('api-overlay').style.display = 'none';
   updateApiStatus(true);
-  showToast('✦ Mente Suprema Ativada');
+  showToast('✦ Mente Suprema Ativada — ' + model);
 }
 
 function resetApiKey() {
-  if (confirm('Alterar chave API?')) {
+  if (confirm('Alterar configuração de API?')) {
     document.getElementById('api-overlay').style.display = 'flex';
     document.getElementById('api-key-input').value = '';
+    const saved = localStorage.getItem('imp_provider') || 'anthropic';
+    selectProvider(saved);
   }
 }
 
 function updateApiStatus(active) {
   document.getElementById('api-dot').className = active ? 'dot' : 'dot off';
-  document.getElementById('api-status-text').textContent = active ? 'Mente Suprema Ativa' : 'API Desconectada';
+  const prov = localStorage.getItem('imp_provider') || 'anthropic';
+  const model = localStorage.getItem('imp_model') || '';
+  const label = active ? (prov === 'google' ? '✨ ' : '🤖 ') + model : 'API Desconectada';
+  document.getElementById('api-status-text').textContent = active ? label : 'API Desconectada';
 }
 
-function getApiKey() { return localStorage.getItem('imp_apikey'); }
+function getApiKey()    { return localStorage.getItem('imp_apikey'); }
+function getProvider()  { return localStorage.getItem('imp_provider') || 'anthropic'; }
+function getModel()     { return localStorage.getItem('imp_model') || 'claude-sonnet-4-6'; }
 
 // ─── INIT ───
 window.onload = function() {
   loadState();
+  selectProvider('anthropic'); // default visual
   const key = getApiKey();
   if (key) {
+    const savedProv = getProvider();
+    selectProvider(savedProv);
+    const savedModel = getModel();
+    document.getElementById('model-select').value = savedModel;
     document.getElementById('api-overlay').style.display = 'none';
     updateApiStatus(true);
   } else {
@@ -1786,33 +1871,57 @@ Entregue APENAS o texto do capítulo. Sem introduções, sem comentários, sem e
   }, 2000);
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 8000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userPrompt }]
-      })
-    });
+    const provider = getProvider();
+    const model = getModel();
+    let res;
+
+    if (provider === 'anthropic') {
+      res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 8000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }]
+        })
+      });
+    } else {
+      // Google Gemini
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      res = await fetch(geminiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+          generationConfig: { maxOutputTokens: 8000, temperature: 1.0 }
+        })
+      });
+    }
 
     clearInterval(ltInterval);
     loading.style.display = 'none';
 
     if (!res.ok) {
       const err = await res.json();
-      showToast('⚠ Erro: ' + (err.error?.message || res.status));
+      const msg = err.error?.message || err.message || res.status;
+      showToast('⚠ Erro: ' + msg);
       return;
     }
 
     const data = await res.json();
-    const text = data.content.map(i => i.text || '').join('');
+    let text = '';
+    if (provider === 'anthropic') {
+      text = data.content.map(i => i.text || '').join('');
+    } else {
+      text = data.candidates?.[0]?.content?.parts?.map(p => p.text||'').join('') || '';
+    }
     output.textContent = text;
 
     const wc = text.trim().split(/\s+/).length;
@@ -2009,17 +2118,32 @@ async function generateWorld() {
   showToast('⚡ Gerando universo ' + type + '...');
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6', max_tokens: 2000,
-        messages: [{ role: 'user', content: `Crie um universo completo de ${type} para uma saga. Responda APENAS em JSON com esta estrutura exata sem markdown:
-{"kingdoms":["nome1","nome2","nome3"],"cities":["cidade1","cidade2","cidade3","cidade4","cidade5"],"factions":["faccao1","faccao2","faccao3"],"magic":["sistema1","sistema2"],"creatures":["criatura1","criatura2","criatura3"],"prophecies":["profecia1"],"description":"Descrição do mundo em 2-3 frases"}` }]
-      })
-    });
+    const provider = getProvider();
+    const model = getModel();
+    const worldPromptText = `Crie um universo completo de ${type} para uma saga. Responda APENAS em JSON com esta estrutura exata sem markdown:\n{"kingdoms":["nome1","nome2","nome3"],"cities":["cidade1","cidade2","cidade3","cidade4","cidade5"],"factions":["faccao1","faccao2","faccao3"],"magic":["sistema1","sistema2"],"creatures":["criatura1","criatura2","criatura3"],"prophecies":["profecia1"],"description":"Descrição do mundo em 2-3 frases"}`;
+    let res;
+    if (provider === 'anthropic') {
+      res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model, max_tokens: 2000, messages: [{ role: 'user', content: worldPromptText }] })
+      });
+    } else {
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      res = await fetch(geminiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: worldPromptText }] }], generationConfig: { maxOutputTokens: 2000 } })
+      });
+    }
     const data = await res.json();
-    const raw = data.content[0].text.replace(/```json|```/g,'').trim();
+    let rawText = '';
+    if (provider === 'anthropic') {
+      rawText = data.content?.[0]?.text || '';
+    } else {
+      rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    }
+    const raw = rawText.replace(/```json|```/g,'').trim();
     const world = JSON.parse(raw);
     state.worldData = world; saveState();
 
@@ -2193,3 +2317,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+ 
