@@ -1,1420 +1,700 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Imperium StoryForge — Forja de Universos</title>
+<title>Imperium StoryForge</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
-  :root {
-    --bg: #050505;
-    --panel: #0A0A0A;
-    --panel2: #0E0E0E;
-    --border: #1A1A1A;
-    --border2: #252525;
-    --gold: #C5A059;
-    --gold2: #D4B06A;
-    --gold3: #A88840;
-    --gold-glow: rgba(197,160,89,0.15);
-    --gold-glow2: rgba(197,160,89,0.06);
-    --text: #F5F5F5;
-    --text2: #A0A0A0;
-    --text3: #606060;
-    --red: #C05050;
-    --green: #50A080;
-    --blue: #5080C0;
-  }
+:root {
+  --bg:#050505; --panel:#0A0A0A; --border:#1A1A1A; --border2:#252525;
+  --gold:#C5A059; --gold2:#D4B06A; --gold3:#A88840;
+  --gg:rgba(197,160,89,0.15); --gg2:rgba(197,160,89,0.06);
+  --text:#F5F5F5; --t2:#A0A0A0; --t3:#606060;
+  --green:#50A080; --red:#C05050;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;height:100%;overflow:hidden;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--panel);}
+::-webkit-scrollbar-thumb{background:var(--gold3);border-radius:2px;}
 
-  * { margin:0; padding:0; box-sizing:border-box; }
+/* ── API OVERLAY ── */
+#api-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(20px);}
+#api-modal{background:var(--panel);border:1px solid var(--gold3);border-radius:16px;padding:44px;max-width:460px;width:90%;text-align:center;box-shadow:0 0 80px rgba(197,160,89,0.12);animation:fadeUp 0.6s ease;}
+#api-modal .crown{font-size:38px;margin-bottom:18px;}
+#api-modal h2{font-family:'Cinzel',serif;font-size:19px;color:var(--gold);margin-bottom:6px;letter-spacing:2px;}
+#api-modal p{color:var(--t2);font-size:12px;line-height:1.7;margin-bottom:22px;}
+.provider-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.prov-btn{padding:12px 8px;border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.prov-btn.active{border:2px solid var(--gold3);background:var(--gg);}
+.prov-btn .picon{font-size:18px;margin-bottom:4px;}
+.prov-btn .pname{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;color:var(--t2);}
+.prov-btn.active .pname{color:var(--gold);}
+.prov-btn .psub{font-size:10px;color:var(--t3);margin-top:2px;}
+.field-lbl{font-size:10px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:7px;text-align:left;}
+#api-modal input,#api-modal select{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:11px 14px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;margin-bottom:12px;transition:border-color 0.2s;}
+#api-modal input:focus,#api-modal select:focus{outline:none;border-color:var(--gold3);}
+#api-modal select option{background:#0A0A0A;}
+.btn-activate{width:100%;background:linear-gradient(135deg,var(--gold3),var(--gold));color:#050505;border:none;border-radius:8px;padding:13px;font-family:'Cinzel',serif;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.3s;}
+.btn-activate:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(197,160,89,0.3);}
+.api-note{margin-top:14px;color:var(--t3);font-size:10px;}
 
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    height: 100%;
-    overflow: hidden;
-  }
+/* ── APP SHELL ── */
+#app{display:grid;grid-template-columns:200px 1fr;grid-template-rows:52px 1fr;height:100vh;}
 
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: var(--panel); }
-  ::-webkit-scrollbar-thumb { background: var(--gold3); border-radius: 2px; }
+/* ── TOPBAR ── */
+#topbar{grid-column:1/-1;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;gap:14px;z-index:100;}
+.logo{font-family:'Cinzel',serif;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:3px;display:flex;align-items:center;gap:9px;}
+.logo span{color:var(--t3);font-weight:300;font-size:10px;letter-spacing:1px;}
+.tb-spacer{flex:1;}
+.api-pill{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2);cursor:pointer;padding:5px 11px;border:1px solid var(--border);border-radius:6px;transition:all 0.2s;}
+.api-pill:hover{border-color:var(--gold3);color:var(--gold);}
+.api-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.api-pill .dot.off{background:var(--t3);}
 
-  /* ─── API KEY MODAL ─── */
-  #api-overlay {
-    position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.97);
-    display: flex; align-items: center; justify-content: center;
-    backdrop-filter: blur(20px);
-  }
-  #api-modal {
-    background: var(--panel);
-    border: 1px solid var(--gold3);
-    border-radius: 16px;
-    padding: 48px;
-    max-width: 480px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 0 80px rgba(197,160,89,0.12), 0 0 0 1px rgba(197,160,89,0.08);
-    animation: fadeInUp 0.6s ease;
-  }
-  #api-modal .crown { font-size: 40px; margin-bottom: 20px; }
-  #api-modal h2 {
-    font-family: 'Cinzel', serif;
-    font-size: 20px;
-    color: var(--gold);
-    margin-bottom: 8px;
-    letter-spacing: 2px;
-  }
-  #api-modal p {
-    color: var(--text2);
-    font-size: 13px;
-    line-height: 1.7;
-    margin-bottom: 28px;
-  }
-  #api-modal input {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 14px 16px;
-    color: var(--text);
-    font-size: 13px;
-    font-family: 'Inter', monospace;
-    margin-bottom: 16px;
-    transition: border-color 0.3s;
-    letter-spacing: 1px;
-  }
-  #api-modal input:focus { outline: none; border-color: var(--gold3); }
-  #api-modal .btn-primary {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold3), var(--gold));
-    color: #050505;
-    border: none;
-    border-radius: 8px;
-    padding: 14px;
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  #api-modal .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(197,160,89,0.3); }
-  #api-modal .note {
-    margin-top: 16px;
-    color: var(--text3);
-    font-size: 11px;
-  }
+/* ── SIDEBAR ── */
+#sidebar{background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;padding:18px 0;}
+.sb-section{padding:0 10px;margin-bottom:20px;}
+.sb-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--t3);padding:0 8px;margin-bottom:7px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all 0.2s;color:var(--t2);font-size:12px;border:1px solid transparent;margin-bottom:2px;}
+.nav-item:hover{background:var(--gg2);color:var(--text);}
+.nav-item.active{background:var(--gg);color:var(--gold);border-color:rgba(197,160,89,0.15);}
+.nav-icon{font-size:13px;width:16px;text-align:center;}
 
-  /* ─── LAYOUT ─── */
-  #app {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    grid-template-rows: 54px 1fr;
-    height: 100vh;
-  }
+/* ── MAIN ── */
+#main{overflow-y:auto;position:relative;}
+.panel{display:none;padding:28px 32px;}
+.panel.active{display:block;}
 
-  /* ─── TOPBAR ─── */
-  #topbar {
-    grid-column: 1 / -1;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    gap: 16px;
-    position: relative;
-    z-index: 100;
-  }
-  .logo-mark {
-    font-family: 'Cinzel', serif;
-    font-size: 15px;
-    font-weight: 900;
-    color: var(--gold);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .logo-mark span { color: var(--text3); font-weight: 300; font-size: 11px; letter-spacing: 1px; }
-  .topbar-spacer { flex: 1; }
-  .api-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: var(--text2);
-    cursor: pointer;
-    padding: 6px 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    transition: all 0.2s;
-  }
-  .api-status:hover { border-color: var(--gold3); color: var(--gold); }
-  .api-status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-  .api-status .dot.off { background: var(--text3); }
+/* ── SHARED ── */
+.page-title{font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:3px;margin-bottom:4px;}
+.page-sub{color:var(--t3);font-size:12px;margin-bottom:28px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;}
+.card-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:14px;text-transform:uppercase;}
+.btn-gold{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#050505;border:none;border-radius:8px;padding:10px 20px;font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.3s;}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(197,160,89,0.3);}
+.btn-ghost{background:transparent;border:1px solid var(--border2);border-radius:8px;padding:9px 18px;color:var(--t2);font-size:12px;cursor:pointer;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--t2);color:var(--text);}
+.inp{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;transition:border-color 0.2s;}
+.inp:focus{outline:none;border-color:var(--gold3);}
+.inp option{background:#0A0A0A;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:10px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:7px;}
 
-  /* ─── SIDEBAR ─── */
-  #sidebar {
-    background: var(--panel);
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-    padding: 20px 0;
-  }
-  .sidebar-section {
-    padding: 0 12px;
-    margin-bottom: 24px;
-  }
-  .sidebar-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text3);
-    padding: 0 8px;
-    margin-bottom: 8px;
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text2);
-    font-size: 13px;
-    border: 1px solid transparent;
-    margin-bottom: 2px;
-  }
-  .nav-item:hover { background: var(--gold-glow2); color: var(--text); }
-  .nav-item.active {
-    background: var(--gold-glow);
-    color: var(--gold);
-    border-color: rgba(197,160,89,0.15);
-  }
-  .nav-icon { font-size: 14px; width: 18px; text-align: center; opacity: 0.8; }
+/* ── DASHBOARD ── */
+.dash-hero{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.hero-btn{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:32px 28px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;}
+.hero-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gg2),transparent);opacity:0;transition:opacity 0.3s;}
+.hero-btn:hover{border-color:var(--gold3);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+.hero-btn:hover::before{opacity:1;}
+.hero-icon{font-size:36px;margin-bottom:14px;}
+.hero-title{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.hero-sub{font-size:12px;color:var(--t3);line-height:1.6;}
+.hero-arrow{position:absolute;bottom:20px;right:20px;color:var(--gold3);font-size:18px;opacity:0;transition:all 0.2s;}
+.hero-btn:hover .hero-arrow{opacity:1;transform:translateX(4px);}
 
-  /* ─── MAIN ─── */
-  #main {
-    overflow-y: auto;
-    padding: 0;
-    position: relative;
-  }
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;transition:all 0.2s;}
+.stat:hover{border-color:var(--gold3);}
+.stat-lbl{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:8px;}
+.stat-val{font-family:'Cinzel',serif;font-size:26px;color:var(--gold);font-weight:700;}
+.stat-sub{font-size:10px;color:var(--t3);margin-top:3px;}
 
-  /* ─── PANELS ─── */
-  .panel { display: none; }
-  .panel.active { display: block; }
+.sys-grid{display:flex;flex-direction:column;gap:8px;}
+.sys-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.sys-row:last-child{border:none;}
+.sys-name{font-size:12px;color:var(--t2);}
+.sys-badge{font-size:10px;color:var(--green);background:rgba(80,160,128,0.1);border-radius:4px;padding:2px 8px;}
 
-  /* ─── DASHBOARD ─── */
-  #panel-dashboard {
-    padding: 32px 36px;
-  }
-  .dash-header {
-    margin-bottom: 36px;
-  }
-  .dash-header h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 3px;
-    margin-bottom: 6px;
-  }
-  .dash-header p { color: var(--text3); font-size: 13px; }
+/* ── LIBRARY (NETFLIX STYLE) ── */
+.lib-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.saga-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;}
+.saga-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.3s;}
+.saga-card:hover{border-color:var(--gold3);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,0.5);}
+.saga-cover{height:220px;background:linear-gradient(160deg,#1A1408,#0A0A0A);display:flex;align-items:center;justify-content:center;font-size:54px;position:relative;overflow:hidden;}
+.saga-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.85));}
+.saga-genre{position:absolute;top:10px;right:10px;background:rgba(197,160,89,0.15);border:1px solid rgba(197,160,89,0.3);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;z-index:1;}
+.saga-info{padding:13px;}
+.saga-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;margin-bottom:4px;}
+.saga-meta{font-size:10px;color:var(--t3);display:flex;gap:10px;}
+.saga-add{border:1px dashed var(--border2);border-radius:12px;height:290px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;color:var(--t3);gap:10px;}
+.saga-add:hover{border-color:var(--gold3);color:var(--gold);}
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
-  }
-  .stat-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    transition: all 0.3s;
-  }
-  .stat-card:hover { border-color: var(--gold3); transform: translateY(-2px); }
-  .stat-label { font-size: 10px; letter-spacing: 2px; color: var(--text3); text-transform: uppercase; margin-bottom: 10px; }
-  .stat-value { font-family: 'Cinzel', serif; font-size: 28px; color: var(--gold); font-weight: 700; }
-  .stat-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+/* ── WIZARD ── */
+#panel-wizard{display:none;padding:0;}
+#panel-wizard.active{display:flex;flex-direction:column;height:calc(100vh - 52px);}
+.wizard-top{padding:28px 32px 0;flex-shrink:0;}
+.wizard-steps{display:flex;align-items:center;gap:0;margin-bottom:28px;}
+.wstep{display:flex;align-items:center;gap:8px;flex:1;}
+.wstep-num{width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);font-family:'Cinzel',serif;flex-shrink:0;transition:all 0.3s;}
+.wstep.active .wstep-num{border-color:var(--gold);background:var(--gg);color:var(--gold);}
+.wstep.done .wstep-num{border-color:var(--green);background:rgba(80,160,128,0.1);color:var(--green);}
+.wstep-name{font-size:11px;color:var(--t3);transition:color 0.3s;}
+.wstep.active .wstep-name{color:var(--gold);}
+.wstep.done .wstep-name{color:var(--green);}
+.wstep-line{flex:1;height:1px;background:var(--border2);margin:0 8px;max-width:40px;}
+.wstep.done .wstep-line{background:var(--green);}
 
-  .dash-grid {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 20px;
-  }
-  .dash-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-  }
-  .dash-card h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    margin-bottom: 16px;
-    text-transform: uppercase;
-  }
-  .quick-actions { display: flex; flex-direction: column; gap: 10px; }
-  .qa-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: transparent;
-    color: var(--text);
-    text-align: left;
-  }
-  .qa-btn:hover { border-color: var(--gold3); background: var(--gold-glow2); }
-  .qa-icon { font-size: 18px; }
-  .qa-title { font-size: 13px; font-weight: 500; }
-  .qa-sub { font-size: 11px; color: var(--text3); }
+.wizard-body{flex:1;overflow-y:auto;padding:0 32px 20px;}
+.wpage{display:none;}
+.wpage.active{display:block;}
+.wpage-title{font-family:'Cinzel',serif;font-size:18px;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.wpage-sub{color:var(--t3);font-size:12px;margin-bottom:24px;}
 
-  /* ─── GAVETA (LIBRARY) ─── */
-  #panel-library { padding: 32px 36px; }
-  .library-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 32px;
-  }
-  .library-header h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 22px;
-    color: var(--gold);
-    letter-spacing: 3px;
-  }
-  .btn-gold {
-    background: linear-gradient(135deg, var(--gold3), var(--gold));
-    color: #050505;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(197,160,89,0.3); }
+.wizard-foot{padding:16px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--panel);}
 
-  .saga-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  .saga-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-  }
-  .saga-card:hover {
-    border-color: var(--gold3);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(197,160,89,0.1);
-  }
-  .saga-cover {
-    height: 240px;
-    background: linear-gradient(160deg, #1A1408, #0A0A0A);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    position: relative;
-    overflow: hidden;
-  }
-  .saga-cover::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.8));
-  }
-  .saga-genre-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(197,160,89,0.15);
-    border: 1px solid rgba(197,160,89,0.3);
-    border-radius: 4px;
-    padding: 3px 8px;
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: var(--gold);
-    text-transform: uppercase;
-    z-index: 1;
-  }
-  .saga-info { padding: 16px; }
-  .saga-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: var(--text);
-  }
-  .saga-meta { font-size: 11px; color: var(--text3); display: flex; gap: 12px; }
-  .saga-empty {
-    border: 1px dashed var(--border2);
-    border-radius: 12px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: var(--text3);
-    gap: 12px;
-  }
-  .saga-empty:hover { border-color: var(--gold3); color: var(--gold); }
-  .saga-empty-icon { font-size: 32px; }
-  .saga-empty-text { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; }
+/* ── FORGE (CAPÍTULO) ── */
+#panel-forge{display:none;flex-direction:column;height:calc(100vh - 52px);padding:0;}
+#panel-forge.active{display:flex;}
+.forge-top{padding:24px 28px 16px;flex-shrink:0;border-bottom:1px solid var(--border);}
+.forge-top h1{font-family:'Cinzel',serif;font-size:18px;color:var(--gold);letter-spacing:2px;margin-bottom:2px;}
+.forge-top p{font-size:12px;color:var(--t3);}
+.forge-config{padding:16px 28px;flex-shrink:0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);gap:12px;background:rgba(10,10,10,0.8);}
+.fc-group{display:flex;flex-direction:column;gap:5px;}
+.fc-lbl{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;}
+.forge-area{flex:1;display:flex;flex-direction:column;min-height:0;padding:0 28px 16px;}
+.forge-toolbar{display:flex;align-items:center;gap:10px;padding:12px 0;flex-shrink:0;}
+.ft-btn{background:transparent;border:1px solid var(--border2);border-radius:7px;padding:7px 13px;color:var(--t2);font-size:11px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px;}
+.ft-btn:hover{border-color:var(--gold3);color:var(--gold);}
+.ft-btn.primary{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#050505;border-color:transparent;font-weight:700;font-family:'Cinzel',serif;letter-spacing:1px;}
+.ft-btn.primary:hover{box-shadow:0 4px 20px rgba(197,160,89,0.3);}
+.ft-spacer{flex:1;}
+.wc-display{font-size:11px;color:var(--t3);}
+.forge-editor{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:28px 34px;font-family:'Playfair Display',serif;font-size:15px;line-height:1.95;overflow-y:auto;white-space:pre-wrap;color:var(--text);min-height:0;outline:none;}
+.forge-editor:empty::before{content:attr(data-placeholder);color:var(--t3);font-style:italic;}
+.forge-ctx{padding:0 28px 12px;flex-shrink:0;}
+.forge-ctx textarea{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:12px;font-family:'Inter',sans-serif;resize:none;outline:none;transition:border-color 0.2s;}
+.forge-ctx textarea:focus{border-color:var(--gold3);}
+.ai-loading{display:none;align-items:center;gap:10px;color:var(--gold);font-size:12px;padding:12px 28px;flex-shrink:0;}
+.spinner{width:15px;height:15px;border:2px solid var(--gold3);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;}
 
-  /* ─── FORJA ─── */
-  #panel-forge { padding: 32px 36px; height: calc(100vh - 54px); display: flex; flex-direction: column; }
-  .forge-header { margin-bottom: 24px; flex-shrink: 0; }
-  .forge-header h1 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
-  .forge-header p { color: var(--text3); font-size: 13px; }
+/* ── SAGA VIEW ── */
+#panel-saga-view{display:none;padding:0;}
+#panel-saga-view.active{display:block;overflow-y:auto;height:calc(100vh - 52px);}
+.sv-inner{padding:28px 32px;}
+.sv-back{display:inline-flex;align-items:center;gap:7px;color:var(--t2);font-size:12px;cursor:pointer;margin-bottom:20px;transition:color 0.2s;}
+.sv-back:hover{color:var(--gold);}
+.sv-header{display:flex;gap:28px;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.sv-cover{width:140px;height:200px;background:linear-gradient(160deg,#1A1408,#0A0A0A);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:54px;flex-shrink:0;border:1px solid var(--border);}
+.sv-info{flex:1;}
+.sv-title{font-family:'Cinzel',serif;font-size:24px;color:var(--gold);margin-bottom:6px;}
+.sv-genre{font-size:10px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:12px;}
+.sv-syn{font-size:13px;line-height:1.8;color:var(--t2);margin-bottom:16px;max-width:560px;}
+.sv-tags{display:flex;gap:7px;flex-wrap:wrap;}
+.tag{background:var(--gg2);border:1px solid rgba(197,160,89,0.15);border-radius:4px;padding:3px 9px;font-size:10px;color:var(--t2);}
+.chapters-section h2{font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--gold);margin-bottom:14px;}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.ch-card{background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:14px;cursor:pointer;transition:all 0.2s;}
+.ch-card:hover{border-color:var(--gold3);background:var(--gg2);}
+.ch-card.done{border-color:rgba(80,160,128,0.3);}
+.ch-num{font-family:'Cinzel',serif;font-size:9px;color:var(--gold3);letter-spacing:2px;margin-bottom:5px;}
+.ch-title{font-size:12px;color:var(--text);}
+.ch-status{font-size:10px;color:var(--t3);margin-top:5px;}
+.ch-add{border:1px dashed var(--border2);border-radius:9px;padding:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer;transition:all 0.2s;min-height:70px;color:var(--t3);}
+.ch-add:hover{border-color:var(--gold3);color:var(--gold);}
 
-  .forge-config {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
-    flex-shrink: 0;
-  }
-  .config-group { display: flex; flex-direction: column; gap: 6px; }
-  .config-label { font-size: 10px; letter-spacing: 2px; color: var(--text3); text-transform: uppercase; }
-  .config-select, .config-input {
-    background: var(--panel);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 10px 12px;
-    color: var(--text);
-    font-size: 13px;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-  .config-select:focus, .config-input:focus { outline: none; border-color: var(--gold3); }
-  .config-select option { background: #0A0A0A; }
+/* ── SECONDARY PANELS ── */
+.sec-panel{overflow-y:auto;}
+.arch-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.slider-group{margin-bottom:14px;}
+.sl-lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-bottom:5px;}
+.sl-val{color:var(--gold);font-weight:600;}
+input[type=range]{width:100%;-webkit-appearance:none;height:3px;background:var(--border2);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;background:var(--gold);border-radius:50%;cursor:pointer;box-shadow:0 0 6px rgba(197,160,89,0.4);}
+.radio-group{display:flex;flex-direction:column;gap:7px;}
+.radio-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:all 0.2s;font-size:12px;color:var(--t2);}
+.radio-item:hover{border-color:var(--gold3);color:var(--text);}
+.radio-item.selected{border-color:var(--gold3);background:var(--gg);color:var(--gold);}
+.radio-item input{display:none;}
 
-  .manuscript-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-  .manuscript-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
-    flex-shrink: 0;
-  }
-  .ms-tool-btn {
-    background: transparent;
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    padding: 6px 12px;
-    color: var(--text2);
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .ms-tool-btn:hover { border-color: var(--gold3); color: var(--gold); }
-  .ms-tool-btn.primary {
-    background: linear-gradient(135deg, var(--gold3), var(--gold));
-    color: #050505;
-    border-color: transparent;
-    font-weight: 600;
-  }
-  .ms-tool-btn.primary:hover { box-shadow: 0 4px 20px rgba(197,160,89,0.3); }
-  .ms-spacer { flex: 1; }
-  .word-count { font-size: 11px; color: var(--text3); }
+/* MEM / WORLD / TIMELINE */
+.mem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.mem-card{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:18px;transition:all 0.2s;}
+.mem-card:hover{border-color:var(--gold3);}
+.mem-icon{font-size:22px;margin-bottom:8px;}
+.mem-title{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:5px;}
+.mem-count{font-size:22px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.mem-sub{font-size:10px;color:var(--t3);}
+.cons-bar{margin-top:20px;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:18px 22px;display:flex;align-items:center;gap:18px;}
+.cons-lbl{font-size:11px;color:var(--t3);min-width:110px;}
+.cons-track{flex:1;height:5px;background:var(--border2);border-radius:3px;overflow:hidden;}
+.cons-fill{height:100%;background:linear-gradient(90deg,var(--gold3),var(--gold));border-radius:3px;transition:width 1s ease;}
+.cons-pct{font-family:'Cinzel',serif;font-size:15px;color:var(--gold);min-width:44px;text-align:right;}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.char-card{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:18px;cursor:pointer;transition:all 0.3s;}
+.char-card:hover{border-color:var(--gold3);transform:translateY(-2px);}
+.char-av{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),#1A1408);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px;border:2px solid rgba(197,160,89,0.2);}
+.char-name{font-family:'Cinzel',serif;font-size:13px;color:var(--gold);margin-bottom:3px;}
+.char-role{font-size:10px;color:var(--t3);margin-bottom:10px;}
+.char-traits{display:flex;gap:5px;flex-wrap:wrap;}
+.trait{font-size:9px;background:var(--gg2);border:1px solid rgba(197,160,89,0.1);border-radius:3px;padding:2px 7px;color:var(--t2);}
+.world-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.world-card{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:18px;transition:all 0.2s;}
+.world-card:hover{border-color:var(--gold3);}
+.tl-item{display:flex;gap:16px;margin-bottom:20px;position:relative;}
+.tl-item::before{content:'';position:absolute;left:17px;top:28px;bottom:-20px;width:1px;background:var(--border2);}
+.tl-item:last-child::before{display:none;}
+.tl-dot{width:36px;height:36px;border-radius:50%;background:var(--panel);border:2px solid var(--gold3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;position:relative;z-index:1;}
+.tl-content{background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:12px 16px;flex:1;transition:all 0.2s;}
+.tl-content:hover{border-color:var(--gold3);}
+.tl-cap{font-size:9px;letter-spacing:1px;color:var(--gold3);margin-bottom:3px;}
+.tl-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;}
+.tl-desc{font-size:11px;color:var(--t3);}
+.masters-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.master-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.master-icon{font-size:26px;margin-bottom:7px;}
+.master-name{font-family:'Cinzel',serif;font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:3px;}
+.master-spec{font-size:10px;color:var(--t3);}
+.master-status{margin-top:8px;font-size:9px;color:var(--green);background:rgba(80,160,128,0.1);border-radius:3px;padding:2px 6px;display:inline-block;}
 
-  #manuscript-editor {
-    flex: 1;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 0 0 12px 12px;
-    padding: 32px 40px;
-    color: var(--text);
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    line-height: 1.9;
-    resize: none;
-    outline: none;
-    overflow-y: auto;
-    min-height: 0;
-  }
-  #manuscript-editor::placeholder { color: var(--text3); font-style: italic; }
+/* ── MODALS ── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--panel);border:1px solid var(--border2);border-radius:14px;padding:32px;width:500px;max-height:85vh;overflow-y:auto;animation:fadeUp 0.4s ease;box-shadow:0 40px 120px rgba(0,0,0,0.7);}
+.modal-box h2{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:2px;margin-bottom:22px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
 
-  /* ─── AI RESPONSE ─── */
-  #ai-output-area {
-    margin-top: 20px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    flex-shrink: 0;
-    display: none;
-  }
-  #ai-output-area.visible { display: block; }
-  .ai-output-header {
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(197,160,89,0.04);
-  }
-  .ai-badge {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    text-transform: uppercase;
-    background: rgba(197,160,89,0.1);
-    border: 1px solid rgba(197,160,89,0.2);
-    border-radius: 4px;
-    padding: 2px 8px;
-  }
-  #ai-output-text {
-    padding: 24px;
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    line-height: 1.9;
-    color: var(--text);
-    max-height: 400px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-  }
-  .ai-loading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--gold);
-    font-size: 13px;
-    padding: 20px 24px;
-  }
-  .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid var(--gold3);
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--gold3);border-radius:9px;padding:12px 18px;font-size:12px;color:var(--text);z-index:9000;transform:translateY(70px);opacity:0;transition:all 0.3s ease;display:flex;align-items:center;gap:8px;box-shadow:0 16px 50px rgba(0,0,0,0.5);}
+#toast.show{transform:translateY(0);opacity:1;}
 
-  /* ─── SAGA VIEW ─── */
-  #panel-saga { padding: 32px 36px; }
-  .saga-view-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 32px;
-    margin-bottom: 40px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid var(--border);
-  }
-  .saga-cover-large {
-    width: 160px;
-    height: 220px;
-    background: linear-gradient(160deg, #1A1408, #0A0A0A);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    flex-shrink: 0;
-    border: 1px solid var(--border);
-  }
-  .saga-view-info { flex: 1; }
-  .saga-view-title {
-    font-family: 'Cinzel', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-  .saga-view-genre {
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .saga-view-synopsis {
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--text2);
-    max-width: 600px;
-    margin-bottom: 20px;
-  }
-  .saga-view-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-  .tag {
-    background: var(--gold-glow2);
-    border: 1px solid rgba(197,160,89,0.15);
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-size: 11px;
-    color: var(--text2);
-  }
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-  .chapters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-    margin-bottom: 32px;
-  }
-  .chapter-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .chapter-card:hover { border-color: var(--gold3); background: var(--gold-glow2); }
-  .chapter-card.done { border-color: rgba(80,160,128,0.3); }
-  .chapter-num { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold3); letter-spacing: 2px; margin-bottom: 6px; }
-  .chapter-title { font-size: 13px; color: var(--text); }
-  .chapter-status { font-size: 10px; color: var(--text3); margin-top: 6px; }
-  .chapter-add {
-    border: 1px dashed var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 6px;
-    color: var(--text3);
-    cursor: pointer;
-    transition: all 0.2s;
-    border-radius: 10px;
-    padding: 16px;
-    min-height: 80px;
-  }
-  .chapter-add:hover { border-color: var(--gold3); color: var(--gold); }
-
-  /* ─── ARCHITECT / SETTINGS PANELS ─── */
-  #panel-architect, #panel-memory, #panel-characters, #panel-world, #panel-timeline { padding: 32px 36px; }
-  .section-header { margin-bottom: 28px; }
-  .section-header h1 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
-  .section-header p { color: var(--text3); font-size: 13px; }
-
-  .architect-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .arch-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-  }
-  .arch-card h3 { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; color: var(--gold); margin-bottom: 16px; text-transform: uppercase; }
-
-  .slider-group { margin-bottom: 16px; }
-  .slider-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--text2);
-    margin-bottom: 6px;
-  }
-  .slider-value { color: var(--gold); font-weight: 600; }
-  input[type=range] {
-    width: 100%;
-    -webkit-appearance: none;
-    height: 3px;
-    background: var(--border2);
-    border-radius: 2px;
-    outline: none;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    background: var(--gold);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(197,160,89,0.4);
-  }
-
-  .radio-group { display: flex; flex-direction: column; gap: 8px; }
-  .radio-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 13px;
-    color: var(--text2);
-  }
-  .radio-item:hover { border-color: var(--gold3); color: var(--text); }
-  .radio-item.selected { border-color: var(--gold3); background: var(--gold-glow); color: var(--gold); }
-  .radio-item input { display: none; }
-
-  /* ─── MEMORY PANEL ─── */
-  .memory-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .mem-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .mem-card:hover { border-color: var(--gold3); }
-  .mem-icon { font-size: 24px; margin-bottom: 10px; }
-  .mem-title { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); letter-spacing: 1px; margin-bottom: 6px; }
-  .mem-count { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-  .mem-sub { font-size: 11px; color: var(--text3); }
-  .consistency-bar {
-    margin-top: 24px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  .cons-label { font-size: 11px; color: var(--text3); min-width: 120px; }
-  .cons-track {
-    flex: 1;
-    height: 6px;
-    background: var(--border2);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .cons-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold3), var(--gold));
-    border-radius: 3px;
-    transition: width 1s ease;
-  }
-  .cons-pct { font-family: 'Cinzel', serif; font-size: 16px; color: var(--gold); min-width: 48px; text-align: right; }
-
-  /* ─── CHARACTER PROFILES ─── */
-  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-  .char-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .char-card:hover { border-color: var(--gold3); transform: translateY(-2px); }
-  .char-avatar {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold3), #1A1408);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    margin-bottom: 12px;
-    border: 2px solid rgba(197,160,89,0.2);
-  }
-  .char-name { font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold); margin-bottom: 4px; }
-  .char-role { font-size: 11px; color: var(--text3); margin-bottom: 12px; }
-  .char-traits { display: flex; gap: 6px; flex-wrap: wrap; }
-  .trait { font-size: 10px; background: var(--gold-glow2); border: 1px solid rgba(197,160,89,0.1); border-radius: 4px; padding: 2px 8px; color: var(--text2); }
-
-  /* ─── MODAL NOVA SAGA ─── */
-  #saga-modal-overlay {
-    display: none;
-    position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(10px);
-    align-items: center;
-    justify-content: center;
-  }
-  #saga-modal-overlay.open { display: flex; }
-  #saga-modal {
-    background: var(--panel);
-    border: 1px solid var(--border2);
-    border-radius: 16px;
-    padding: 36px;
-    width: 560px;
-    max-height: 85vh;
-    overflow-y: auto;
-    animation: fadeInUp 0.4s ease;
-    box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(197,160,89,0.06);
-  }
-  #saga-modal h2 { font-family: 'Cinzel', serif; font-size: 18px; color: var(--gold); letter-spacing: 2px; margin-bottom: 24px; }
-  .field-group { margin-bottom: 18px; }
-  .field-group label { display: block; font-size: 10px; letter-spacing: 2px; color: var(--text3); text-transform: uppercase; margin-bottom: 8px; }
-  .field-group input, .field-group select, .field-group textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 12px 14px;
-    color: var(--text);
-    font-size: 13px;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s;
-    resize: none;
-  }
-  .field-group input:focus, .field-group select:focus, .field-group textarea:focus { outline: none; border-color: var(--gold3); }
-  .field-group select option { background: #0A0A0A; }
-  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
-  .btn-ghost {
-    background: transparent;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 10px 20px;
-    color: var(--text2);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-ghost:hover { border-color: var(--text2); color: var(--text); }
-
-  /* ─── WORLD PANEL ─── */
-  .world-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .world-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .world-card:hover { border-color: var(--gold3); }
-  .world-icon { font-size: 28px; margin-bottom: 10px; }
-  .world-title { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); margin-bottom: 6px; letter-spacing: 1px; }
-  .world-count { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-  .world-sub { font-size: 11px; color: var(--text3); }
-
-  /* ─── TIMELINE ─── */
-  .timeline { padding: 8px 0; }
-  .timeline-item {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 24px;
-    position: relative;
-  }
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 19px;
-    top: 30px;
-    bottom: -24px;
-    width: 1px;
-    background: var(--border2);
-  }
-  .timeline-item:last-child::before { display: none; }
-  .timeline-dot {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: var(--panel);
-    border: 2px solid var(--gold3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-  }
-  .timeline-content {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 18px;
-    flex: 1;
-    transition: all 0.2s;
-  }
-  .timeline-content:hover { border-color: var(--gold3); }
-  .timeline-cap { font-size: 10px; letter-spacing: 1px; color: var(--gold3); margin-bottom: 4px; }
-  .timeline-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-  .timeline-desc { font-size: 12px; color: var(--text3); }
-
-  /* ─── CHAPTER WRITE ─── */
-  #panel-chapter { padding: 32px 36px; height: calc(100vh - 54px); display: flex; flex-direction: column; }
-  .chapter-write-header { flex-shrink: 0; margin-bottom: 20px; }
-  .chapter-write-header h1 { font-family: 'Cinzel', serif; font-size: 20px; color: var(--gold); letter-spacing: 2px; }
-  .chapter-write-header p { color: var(--text3); font-size: 12px; margin-top: 4px; }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  .pulse { animation: pulse 1.5s ease infinite; }
-
-  /* ─── GOLD DIVIDER ─── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold3), transparent);
-    margin: 28px 0;
-    opacity: 0.3;
-  }
-
-  /* ─── TOAST ─── */
-  #toast {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    background: var(--panel);
-    border: 1px solid var(--gold3);
-    border-radius: 10px;
-    padding: 14px 20px;
-    font-size: 13px;
-    color: var(--text);
-    z-index: 9000;
-    transform: translateY(80px);
-    opacity: 0;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  #toast.show { transform: translateY(0); opacity: 1; }
-
-  /* ─── RESPONSIVE ─── */
-  @media(max-width:900px) {
-    #app { grid-template-columns: 1fr; }
-    #sidebar { display: none; }
-    .stats-grid { grid-template-columns: repeat(2,1fr); }
-    .dash-grid { grid-template-columns: 1fr; }
-    .architect-grid { grid-template-columns: 1fr; }
-    .memory-grid { grid-template-columns: repeat(2,1fr); }
-  }
+/* ── RESPONSIVE ── */
+@media(max-width:800px){
+  #app{grid-template-columns:1fr;}
+  #sidebar{display:none;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .dash-hero{grid-template-columns:1fr;}
+  .arch-grid{grid-template-columns:1fr;}
+  .mem-grid{grid-template-columns:repeat(2,1fr);}
+  .forge-config{grid-template-columns:repeat(3,1fr);}
+  .masters-grid{grid-template-columns:repeat(2,1fr);}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ API OVERLAY ═══ -->
+<!-- API OVERLAY -->
 <div id="api-overlay">
   <div id="api-modal">
     <div class="crown">⚜️</div>
     <h2>IMPERIUM STORYFORGE</h2>
-    <p>Escolha seu provedor de IA e insira a chave API. A chave fica salva apenas no seu navegador.</p>
-
-    <!-- PROVEDOR -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-      <div id="btn-anthropic" onclick="selectProvider('anthropic')"
-        style="padding:12px;border:2px solid var(--gold3);border-radius:10px;cursor:pointer;transition:all 0.2s;background:var(--gold-glow);">
-        <div style="font-size:18px;margin-bottom:4px;">🤖</div>
-        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:1px;">ANTHROPIC</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Claude Sonnet</div>
+    <p>Escolha seu provedor de IA e insira a chave API. Fica salva apenas no seu navegador.</p>
+    <div class="provider-grid">
+      <div class="prov-btn active" id="btn-anth" onclick="selProv('anthropic')">
+        <div class="picon">🤖</div>
+        <div class="pname">ANTHROPIC</div>
+        <div class="psub">Claude Sonnet</div>
       </div>
-      <div id="btn-google" onclick="selectProvider('google')"
-        style="padding:12px;border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:all 0.2s;">
-        <div style="font-size:18px;margin-bottom:4px;">✨</div>
-        <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--text2);letter-spacing:1px;">GOOGLE</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Gemini</div>
+      <div class="prov-btn" id="btn-goog" onclick="selProv('google')">
+        <div class="picon">✨</div>
+        <div class="pname">GOOGLE</div>
+        <div class="psub">Gemini</div>
       </div>
     </div>
-
-    <!-- MODELO -->
-    <div id="model-row" style="margin-bottom:16px;">
-      <div style="font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;text-align:left;">Modelo</div>
-      <select id="model-select" style="width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;">
-        <option value="claude-sonnet-4-6">claude-sonnet-4-6 (recomendado)</option>
-      </select>
-    </div>
-
-    <!-- CHAVE -->
-    <div style="font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;text-align:left;">Chave API</div>
-    <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off" />
-    <button class="btn-primary" onclick="saveApiKey()">⚡ ATIVAR SISTEMA</button>
-    <p class="note" id="api-note">Anthropic: console.anthropic.com · Google: aistudio.google.com</p>
+    <div class="field-lbl">Modelo</div>
+    <select id="model-sel">
+      <option value="claude-sonnet-4-6">claude-sonnet-4-6 (recomendado)</option>
+    </select>
+    <div class="field-lbl">Chave API</div>
+    <input type="password" id="api-key-inp" placeholder="sk-ant-api03-..." autocomplete="off"/>
+    <button class="btn-activate" onclick="saveKey()">⚡ ATIVAR SISTEMA</button>
+    <p class="api-note">Anthropic: console.anthropic.com · Google: aistudio.google.com</p>
   </div>
 </div>
 
-<!-- ═══ MAIN APP ═══ -->
+<!-- APP -->
 <div id="app">
 
   <!-- TOPBAR -->
   <header id="topbar">
-    <div class="logo-mark">⚜ IMPERIUM <span>STORYFORGE</span></div>
-    <div class="topbar-spacer"></div>
-    <div class="api-status" onclick="resetApiKey()" title="Clique para alterar a chave API">
+    <div class="logo">⚜ IMPERIUM <span>STORYFORGE</span></div>
+    <div class="tb-spacer"></div>
+    <div class="api-pill" onclick="changeKey()">
       <div class="dot" id="api-dot"></div>
-      <span id="api-status-text">Mente Suprema Ativa</span>
+      <span id="api-txt">Desconectado</span>
     </div>
   </header>
 
   <!-- SIDEBAR -->
   <nav id="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Centro de Comando</div>
-      <div class="nav-item active" onclick="showPanel('dashboard', this)">
+    <div class="sb-section">
+      <div class="sb-lbl">Principal</div>
+      <div class="nav-item active" data-panel="dashboard" onclick="nav('dashboard',this)">
         <span class="nav-icon">⬡</span> Painel Imperial
       </div>
-      <div class="nav-item" onclick="showPanel('library', this)">
+      <div class="nav-item" data-panel="library" onclick="nav('library',this)">
         <span class="nav-icon">📚</span> Gaveta Literária
       </div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Criação</div>
-      <div class="nav-item" onclick="showPanel('forge', this)">
-        <span class="nav-icon">🔥</span> Forja de Sagas
+    <div class="sb-section">
+      <div class="sb-lbl">Criação</div>
+      <div class="nav-item" data-panel="forge" onclick="nav('forge',this)">
+        <span class="nav-icon">🔥</span> Forjar Capítulo
       </div>
-      <div class="nav-item" onclick="showPanel('architect', this)">
+      <div class="nav-item" data-panel="architect" onclick="nav('architect',this)">
         <span class="nav-icon">🧠</span> Arquiteto Narrativo
       </div>
-      <div class="nav-item" onclick="showPanel('world', this)">
+      <div class="nav-item" data-panel="world" onclick="nav('world',this)">
         <span class="nav-icon">🌍</span> Universos Infinitos
       </div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Banco de Dados</div>
-      <div class="nav-item" onclick="showPanel('characters', this)">
+    <div class="sb-section">
+      <div class="sb-lbl">Base de Dados</div>
+      <div class="nav-item" data-panel="characters" onclick="nav('characters',this)">
         <span class="nav-icon">👤</span> Personagens
       </div>
-      <div class="nav-item" onclick="showPanel('memory', this)">
+      <div class="nav-item" data-panel="memory" onclick="nav('memory',this)">
         <span class="nav-icon">💾</span> Banco de Memórias
       </div>
-      <div class="nav-item" onclick="showPanel('timeline', this)">
+      <div class="nav-item" data-panel="timeline" onclick="nav('timeline',this)">
         <span class="nav-icon">⏳</span> Linha do Tempo
       </div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Sistemas IA</div>
-      <div class="nav-item" onclick="showPanel('minds', this)">
+    <div class="sb-section">
+      <div class="sb-lbl">Sistemas IA</div>
+      <div class="nav-item" data-panel="minds" onclick="nav('minds',this)">
         <span class="nav-icon">⚔️</span> Conselho dos Mestres
       </div>
     </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main id="main">
 
-    <!-- ── DASHBOARD ── -->
+    <!-- ══ DASHBOARD ══ -->
     <div id="panel-dashboard" class="panel active">
-      <div id="panel-dashboard-inner" style="padding:32px 36px;">
-        <div class="dash-header">
-          <h1>PAINEL IMPERIAL</h1>
-          <p>Central de comando do seu universo literário</p>
+      <div class="page-title">PAINEL IMPERIAL</div>
+      <div class="page-sub">Central de comando do seu universo literário</div>
+
+      <div class="stats-row">
+        <div class="stat"><div class="stat-lbl">Sagas Ativas</div><div class="stat-val" id="st-sagas">0</div><div class="stat-sub">universos criados</div></div>
+        <div class="stat"><div class="stat-lbl">Capítulos</div><div class="stat-val" id="st-chapters">0</div><div class="stat-sub">gerados pela IA</div></div>
+        <div class="stat"><div class="stat-lbl">Personagens</div><div class="stat-val" id="st-chars">0</div><div class="stat-sub">perfis criados</div></div>
+        <div class="stat"><div class="stat-lbl">Consistência</div><div class="stat-val" id="st-cons">—</div><div class="stat-sub">média narrativa</div></div>
+      </div>
+
+      <div class="dash-hero">
+        <div class="hero-btn" onclick="startWizard()">
+          <div class="hero-icon">🔥</div>
+          <div class="hero-title">FORJAR HISTÓRIA</div>
+          <div class="hero-sub">Crie uma nova saga do zero. Defina personagens, universo e gere capítulos com IA.</div>
+          <div class="hero-arrow">→</div>
         </div>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Sagas Ativas</div>
-            <div class="stat-value" id="stat-sagas">0</div>
-            <div class="stat-sub">universos criados</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Capítulos</div>
-            <div class="stat-value" id="stat-chapters">0</div>
-            <div class="stat-sub">gerados pela IA</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Personagens</div>
-            <div class="stat-value" id="stat-chars">0</div>
-            <div class="stat-sub">perfis criados</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Consistência</div>
-            <div class="stat-value" id="stat-cons">—</div>
-            <div class="stat-sub">média narrativa</div>
-          </div>
+        <div class="hero-btn" onclick="nav('library', document.querySelector('[data-panel=library]'))">
+          <div class="hero-icon">📚</div>
+          <div class="hero-title">GAVETA LITERÁRIA</div>
+          <div class="hero-sub">Acesse suas sagas criadas. Visualize capítulos, personagens e continue escrevendo.</div>
+          <div class="hero-arrow">→</div>
         </div>
-        <div class="dash-grid">
-          <div class="dash-card">
-            <h3>⚡ Ações Rápidas</h3>
-            <div class="quick-actions">
-              <button class="qa-btn" onclick="showPanel('forge', document.querySelector('[onclick*=forge]'))">
-                <span class="qa-icon">🔥</span>
-                <div><div class="qa-title">Nova Saga</div><div class="qa-sub">Iniciar uma nova história do zero</div></div>
-              </button>
-              <button class="qa-btn" onclick="openSagaModal()">
-                <span class="qa-icon">📖</span>
-                <div><div class="qa-title">Registrar Saga Existente</div><div class="qa-sub">Adicionar saga à Gaveta Literária</div></div>
-              </button>
-              <button class="qa-btn" onclick="showPanel('characters', document.querySelector('[onclick*=characters]'))">
-                <span class="qa-icon">👤</span>
-                <div><div class="qa-title">Novo Personagem</div><div class="qa-sub">Criar perfil completo</div></div>
-              </button>
-              <button class="qa-btn" onclick="showPanel('architect', document.querySelector('[onclick*=architect]'))">
-                <span class="qa-icon">🧠</span>
-                <div><div class="qa-title">Arquiteto Narrativo</div><div class="qa-sub">Configurar sistemas da IA</div></div>
-              </button>
-            </div>
-          </div>
-          <div class="dash-card">
-            <h3>🧠 Status dos Sistemas</h3>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div id="sys-rows"></div>
-            </div>
-          </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🧠 Status dos Sistemas</div>
+        <div class="sys-grid" id="sys-grid"></div>
+      </div>
+    </div>
+
+    <!-- ══ LIBRARY ══ -->
+    <div id="panel-library" class="panel sec-panel">
+      <div class="lib-header">
+        <div>
+          <div class="page-title">GAVETA LITERÁRIA</div>
+          <div class="page-sub" style="margin-bottom:0">Suas sagas — estilo Netflix</div>
+        </div>
+        <button class="btn-gold" onclick="startWizard()">+ Nova Saga</button>
+      </div>
+      <div class="saga-grid" id="saga-grid"></div>
+    </div>
+
+    <!-- ══ SAGA VIEW ══ -->
+    <div id="panel-saga-view">
+      <div class="sv-inner">
+        <div class="sv-back" onclick="nav('library', document.querySelector('[data-panel=library]'))">← Voltar à Gaveta</div>
+        <div class="sv-header" id="sv-header"></div>
+        <div class="chapters-section">
+          <h2>CAPÍTULOS</h2>
+          <div class="ch-grid" id="ch-grid"></div>
         </div>
       </div>
     </div>
 
-    <!-- ── LIBRARY ── -->
-    <div id="panel-library" class="panel">
-      <div style="padding:32px 36px;">
-        <div class="library-header">
-          <h1 style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:3px;">GAVETA LITERÁRIA</h1>
-          <button class="btn-gold" onclick="openSagaModal()">+ Nova Saga</button>
-        </div>
-        <div class="saga-grid" id="saga-grid">
-          <div class="saga-empty" onclick="openSagaModal()">
-            <div class="saga-empty-icon">✦</div>
-            <div class="saga-empty-text">CRIAR NOVA SAGA</div>
-          </div>
+    <!-- ══ WIZARD — NOVA SAGA ══ -->
+    <div id="panel-wizard">
+      <div class="wizard-top">
+        <div class="page-title">NOVA SAGA</div>
+        <div class="page-sub" style="margin-bottom:16px">Configure sua história antes de começar a escrever</div>
+        <div class="wizard-steps" id="wiz-steps">
+          <div class="wstep active" id="ws-0"><div class="wstep-num">1</div><div class="wstep-name">Saga</div><div class="wstep-line"></div></div>
+          <div class="wstep" id="ws-1"><div class="wstep-num">2</div><div class="wstep-name">Personagens</div><div class="wstep-line"></div></div>
+          <div class="wstep" id="ws-2"><div class="wstep-num">3</div><div class="wstep-name">Configurações</div><div class="wstep-line"></div></div>
+          <div class="wstep" id="ws-3"><div class="wstep-num">4</div><div class="wstep-name">Forjar</div></div>
         </div>
       </div>
-    </div>
+      <div class="wizard-body">
 
-    <!-- ── FORGE ── -->
-    <div id="panel-forge" class="panel">
-      <div style="padding:32px 36px;height:calc(100vh - 54px);display:flex;flex-direction:column;">
-        <div class="forge-header" style="flex-shrink:0;">
-          <h1 style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:3px;margin-bottom:4px;">FORJA DE SAGAS</h1>
-          <p style="color:var(--text3);font-size:13px;">Manuscrito Imperial — sem limite de criação</p>
-        </div>
-        <div class="forge-config" style="flex-shrink:0;">
-          <div class="config-group">
-            <div class="config-label">Saga</div>
-            <select class="config-select" id="forge-saga">
-              <option value="">— Selecionar —</option>
-            </select>
-          </div>
-          <div class="config-group">
-            <div class="config-label">POV</div>
-            <select class="config-select" id="forge-pov">
-              <option>Protagonista A</option>
-              <option>Protagonista B</option>
-              <option>Ambos</option>
-              <option>Narrador Onisciente</option>
-            </select>
-          </div>
-          <div class="config-group">
-            <div class="config-label">Palavras</div>
-            <input class="config-input" id="forge-words" type="number" value="2000" min="500" max="20000" />
-          </div>
-          <div class="config-group">
-            <div class="config-label">Capítulo Nº</div>
-            <input class="config-input" id="forge-chapter-num" type="number" value="1" min="1" />
-          </div>
-        </div>
-        <div class="forge-config" style="flex-shrink:0;margin-top:0;">
-          <div class="config-group">
-            <div class="config-label">Gênero</div>
-            <select class="config-select" id="forge-genre">
-              <option>Fantasia</option>
-              <option>Romance</option>
-              <option>Ficção Científica</option>
-              <option>Dark Romance</option>
-              <option>Suspense</option>
-              <option>Ação</option>
-              <option>Contemporâneo</option>
-            </select>
-          </div>
-          <div class="config-group">
-            <div class="config-label">Ritmo</div>
-            <select class="config-select" id="forge-rhythm">
-              <option>Lento</option>
-              <option>Moderado</option>
-              <option>Rápido</option>
-              <option>Explosivo</option>
-            </select>
-          </div>
-          <div class="config-group">
-            <div class="config-label">Drama (1-10)</div>
-            <input class="config-input" id="forge-drama" type="number" value="7" min="1" max="10" />
-          </div>
-          <div class="config-group">
-            <div class="config-label">Tensão Romântica</div>
-            <input class="config-input" id="forge-romance" type="number" value="8" min="1" max="10" />
-          </div>
-        </div>
-        <div style="margin-bottom:12px;flex-shrink:0;">
-          <div class="config-label" style="margin-bottom:8px;">Contexto / Instruções Adicionais</div>
-          <textarea class="config-input" id="forge-context" rows="2" style="resize:none;" placeholder="O que deve acontecer neste capítulo? Eventos específicos, revelações, conflitos..."></textarea>
-        </div>
-        <div class="manuscript-area" style="flex:1;display:flex;flex-direction:column;min-height:0;">
-          <div class="manuscript-toolbar">
-            <button class="ms-tool-btn primary" onclick="generateChapter()">⚡ GERAR CAPÍTULO</button>
-            <button class="ms-tool-btn" onclick="clearManuscript()">🗑 Limpar</button>
-            <button class="ms-tool-btn" onclick="copyOutput()">📋 Copiar</button>
-            <button class="ms-tool-btn" onclick="saveChapter()">💾 Salvar</button>
-            <div class="ms-spacer"></div>
-            <span class="word-count" id="word-count-display">0 palavras</span>
-          </div>
-          <div id="ai-output-text" style="flex:1;background:var(--panel);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:32px 40px;font-family:'Playfair Display',serif;font-size:16px;line-height:1.9;overflow-y:auto;white-space:pre-wrap;color:var(--text);min-height:0;" contenteditable="true" placeholder="O capítulo gerado aparecerá aqui..."></div>
-        </div>
-        <div id="ai-loading" style="display:none;align-items:center;gap:10px;color:var(--gold);font-size:13px;padding:16px 0;flex-shrink:0;">
-          <div class="spinner"></div>
-          <span id="loading-text">Mente Suprema processando narrativa...</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── SAGA VIEW ── -->
-    <div id="panel-saga" class="panel">
-      <div style="padding:32px 36px;">
-        <button class="ms-tool-btn" onclick="showPanel('library', null)" style="margin-bottom:20px;">← Voltar à Gaveta</button>
-        <div class="saga-view-header" id="saga-view-header"></div>
-        <h2 style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;color:var(--gold);margin-bottom:16px;">CAPÍTULOS</h2>
-        <div class="chapters-grid" id="chapters-grid"></div>
-      </div>
-    </div>
-
-    <!-- ── ARCHITECT ── -->
-    <div id="panel-architect" class="panel">
-      <div style="padding:32px 36px;overflow-y:auto;">
-        <div class="section-header">
-          <h1>ARQUITETO NARRATIVO SUPREMO</h1>
-          <p>Configure os sistemas de IA que guiarão toda a narrativa</p>
-        </div>
-        <div class="architect-grid">
-          <div class="arch-card">
-            <h3>🎭 Evolução do Relacionamento</h3>
-            <div class="radio-group" id="relationship-group">
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Amor Instantâneo"> Amor Instantâneo</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Amor Gradual"> Amor Gradual</label>
-              <label class="radio-item selected" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Inimigos para Amantes" checked> Inimigos para Amantes</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Amigos para Amantes"> Amigos para Amantes</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Alma Gêmea"> Alma Gêmea</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Destinados"> Destinados</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Amor Proibido"> Amor Proibido</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Rivais"> Rivais</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Triângulo Amoroso"> Triângulo Amoroso</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Romance Lento"> Romance Lento</label>
-              <label class="radio-item" onclick="selectRadio(this, 'rel')"><input type="radio" name="rel" value="Romance Extremamente Lento"> Romance Extremamente Lento</label>
-            </div>
-          </div>
-          <div class="arch-card">
-            <h3>🎚 Intensidades Narrativas</h3>
-            <div class="slider-group">
-              <div class="slider-label"><span>Drama</span><span class="slider-value" id="v-drama">7</span></div>
-              <input type="range" min="1" max="10" value="7" oninput="updateSlider('drama', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Violência</span><span class="slider-value" id="v-violence">4</span></div>
-              <input type="range" min="1" max="10" value="4" oninput="updateSlider('violence', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Ação</span><span class="slider-value" id="v-action">6</span></div>
-              <input type="range" min="1" max="10" value="6" oninput="updateSlider('action', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Comédia</span><span class="slider-value" id="v-comedy">3</span></div>
-              <input type="range" min="1" max="10" value="3" oninput="updateSlider('comedy', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Mistério</span><span class="slider-value" id="v-mystery">8</span></div>
-              <input type="range" min="1" max="10" value="8" oninput="updateSlider('mystery', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Tensão Romântica</span><span class="slider-value" id="v-romantic">9</span></div>
-              <input type="range" min="1" max="10" value="9" oninput="updateSlider('romantic', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Plot Twist</span><span class="slider-value" id="v-twist">7</span></div>
-              <input type="range" min="1" max="10" value="7" oninput="updateSlider('twist', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Impacto Emocional</span><span class="slider-value" id="v-emotional">9</span></div>
-              <input type="range" min="1" max="10" value="9" oninput="updateSlider('emotional', this.value)" />
-            </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Profundidade Psicológica</span><span class="slider-value" id="v-psych">8</span></div>
-              <input type="range" min="1" max="10" value="8" oninput="updateSlider('psych', this.value)" />
-            </div>
-          </div>
-          <div class="arch-card">
-            <h3>📐 Planejamento de Arcos</h3>
-            <div class="config-group" style="margin-bottom:16px;">
-              <div class="config-label">Total de Capítulos da Saga</div>
-              <input class="config-input" id="arch-total-chapters" type="number" value="50" min="10" max="500" />
-            </div>
-            <button class="btn-gold" style="width:100%;margin-bottom:16px;" onclick="generateArcs()">⚡ Gerar Arcos Narrativos</button>
-            <div id="arcs-display" style="display:flex;flex-direction:column;gap:8px;"></div>
-          </div>
-          <div class="arch-card">
-            <h3>🎬 Editor Cinematográfico</h3>
-            <div class="config-group" style="margin-bottom:14px;">
-              <div class="config-label">Ritmo do Capítulo</div>
-              <select class="config-select" id="cin-rhythm">
-                <option>Lento</option><option>Moderado</option><option selected>Rápido</option><option>Explosivo</option>
+        <!-- STEP 1: SAGA -->
+        <div class="wpage active" id="wp-0">
+          <div class="wpage-title">Identidade da Saga</div>
+          <div class="wpage-sub">Dê vida ao universo que você quer criar</div>
+          <div class="field"><label>Título da Saga</label><input class="inp" id="w-title" placeholder="O nome épico da sua história..."/></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field"><label>Gênero</label>
+              <select class="inp" id="w-genre">
+                <option>Fantasia</option><option>Romance</option><option>Dark Romance</option>
+                <option>Ficção Científica</option><option>Suspense</option><option>Ação</option>
+                <option>Contemporâneo</option><option>Distopia</option>
               </select>
             </div>
-            <div class="slider-group">
-              <div class="slider-label"><span>Intensidade</span><span class="slider-value" id="v-intensity">8</span></div>
-              <input type="range" min="1" max="10" value="8" oninput="updateSlider('intensity', this.value)" />
+            <div class="field"><label>Emoji / Capa</label><input class="inp" id="w-emoji" placeholder="⚔️ 🌙 🔮 💀 ✨" maxlength="4"/></div>
+          </div>
+          <div class="field"><label>Sinopse</label><textarea class="inp" id="w-synopsis" rows="4" style="resize:none;" placeholder="Descreva o universo, o conflito central e o que torna esta saga única..."></textarea></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field"><label>Total de Capítulos</label><input class="inp" id="w-total-ch" type="number" value="50" min="1"/></div>
+            <div class="field"><label>Tags</label><input class="inp" id="w-tags" placeholder="magia, guerra, romance..."/></div>
+          </div>
+        </div>
+
+        <!-- STEP 2: PERSONAGENS -->
+        <div class="wpage" id="wp-1">
+          <div class="wpage-title">Personagens Principais</div>
+          <div class="wpage-sub">Adicione os personagens centrais da saga (pode adicionar mais depois)</div>
+          <div id="wiz-chars-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;"></div>
+          <button class="btn-ghost" onclick="addWizChar()">+ Adicionar Personagem</button>
+        </div>
+
+        <!-- STEP 3: CONFIGURAÇÕES -->
+        <div class="wpage" id="wp-2">
+          <div class="wpage-title">Configurações Narrativas</div>
+          <div class="wpage-sub">Defina como a IA vai escrever sua saga</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+            <div class="field"><label>POV Padrão</label>
+              <select class="inp" id="w-pov">
+                <option>Protagonista A</option><option>Protagonista B</option>
+                <option>Ambos</option><option>Narrador Onisciente</option>
+              </select>
             </div>
-            <div style="margin-top:16px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;">
-              <div style="font-size:10px;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">ESTRUTURA AUTOMÁTICA</div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-size:12px;color:var(--text2);">✦ Abertura forte com gancho</div>
-                <div style="font-size:12px;color:var(--text2);">✦ Desenvolvimento emocional</div>
-                <div style="font-size:12px;color:var(--text2);">✦ Clímax cinematográfico</div>
-                <div style="font-size:12px;color:var(--text2);">✦ Cliffhanger no encerramento</div>
+            <div class="field"><label>Palavras por Capítulo</label>
+              <input class="inp" id="w-words" type="number" value="2000" min="500" max="15000"/>
+            </div>
+            <div class="field"><label>Ritmo Narrativo</label>
+              <select class="inp" id="w-rhythm">
+                <option>Lento</option><option>Moderado</option><option>Rápido</option><option>Explosivo</option>
+              </select>
+            </div>
+            <div class="field"><label>Evolução do Romance</label>
+              <select class="inp" id="w-rel">
+                <option>Inimigos para Amantes</option><option>Amor Gradual</option>
+                <option>Amor Instantâneo</option><option>Amigos para Amantes</option>
+                <option>Alma Gêmea</option><option>Destinados</option>
+                <option>Amor Proibido</option><option>Rivais</option>
+                <option>Triângulo Amoroso</option><option>Romance Lento</option>
+                <option>Romance Extremamente Lento</option>
+              </select>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">🎚 Intensidades (1–10)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+              <div>
+                <div class="slider-group"><div class="sl-lbl"><span>Drama</span><span class="sl-val" id="sv-drama">7</span></div><input type="range" min="1" max="10" value="7" oninput="setSV('drama',this.value)"/></div>
+                <div class="slider-group"><div class="sl-lbl"><span>Violência</span><span class="sl-val" id="sv-violence">4</span></div><input type="range" min="1" max="10" value="4" oninput="setSV('violence',this.value)"/></div>
+                <div class="slider-group"><div class="sl-lbl"><span>Ação</span><span class="sl-val" id="sv-action">6</span></div><input type="range" min="1" max="10" value="6" oninput="setSV('action',this.value)"/></div>
+                <div class="slider-group"><div class="sl-lbl"><span>Mistério</span><span class="sl-val" id="sv-mystery">8</span></div><input type="range" min="1" max="10" value="8" oninput="setSV('mystery',this.value)"/></div>
+              </div>
+              <div>
+                <div class="slider-group"><div class="sl-lbl"><span>Tensão Romântica</span><span class="sl-val" id="sv-romantic">9</span></div><input type="range" min="1" max="10" value="9" oninput="setSV('romantic',this.value)"/></div>
+                <div class="slider-group"><div class="sl-lbl"><span>Plot Twist</span><span class="sl-val" id="sv-twist">7</span></div><input type="range" min="1" max="10" value="7" oninput="setSV('twist',this.value)"/></div>
+                <div class="slider-group"><div class="sl-lbl"><span>Impacto Emocional</span><span class="sl-val" id="sv-emotional">9</span></div><input type="range" min="1" max="10" value="9" oninput="setSV('emotional',this.value)"/></div>
+                <div class="slider-group"><div class="sl-lbl"><span>Profundidade Psic.</span><span class="sl-val" id="sv-psych">8</span></div><input type="range" min="1" max="10" value="8" oninput="setSV('psych',this.value)"/></div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- STEP 4: FORJAR -->
+        <div class="wpage" id="wp-3">
+          <div class="wpage-title">Pronto para Forjar</div>
+          <div class="wpage-sub">Sua saga está configurada. Clique em Criar Saga para começar.</div>
+          <div class="card" id="wiz-summary" style="margin-bottom:16px;"></div>
+          <button class="btn-gold" style="width:100%;padding:14px;" onclick="createSagaFromWizard()">⚡ CRIAR SAGA E FORJAR PRIMEIRO CAPÍTULO</button>
+        </div>
+      </div>
+      <div class="wizard-foot">
+        <button class="btn-ghost" id="wiz-back" onclick="wizStep(-1)" style="visibility:hidden;">← Voltar</button>
+        <div style="display:flex;gap:8px;" id="wiz-dots"></div>
+        <button class="btn-gold" id="wiz-next" onclick="wizStep(1)">Próximo →</button>
       </div>
     </div>
 
-    <!-- ── MEMORY ── -->
-    <div id="panel-memory" class="panel">
-      <div style="padding:32px 36px;">
-        <div class="section-header">
-          <h1>BANCO DE MEMÓRIAS</h1>
-          <p>Memória Mundial Absoluta — tudo que existe no universo</p>
-        </div>
-        <div class="memory-grid">
-          <div class="mem-card"><div class="mem-icon">💔</div><div class="mem-title">Traições</div><div class="mem-count" id="m-betrayals">0</div><div class="mem-sub">registradas</div></div>
-          <div class="mem-card"><div class="mem-icon">💀</div><div class="mem-title">Mortes</div><div class="mem-count" id="m-deaths">0</div><div class="mem-sub">registradas</div></div>
-          <div class="mem-card"><div class="mem-icon">💍</div><div class="mem-title">Casamentos</div><div class="mem-count" id="m-marriages">0</div><div class="mem-sub">registrados</div></div>
-          <div class="mem-card"><div class="mem-icon">⚔️</div><div class="mem-title">Guerras</div><div class="mem-count" id="m-wars">0</div><div class="mem-sub">registradas</div></div>
-          <div class="mem-card"><div class="mem-icon">🤫</div><div class="mem-title">Segredos</div><div class="mem-count" id="m-secrets">0</div><div class="mem-sub">arquivados</div></div>
-          <div class="mem-card"><div class="mem-icon">🔮</div><div class="mem-title">Profecias</div><div class="mem-count" id="m-prophecies">0</div><div class="mem-sub">registradas</div></div>
-          <div class="mem-card"><div class="mem-icon">🤝</div><div class="mem-title">Alianças</div><div class="mem-count" id="m-alliances">0</div><div class="mem-sub">ativas</div></div>
-          <div class="mem-card"><div class="mem-icon">✨</div><div class="mem-title">Poderes</div><div class="mem-count" id="m-powers">0</div><div class="mem-sub">catalogados</div></div>
-          <div class="mem-card"><div class="mem-icon">🏰</div><div class="mem-title">Locais</div><div class="mem-count" id="m-locations">0</div><div class="mem-sub">mapeados</div></div>
-        </div>
-        <div class="consistency-bar">
-          <div class="cons-label">🎯 Índice de Consistência</div>
-          <div class="cons-track"><div class="cons-fill" id="cons-fill" style="width:0%"></div></div>
-          <div class="cons-pct" id="cons-pct">—</div>
-        </div>
-        <div style="margin-top:24px;">
-          <div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:12px;">ADICIONAR MEMÓRIA</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;">
-            <select class="config-select" id="mem-type">
-              <option>Traição</option><option>Morte</option><option>Casamento</option><option>Guerra</option>
-              <option>Segredo</option><option>Profecia</option><option>Aliança</option><option>Poder</option><option>Local</option>
-            </select>
-            <input class="config-input" id="mem-desc" placeholder="Descrição do evento..." />
-            <button class="btn-gold" onclick="addMemory()">Adicionar</button>
+    <!-- ══ FORGE ══ -->
+    <div id="panel-forge">
+      <div class="forge-top">
+        <h1 id="forge-title">FORJAR CAPÍTULO</h1>
+        <p id="forge-saga-name" style="color:var(--t3);font-size:12px;"></p>
+      </div>
+      <div class="forge-config">
+        <div class="fc-group"><div class="fc-lbl">Saga</div><select class="inp" id="fc-saga" style="font-size:12px;" onchange="onSagaChange()"></select></div>
+        <div class="fc-group"><div class="fc-lbl">Capítulo Nº</div><input class="inp" id="fc-chnum" type="number" value="1" min="1" style="font-size:12px;"/></div>
+        <div class="fc-group"><div class="fc-lbl">POV</div><select class="inp" id="fc-pov" style="font-size:12px;"><option>Protagonista A</option><option>Protagonista B</option><option>Ambos</option><option>Narrador Onisciente</option></select></div>
+        <div class="fc-group"><div class="fc-lbl">Palavras</div><input class="inp" id="fc-words" type="number" value="2000" min="500" max="15000" style="font-size:12px;"/></div>
+        <div class="fc-group"><div class="fc-lbl">Ritmo</div><select class="inp" id="fc-rhythm" style="font-size:12px;"><option>Lento</option><option>Moderado</option><option selected>Rápido</option><option>Explosivo</option></select></div>
+      </div>
+      <div class="forge-ctx">
+        <textarea id="fc-context" rows="2" placeholder="O que deve acontecer neste capítulo? Eventos, revelações, conflitos específicos..."></textarea>
+      </div>
+      <div class="forge-toolbar" style="padding:0 28px;">
+        <button class="ft-btn primary" onclick="genChapter()">⚡ GERAR CAPÍTULO</button>
+        <button class="ft-btn" onclick="clearForge()">🗑 Limpar</button>
+        <button class="ft-btn" onclick="copyForge()">📋 Copiar</button>
+        <button class="ft-btn" onclick="saveForge()">💾 Salvar</button>
+        <div class="ft-spacer"></div>
+        <span class="wc-display" id="fc-wc">0 palavras</span>
+      </div>
+      <div class="ai-loading" id="ai-loading">
+        <div class="spinner"></div>
+        <span id="loading-txt">Mente Suprema processando...</span>
+      </div>
+      <div class="forge-area">
+        <div class="forge-editor" id="forge-editor" contenteditable="true" data-placeholder="O capítulo gerado aparecerá aqui..."></div>
+      </div>
+    </div>
+
+    <!-- ══ ARCHITECT ══ -->
+    <div id="panel-architect" class="panel sec-panel">
+      <div class="page-title">ARQUITETO NARRATIVO</div>
+      <div class="page-sub">Configure os sistemas de IA que guiarão a narrativa</div>
+      <div class="arch-grid">
+        <div class="card">
+          <div class="card-title">🎭 Evolução do Relacionamento</div>
+          <div class="radio-group" id="rel-group">
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel" value="Inimigos para Amantes" checked> Inimigos para Amantes</label>
+            <label class="radio-item selected" onclick="selRel(this)"><input type="radio" name="rel"> Amor Gradual</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Amor Instantâneo</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Amigos para Amantes</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Alma Gêmea</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Amor Proibido</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Rivais</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Triângulo Amoroso</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Romance Lento</label>
+            <label class="radio-item" onclick="selRel(this)"><input type="radio" name="rel"> Romance Extremamente Lento</label>
           </div>
-          <div id="memory-list" style="margin-top:16px;display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;"></div>
         </div>
-      </div>
-    </div>
-
-    <!-- ── CHARACTERS ── -->
-    <div id="panel-characters" class="panel">
-      <div style="padding:32px 36px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
-          <div><h1 style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:3px;">BIBLIOTECA DE PERSONAGENS</h1>
-          <p style="color:var(--text3);font-size:13px;margin-top:4px;">Perfis completos e evoluções psicológicas</p></div>
-          <button class="btn-gold" onclick="openCharModal()">+ Novo Personagem</button>
+        <div class="card">
+          <div class="card-title">🎚 Intensidades Narrativas</div>
+          <div class="slider-group"><div class="sl-lbl"><span>Drama</span><span class="sl-val" id="a-drama">7</span></div><input type="range" min="1" max="10" value="7" oninput="setA('drama',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Violência</span><span class="sl-val" id="a-violence">4</span></div><input type="range" min="1" max="10" value="4" oninput="setA('violence',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Ação</span><span class="sl-val" id="a-action">6</span></div><input type="range" min="1" max="10" value="6" oninput="setA('action',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Comédia</span><span class="sl-val" id="a-comedy">3</span></div><input type="range" min="1" max="10" value="3" oninput="setA('comedy',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Mistério</span><span class="sl-val" id="a-mystery">8</span></div><input type="range" min="1" max="10" value="8" oninput="setA('mystery',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Tensão Romântica</span><span class="sl-val" id="a-romantic">9</span></div><input type="range" min="1" max="10" value="9" oninput="setA('romantic',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Plot Twist</span><span class="sl-val" id="a-twist">7</span></div><input type="range" min="1" max="10" value="7" oninput="setA('twist',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Impacto Emocional</span><span class="sl-val" id="a-emotional">9</span></div><input type="range" min="1" max="10" value="9" oninput="setA('emotional',this.value)"/></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Profundidade Psicológica</span><span class="sl-val" id="a-psych">8</span></div><input type="range" min="1" max="10" value="8" oninput="setA('psych',this.value)"/></div>
         </div>
-        <div class="char-grid" id="char-grid"></div>
-      </div>
-    </div>
-
-    <!-- ── WORLD ── -->
-    <div id="panel-world" class="panel">
-      <div style="padding:32px 36px;">
-        <div class="section-header">
-          <h1>UNIVERSOS INFINITOS</h1>
-          <p>Arquiteto de mundos — geografia, política, magia e civilizações</p>
+        <div class="card">
+          <div class="card-title">📐 Arcos Narrativos</div>
+          <div class="field"><label>Total de Capítulos</label><input class="inp" id="arc-total" type="number" value="50" min="10" max="500"/></div>
+          <button class="btn-gold" style="width:100%;margin-bottom:14px;" onclick="genArcs()">⚡ Gerar Arcos</button>
+          <div id="arcs-out" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
-        <div style="display:flex;gap:12px;margin-bottom:24px;">
-          <select class="config-select" id="world-type" style="max-width:200px;">
-            <option>Fantasia</option><option>Ficção Científica</option><option>Romance</option><option>Contemporâneo</option><option>Distopia</option>
-          </select>
-          <button class="btn-gold" onclick="generateWorld()">⚡ Gerar Mundo</button>
-        </div>
-        <div class="world-grid" id="world-grid">
-          <div class="world-card"><div class="world-icon">🏰</div><div class="world-title">Reinos</div><div class="world-count" id="w-kingdoms">0</div><div class="world-sub">criados</div></div>
-          <div class="world-card"><div class="world-icon">🌆</div><div class="world-title">Cidades</div><div class="world-count" id="w-cities">0</div><div class="world-sub">mapeadas</div></div>
-          <div class="world-card"><div class="world-icon">⚔️</div><div class="world-title">Facções</div><div class="world-count" id="w-factions">0</div><div class="world-sub">ativas</div></div>
-          <div class="world-card"><div class="world-icon">✨</div><div class="world-title">Sistemas Mágicos</div><div class="world-count" id="w-magic">0</div><div class="world-sub">catalogados</div></div>
-          <div class="world-card"><div class="world-icon">🐉</div><div class="world-title">Criaturas</div><div class="world-count" id="w-creatures">0</div><div class="world-sub">documentadas</div></div>
-          <div class="world-card"><div class="world-icon">📜</div><div class="world-title">Profecias</div><div class="world-count" id="w-proph">0</div><div class="world-sub">reveladas</div></div>
-        </div>
-        <div id="world-data" style="margin-top:24px;"></div>
-      </div>
-    </div>
-
-    <!-- ── TIMELINE ── -->
-    <div id="panel-timeline" class="panel">
-      <div style="padding:32px 36px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
-          <div><h1 style="font-family:'Cinzel',serif;font-size:22px;color:var(--gold);letter-spacing:3px;">LINHA DO TEMPO</h1>
-          <p style="color:var(--text3);font-size:13px;margin-top:4px;">Cronologia de eventos do universo</p></div>
-          <button class="btn-gold" onclick="addTimelineEvent()">+ Evento</button>
-        </div>
-        <div class="timeline" id="timeline-list">
-          <div style="color:var(--text3);font-size:13px;padding:24px 0;">Nenhum evento registrado ainda. Adicione marcos importantes da saga.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── MINDS (CONSELHO) ── -->
-    <div id="panel-minds" class="panel">
-      <div style="padding:32px 36px;">
-        <div class="section-header">
-          <h1>CONSELHO DOS MESTRES</h1>
-          <p>8 especialistas virtuais validam cada capítulo antes da entrega</p>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;" id="masters-grid">
-        </div>
-        <div class="dash-card" style="margin-top:0;">
-          <h3>🎯 Protocolo de Validação</h3>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
-            <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
-              <span style="font-size:16px;">🔍</span>
-              <div><div style="font-size:13px;color:var(--text);">Sistema Anti-IA</div><div style="font-size:11px;color:var(--text3);">Verifica se o texto parece escrito por chatbot</div></div>
-              <div style="margin-left:auto;font-size:11px;color:var(--green);">ATIVO</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
-              <span style="font-size:16px;">❤️</span>
-              <div><div style="font-size:13px;color:var(--text);">Teste de Impacto Emocional</div><div style="font-size:11px;color:var(--text3);">O capítulo emocionaria um leitor real?</div></div>
-              <div style="margin-left:auto;font-size:11px;color:var(--green);">ATIVO</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
-              <span style="font-size:16px;">📖</span>
-              <div><div style="font-size:13px;color:var(--text);">Padrão Editorial</div><div style="font-size:11px;color:var(--text3);">Qualidade digna de publicação?</div></div>
-              <div style="margin-left:auto;font-size:11px;color:var(--green);">ATIVO</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
-              <span style="font-size:16px;">🔗</span>
-              <div><div style="font-size:13px;color:var(--text);">Detector de Furos</div><div style="font-size:11px;color:var(--text3);">Verifica continuidade e contradições</div></div>
-              <div style="margin-left:auto;font-size:11px;color:var(--green);">ATIVO</div>
-            </div>
+        <div class="card">
+          <div class="card-title">🎬 Editor Cinematográfico</div>
+          <div class="field"><label>Ritmo</label><select class="inp" id="cin-rhythm"><option>Lento</option><option>Moderado</option><option selected>Rápido</option><option>Explosivo</option></select></div>
+          <div class="slider-group"><div class="sl-lbl"><span>Intensidade</span><span class="sl-val" id="a-intensity">8</span></div><input type="range" min="1" max="10" value="8" oninput="setA('intensity',this.value)"/></div>
+          <div style="margin-top:14px;padding:13px;background:var(--bg);border:1px solid var(--border);border-radius:8px;">
+            <div style="font-size:9px;letter-spacing:1px;color:var(--t3);margin-bottom:8px;">ESTRUTURA AUTO</div>
+            <div style="font-size:11px;color:var(--t2);line-height:2;">✦ Abertura forte com gancho<br>✦ Desenvolvimento emocional<br>✦ Clímax cinematográfico<br>✦ Cliffhanger no encerramento</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MEMORY ══ -->
+    <div id="panel-memory" class="panel sec-panel">
+      <div class="page-title">BANCO DE MEMÓRIAS</div>
+      <div class="page-sub">Memória Mundial Absoluta — tudo que existe no universo</div>
+      <div class="mem-grid">
+        <div class="mem-card"><div class="mem-icon">💔</div><div class="mem-title">Traições</div><div class="mem-count" id="m-betrayals">0</div><div class="mem-sub">registradas</div></div>
+        <div class="mem-card"><div class="mem-icon">💀</div><div class="mem-title">Mortes</div><div class="mem-count" id="m-deaths">0</div><div class="mem-sub">registradas</div></div>
+        <div class="mem-card"><div class="mem-icon">💍</div><div class="mem-title">Casamentos</div><div class="mem-count" id="m-marriages">0</div><div class="mem-sub">registrados</div></div>
+        <div class="mem-card"><div class="mem-icon">⚔️</div><div class="mem-title">Guerras</div><div class="mem-count" id="m-wars">0</div><div class="mem-sub">registradas</div></div>
+        <div class="mem-card"><div class="mem-icon">🤫</div><div class="mem-title">Segredos</div><div class="mem-count" id="m-secrets">0</div><div class="mem-sub">arquivados</div></div>
+        <div class="mem-card"><div class="mem-icon">🔮</div><div class="mem-title">Profecias</div><div class="mem-count" id="m-prophecies">0</div><div class="mem-sub">registradas</div></div>
+        <div class="mem-card"><div class="mem-icon">🤝</div><div class="mem-title">Alianças</div><div class="mem-count" id="m-alliances">0</div><div class="mem-sub">ativas</div></div>
+        <div class="mem-card"><div class="mem-icon">✨</div><div class="mem-title">Poderes</div><div class="mem-count" id="m-powers">0</div><div class="mem-sub">catalogados</div></div>
+        <div class="mem-card"><div class="mem-icon">🏰</div><div class="mem-title">Locais</div><div class="mem-count" id="m-locations">0</div><div class="mem-sub">mapeados</div></div>
+      </div>
+      <div class="cons-bar">
+        <div class="cons-lbl">🎯 Consistência</div>
+        <div class="cons-track"><div class="cons-fill" id="cons-fill" style="width:0%"></div></div>
+        <div class="cons-pct" id="cons-pct">—</div>
+      </div>
+      <div style="margin-top:20px;">
+        <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:10px;">ADICIONAR MEMÓRIA</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;">
+          <select class="inp" id="mem-type"><option>Traição</option><option>Morte</option><option>Casamento</option><option>Guerra</option><option>Segredo</option><option>Profecia</option><option>Aliança</option><option>Poder</option><option>Local</option></select>
+          <input class="inp" id="mem-desc" placeholder="Descrição do evento..."/>
+          <button class="btn-gold" onclick="addMem()">Adicionar</button>
+        </div>
+        <div id="mem-list" style="margin-top:14px;display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto;"></div>
+      </div>
+    </div>
+
+    <!-- ══ CHARACTERS ══ -->
+    <div id="panel-characters" class="panel sec-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+        <div><div class="page-title">BIBLIOTECA DE PERSONAGENS</div><div class="page-sub" style="margin-bottom:0">Perfis completos e evoluções psicológicas</div></div>
+        <button class="btn-gold" onclick="openCharModal()">+ Novo Personagem</button>
+      </div>
+      <div class="char-grid" id="char-grid"></div>
+    </div>
+
+    <!-- ══ WORLD ══ -->
+    <div id="panel-world" class="panel sec-panel">
+      <div class="page-title">UNIVERSOS INFINITOS</div>
+      <div class="page-sub">Arquiteto de mundos — geografia, política, magia e civilizações</div>
+      <div style="display:flex;gap:10px;margin-bottom:20px;">
+        <select class="inp" id="world-type" style="max-width:200px;"><option>Fantasia</option><option>Ficção Científica</option><option>Romance</option><option>Contemporâneo</option><option>Distopia</option></select>
+        <button class="btn-gold" onclick="genWorld()">⚡ Gerar Mundo</button>
+      </div>
+      <div class="world-grid">
+        <div class="world-card"><div style="font-size:26px;margin-bottom:8px;">🏰</div><div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);margin-bottom:5px;">Reinos</div><div style="font-size:22px;font-weight:700;color:var(--text);" id="w-kingdoms">0</div></div>
+        <div class="world-card"><div style="font-size:26px;margin-bottom:8px;">🌆</div><div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);margin-bottom:5px;">Cidades</div><div style="font-size:22px;font-weight:700;color:var(--text);" id="w-cities">0</div></div>
+        <div class="world-card"><div style="font-size:26px;margin-bottom:8px;">⚔️</div><div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);margin-bottom:5px;">Facções</div><div style="font-size:22px;font-weight:700;color:var(--text);" id="w-factions">0</div></div>
+        <div class="world-card"><div style="font-size:26px;margin-bottom:8px;">✨</div><div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);margin-bottom:5px;">Sistemas Mágicos</div><div style="font-size:22px;font-weight:700;color:var(--text);" id="w-magic">0</div></div>
+        <div class="world-card"><div style="font-size:26px;margin-bottom:8px;">🐉</div><div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);margin-bottom:5px;">Criaturas</div><div style="font-size:22px;font-weight:700;color:var(--text);" id="w-creatures">0</div></div>
+        <div class="world-card"><div style="font-size:26px;margin-bottom:8px;">📜</div><div style="font-family:'Cinzel',serif;font-size:11px;color:var(--gold);margin-bottom:5px;">Profecias</div><div style="font-size:22px;font-weight:700;color:var(--text);" id="w-proph">0</div></div>
+      </div>
+      <div id="world-result" style="margin-top:20px;"></div>
+    </div>
+
+    <!-- ══ TIMELINE ══ -->
+    <div id="panel-timeline" class="panel sec-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+        <div><div class="page-title">LINHA DO TEMPO</div><div class="page-sub" style="margin-bottom:0">Cronologia de eventos do universo</div></div>
+        <button class="btn-gold" onclick="openTlModal()">+ Evento</button>
+      </div>
+      <div id="tl-list"><div style="color:var(--t3);font-size:13px;padding:20px 0;">Nenhum evento registrado ainda.</div></div>
+    </div>
+
+    <!-- ══ MINDS ══ -->
+    <div id="panel-minds" class="panel sec-panel">
+      <div class="page-title">CONSELHO DOS MESTRES</div>
+      <div class="page-sub">8 especialistas virtuais validam cada capítulo antes da entrega</div>
+      <div class="masters-grid" id="masters-grid"></div>
+      <div class="card" style="margin-top:20px;">
+        <div class="card-title">🎯 Protocolo de Validação</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--bg);border-radius:7px;border:1px solid var(--border);"><span style="font-size:15px;">🔍</span><div><div style="font-size:12px;color:var(--text);">Sistema Anti-IA</div><div style="font-size:10px;color:var(--t3);">Verifica se o texto parece escrito por chatbot</div></div><div style="margin-left:auto;font-size:10px;color:var(--green);">ATIVO</div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--bg);border-radius:7px;border:1px solid var(--border);"><span style="font-size:15px;">❤️</span><div><div style="font-size:12px;color:var(--text);">Teste de Impacto Emocional</div><div style="font-size:10px;color:var(--t3);">O capítulo emocionaria um leitor real?</div></div><div style="margin-left:auto;font-size:10px;color:var(--green);">ATIVO</div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--bg);border-radius:7px;border:1px solid var(--border);"><span style="font-size:15px;">📖</span><div><div style="font-size:12px;color:var(--text);">Padrão Editorial</div><div style="font-size:10px;color:var(--t3);">Qualidade digna de publicação?</div></div><div style="margin-left:auto;font-size:10px;color:var(--green);">ATIVO</div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--bg);border-radius:7px;border:1px solid var(--border);"><span style="font-size:15px;">🔗</span><div><div style="font-size:12px;color:var(--text);">Detector de Furos</div><div style="font-size:10px;color:var(--t3);">Verifica continuidade e contradições</div></div><div style="margin-left:auto;font-size:10px;color:var(--green);">ATIVO</div></div>
         </div>
       </div>
     </div>
@@ -1422,899 +702,646 @@
   </main>
 </div>
 
-<!-- ── SAGA MODAL ── -->
-<div id="saga-modal-overlay">
-  <div id="saga-modal">
-    <h2>✦ NOVA SAGA</h2>
-    <div class="field-group">
-      <label>Título</label>
-      <input id="sm-title" placeholder="O nome da sua saga..." />
+<!-- CHARACTER MODAL -->
+<div id="char-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h2>👤 NOVO PERSONAGEM</h2>
+    <div class="field"><label>Nome</label><input class="inp" id="cm-name" placeholder="Nome completo..."/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field"><label>Papel</label><select class="inp" id="cm-role"><option>Protagonista</option><option>Antagonista</option><option>Coadjuvante</option><option>Interesse Romântico</option><option>Mentor</option><option>Vilão</option></select></div>
+      <div class="field"><label>Emoji</label><input class="inp" id="cm-emoji" placeholder="👑 ⚔️ 🌙" maxlength="4"/></div>
     </div>
-    <div class="field-group">
-      <label>Gênero</label>
-      <select id="sm-genre">
-        <option>Fantasia</option><option>Romance</option><option>Dark Romance</option>
-        <option>Ficção Científica</option><option>Suspense</option><option>Ação</option>
-        <option>Contemporâneo</option><option>Distopia</option>
-      </select>
-    </div>
-    <div class="field-group">
-      <label>Emoji / Capa</label>
-      <input id="sm-emoji" placeholder="⚔️ 🌙 🔮 💀 ✨ 🐉" maxlength="4" />
-    </div>
-    <div class="field-group">
-      <label>Sinopse</label>
-      <textarea id="sm-synopsis" rows="4" placeholder="A história de..."></textarea>
-    </div>
-    <div class="field-group">
-      <label>Quantidade Total de Capítulos</label>
-      <input id="sm-chapters" type="number" value="50" min="1" />
-    </div>
-    <div class="field-group">
-      <label>Tags</label>
-      <input id="sm-tags" placeholder="magia, guerra, romance, traição..." />
-    </div>
+    <div class="field"><label>Personalidade</label><input class="inp" id="cm-personality" placeholder="arrogante, leal, sarcástico..."/></div>
+    <div class="field"><label>Traumas</label><textarea class="inp" id="cm-traumas" rows="2" style="resize:none;" placeholder="O que marcou este personagem?"></textarea></div>
+    <div class="field"><label>Poderes / Habilidades</label><input class="inp" id="cm-powers" placeholder="telepatia, combate, magia..."/></div>
+    <div class="field"><label>Objetivo Principal</label><input class="inp" id="cm-goal" placeholder="O que deseja acima de tudo?"/></div>
+    <div class="field"><label>Segredo</label><input class="inp" id="cm-secret" placeholder="O que esconde dos outros?"/></div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeSagaModal()">Cancelar</button>
-      <button class="btn-gold" onclick="createSaga()">✦ Criar Saga</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── CHARACTER MODAL ── -->
-<div id="char-modal-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);align-items:center;justify-content:center;">
-  <div style="background:var(--panel);border:1px solid var(--border2);border-radius:16px;padding:36px;width:520px;max-height:85vh;overflow-y:auto;animation:fadeInUp 0.4s ease;box-shadow:0 40px 120px rgba(0,0,0,0.7);">
-    <h2 style="font-family:'Cinzel',serif;font-size:18px;color:var(--gold);letter-spacing:2px;margin-bottom:24px;">👤 NOVO PERSONAGEM</h2>
-    <div class="field-group"><label>Nome</label><input id="cm-name" placeholder="Nome completo..." /></div>
-    <div class="field-group"><label>Papel</label>
-      <select id="cm-role"><option>Protagonista</option><option>Antagonista</option><option>Coadjuvante</option><option>Interesse Romântico</option><option>Mentor</option><option>Vilão</option></select>
-    </div>
-    <div class="field-group"><label>Emoji</label><input id="cm-emoji" placeholder="👑 ⚔️ 🌙" maxlength="4" /></div>
-    <div class="field-group"><label>Personalidade</label><input id="cm-personality" placeholder="arrogante, leal, sarcástico..." /></div>
-    <div class="field-group"><label>Traumas</label><textarea id="cm-traumas" rows="2" placeholder="O que marcou este personagem?"></textarea></div>
-    <div class="field-group"><label>Poderes / Habilidades</label><input id="cm-powers" placeholder="telepatia, combate, magia..." /></div>
-    <div class="field-group"><label>Objetivo Principal</label><input id="cm-goal" placeholder="O que este personagem deseja?" /></div>
-    <div class="field-group"><label>Segredo</label><input id="cm-secret" placeholder="O que esconde dos outros?" /></div>
-    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px;">
       <button class="btn-ghost" onclick="closeCharModal()">Cancelar</button>
-      <button class="btn-gold" onclick="createCharacter()">✦ Criar Personagem</button>
+      <button class="btn-gold" onclick="createChar()">✦ Criar</button>
     </div>
   </div>
 </div>
 
-<!-- ── TIMELINE EVENT MODAL ── -->
-<div id="tl-modal-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);align-items:center;justify-content:center;">
-  <div style="background:var(--panel);border:1px solid var(--border2);border-radius:16px;padding:36px;width:480px;animation:fadeInUp 0.4s ease;box-shadow:0 40px 120px rgba(0,0,0,0.7);">
-    <h2 style="font-family:'Cinzel',serif;font-size:18px;color:var(--gold);letter-spacing:2px;margin-bottom:24px;">⏳ NOVO EVENTO</h2>
-    <div class="field-group"><label>Capítulo / Era</label><input id="tl-chapter" placeholder="Capítulo 1 / Era das Sombras..." /></div>
-    <div class="field-group"><label>Título do Evento</label><input id="tl-title" placeholder="A Grande Batalha..." /></div>
-    <div class="field-group"><label>Descrição</label><textarea id="tl-desc" rows="3" placeholder="O que aconteceu?"></textarea></div>
-    <div class="field-group"><label>Tipo</label>
-      <select id="tl-type"><option>⚔️ Batalha</option><option>💀 Morte</option><option>💍 Casamento</option><option>🔮 Revelação</option><option>💔 Traição</option><option>🌟 Turning Point</option></select>
-    </div>
-    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px;">
+<!-- TIMELINE MODAL -->
+<div id="tl-modal" class="modal-overlay">
+  <div class="modal-box" style="width:440px;">
+    <h2>⏳ NOVO EVENTO</h2>
+    <div class="field"><label>Capítulo / Era</label><input class="inp" id="tl-ch" placeholder="Capítulo 1 / Era das Sombras..."/></div>
+    <div class="field"><label>Título do Evento</label><input class="inp" id="tl-title" placeholder="A Grande Batalha..."/></div>
+    <div class="field"><label>Descrição</label><textarea class="inp" id="tl-desc" rows="3" style="resize:none;" placeholder="O que aconteceu?"></textarea></div>
+    <div class="field"><label>Tipo</label><select class="inp" id="tl-type"><option>⚔️ Batalha</option><option>💀 Morte</option><option>💍 Casamento</option><option>🔮 Revelação</option><option>💔 Traição</option><option>🌟 Turning Point</option></select></div>
+    <div class="modal-actions">
       <button class="btn-ghost" onclick="closeTlModal()">Cancelar</button>
-      <button class="btn-gold" onclick="saveTlEvent()">✦ Salvar Evento</button>
+      <button class="btn-gold" onclick="saveTl()">✦ Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- ── TOAST ── -->
 <div id="toast">✦ <span id="toast-msg"></span></div>
 
 <script>
-// ═══════════════════════════════════════════
+// ════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════
-let state = {
-  sagas: [],
-  characters: [],
-  memories: [],
-  timeline: [],
-  worldData: {},
-  activeSaga: null,
-  settings: {
-    relationship: 'Inimigos para Amantes',
-    drama: 7, violence: 4, action: 6, comedy: 3,
-    mystery: 8, romantic: 9, twist: 7, emotional: 9,
-    psych: 8, intensity: 8
-  }
+// ════════════════════════════════
+let S = {
+  sagas:[], characters:[], memories:[], timeline:[], worldData:{},
+  settings:{ relationship:'Inimigos para Amantes', drama:7, violence:4, action:6,
+    comedy:3, mystery:8, romantic:9, twist:7, emotional:9, psych:8, intensity:8 }
 };
-
-// ─── LOAD STATE ───
-function loadState() {
-  const saved = localStorage.getItem('imperium_state');
-  if (saved) state = { ...state, ...JSON.parse(saved) };
-}
-function saveState() {
-  localStorage.setItem('imperium_state', JSON.stringify(state));
-}
-
-// ═══════════════════════════════════════════
-// API KEY — MULTI-PROVEDOR
-// ═══════════════════════════════════════════
-let currentProvider = 'anthropic';
+let wizardStep = 0;
+let wizChars = [];
+let provider = 'anthropic';
 
 const MODELS = {
-  anthropic: [
-    { value: 'claude-sonnet-4-6', label: 'claude-sonnet-4-6 (recomendado)' }
-  ],
-  google: [
-    { value: 'gemini-2.5-flash', label: 'gemini-2.5-flash (recomendado)' },
-    { value: 'gemini-1.5-pro',   label: 'gemini-1.5-pro' }
-  ]
+  anthropic:[{v:'claude-sonnet-4-6',l:'claude-sonnet-4-6 (recomendado)'}],
+  google:[{v:'gemini-2.5-flash',l:'gemini-2.5-flash (recomendado)'},{v:'gemini-1.5-pro',l:'gemini-1.5-pro'}]
 };
 
-function selectProvider(prov) {
-  currentProvider = prov;
-  // botões visuais
-  const bA = document.getElementById('btn-anthropic');
-  const bG = document.getElementById('btn-google');
-  if (prov === 'anthropic') {
-    bA.style.border = '2px solid var(--gold3)'; bA.style.background = 'var(--gold-glow)';
-    bA.querySelector('div:nth-child(2)').style.color = 'var(--gold)';
-    bG.style.border = '1px solid var(--border2)'; bG.style.background = 'transparent';
-    bG.querySelector('div:nth-child(2)').style.color = 'var(--text2)';
-    document.getElementById('api-key-input').placeholder = 'sk-ant-api03-...';
-  } else {
-    bG.style.border = '2px solid var(--gold3)'; bG.style.background = 'var(--gold-glow)';
-    bG.querySelector('div:nth-child(2)').style.color = 'var(--gold)';
-    bA.style.border = '1px solid var(--border2)'; bA.style.background = 'transparent';
-    bA.querySelector('div:nth-child(2)').style.color = 'var(--text2)';
-    document.getElementById('api-key-input').placeholder = 'AIza...';
-  }
-  // atualizar modelos
-  const sel = document.getElementById('model-select');
-  sel.innerHTML = '';
-  MODELS[prov].forEach(m => {
-    const o = document.createElement('option');
-    o.value = m.value; o.textContent = m.label;
-    sel.appendChild(o);
-  });
-}
+function LS(k,v){if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}
+function loadS(){const d=LS('imp_state');if(d)try{S={...S,...JSON.parse(d)};}catch(e){}}
+function saveS(){LS('imp_state',S);}
 
-function saveApiKey() {
-  const key = document.getElementById('api-key-input').value.trim();
-  const model = document.getElementById('model-select').value;
-  if (!key) { showToast('⚠ Insira a chave API'); return; }
-  if (currentProvider === 'anthropic' && !key.startsWith('sk-ant')) {
-    showToast('⚠ Chave Anthropic inválida. Deve começar com sk-ant'); return;
-  }
-  if (currentProvider === 'google' && !key.startsWith('AIza')) {
-    showToast('⚠ Chave Google inválida. Deve começar com AIza'); return;
-  }
-  localStorage.setItem('imp_provider', currentProvider);
-  localStorage.setItem('imp_apikey', key);
-  localStorage.setItem('imp_model', model);
-  document.getElementById('api-overlay').style.display = 'none';
-  updateApiStatus(true);
-  showToast('✦ Mente Suprema Ativada — ' + model);
-}
-
-function resetApiKey() {
-  if (confirm('Alterar configuração de API?')) {
-    document.getElementById('api-overlay').style.display = 'flex';
-    document.getElementById('api-key-input').value = '';
-    const saved = localStorage.getItem('imp_provider') || 'anthropic';
-    selectProvider(saved);
-  }
-}
-
-function updateApiStatus(active) {
-  document.getElementById('api-dot').className = active ? 'dot' : 'dot off';
-  const prov = localStorage.getItem('imp_provider') || 'anthropic';
-  const model = localStorage.getItem('imp_model') || '';
-  const label = active ? (prov === 'google' ? '✨ ' : '🤖 ') + model : 'API Desconectada';
-  document.getElementById('api-status-text').textContent = active ? label : 'API Desconectada';
-}
-
-function getApiKey()    { return localStorage.getItem('imp_apikey'); }
-function getProvider()  { return localStorage.getItem('imp_provider') || 'anthropic'; }
-function getModel()     { return localStorage.getItem('imp_model') || 'claude-sonnet-4-6'; }
-
-// ─── INIT ───
-window.onload = function() {
-  loadState();
-  selectProvider('anthropic'); // default visual
-  const key = getApiKey();
-  if (key) {
-    const savedProv = getProvider();
-    selectProvider(savedProv);
-    const savedModel = getModel();
-    document.getElementById('model-select').value = savedModel;
-    document.getElementById('api-overlay').style.display = 'none';
-    updateApiStatus(true);
-  } else {
-    updateApiStatus(false);
-  }
+// ════════════════════════════════
+// INIT
+// ════════════════════════════════
+window.onload=function(){
+  loadS();
+  const key=LS('imp_apikey');
+  if(key){
+    provider=LS('imp_provider')||'anthropic';
+    selProv(provider);
+    document.getElementById('model-sel').value=LS('imp_model')||'claude-sonnet-4-6';
+    document.getElementById('api-overlay').style.display='none';
+    updStatus(true);
+  } else { updStatus(false); }
   renderAll();
   initMasters();
   initSystems();
 };
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════
+// API KEY
+// ════════════════════════════════
+function selProv(p){
+  provider=p;
+  const bA=document.getElementById('btn-anth'), bG=document.getElementById('btn-goog');
+  if(p==='anthropic'){
+    bA.classList.add('active'); bG.classList.remove('active');
+    document.getElementById('api-key-inp').placeholder='sk-ant-api03-...';
+  } else {
+    bG.classList.add('active'); bA.classList.remove('active');
+    document.getElementById('api-key-inp').placeholder='AIza...';
+  }
+  const sel=document.getElementById('model-sel');
+  sel.innerHTML='';
+  MODELS[p].forEach(m=>{const o=document.createElement('option');o.value=m.v;o.textContent=m.l;sel.appendChild(o);});
+}
+function saveKey(){
+  const key=document.getElementById('api-key-inp').value.trim();
+  const model=document.getElementById('model-sel').value;
+  if(!key){toast('⚠ Insira a chave API');return;}
+  if(provider==='anthropic'&&!key.startsWith('sk-ant')){toast('⚠ Chave Anthropic inválida');return;}
+  if(provider==='google'&&!key.startsWith('AIza')){toast('⚠ Chave Google inválida');return;}
+  LS('imp_provider',provider); LS('imp_apikey',key); LS('imp_model',model);
+  document.getElementById('api-overlay').style.display='none';
+  updStatus(true); toast('✦ Mente Suprema Ativada — '+model);
+}
+function changeKey(){
+  if(!confirm('Alterar configuração de API?'))return;
+  document.getElementById('api-overlay').style.display='flex';
+  document.getElementById('api-key-inp').value='';
+  selProv(LS('imp_provider')||'anthropic');
+}
+function updStatus(ok){
+  document.getElementById('api-dot').className=ok?'dot':'dot off';
+  const m=LS('imp_model')||'';
+  const p=LS('imp_provider')||'anthropic';
+  document.getElementById('api-txt').textContent=ok?(p==='google'?'✨ ':'🤖 ')+m:'Desconectado';
+}
+function getKey(){return LS('imp_apikey');}
+function getModel(){return LS('imp_model')||'claude-sonnet-4-6';}
+function getProv(){return LS('imp_provider')||'anthropic';}
+
+// ════════════════════════════════
 // NAVIGATION
-// ═══════════════════════════════════════════
-function showPanel(id, navEl) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const panel = document.getElementById('panel-' + id);
-  if (panel) panel.classList.add('active');
-
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  if (navEl) navEl.classList.add('active');
-
-  if (id === 'library') renderLibrary();
-  if (id === 'characters') renderCharacters();
-  if (id === 'memory') renderMemory();
-  if (id === 'dashboard') renderDashboard();
-  if (id === 'timeline') renderTimeline();
-}
-
-// ═══════════════════════════════════════════
-// SAGA MODAL
-// ═══════════════════════════════════════════
-function openSagaModal() {
-  document.getElementById('saga-modal-overlay').classList.add('open');
-}
-function closeSagaModal() {
-  document.getElementById('saga-modal-overlay').classList.remove('open');
-}
-function createSaga() {
-  const title = document.getElementById('sm-title').value.trim();
-  if (!title) { showToast('⚠ Dê um título à saga'); return; }
-  const saga = {
-    id: Date.now(),
-    title,
-    genre: document.getElementById('sm-genre').value,
-    emoji: document.getElementById('sm-emoji').value || '📖',
-    synopsis: document.getElementById('sm-synopsis').value,
-    totalChapters: parseInt(document.getElementById('sm-chapters').value) || 50,
-    tags: document.getElementById('sm-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    chapters: [],
-    createdAt: new Date().toISOString()
-  };
-  state.sagas.push(saga);
-  saveState();
-  closeSagaModal();
-  renderLibrary();
-  renderDashboard();
-  updateForgeSagas();
-  showToast('✦ Saga "' + title + '" criada');
-  ['sm-title','sm-synopsis','sm-tags','sm-emoji'].forEach(id => document.getElementById(id).value = '');
-}
-
-// ═══════════════════════════════════════════
-// LIBRARY
-// ═══════════════════════════════════════════
-function renderLibrary() {
-  const grid = document.getElementById('saga-grid');
-  grid.innerHTML = '';
-  state.sagas.forEach(s => {
-    const card = document.createElement('div');
-    card.className = 'saga-card';
-    card.onclick = () => openSaga(s.id);
-    card.innerHTML = `
-      <div class="saga-cover">${s.emoji || '📖'}<div class="saga-genre-badge">${s.genre}</div></div>
-      <div class="saga-info">
-        <div class="saga-title">${s.title}</div>
-        <div class="saga-meta"><span>${s.chapters.length} capítulos</span><span>${s.tags[0]||''}</span></div>
-      </div>`;
-    grid.appendChild(card);
+// ════════════════════════════════
+const PANELS=['dashboard','library','forge','architect','memory','characters','world','timeline','minds','saga-view','wizard'];
+function nav(id, navEl){
+  PANELS.forEach(p=>{
+    const el=document.getElementById('panel-'+p);
+    if(!el)return;
+    el.classList.remove('active');
+    if(el.tagName!=='DIV'||el.id==='panel-forge'||el.id==='panel-wizard'||el.id==='panel-saga-view'){
+      el.style.display='none';
+    }
   });
-  const add = document.createElement('div');
-  add.className = 'saga-empty';
-  add.onclick = openSagaModal;
-  add.innerHTML = '<div class="saga-empty-icon">✦</div><div class="saga-empty-text">NOVA SAGA</div>';
+  const target=document.getElementById('panel-'+id);
+  if(target){
+    if(id==='forge'){target.style.display='flex';}
+    else if(id==='wizard'){target.style.display='flex';}
+    else if(id==='saga-view'){target.style.display='block';}
+    else{target.classList.add('active');}
+  }
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(navEl)navEl.classList.add('active');
+  if(id==='library')renderLib();
+  if(id==='characters')renderChars();
+  if(id==='memory')renderMem();
+  if(id==='dashboard')renderDash();
+  if(id==='timeline')renderTl();
+  if(id==='forge')updateForgeSagas();
+}
+
+// ════════════════════════════════
+// WIZARD
+// ════════════════════════════════
+function startWizard(){
+  wizardStep=0; wizChars=[];
+  document.getElementById('wiz-chars-list').innerHTML='';
+  updateWizard();
+  nav('wizard',null);
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+}
+function wizStep(dir){
+  if(dir===1){
+    if(wizardStep===0&&!document.getElementById('w-title').value.trim()){toast('⚠ Dê um título à saga');return;}
+    if(wizardStep===3){return;}
+  }
+  if(dir===-1&&wizardStep===0)return;
+  wizardStep+=dir;
+  if(wizardStep===3)buildWizSummary();
+  updateWizard();
+}
+function updateWizard(){
+  for(let i=0;i<4;i++){
+    document.getElementById('wp-'+i).classList.toggle('active',i===wizardStep);
+    const ws=document.getElementById('ws-'+i);
+    ws.classList.remove('active','done');
+    if(i<wizardStep)ws.classList.add('done');
+    else if(i===wizardStep)ws.classList.add('active');
+  }
+  document.getElementById('wiz-back').style.visibility=wizardStep>0?'visible':'hidden';
+  const nextBtn=document.getElementById('wiz-next');
+  if(wizardStep===3){nextBtn.style.display='none';}
+  else{nextBtn.style.display='';nextBtn.textContent=wizardStep===2?'Revisar →':'Próximo →';}
+  const dots=document.getElementById('wiz-dots');
+  dots.innerHTML='';
+  for(let i=0;i<4;i++){
+    const d=document.createElement('div');
+    d.style.cssText=`width:6px;height:6px;border-radius:50%;background:${i===wizardStep?'var(--gold)':'var(--border2)'};transition:background 0.3s;`;
+    dots.appendChild(d);
+  }
+}
+function addWizChar(){
+  const idx=wizChars.length;
+  wizChars.push({name:'',role:'Protagonista',emoji:'👤',personality:'',traumas:'',powers:'',goal:'',secret:''});
+  renderWizChars();
+}
+function renderWizChars(){
+  const list=document.getElementById('wiz-chars-list');
+  list.innerHTML='';
+  wizChars.forEach((c,i)=>{
+    const el=document.createElement('div');
+    el.style.cssText='background:var(--bg);border:1px solid var(--border2);border-radius:10px;padding:16px;';
+    el.innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr 80px;gap:10px;margin-bottom:10px;">
+        <div class="field" style="margin:0;"><label>Nome</label><input class="inp" value="${c.name}" oninput="wizChars[${i}].name=this.value" placeholder="Nome do personagem..."/></div>
+        <div class="field" style="margin:0;"><label>Papel</label><select class="inp" onchange="wizChars[${i}].role=this.value"><option>Protagonista</option><option>Antagonista</option><option>Interesse Romântico</option><option>Coadjuvante</option></select></div>
+        <div class="field" style="margin:0;"><label>Emoji</label><input class="inp" value="${c.emoji}" oninput="wizChars[${i}].emoji=this.value" maxlength="4"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="field" style="margin:0;"><label>Personalidade</label><input class="inp" value="${c.personality}" oninput="wizChars[${i}].personality=this.value" placeholder="arrogante, leal..."/></div>
+        <div class="field" style="margin:0;"><label>Poderes</label><input class="inp" value="${c.powers}" oninput="wizChars[${i}].powers=this.value" placeholder="magia, combate..."/></div>
+      </div>
+      <div style="margin-top:10px;display:flex;justify-content:flex-end;">
+        <button class="btn-ghost" style="padding:5px 12px;font-size:11px;" onclick="wizChars.splice(${i},1);renderWizChars()">Remover</button>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+function buildWizSummary(){
+  const title=document.getElementById('w-title').value;
+  const genre=document.getElementById('w-genre').value;
+  const words=document.getElementById('w-words').value;
+  const totalCh=document.getElementById('w-total-ch').value;
+  const rel=document.getElementById('w-rel').value;
+  document.getElementById('wiz-summary').innerHTML=`
+    <div class="card-title">📋 Resumo da Saga</div>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--t2);">
+      <div>📖 <strong style="color:var(--text)">${title}</strong> — ${genre}</div>
+      <div>👥 ${wizChars.length} personagem(ns) configurado(s)</div>
+      <div>📝 ${words} palavras por capítulo · ${totalCh} capítulos no total</div>
+      <div>❤️ Evolução: ${rel}</div>
+    </div>`;
+}
+function createSagaFromWizard(){
+  const title=document.getElementById('w-title').value.trim();
+  if(!title){toast('⚠ Título obrigatório');return;}
+  const saga={
+    id:Date.now(), title,
+    genre:document.getElementById('w-genre').value,
+    emoji:document.getElementById('w-emoji').value||'📖',
+    synopsis:document.getElementById('w-synopsis').value,
+    totalChapters:parseInt(document.getElementById('w-total-ch').value)||50,
+    tags:document.getElementById('w-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    pov:document.getElementById('w-pov').value,
+    wordsPerChapter:parseInt(document.getElementById('w-words').value)||2000,
+    rhythm:document.getElementById('w-rhythm').value,
+    relationship:document.getElementById('w-rel').value,
+    chapters:[], createdAt:new Date().toISOString()
+  };
+  S.sagas.push(saga);
+  wizChars.forEach(c=>{if(c.name){S.characters.push({...c,id:Date.now()+Math.random()});}});
+  saveS(); renderDash(); renderLib(); updateForgeSagas();
+  toast('✦ Saga "'+title+'" criada!');
+  // Abrir forge direto
+  document.getElementById('fc-saga').value=saga.id;
+  document.getElementById('fc-words').value=saga.wordsPerChapter;
+  document.getElementById('fc-pov').value=saga.pov;
+  document.getElementById('fc-rhythm').value=saga.rhythm;
+  nav('forge',document.querySelector('[data-panel=forge]'));
+}
+
+// ════════════════════════════════
+// LIBRARY
+// ════════════════════════════════
+function renderLib(){
+  const grid=document.getElementById('saga-grid');
+  grid.innerHTML='';
+  S.sagas.forEach(s=>{
+    const c=document.createElement('div');
+    c.className='saga-card'; c.onclick=()=>openSaga(s.id);
+    c.innerHTML=`<div class="saga-cover">${s.emoji||'📖'}<div class="saga-genre">${s.genre}</div></div>
+      <div class="saga-info"><div class="saga-name">${s.title}</div>
+      <div class="saga-meta"><span>${s.chapters.length} cap.</span><span>${s.tags[0]||''}</span></div></div>`;
+    grid.appendChild(c);
+  });
+  const add=document.createElement('div');
+  add.className='saga-add'; add.onclick=startWizard;
+  add.innerHTML='<span style="font-size:30px">✦</span><span style="font-family:Cinzel,serif;font-size:10px;letter-spacing:2px;">NOVA SAGA</span>';
   grid.appendChild(add);
 }
-
-function openSaga(id) {
-  state.activeSaga = state.sagas.find(s => s.id === id);
-  renderSagaView();
-  showPanel('saga', null);
-}
-
-function renderSagaView() {
-  const s = state.activeSaga;
-  if (!s) return;
-  document.getElementById('saga-view-header').innerHTML = `
-    <div class="saga-cover-large">${s.emoji}</div>
-    <div class="saga-view-info">
-      <div class="saga-view-title">${s.title}</div>
-      <div class="saga-view-genre">${s.genre}</div>
-      <div class="saga-view-synopsis">${s.synopsis || 'Sem sinopse.'}</div>
-      <div class="saga-view-tags">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+function openSaga(id){
+  const s=S.sagas.find(x=>x.id===id);
+  if(!s)return;
+  const hdr=document.getElementById('sv-header');
+  hdr.innerHTML=`<div class="sv-cover">${s.emoji}</div>
+    <div class="sv-info">
+      <div class="sv-title">${s.title}</div>
+      <div class="sv-genre">${s.genre}</div>
+      <div class="sv-syn">${s.synopsis||'Sem sinopse.'}</div>
+      <div class="sv-tags">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div style="margin-top:14px;display:flex;gap:10px;">
+        <button class="btn-gold" onclick="openForgeForSaga(${s.id})">🔥 Forjar Próximo Capítulo</button>
+      </div>
     </div>`;
-
-  const grid = document.getElementById('chapters-grid');
-  grid.innerHTML = '';
-  const total = s.totalChapters || 50;
-  for (let i = 1; i <= Math.min(total, 20); i++) {
-    const ch = s.chapters.find(c => c.num === i);
-    const card = document.createElement('div');
-    card.className = 'chapter-card' + (ch ? ' done' : '');
-    card.onclick = () => loadChapterInForge(s, i, ch);
-    card.innerHTML = `
-      <div class="chapter-num">CAPÍTULO ${i}</div>
-      <div class="chapter-title">${ch ? ch.title || 'Capítulo '+i : '—'}</div>
-      <div class="chapter-status">${ch ? '✓ Escrito' : 'Não gerado'}</div>`;
+  const grid=document.getElementById('ch-grid');
+  grid.innerHTML='';
+  const total=s.totalChapters||50;
+  for(let i=1;i<=Math.min(total,30);i++){
+    const ch=s.chapters.find(c=>c.num===i);
+    const card=document.createElement('div');
+    card.className='ch-card'+(ch?' done':'');
+    card.onclick=()=>openForgeForChapter(s.id,i,ch);
+    card.innerHTML=`<div class="ch-num">CAP. ${i}</div><div class="ch-title">${ch?ch.title||'Capítulo '+i:'—'}</div><div class="ch-status">${ch?'✓ Escrito':'Não gerado'}</div>`;
     grid.appendChild(card);
   }
-  if (total > 20) {
-    const more = document.createElement('div');
-    more.className = 'chapter-add';
-    more.innerHTML = `<span style="font-size:22px">⋯</span><span style="font-size:11px;color:var(--text3)">${total - 20} capítulos restantes</span>`;
-    grid.appendChild(more);
+  nav('saga-view',null);
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+}
+function openForgeForSaga(sagaId){
+  const s=S.sagas.find(x=>x.id===sagaId);
+  const nextNum=(s.chapters.length>0?Math.max(...s.chapters.map(c=>c.num))+1:1);
+  document.getElementById('fc-saga').value=sagaId;
+  document.getElementById('fc-chnum').value=nextNum;
+  if(s.wordsPerChapter)document.getElementById('fc-words').value=s.wordsPerChapter;
+  if(s.pov)document.getElementById('fc-pov').value=s.pov;
+  if(s.rhythm)document.getElementById('fc-rhythm').value=s.rhythm;
+  nav('forge',document.querySelector('[data-panel=forge]'));
+}
+function openForgeForChapter(sagaId,num,existing){
+  document.getElementById('fc-saga').value=sagaId;
+  document.getElementById('fc-chnum').value=num;
+  document.getElementById('forge-editor').textContent=existing?existing.content:'';
+  updWC();
+  nav('forge',document.querySelector('[data-panel=forge]'));
+}
+
+// ════════════════════════════════
+// FORGE
+// ════════════════════════════════
+function updateForgeSagas(){
+  const sel=document.getElementById('fc-saga');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Selecionar saga —</option>';
+  S.sagas.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.title;sel.appendChild(o);});
+  if(cur)sel.value=cur;
+  onSagaChange();
+}
+function onSagaChange(){
+  const id=document.getElementById('fc-saga').value;
+  const s=S.sagas.find(x=>x.id==id);
+  document.getElementById('forge-saga-name').textContent=s?s.title+' — '+s.genre:'';
+  if(s){
+    if(s.wordsPerChapter)document.getElementById('fc-words').value=s.wordsPerChapter;
+    if(s.pov)document.getElementById('fc-pov').value=s.pov;
+    if(s.rhythm)document.getElementById('fc-rhythm').value=s.rhythm;
   }
 }
-
-function loadChapterInForge(saga, num, existing) {
-  document.getElementById('forge-saga').value = saga.id;
-  document.getElementById('forge-chapter-num').value = num;
-  document.getElementById('ai-output-text').textContent = existing ? existing.content : '';
-  showPanel('forge', document.querySelector('[onclick*="forge"]'));
+function updWC(){
+  const t=document.getElementById('forge-editor').textContent;
+  const wc=t.trim()?t.trim().split(/\s+/).length:0;
+  document.getElementById('fc-wc').textContent=wc+' palavras';
 }
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('forge-editor').addEventListener('input',updWC);
+});
 
-// ═══════════════════════════════════════════
-// FORGE / GENERATE
-// ═══════════════════════════════════════════
-function updateForgeSagas() {
-  const sel = document.getElementById('forge-saga');
-  sel.innerHTML = '<option value="">— Selecionar saga —</option>';
-  state.sagas.forEach(s => {
-    const o = document.createElement('option');
-    o.value = s.id; o.textContent = s.title;
-    sel.appendChild(o);
-  });
-}
+async function genChapter(){
+  const key=getKey(); if(!key){toast('⚠ Insira a chave API');return;}
+  const sagaId=document.getElementById('fc-saga').value;
+  const saga=S.sagas.find(s=>s.id==sagaId);
+  const pov=document.getElementById('fc-pov').value;
+  const words=document.getElementById('fc-words').value;
+  const chNum=document.getElementById('fc-chnum').value;
+  const rhythm=document.getElementById('fc-rhythm').value;
+  const context=document.getElementById('fc-context').value;
+  const genre=saga?saga.genre:'Fantasia';
+  const ss=S.settings;
+  const mem=S.memories.slice(-20).map(m=>'['+m.type+'] '+m.desc).join('\n');
+  const chars=S.characters.map(c=>c.name+' ('+c.role+'): '+c.personality+'. Trauma: '+c.traumas+'. Poder: '+c.powers+'. Objetivo: '+c.goal+'. Segredo: '+c.secret).join('\n');
 
-async function generateChapter() {
-  const apiKey = getApiKey();
-  if (!apiKey) { showToast('⚠ Insira a chave API primeiro'); return; }
-
-  const sagaId = document.getElementById('forge-saga').value;
-  const saga = state.sagas.find(s => s.id == sagaId);
-  const pov = document.getElementById('forge-pov').value;
-  const words = document.getElementById('forge-words').value;
-  const chNum = document.getElementById('forge-chapter-num').value;
-  const genre = document.getElementById('forge-genre').value;
-  const rhythm = document.getElementById('forge-rhythm').value;
-  const drama = document.getElementById('forge-drama').value;
-  const romance = document.getElementById('forge-romance').value;
-  const context = document.getElementById('forge-context').value;
-
-  const mem = state.memories.slice(-20).map(m => `[${m.type}] ${m.desc}`).join('\n');
-  const chars = state.characters.map(c => `${c.name} (${c.role}): ${c.personality}. Trauma: ${c.traumas}. Poder: ${c.powers}. Objetivo: ${c.goal}. Segredo: ${c.secret}`).join('\n');
-  const rel = state.settings.relationship;
-  const s = state.settings;
-
-  const systemPrompt = `Você é a MENTE SUPREMA LITERÁRIA — a escritora mais talentosa do mundo, especializada em criar obras que transcendem a qualidade de best-sellers convencionais.
+  const sys=`Você é a MENTE SUPREMA LITERÁRIA — escritora de elite, superando best-sellers convencionais.
 
 SISTEMAS ATIVOS:
-━━━━━━━━━━━━━━━━━━━
-🧠 ARQUITETO NARRATIVO SUPREMO
-- Evolução do relacionamento: ${rel}
-- Drama: ${s.drama}/10 | Violência: ${s.violence}/10 | Ação: ${s.action}/10
-- Comédia: ${s.comedy}/10 | Mistério: ${s.mystery}/10 | Tensão Romântica: ${s.romantic}/10
-- Plot Twist: ${s.twist}/10 | Impacto Emocional: ${s.emotional}/10 | Profundidade Psicológica: ${s.psych}/10
+🧠 ARQUITETO NARRATIVO: Relacionamento=${ss.relationship} | Drama=${ss.drama}/10 | Violência=${ss.violence}/10 | Ação=${ss.action}/10 | Mistério=${ss.mystery}/10 | Tensão Romântica=${ss.romantic}/10 | Plot Twist=${ss.twist}/10 | Emocional=${ss.emotional}/10 | Psicológico=${ss.psych}/10
+🎬 EDITOR CINEMATOGRÁFICO: Ritmo=${rhythm} | Intensidade=${ss.intensity}/10 | Abertura forte → Clímax → Cliffhanger obrigatório
+💾 MEMÓRIA MUNDIAL: ${mem||'Nenhuma ainda.'}
+👤 PERSONAGENS: ${chars||'Nenhum registrado.'}
+SAGA: ${saga?saga.title:'—'} | GÊNERO: ${genre} | UNIVERSO: ${saga?saga.synopsis:''}
 
-🎬 EDITOR CINEMATOGRÁFICO SUPREMO
-- Ritmo: ${rhythm} | Intensidade: ${s.intensity}/10
-- Estrutura: Abertura forte → Desenvolvimento → Clímax → Cliffhanger obrigatório
-- Cada capítulo deve terminar fazendo o leitor PRECISAR ler o próximo
+CONSELHO DOS MESTRES: Antes de entregar, verificar internamente:
+✓ "Parece escrito por IA?" → reescrever
+✓ "Emocionaria um leitor real?" → se não, reescrever
+✓ "Digno de publicação?" → se não, reescrever
+PROIBIDO: clichês, frases repetitivas, diálogos artificiais, romance acelerado.
+OBRIGATÓRIO: voz autoral única, emoções profundas, consequências reais.`;
 
-💾 MEMÓRIA MUNDIAL ABSOLUTA
-${mem || 'Nenhuma memória registrada ainda.'}
+  const usr=`Escreva o CAPÍTULO ${chNum} da saga. POV: ${pov}. Palavras: ~${words}.${context?'\nINSTRUÇÕES:\n'+context:''}\nEstrutura: abertura cinematográfica → desenvolvimento emocional → clímax → cliffhanger.\nEntregue APENAS o texto. Sem comentários.`;
 
-👤 PERSONAGENS
-${chars || 'Nenhum personagem registrado.'}
+  const editor=document.getElementById('forge-editor');
+  const loading=document.getElementById('ai-loading');
+  editor.textContent=''; loading.style.display='flex';
+  document.getElementById('fc-wc').textContent='...';
 
-🔍 DETECTOR DE FUROS
-- Verificar continuidade antes de escrever
-- Verificar coerência de personalidade
-- Verificar consistência de poderes e habilidades
+  const msgs=['Mente Suprema processando...','Arquiteto Narrativo planejando...','Conselho dos Mestres revisando...','Motor de Emoções calibrando...','Detector de Furos verificando...'];
+  let li=0;
+  const lt=setInterval(()=>{document.getElementById('loading-txt').textContent=msgs[li++%msgs.length];},2000);
 
-👑 CONSELHO DOS MESTRES LITERÁRIOS
-Antes de entregar, responder internamente:
-✓ "Isso parece escrito por IA?" → Se sim, reescrever
-✓ "Isso emocionaria um leitor humano?" → Se não, reescrever
-✓ "Isso é digno de publicação?" → Se não, reescrever
-
-MOTOR DE EMOÇÕES HUMANAS
-- Escrever emoções profundas, não superficiais
-- Personagens têm consequências emocionais reais
-- Evolução gradual e natural dos sentimentos
-
-SISTEMA ANTI-GENERICIDADE
-- PROIBIDO: clichês, frases repetitivas, textos genéricos
-- PROIBIDO: diálogos artificiais, romance acelerado sem construção
-- OBRIGATÓRIO: voz autoral única, linguagem rica e precisa
-
-SAGA: ${saga ? saga.title : 'Não especificada'}
-GÊNERO: ${genre}
-UNIVERSO: ${saga ? saga.synopsis : ''}
-
-Escreva como a escritora de elite que você é. O leitor deve esquecer completamente que existe uma IA escrevendo.`;
-
-  const userPrompt = `Escreva o CAPÍTULO ${chNum} da saga.
-
-POV: ${pov}
-Palavras aproximadas: ${words}
-${context ? `\nINSTRUÇÕES ESPECÍFICAS:\n${context}` : ''}
-
-Lembre-se de todos os sistemas ativos. Estruture o capítulo com:
-- Abertura que prende imediatamente
-- Desenvolvimento emocional profundo
-- Clímax cinematográfico
-- Encerramento com cliffhanger irresistível
-
-Entregue APENAS o texto do capítulo. Sem introduções, sem comentários, sem explicações.`;
-
-  // UI
-  const output = document.getElementById('ai-output-text');
-  const loading = document.getElementById('ai-loading');
-  output.textContent = '';
-  loading.style.display = 'flex';
-  document.getElementById('word-count-display').textContent = '...';
-
-  const loadingTexts = [
-    'Mente Suprema processando narrativa...',
-    'Arquiteto Narrativo planejando arcos...',
-    'Conselho dos Mestres revisando...',
-    'Motor de Emoções calibrando...',
-    'Detector de Furos verificando consistência...'
-  ];
-  let ltIdx = 0;
-  const ltInterval = setInterval(() => {
-    document.getElementById('loading-text').textContent = loadingTexts[ltIdx % loadingTexts.length];
-    ltIdx++;
-  }, 2000);
-
-  try {
-    const provider = getProvider();
-    const model = getModel();
+  try{
+    const prov=getProv(); const model=getModel();
     let res;
-
-    if (provider === 'anthropic') {
-      res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model,
-          max_tokens: 8000,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userPrompt }]
-        })
-      });
+    if(prov==='anthropic'){
+      res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:8000,system:sys,messages:[{role:'user',content:usr}]})});
     } else {
-      // Google Gemini
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-      res = await fetch(geminiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-          generationConfig: { maxOutputTokens: 8000, temperature: 1.0 }
-        })
-      });
+      const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+      res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:sys}]},contents:[{role:'user',parts:[{text:usr}]}],generationConfig:{maxOutputTokens:8000,temperature:1.0}})});
     }
-
-    clearInterval(ltInterval);
-    loading.style.display = 'none';
-
-    if (!res.ok) {
-      const err = await res.json();
-      const msg = err.error?.message || err.message || res.status;
-      showToast('⚠ Erro: ' + msg);
-      return;
+    clearInterval(lt); loading.style.display='none';
+    if(!res.ok){const e=await res.json();toast('⚠ Erro: '+(e.error?.message||e.message||res.status));return;}
+    const data=await res.json();
+    let text='';
+    if(prov==='anthropic'){text=data.content.map(i=>i.text||'').join('');}
+    else{text=data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')||'';}
+    editor.textContent=text; updWC();
+    if(saga){
+      const wc=text.trim().split(/\s+/).length;
+      const ch={num:parseInt(chNum),title:'Capítulo '+chNum,content:text,wordCount:wc,createdAt:new Date().toISOString()};
+      const idx=saga.chapters.findIndex(c=>c.num==chNum);
+      if(idx>=0)saga.chapters[idx]=ch; else saga.chapters.push(ch);
+      S.sagas=S.sagas.map(x=>x.id==saga.id?saga:x);
+      saveS(); renderDash();
     }
-
-    const data = await res.json();
-    let text = '';
-    if (provider === 'anthropic') {
-      text = data.content.map(i => i.text || '').join('');
-    } else {
-      text = data.candidates?.[0]?.content?.parts?.map(p => p.text||'').join('') || '';
-    }
-    output.textContent = text;
-
-    const wc = text.trim().split(/\s+/).length;
-    document.getElementById('word-count-display').textContent = wc + ' palavras';
-
-    // Auto-save chapter
-    if (saga) {
-      const existing = saga.chapters.findIndex(c => c.num == chNum);
-      const ch = { num: parseInt(chNum), title: 'Capítulo ' + chNum, content: text, wordCount: wc, createdAt: new Date().toISOString() };
-      if (existing >= 0) saga.chapters[existing] = ch;
-      else saga.chapters.push(ch);
-      state.sagas = state.sagas.map(s => s.id == saga.id ? saga : s);
-      saveState();
-      updateStats();
-    }
-
-    showToast('✦ Capítulo ' + chNum + ' gerado — ' + wc + ' palavras');
-
-  } catch (e) {
-    clearInterval(ltInterval);
-    loading.style.display = 'none';
-    showToast('⚠ Erro de conexão: ' + e.message);
-  }
+    toast('✦ Capítulo '+chNum+' gerado');
+  } catch(e){clearInterval(lt);loading.style.display='none';toast('⚠ Erro: '+e.message);}
 }
 
-function clearManuscript() {
-  document.getElementById('ai-output-text').textContent = '';
-  document.getElementById('word-count-display').textContent = '0 palavras';
+function clearForge(){document.getElementById('forge-editor').textContent='';updWC();}
+function copyForge(){navigator.clipboard.writeText(document.getElementById('forge-editor').textContent).then(()=>toast('✦ Copiado'));}
+function saveForge(){
+  const saga=S.sagas.find(s=>s.id==document.getElementById('fc-saga').value);
+  if(!saga){toast('⚠ Selecione uma saga');return;}
+  const num=parseInt(document.getElementById('fc-chnum').value);
+  const text=document.getElementById('forge-editor').textContent;
+  if(!text.trim()){toast('⚠ Nada para salvar');return;}
+  const ch={num,title:'Capítulo '+num,content:text,wordCount:text.split(/\s+/).length,createdAt:new Date().toISOString()};
+  const idx=saga.chapters.findIndex(c=>c.num===num);
+  if(idx>=0)saga.chapters[idx]=ch; else saga.chapters.push(ch);
+  saveS(); renderDash(); toast('✦ Capítulo salvo');
 }
 
-function copyOutput() {
-  const text = document.getElementById('ai-output-text').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('✦ Copiado para a área de transferência'));
-}
-
-function saveChapter() {
-  const saga = state.sagas.find(s => s.id == document.getElementById('forge-saga').value);
-  if (!saga) { showToast('⚠ Selecione uma saga primeiro'); return; }
-  const num = parseInt(document.getElementById('forge-chapter-num').value);
-  const text = document.getElementById('ai-output-text').textContent;
-  if (!text.trim()) { showToast('⚠ Nenhum conteúdo para salvar'); return; }
-  const ch = { num, title: 'Capítulo ' + num, content: text, wordCount: text.split(/\s+/).length, createdAt: new Date().toISOString() };
-  const idx = saga.chapters.findIndex(c => c.num === num);
-  if (idx >= 0) saga.chapters[idx] = ch; else saga.chapters.push(ch);
-  saveState(); updateStats();
-  showToast('✦ Capítulo salvo');
-}
-
-// ═══════════════════════════════════════════
+// ════════════════════════════════
 // CHARACTERS
-// ═══════════════════════════════════════════
-function openCharModal() { document.getElementById('char-modal-overlay').style.display = 'flex'; }
-function closeCharModal() { document.getElementById('char-modal-overlay').style.display = 'none'; }
-
-function createCharacter() {
-  const name = document.getElementById('cm-name').value.trim();
-  if (!name) { showToast('⚠ Nome obrigatório'); return; }
-  const char = {
-    id: Date.now(), name,
-    role: document.getElementById('cm-role').value,
-    emoji: document.getElementById('cm-emoji').value || '👤',
-    personality: document.getElementById('cm-personality').value,
-    traumas: document.getElementById('cm-traumas').value,
-    powers: document.getElementById('cm-powers').value,
-    goal: document.getElementById('cm-goal').value,
-    secret: document.getElementById('cm-secret').value
-  };
-  state.characters.push(char);
-  saveState(); closeCharModal(); renderCharacters(); renderDashboard();
-  showToast('✦ Personagem "' + name + '" criado');
-  ['cm-name','cm-personality','cm-traumas','cm-powers','cm-goal','cm-secret','cm-emoji'].forEach(id => document.getElementById(id).value = '');
+// ════════════════════════════════
+function openCharModal(){document.getElementById('char-modal').classList.add('open');}
+function closeCharModal(){document.getElementById('char-modal').classList.remove('open');}
+function createChar(){
+  const name=document.getElementById('cm-name').value.trim();
+  if(!name){toast('⚠ Nome obrigatório');return;}
+  S.characters.push({id:Date.now(),name,role:document.getElementById('cm-role').value,emoji:document.getElementById('cm-emoji').value||'👤',personality:document.getElementById('cm-personality').value,traumas:document.getElementById('cm-traumas').value,powers:document.getElementById('cm-powers').value,goal:document.getElementById('cm-goal').value,secret:document.getElementById('cm-secret').value});
+  saveS(); closeCharModal(); renderChars(); renderDash();
+  ['cm-name','cm-personality','cm-traumas','cm-powers','cm-goal','cm-secret','cm-emoji'].forEach(id=>document.getElementById(id).value='');
+  toast('✦ Personagem criado');
 }
-
-function renderCharacters() {
-  const grid = document.getElementById('char-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  state.characters.forEach(c => {
-    const card = document.createElement('div');
-    card.className = 'char-card';
-    const traits = c.personality ? c.personality.split(',').slice(0,3) : [];
-    card.innerHTML = `
-      <div class="char-avatar">${c.emoji}</div>
-      <div class="char-name">${c.name}</div>
-      <div class="char-role">${c.role}</div>
-      <div class="char-traits">${traits.map(t=>`<span class="trait">${t.trim()}</span>`).join('')}</div>
-      ${c.powers ? `<div style="margin-top:10px;font-size:11px;color:var(--text3)">⚡ ${c.powers}</div>` : ''}
-      ${c.secret ? `<div style="margin-top:6px;font-size:11px;color:var(--text3)">🤫 ${c.secret.substring(0,50)}...</div>` : ''}`;
+function renderChars(){
+  const grid=document.getElementById('char-grid'); if(!grid)return;
+  grid.innerHTML='';
+  S.characters.forEach(c=>{
+    const card=document.createElement('div'); card.className='char-card';
+    const traits=c.personality?c.personality.split(',').slice(0,3):[];
+    card.innerHTML=`<div class="char-av">${c.emoji}</div><div class="char-name">${c.name}</div><div class="char-role">${c.role}</div><div class="char-traits">${traits.map(t=>`<span class="trait">${t.trim()}</span>`).join('')}</div>${c.powers?`<div style="margin-top:8px;font-size:10px;color:var(--t3)">⚡ ${c.powers}</div>`:''}`;
     grid.appendChild(card);
   });
-  const add = document.createElement('div');
-  add.className = 'char-card';
-  add.style.cssText = 'border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;cursor:pointer;min-height:160px;';
-  add.onclick = openCharModal;
-  add.innerHTML = '<span style="font-size:28px;color:var(--text3)">+</span><span style="font-size:11px;color:var(--text3);font-family:Cinzel,serif;letter-spacing:2px;">NOVO PERSONAGEM</span>';
+  const add=document.createElement('div'); add.className='char-card';
+  add.style.cssText='border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;cursor:pointer;min-height:150px;';
+  add.onclick=openCharModal;
+  add.innerHTML='<span style="font-size:24px;color:var(--t3)">+</span><span style="font-size:9px;color:var(--t3);font-family:Cinzel,serif;letter-spacing:2px;">NOVO</span>';
   grid.appendChild(add);
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════
 // MEMORY
-// ═══════════════════════════════════════════
-function addMemory() {
-  const type = document.getElementById('mem-type').value;
-  const desc = document.getElementById('mem-desc').value.trim();
-  if (!desc) { showToast('⚠ Descreva o evento'); return; }
-  state.memories.push({ id: Date.now(), type, desc, createdAt: new Date().toISOString() });
-  document.getElementById('mem-desc').value = '';
-  saveState(); renderMemory();
-  showToast('✦ Memória registrada');
+// ════════════════════════════════
+function addMem(){
+  const desc=document.getElementById('mem-desc').value.trim();
+  if(!desc){toast('⚠ Descreva o evento');return;}
+  S.memories.push({id:Date.now(),type:document.getElementById('mem-type').value,desc,createdAt:new Date().toISOString()});
+  document.getElementById('mem-desc').value='';
+  saveS(); renderMem(); toast('✦ Memória registrada');
 }
-
-function renderMemory() {
-  const counts = {};
-  state.memories.forEach(m => { counts[m.type] = (counts[m.type]||0)+1; });
-
-  const typeMap = {
-    'Traição': 'm-betrayals', 'Morte': 'm-deaths', 'Casamento': 'm-marriages',
-    'Guerra': 'm-wars', 'Segredo': 'm-secrets', 'Profecia': 'm-prophecies',
-    'Aliança': 'm-alliances', 'Poder': 'm-powers', 'Local': 'm-locations'
-  };
-  Object.entries(typeMap).forEach(([t, id]) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = counts[t] || 0;
-  });
-
-  const total = state.memories.length;
-  const pct = total > 0 ? Math.min(95 + Math.floor(total/10), 100) : 0;
-  const fill = document.getElementById('cons-fill');
-  const pctEl = document.getElementById('cons-pct');
-  if (fill) fill.style.width = pct + '%';
-  if (pctEl) pctEl.textContent = total > 0 ? pct + '%' : '—';
-
-  const list = document.getElementById('memory-list');
-  if (!list) return;
-  list.innerHTML = '';
-  [...state.memories].reverse().forEach(m => {
-    const item = document.createElement('div');
-    item.style.cssText = 'display:flex;gap:12px;align-items:flex-start;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;';
-    item.innerHTML = `<span style="font-size:11px;background:var(--gold-glow);border:1px solid rgba(197,160,89,0.2);border-radius:4px;padding:2px 8px;color:var(--gold);min-width:fit-content;">${m.type}</span><span style="font-size:13px;color:var(--text2)">${m.desc}</span>`;
+function renderMem(){
+  const tmap={'Traição':'m-betrayals','Morte':'m-deaths','Casamento':'m-marriages','Guerra':'m-wars','Segredo':'m-secrets','Profecia':'m-prophecies','Aliança':'m-alliances','Poder':'m-powers','Local':'m-locations'};
+  const counts={};
+  S.memories.forEach(m=>{counts[m.type]=(counts[m.type]||0)+1;});
+  Object.entries(tmap).forEach(([t,id])=>{const el=document.getElementById(id);if(el)el.textContent=counts[t]||0;});
+  const total=S.memories.length;
+  const pct=total>0?Math.min(95+Math.floor(total/10),100):0;
+  const fill=document.getElementById('cons-fill');
+  const pctEl=document.getElementById('cons-pct');
+  if(fill)fill.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=total>0?pct+'%':'—';
+  const list=document.getElementById('mem-list'); if(!list)return;
+  list.innerHTML='';
+  [...S.memories].reverse().forEach(m=>{
+    const item=document.createElement('div');
+    item.style.cssText='display:flex;gap:10px;align-items:flex-start;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:7px;';
+    item.innerHTML=`<span style="font-size:10px;background:var(--gg);border:1px solid rgba(197,160,89,0.2);border-radius:3px;padding:2px 7px;color:var(--gold);min-width:fit-content;">${m.type}</span><span style="font-size:12px;color:var(--t2)">${m.desc}</span>`;
     list.appendChild(item);
   });
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════
 // TIMELINE
-// ═══════════════════════════════════════════
-function addTimelineEvent() { document.getElementById('tl-modal-overlay').style.display = 'flex'; }
-function closeTlModal() { document.getElementById('tl-modal-overlay').style.display = 'none'; }
-
-function saveTlEvent() {
-  const t = document.getElementById('tl-title').value.trim();
-  if (!t) { showToast('⚠ Título obrigatório'); return; }
-  state.timeline.push({
-    id: Date.now(),
-    chapter: document.getElementById('tl-chapter').value,
-    title: t,
-    desc: document.getElementById('tl-desc').value,
-    type: document.getElementById('tl-type').value
-  });
-  saveState(); closeTlModal(); renderTimeline();
-  showToast('✦ Evento registrado');
+// ════════════════════════════════
+function openTlModal(){document.getElementById('tl-modal').classList.add('open');}
+function closeTlModal(){document.getElementById('tl-modal').classList.remove('open');}
+function saveTl(){
+  const t=document.getElementById('tl-title').value.trim();
+  if(!t){toast('⚠ Título obrigatório');return;}
+  S.timeline.push({id:Date.now(),chapter:document.getElementById('tl-ch').value,title:t,desc:document.getElementById('tl-desc').value,type:document.getElementById('tl-type').value});
+  saveS(); closeTlModal(); renderTl(); toast('✦ Evento registrado');
 }
-
-function renderTimeline() {
-  const list = document.getElementById('timeline-list');
-  if (!list) return;
-  if (state.timeline.length === 0) {
-    list.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:24px 0;">Nenhum evento registrado ainda.</div>';
-    return;
-  }
-  list.innerHTML = '';
-  state.timeline.forEach(e => {
-    const item = document.createElement('div');
-    item.className = 'timeline-item';
-    const emoji = e.type.split(' ')[0];
-    item.innerHTML = `
-      <div class="timeline-dot">${emoji}</div>
-      <div class="timeline-content">
-        <div class="timeline-cap">${e.chapter}</div>
-        <div class="timeline-title">${e.title}</div>
-        <div class="timeline-desc">${e.desc}</div>
-      </div>`;
+function renderTl(){
+  const list=document.getElementById('tl-list'); if(!list)return;
+  if(!S.timeline.length){list.innerHTML='<div style="color:var(--t3);font-size:13px;padding:20px 0;">Nenhum evento registrado ainda.</div>';return;}
+  list.innerHTML='';
+  S.timeline.forEach(e=>{
+    const item=document.createElement('div'); item.className='tl-item';
+    const emoji=e.type.split(' ')[0];
+    item.innerHTML=`<div class="tl-dot">${emoji}</div><div class="tl-content"><div class="tl-cap">${e.chapter}</div><div class="tl-title">${e.title}</div><div class="tl-desc">${e.desc}</div></div>`;
     list.appendChild(item);
   });
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════
 // WORLD
-// ═══════════════════════════════════════════
-async function generateWorld() {
-  const apiKey = getApiKey();
-  if (!apiKey) { showToast('⚠ Insira a chave API'); return; }
-  const type = document.getElementById('world-type').value;
-  showToast('⚡ Gerando universo ' + type + '...');
-
-  try {
-    const provider = getProvider();
-    const model = getModel();
-    const worldPromptText = `Crie um universo completo de ${type} para uma saga. Responda APENAS em JSON com esta estrutura exata sem markdown:\n{"kingdoms":["nome1","nome2","nome3"],"cities":["cidade1","cidade2","cidade3","cidade4","cidade5"],"factions":["faccao1","faccao2","faccao3"],"magic":["sistema1","sistema2"],"creatures":["criatura1","criatura2","criatura3"],"prophecies":["profecia1"],"description":"Descrição do mundo em 2-3 frases"}`;
-    let res;
-    if (provider === 'anthropic') {
-      res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-        body: JSON.stringify({ model, max_tokens: 2000, messages: [{ role: 'user', content: worldPromptText }] })
-      });
+// ════════════════════════════════
+async function genWorld(){
+  const key=getKey(); if(!key){toast('⚠ Insira a chave API');return;}
+  const type=document.getElementById('world-type').value;
+  toast('⚡ Gerando universo '+type+'...');
+  const prompt=`Crie um universo completo de ${type} para uma saga. Responda APENAS em JSON sem markdown:\n{"kingdoms":["n1","n2","n3"],"cities":["c1","c2","c3","c4","c5"],"factions":["f1","f2","f3"],"magic":["m1","m2"],"creatures":["cr1","cr2","cr3"],"prophecies":["p1"],"description":"Descrição em 2-3 frases"}`;
+  try{
+    const prov=getProv(); const model=getModel(); let res;
+    if(prov==='anthropic'){
+      res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:2000,messages:[{role:'user',content:prompt}]})});
     } else {
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-      res = await fetch(geminiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: worldPromptText }] }], generationConfig: { maxOutputTokens: 2000 } })
-      });
+      const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+      res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:2000}})});
     }
-    const data = await res.json();
-    let rawText = '';
-    if (provider === 'anthropic') {
-      rawText = data.content?.[0]?.text || '';
-    } else {
-      rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    }
-    const raw = rawText.replace(/```json|```/g,'').trim();
-    const world = JSON.parse(raw);
-    state.worldData = world; saveState();
-
-    document.getElementById('w-kingdoms').textContent = world.kingdoms?.length || 0;
-    document.getElementById('w-cities').textContent = world.cities?.length || 0;
-    document.getElementById('w-factions').textContent = world.factions?.length || 0;
-    document.getElementById('w-magic').textContent = world.magic?.length || 0;
-    document.getElementById('w-creatures').textContent = world.creatures?.length || 0;
-    document.getElementById('w-proph').textContent = world.prophecies?.length || 0;
-
-    const wd = document.getElementById('world-data');
-    wd.innerHTML = `
-      <div class="dash-card"><h3>📜 Universo Gerado</h3>
-      <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${world.description}</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-        ${world.kingdoms?`<div><div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">REINOS</div>${world.kingdoms.map(k=>`<div style="font-size:12px;color:var(--text2);padding:4px 0;">🏰 ${k}</div>`).join('')}</div>`:''}
-        ${world.factions?`<div><div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">FACÇÕES</div>${world.factions.map(f=>`<div style="font-size:12px;color:var(--text2);padding:4px 0;">⚔️ ${f}</div>`).join('')}</div>`:''}
-        ${world.magic?`<div><div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">MAGIA</div>${world.magic.map(m=>`<div style="font-size:12px;color:var(--text2);padding:4px 0;">✨ ${m}</div>`).join('')}</div>`:''}
-      </div></div>`;
-    showToast('✦ Universo criado com sucesso');
-  } catch(e) { showToast('⚠ Erro ao gerar universo: ' + e.message); }
+    const data=await res.json();
+    let raw='';
+    if(prov==='anthropic')raw=data.content?.[0]?.text||'';
+    else raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const world=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    S.worldData=world; saveS();
+    ['kingdoms','cities','factions','magic','creatures'].forEach(k=>{const el=document.getElementById('w-'+k.replace('ies','ies').replace('creatures','creatures'));if(el)el.textContent=world[k]?.length||0;});
+    document.getElementById('w-proph').textContent=world.prophecies?.length||0;
+    document.getElementById('world-result').innerHTML=`<div class="card"><div class="card-title">📜 Universo: ${type}</div><p style="color:var(--t2);font-size:12px;margin-bottom:14px;">${world.description}</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">${world.kingdoms?`<div><div style="font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:7px;">REINOS</div>${world.kingdoms.map(k=>`<div style="font-size:11px;color:var(--t2);padding:3px 0;">🏰 ${k}</div>`).join('')}</div>`:''} ${world.factions?`<div><div style="font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:7px;">FACÇÕES</div>${world.factions.map(f=>`<div style="font-size:11px;color:var(--t2);padding:3px 0;">⚔️ ${f}</div>`).join('')}</div>`:''} ${world.magic?`<div><div style="font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:7px;">MAGIA</div>${world.magic.map(m=>`<div style="font-size:11px;color:var(--t2);padding:3px 0;">✨ ${m}</div>`).join('')}</div>`:''}</div></div>`;
+    toast('✦ Universo gerado');
+  } catch(e){toast('⚠ Erro: '+e.message);}
 }
 
-// ═══════════════════════════════════════════
-// ARCS
-// ═══════════════════════════════════════════
-function generateArcs() {
-  const total = parseInt(document.getElementById('arch-total-chapters').value) || 50;
-  const arcs = [
-    { name: 'ARCO INICIAL', range: [1, Math.floor(total*0.15)], icon: '🌱', desc: 'Apresentação do mundo, personagens e conflito inicial' },
-    { name: 'ARCO INTERMEDIÁRIO', range: [Math.floor(total*0.15)+1, Math.floor(total*0.40)], icon: '⚔️', desc: 'Desenvolvimento das relações e primeiro grande conflito' },
-    { name: 'ARCO DE DESENVOLVIMENTO', range: [Math.floor(total*0.40)+1, Math.floor(total*0.65)], icon: '🔥', desc: 'Revelações, traições e crescimento dos personagens' },
-    { name: 'ARCO DE CRISE', range: [Math.floor(total*0.65)+1, Math.floor(total*0.85)], icon: '💀', desc: 'O ponto mais sombrio — perdas, sacrifícios e transformações' },
-    { name: 'ARCO FINAL', range: [Math.floor(total*0.85)+1, total], icon: '👑', desc: 'Resolução épica e conclusão emocional' }
-  ];
-  const display = document.getElementById('arcs-display');
-  display.innerHTML = arcs.map(a => `
-    <div style="padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span>${a.icon}</span>
-        <span style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);letter-spacing:1px;">${a.name}</span>
-        <span style="margin-left:auto;font-size:10px;color:var(--text3)">Cap. ${a.range[0]}–${a.range[1]}</span>
-      </div>
-      <div style="font-size:11px;color:var(--text3)">${a.desc}</div>
-    </div>`).join('');
-  showToast('✦ Arcos narrativos gerados');
-}
-
-// ═══════════════════════════════════════════
-// MASTERS
-// ═══════════════════════════════════════════
-function initMasters() {
-  const masters = [
-    { icon: '💕', name: 'Mestre de Romance', spec: 'Tensão amorosa e química' },
-    { icon: '😢', name: 'Mestre de Drama', spec: 'Emoção e impacto narrativo' },
-    { icon: '🌍', name: 'Mestre de Worldbuilding', spec: 'Universos vivos e coesos' },
-    { icon: '🔗', name: 'Mestre de Consistência', spec: 'Continuidade e lógica' },
-    { icon: '🎵', name: 'Mestre de Ritmo', spec: 'Cadência e fluxo narrativo' },
-    { icon: '🎭', name: 'Mestre de Personagens', spec: 'Profundidade psicológica' },
-    { icon: '🔍', name: 'Mestre de Mistério', spec: 'Suspense e revelações' },
-    { icon: '💬', name: 'Mestre de Diálogos', spec: 'Naturalidade e autenticidade' }
-  ];
-  const grid = document.getElementById('masters-grid');
-  if (!grid) return;
-  grid.innerHTML = masters.map(m => `
-    <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;">
-      <div style="font-size:28px;margin-bottom:8px;">${m.icon}</div>
-      <div style="font-family:'Cinzel',serif;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:4px;">${m.name}</div>
-      <div style="font-size:11px;color:var(--text3)">${m.spec}</div>
-      <div style="margin-top:10px;font-size:10px;color:var(--green);background:rgba(80,160,128,0.1);border-radius:4px;padding:2px 6px;display:inline-block;">ATIVO</div>
-    </div>`).join('');
-}
-
-// ═══════════════════════════════════════════
-// SYSTEMS STATUS
-// ═══════════════════════════════════════════
-function initSystems() {
-  const systems = [
-    { name: 'Arquiteto Narrativo', status: 'Ativo' },
-    { name: 'Memória Mundial', status: 'Ativo' },
-    { name: 'Editor Cinematográfico', status: 'Ativo' },
-    { name: 'Detector de Furos', status: 'Ativo' },
-    { name: 'Motor de Emoções', status: 'Ativo' },
-    { name: 'Conselho dos Mestres', status: 'Ativo' },
-    { name: 'Anti-Genericidade', status: 'Ativo' },
-    { name: 'Universos Infinitos', status: 'Ativo' }
-  ];
-  const el = document.getElementById('sys-rows');
-  if (!el) return;
-  el.innerHTML = systems.map(s => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
-      <span style="font-size:12px;color:var(--text2)">${s.name}</span>
-      <span style="font-size:10px;color:var(--green);background:rgba(80,160,128,0.1);border-radius:4px;padding:2px 8px;">${s.status}</span>
-    </div>`).join('');
-}
-
-// ═══════════════════════════════════════════
-// DASHBOARD
-// ═══════════════════════════════════════════
-function renderDashboard() {
-  const totalChaps = state.sagas.reduce((acc, s) => acc + s.chapters.length, 0);
-  const el = (id, val) => { const e = document.getElementById(id); if(e) e.textContent = val; };
-  el('stat-sagas', state.sagas.length);
-  el('stat-chapters', totalChaps);
-  el('stat-chars', state.characters.length);
-  el('stat-cons', state.memories.length > 0 ? (Math.min(95 + Math.floor(state.memories.length/10), 100)) + '%' : '—');
-}
-
-function updateStats() { renderDashboard(); }
-
-// ═══════════════════════════════════════════
-// SLIDER
-// ═══════════════════════════════════════════
-function updateSlider(key, val) {
-  const el = document.getElementById('v-' + key);
-  if (el) el.textContent = val;
-  state.settings[key] = parseInt(val);
-  saveState();
-}
-
-// ═══════════════════════════════════════════
-// RADIO
-// ═══════════════════════════════════════════
-function selectRadio(el, group) {
-  document.querySelectorAll(`#${group}-group .radio-item, [onclick*="${group}"]`).forEach(r => r.classList.remove('selected'));
+// ════════════════════════════════
+// ARCHITECT SLIDERS
+// ════════════════════════════════
+function setA(k,v){const el=document.getElementById('a-'+k);if(el)el.textContent=v;S.settings[k]=parseInt(v);saveS();}
+function setSV(k,v){const el=document.getElementById('sv-'+k);if(el)el.textContent=v;S.settings[k]=parseInt(v);saveS();}
+function selRel(el){
+  document.querySelectorAll('#rel-group .radio-item').forEach(r=>r.classList.remove('selected'));
   el.classList.add('selected');
-  state.settings.relationship = el.querySelector('input').value;
-  saveState();
+  S.settings.relationship=el.querySelector('input').value||el.textContent.trim();
+  saveS();
 }
 
-// ═══════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toast-msg').textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+// ════════════════════════════════
+// ARCS
+// ════════════════════════════════
+function genArcs(){
+  const total=parseInt(document.getElementById('arc-total').value)||50;
+  const arcs=[
+    {name:'ARCO INICIAL',r:[1,Math.floor(total*0.15)],icon:'🌱',desc:'Apresentação do mundo e conflito inicial'},
+    {name:'ARCO INTERMEDIÁRIO',r:[Math.floor(total*0.15)+1,Math.floor(total*0.40)],icon:'⚔️',desc:'Desenvolvimento das relações e primeiro grande conflito'},
+    {name:'ARCO DE DESENVOLVIMENTO',r:[Math.floor(total*0.40)+1,Math.floor(total*0.65)],icon:'🔥',desc:'Revelações, traições e crescimento dos personagens'},
+    {name:'ARCO DE CRISE',r:[Math.floor(total*0.65)+1,Math.floor(total*0.85)],icon:'💀',desc:'O ponto mais sombrio — perdas e sacrifícios'},
+    {name:'ARCO FINAL',r:[Math.floor(total*0.85)+1,total],icon:'👑',desc:'Resolução épica e conclusão emocional'}
+  ];
+  document.getElementById('arcs-out').innerHTML=arcs.map(a=>`<div style="padding:10px 13px;background:var(--bg);border:1px solid var(--border);border-radius:7px;"><div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;"><span>${a.icon}</span><span style="font-family:'Cinzel',serif;font-size:9px;color:var(--gold);letter-spacing:1px;">${a.name}</span><span style="margin-left:auto;font-size:9px;color:var(--t3)">Cap. ${a.r[0]}–${a.r[1]}</span></div><div style="font-size:10px;color:var(--t3)">${a.desc}</div></div>`).join('');
+  toast('✦ Arcos gerados');
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════
+// MASTERS
+// ════════════════════════════════
+function initMasters(){
+  const masters=[
+    {icon:'💕',name:'Mestre de Romance',spec:'Tensão amorosa'},
+    {icon:'😢',name:'Mestre de Drama',spec:'Impacto emocional'},
+    {icon:'🌍',name:'Mestre de Worldbuilding',spec:'Universos vivos'},
+    {icon:'🔗',name:'Mestre de Consistência',spec:'Continuidade'},
+    {icon:'🎵',name:'Mestre de Ritmo',spec:'Cadência narrativa'},
+    {icon:'🎭',name:'Mestre de Personagens',spec:'Profundidade psic.'},
+    {icon:'🔍',name:'Mestre de Mistério',spec:'Suspense e revelações'},
+    {icon:'💬',name:'Mestre de Diálogos',spec:'Naturalidade'}
+  ];
+  const g=document.getElementById('masters-grid'); if(!g)return;
+  g.innerHTML=masters.map(m=>`<div class="master-card"><div class="master-icon">${m.icon}</div><div class="master-name">${m.name}</div><div class="master-spec">${m.spec}</div><div class="master-status">ATIVO</div></div>`).join('');
+}
+
+// ════════════════════════════════
+// SYSTEMS
+// ════════════════════════════════
+function initSystems(){
+  const systems=['Arquiteto Narrativo','Memória Mundial','Editor Cinematográfico','Detector de Furos','Motor de Emoções','Conselho dos Mestres','Anti-Genericidade','Universos Infinitos'];
+  const g=document.getElementById('sys-grid'); if(!g)return;
+  g.innerHTML=systems.map(s=>`<div class="sys-row"><span class="sys-name">${s}</span><span class="sys-badge">Ativo</span></div>`).join('');
+}
+
+// ════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════
+function renderDash(){
+  const totalCh=S.sagas.reduce((a,s)=>a+s.chapters.length,0);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('st-sagas',S.sagas.length);
+  set('st-chapters',totalCh);
+  set('st-chars',S.characters.length);
+  set('st-cons',S.memories.length>0?Math.min(95+Math.floor(S.memories.length/10),100)+'%':'—');
+}
+
+// ════════════════════════════════
 // RENDER ALL
-// ═══════════════════════════════════════════
-function renderAll() {
-  renderDashboard();
-  renderLibrary();
-  renderCharacters();
-  renderMemory();
-  renderTimeline();
-  updateForgeSagas();
-  if (state.worldData.kingdoms) {
-    document.getElementById('w-kingdoms').textContent = state.worldData.kingdoms.length;
-    document.getElementById('w-cities').textContent = state.worldData.cities?.length||0;
-    document.getElementById('w-factions').textContent = state.worldData.factions?.length||0;
-    document.getElementById('w-magic').textContent = state.worldData.magic?.length||0;
-    document.getElementById('w-creatures').textContent = state.worldData.creatures?.length||0;
-    document.getElementById('w-proph').textContent = state.worldData.prophecies?.length||0;
-  }
+// ════════════════════════════════
+function renderAll(){renderDash();renderLib();renderChars();renderMem();renderTl();}
+
+// ════════════════════════════════
+// TOAST
+// ════════════════════════════════
+function toast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// Word count on editor
-document.addEventListener('DOMContentLoaded', () => {
-  const editor = document.getElementById('ai-output-text');
-  if (editor) {
-    editor.addEventListener('input', () => {
-      const wc = editor.textContent.trim().split(/\s+/).filter(Boolean).length;
-      document.getElementById('word-count-display').textContent = wc + ' palavras';
-    });
+// ── INIT panels display ──
+document.querySelectorAll('#main > div').forEach(el=>{
+  if(el.id!=='panel-dashboard'){
+    if(el.id==='panel-forge'||el.id==='panel-wizard'){el.style.display='none';}
+    else if(el.id==='panel-saga-view'){el.style.display='none';}
   }
 });
 </script>
 </body>
 </html>
- 
