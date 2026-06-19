@@ -1,1687 +1,518 @@
-  <!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>IMPERIUM STORYFORGE</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --gold: #d4af37;
-  --gold-dark: #a07820;
-  --gold-dim: rgba(212,175,55,0.15);
-  --gold-glow: rgba(212,175,55,0.08);
-  --bright: #ffeaac;
-  --crimson: #8b1a1a;
-  --crimson-light: #c0392b;
-  --bg: #06050400;
-  --bg-true: #060504;
-  --surface: #0c0a07;
-  --surface2: #111009;
-  --border: rgba(212,175,55,0.12);
-  --text: #f0e8d0;
-  --text-dim: rgba(240,232,208,0.45);
-  --text-muted: rgba(240,232,208,0.2);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:#000}
-::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:2px}
-body{background:var(--bg-true);color:var(--text);font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRONICLE FORGE | Construa Lendas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #020202;
+            --bg-surface: #0a0a0a;
+            --bg-card: #111111;
+            --gold: #d4af37;
+            --gold-bright: #f4cf6d;
+            --gold-dim: #8a6d1d;
+            --crimson: #8b1a1a;
+            --text-main: #f0f0f0;
+            --text-muted: #707070;
+            --sidebar-width: 280px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
 
-/* NOISE OVERLAY */
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:100;opacity:0.3}
+        /* RESET & BASE */
+        * { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: thin; scrollbar-color: var(--gold-dim) transparent; }
+        body { background: var(--bg-deep); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* SIDEBAR AAA */
+        aside {
+            width: var(--sidebar-width);
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 1000;
+        }
 
-/* VIGNETTE */
-body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.6) 100%);pointer-events:none;z-index:101}
+        .brand-box { margin-bottom: 50px; text-align: center; }
+        .brand-box h1 { font-family: 'Cinzel'; font-weight: 900; font-size: 1.4rem; color: var(--gold); letter-spacing: 3px; text-shadow: 0 0 20px rgba(212,175,55,0.2); }
+        .brand-box p { font-size: 0.6rem; color: var(--gold-dim); letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; }
 
-/* ===================== SCREENS ===================== */
-.screen{display:none;min-height:100vh}
-.screen.active{display:block}
+        nav ul { list-style: none; }
+        nav li {
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
 
-/* ===================== TOPBAR ===================== */
-.topbar{position:sticky;top:0;background:rgba(6,5,4,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:20px;z-index:500;height:60px}
-.topbar-logo{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:color .2s}
-.topbar-logo:hover{color:var(--bright)}
-.topbar-logo span{color:var(--gold-dark)}
-.topbar-nav{display:flex;gap:4px;margin-left:auto}
-.nav-btn{background:transparent;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:3px;padding:8px 14px;cursor:pointer;text-transform:uppercase;border-radius:2px;transition:all .2s;white-space:nowrap}
-.nav-btn:hover,.nav-btn.active{color:var(--gold);background:var(--gold-glow)}
-.nav-btn.cta{border:1px solid var(--gold-dark);color:var(--gold);margin-left:8px}
-.nav-btn.cta:hover{background:var(--gold-dim);color:var(--bright)}
-.topbar-title{flex:1;min-width:0}
-#topbar-book-title{background:transparent;border:none;border-bottom:1px solid rgba(212,175,55,0.18);width:100%;color:var(--bright);padding:4px 0;outline:none;font-family:'Cinzel',serif;font-size:clamp(0.75rem,2vw,0.95rem);letter-spacing:2px;font-weight:700}
-#topbar-book-title::placeholder{color:rgba(212,175,55,0.2)}
-.word-badge{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--gold-dark);letter-spacing:1px;white-space:nowrap;background:var(--gold-glow);border:1px solid var(--border);padding:4px 10px;border-radius:20px}
+        nav li:hover, nav li.active { background: var(--glass); color: var(--gold); border-left: 3px solid var(--gold); }
+        nav li i { font-size: 1.1rem; }
 
-/* ===================== API MODAL ===================== */
-.modal-overlay{visibility:hidden;pointer-events:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-.modal-overlay.show{visibility:visible;pointer-events:all;opacity:1}
-.modal-box{background:var(--surface);border:1px solid var(--gold-dark);border-radius:4px;padding:40px;max-width:480px;width:90%;position:relative}
-.modal-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.modal-crown{text-align:center;font-size:2rem;margin-bottom:16px;opacity:.7}
-.modal-title{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--bright);text-align:center;letter-spacing:3px;margin-bottom:8px}
-.modal-sub{font-size:0.8rem;color:var(--text-dim);text-align:center;margin-bottom:28px;line-height:1.6;font-style:italic}
-.modal-label{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase;margin-bottom:8px;display:block}
-.modal-input{background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:3px;width:100%;color:var(--text);padding:14px 16px;outline:none;font-family:'Cormorant Garamond',serif;font-size:1rem;transition:border-color .2s;margin-bottom:8px}
-.modal-input:focus{border-color:var(--gold-dark)}
-.modal-hint{font-size:0.65rem;color:var(--text-muted);font-style:italic;margin-bottom:24px}
-.modal-btn{width:100%;background:linear-gradient(135deg,var(--bright) 0%,var(--gold) 50%,var(--gold-dark) 100%);color:#000;font-family:'Cinzel',serif;font-weight:900;font-size:0.75rem;letter-spacing:4px;padding:16px;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .3s}
-.modal-btn:hover{box-shadow:0 0 30px rgba(212,175,55,0.3)}
-.modal-link{display:block;text-align:center;margin-top:14px;font-size:0.68rem;color:var(--text-muted);font-style:italic}
-.modal-link a{color:var(--gold-dark);text-decoration:none}
-.modal-link a:hover{color:var(--gold)}
+        /* MAIN CONTENT */
+        main { flex: 1; overflow-y: auto; position: relative; background: radial-gradient(circle at top right, #111 0%, #020202 100%); }
+        .view { display: none; padding: 60px; max-width: 1400px; margin: 0 auto; min-height: 100%; }
+        .view.active { display: block; animation: view-enter 0.6s ease; }
 
-/* ===================== SCREEN: HOME (BIBLIOTECA) ===================== */
-#screen-home{}
-.home-hero{text-align:center;padding:60px 24px 40px;position:relative;overflow:hidden}
-.home-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(212,175,55,0.06) 0%,transparent 70%)}
-.hero-eyebrow{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:8px;color:var(--gold-dark);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:40px;height:1px;background:var(--gold-dark);opacity:.5}
-.hero-title{font-family:'Cinzel',serif;font-size:clamp(2.2rem,7vw,4.2rem);font-weight:900;background:linear-gradient(180deg,var(--bright) 0%,var(--gold) 55%,var(--gold-dark) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05;letter-spacing:3px;margin-bottom:8px}
-.hero-sub{font-size:clamp(0.85rem,2vw,1.05rem);color:var(--text-dim);font-style:italic;letter-spacing:1px;margin-bottom:36px}
-.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-forjar{background:linear-gradient(135deg,var(--bright) 0%,var(--gold) 50%,var(--gold-dark) 100%);color:#000;font-family:'Cinzel',serif;font-weight:900;font-size:0.7rem;letter-spacing:4px;padding:16px 36px;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .3s;box-shadow:0 0 30px rgba(212,175,55,0.12)}
-.btn-forjar:hover{box-shadow:0 0 50px rgba(212,175,55,0.28);transform:translateY(-1px)}
-.btn-outline{background:transparent;border:1px solid var(--gold-dark);color:var(--gold);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:3px;padding:15px 28px;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .2s}
-.btn-outline:hover{background:var(--gold-dim);border-color:var(--gold);color:var(--bright)}
+        @keyframes view-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* STATS BAR */
-.stats-bar{display:flex;justify-content:center;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0 0 48px;background:var(--gold-glow)}
-.stat-item{flex:1;max-width:180px;text-align:center;padding:16px 12px;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-num{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);font-weight:700}
-.stat-label{font-family:'Inter',sans-serif;font-size:0.55rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-top:2px}
+        /* DASHBOARD WIDGETS */
+        .page-header { margin-bottom: 50px; border-left: 5px solid var(--gold); padding-left: 25px; }
+        .page-header h2 { font-family: 'Cinzel'; font-size: 2.2rem; }
+        .page-header p { color: var(--text-muted); font-style: italic; margin-top: 5px; }
 
-/* GENRE CAROUSELS */
-.library-section{padding:0 24px 60px}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.section-title{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:12px}
-.section-title::before{content:'';width:20px;height:1px;background:var(--gold-dark)}
-.section-count{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--text-muted);letter-spacing:1px}
-.carousel{display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-.carousel::-webkit-scrollbar{height:2px}
-.carousel::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:1px}
+        .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-bottom: 50px; }
+        .widget { background: var(--bg-card); padding: 30px; border-radius: 15px; border: 1px solid var(--border); transition: 0.3s; }
+        .widget:hover { border-color: var(--gold-dim); transform: translateY(-5px); }
+        .widget h4 { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+        .widget strong { font-size: 2.5rem; color: var(--gold); font-family: 'Cinzel'; }
 
-/* BOOK CARD */
-.book-card{flex:0 0 200px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.book-card:hover{border-color:var(--gold-dark);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.5)}
-.book-card-cover{height:140px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.book-card-cover-bg{position:absolute;inset:0;opacity:.18}
-.book-card-icon{font-size:2.8rem;position:relative;z-index:1;filter:drop-shadow(0 0 12px rgba(212,175,55,0.3))}
-.book-card-genre-badge{position:absolute;top:8px;left:8px;font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:2px;color:var(--bg-true);padding:3px 8px;border-radius:2px;text-transform:uppercase;font-weight:700;z-index:2}
-.book-card-status{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;z-index:2}
-.status-escrevendo{background:#2ecc71;box-shadow:0 0 8px rgba(46,204,113,0.6)}
-.status-pausado{background:#f39c12;box-shadow:0 0 8px rgba(243,156,18,0.6)}
-.status-concluido{background:var(--gold);box-shadow:0 0 8px rgba(212,175,55,0.6)}
-.book-card-body{padding:14px}
-.book-card-title{font-family:'Cinzel',serif;font-size:0.72rem;color:var(--bright);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
-.book-card-meta{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--text-dim);letter-spacing:.5px;margin-bottom:10px}
-.book-card-progress{height:2px;background:rgba(212,175,55,0.1);border-radius:1px;overflow:hidden;margin-bottom:8px}
-.book-card-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--bright));border-radius:1px}
-.book-card-actions{display:flex;gap:6px}
-.card-btn{flex:1;background:transparent;border:1px solid var(--border);color:var(--gold-dark);font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;padding:6px 4px;cursor:pointer;text-transform:uppercase;border-radius:2px;transition:all .2s}
-.card-btn:hover{border-color:var(--gold-dark);color:var(--gold);background:var(--gold-glow)}
-.card-btn.danger:hover{border-color:var(--crimson-light);color:var(--crimson-light)}
+        /* LIBRARY - NETFLIX STYLE */
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .saga-card { 
+            background: var(--bg-card); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid var(--border); 
+            cursor: pointer; 
+            transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .saga-card:hover { transform: scale(1.03); border-color: var(--gold); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+        .saga-poster { height: 200px; background: linear-gradient(135deg, #111, #000); display: flex; align-items: center; justify-content: center; }
+        .saga-poster::after { content: "⚜"; font-size: 4rem; opacity: 0.1; color: var(--gold); }
+        .saga-content { padding: 25px; }
+        .saga-content h3 { font-family: 'Cinzel'; margin-bottom: 15px; color: var(--gold-bright); }
+        .saga-meta { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-top: 15px; }
 
-/* EMPTY STATE */
-.empty-carousel{display:flex;align-items:center;justify-content:center;padding:48px 24px;border:1px dashed var(--border);border-radius:4px;width:100%}
-.empty-text{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase}
+        /* PROGRESS BAR */
+        .progress-container { height: 4px; background: #222; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--gold); width: 0%; transition: 1s ease; }
 
-/* ===================== SCREEN: FORJAR ===================== */
-#screen-forjar{padding-bottom:80px}
-.forge-hero{text-align:center;padding:48px 24px 36px;border-bottom:1px solid var(--border);position:relative}
-.forge-hero::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:100px;height:1px;background:var(--gold)}
-.forge-title{font-family:'Cinzel',serif;font-size:clamp(1.4rem,4vw,2.2rem);font-weight:900;background:linear-gradient(180deg,var(--bright) 0%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;margin-bottom:6px}
-.forge-sub{font-size:0.85rem;color:var(--text-dim);font-style:italic}
-.forge-form{max-width:800px;margin:0 auto;padding:40px 24px}
-.forge-section{margin-bottom:40px}
-.forge-section-title{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.forge-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.forge-section-num{width:24px;height:24px;border:1px solid var(--gold-dark);border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.55rem;color:var(--gold-dark);flex-shrink:0}
-.field-row{display:grid;gap:24px;margin-bottom:20px}
-.field-row.cols-2{grid-template-columns:1fr 1fr}
-.field-row.cols-3{grid-template-columns:1fr 1fr 1fr}
-.field-group{display:flex;flex-direction:column;gap:8px}
-.field-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase}
-.field-hint{font-size:0.7rem;color:var(--text-dim);font-style:italic;line-height:1.6;margin-bottom:6px}
-.field-input{background:rgba(212,175,55,0.03);border:none;border-bottom:1px solid rgba(212,175,55,0.2);color:var(--text);padding:12px 0;outline:none;font-family:'Cormorant Garamond',serif;font-size:1rem;transition:border-color .2s;width:100%}
-.field-input:focus{border-bottom-color:var(--gold)}
-.field-input::placeholder{color:var(--text-muted)}
-.field-input.textarea{resize:none;height:100px;line-height:1.7;font-style:italic}
-.field-input.textarea-lg{resize:none;height:140px;line-height:1.7;font-style:italic}
-.field-select{background:#0c0a07;border:none;border-bottom:1px solid rgba(212,175,55,0.2);color:var(--text);padding:12px 28px 12px 0;outline:none;font-family:'Cormorant Garamond',serif;font-size:1rem;transition:border-color .2s;width:100%;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d4af37' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center}
-.field-select:focus{border-bottom-color:var(--gold)}
-.field-select option{background:#0c0a07;color:var(--text)}
-input[type="number"].field-input{-moz-appearance:textfield}
-input[type="number"].field-input::-webkit-outer-spin-button,
-input[type="number"].field-input::-webkit-inner-spin-button{-webkit-appearance:none}
+        /* BÍBLIA & CAMPOS GIGANTES */
+        .bible-editor { background: var(--bg-surface); border-radius: 15px; border: 1px solid var(--border); padding: 40px; margin-top: 30px; }
+        .field-label { display: block; font-family: 'Cinzel'; color: var(--gold); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 15px; }
+        .giant-input { width: 100%; background: #080808; border: 1px solid #1f1f1f; padding: 20px; color: white; border-radius: 10px; font-size: 1rem; margin-bottom: 30px; }
+        .giant-textarea { 
+            width: 100%; 
+            min-height: 500px; 
+            background: #080808; 
+            border: 1px solid #1f1f1f; 
+            padding: 30px; 
+            color: #fff; 
+            font-family: 'Inter'; 
+            font-size: 1.1rem; 
+            line-height: 1.7; 
+            border-radius: 10px;
+            resize: vertical;
+        }
 
-/* TONE PILLS */
-.tone-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.tone-pill{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;padding:7px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;transition:all .2s;user-select:none}
-.tone-pill.selected{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+        /* PERSONAGENS AAA */
+        .char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .char-list-panel { background: var(--bg-card); border-radius: 15px; padding: 30px; border: 1px solid var(--border); max-height: 800px; overflow-y: auto; }
+        .char-item { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .char-item:last-child { border: none; }
 
-/* GENRE GRID */
-.genre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:8px}
-.genre-card{background:transparent;border:1px solid var(--border);border-radius:3px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;user-select:none}
-.genre-card:hover{border-color:var(--gold-dark);background:var(--gold-glow)}
-.genre-card.selected{border-color:var(--gold);background:var(--gold-glow)}
-.genre-card-icon{font-size:1.4rem;margin-bottom:6px}
-.genre-card-name{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+        /* O FORGE (EDITOR) */
+        .forge-layout { display: grid; grid-template-columns: 1fr 350px; gap: 40px; height: 100%; }
+        .editor-container { 
+            background: #0f0f0f; 
+            border-radius: 20px; 
+            border: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+        }
+        .editor-toolbar { padding: 20px 40px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        #editor { 
+            flex: 1; 
+            padding: 80px 100px; 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: 1.45rem; 
+            line-height: 2; 
+            color: #dcdcdc; 
+            outline: none; 
+            overflow-y: auto; 
+            text-align: justify;
+        }
+        #editor:empty::before { content: "A lenda começa aqui..."; color: #333; font-style: italic; }
 
-/* POV GRID */
-.pov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:8px}
-.pov-card{background:transparent;border:1px solid var(--border);border-radius:3px;padding:14px 12px;cursor:pointer;transition:all .2s;user-select:none}
-.pov-card:hover{border-color:var(--gold-dark);background:var(--gold-glow)}
-.pov-card.selected{border-color:var(--gold);background:var(--gold-glow)}
-.pov-card-name{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:2px;color:var(--bright);margin-bottom:4px;text-transform:uppercase}
-.pov-card-desc{font-size:0.68rem;color:var(--text-dim);font-style:italic;line-height:1.4}
+        /* BUTTONS */
+        .btn-gold { 
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%); 
+            color: black; 
+            border: none; 
+            padding: 16px 32px; 
+            font-family: 'Cinzel'; 
+            font-weight: 900; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .btn-gold:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(212,175,55,0.4); background: #fff; }
 
-/* FORGE SUBMIT */
-.forge-submit{text-align:center;margin-top:48px}
-.btn-create-obra{background:linear-gradient(135deg,var(--bright) 0%,var(--gold) 50%,var(--gold-dark) 100%);color:#000;font-family:'Cinzel',serif;font-weight:900;font-size:0.78rem;letter-spacing:5px;padding:20px 60px;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .3s;box-shadow:0 0 40px rgba(212,175,55,0.12)}
-.btn-create-obra:hover{box-shadow:0 0 60px rgba(212,175,55,0.3);transform:translateY(-2px)}
+        /* UTILS */
+        #toast { position: fixed; bottom: 40px; right: 40px; background: var(--gold); color: #000; padding: 20px 40px; border-radius: 12px; font-weight: 900; font-family: 'Cinzel'; transform: translateY(100px); opacity: 0; transition: 0.5s; z-index: 9999; }
+        #toast.show { transform: translateY(0); opacity: 1; }
 
-/* ===================== SCREEN: ESCREVER ===================== */
-#screen-escrever{}
-.write-layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 60px)}
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 10px; }
 
-/* SIDEBAR ESCREVER */
-.write-sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:60px;height:calc(100vh - 60px);overflow:hidden}
-.ws-head{padding:20px;border-bottom:1px solid var(--border);flex-shrink:0}
-.ws-book-title{font-family:'Cinzel',serif;font-size:0.75rem;color:var(--bright);letter-spacing:1px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ws-book-meta{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--text-muted)}
-.ws-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
-.ws-tab{flex:1;background:transparent;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;padding:12px 8px;cursor:pointer;text-transform:uppercase;transition:all .2s;border-bottom:2px solid transparent}
-.ws-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.ws-content{flex:1;overflow-y:auto;padding:16px}
-
-/* CHAPTERS LIST SIDEBAR */
-.ch-item{padding:12px;border-radius:3px;cursor:pointer;transition:all .2s;margin-bottom:4px;border:1px solid transparent;display:flex;align-items:center;gap:10px}
-.ch-item:hover{border-color:var(--border);background:var(--gold-glow)}
-.ch-item.active{border-color:var(--gold-dark);background:rgba(212,175,55,0.06)}
-.ch-num{width:28px;height:28px;border:1px solid var(--gold-dark);border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.55rem;color:var(--gold-dark);flex-shrink:0}
-.ch-info{min-width:0;flex:1}
-.ch-title{font-family:'Cinzel',serif;font-size:0.65rem;color:var(--bright);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ch-meta{font-family:'Inter',sans-serif;font-size:0.55rem;color:var(--text-dim);margin-top:2px}
-.ch-del{background:none;border:none;color:#3a2010;cursor:pointer;font-size:0.75rem;padding:2px 6px;border-radius:2px;transition:color .2s;flex-shrink:0}
-.ch-del:hover{color:var(--crimson-light)}
-.btn-add-ch{width:100%;background:transparent;border:1px dashed rgba(212,175,55,0.2);color:var(--gold-dark);font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;padding:12px;cursor:pointer;text-transform:uppercase;border-radius:3px;transition:all .2s;margin-top:8px}
-.btn-add-ch:hover{border-color:var(--gold-dark);color:var(--gold);background:var(--gold-glow)}
-
-/* CHARACTERS IN SIDEBAR */
-.char-item{padding:10px 12px;border-radius:3px;border:1px solid var(--border);margin-bottom:6px;cursor:pointer;transition:all .2s}
-.char-item:hover{border-color:var(--gold-dark)}
-.char-name{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--bright);letter-spacing:1px}
-.char-role{font-size:0.62rem;color:var(--text-dim);font-style:italic;margin-top:2px}
-
-/* WRITE MAIN */
-.write-main{display:flex;flex-direction:column;min-height:calc(100vh - 60px)}
-.write-controls{padding:20px 28px;border-bottom:1px solid var(--border);background:rgba(6,5,4,0.5);display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
-.ctrl-group{display:flex;flex-direction:column;gap:6px;min-width:0}
-.ctrl-label{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase}
-.ctrl-input{background:rgba(212,175,55,0.04);border:1px solid var(--border);color:var(--text);padding:8px 12px;outline:none;font-family:'Cormorant Garamond',serif;font-size:0.92rem;border-radius:2px;width:100%;transition:border-color .2s}
-.ctrl-input:focus{border-color:var(--gold-dark)}
-.ctrl-select{background:#0c0a07;border:1px solid var(--border);color:var(--text);padding:8px 32px 8px 12px;outline:none;font-family:'Cormorant Garamond',serif;font-size:0.92rem;border-radius:2px;transition:border-color .2s;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a07820' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
-.ctrl-select option{background:#0c0a07}
-.ctrl-select:focus{border-color:var(--gold-dark)}
-.ctrl-input-sm{width:100px}
-.ctrl-spacer{flex:1}
-.btn-canalizar{background:linear-gradient(135deg,var(--bright) 0%,var(--gold) 50%,var(--gold-dark) 100%);color:#000;font-family:'Cinzel',serif;font-weight:900;font-size:0.68rem;letter-spacing:4px;padding:14px 28px;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;position:relative;overflow:hidden;transition:all .3s;box-shadow:0 0 20px rgba(212,175,55,0.1);white-space:nowrap}
-.btn-canalizar::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,rgba(255,255,255,0.2) 50%,transparent 100%);transform:translateX(-100%);transition:transform .5s}
-.btn-canalizar:hover::before{transform:translateX(100%)}
-.btn-canalizar:hover{box-shadow:0 0 40px rgba(212,175,55,0.25)}
-.btn-canalizar:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
-.btn-canalizar:disabled::before{display:none}
-
-/* SYNOPSIS AREA */
-.synopsis-area{padding:16px 28px;border-bottom:1px solid var(--border);background:rgba(212,175,55,0.02)}
-.ctrl-textarea{background:rgba(212,175,55,0.03);border:1px solid var(--border);color:var(--text);padding:12px;outline:none;font-family:'Cormorant Garamond',serif;font-size:0.92rem;border-radius:2px;width:100%;line-height:1.6;resize:none;height:80px;font-style:italic;transition:border-color .2s}
-.ctrl-textarea:focus{border-color:var(--gold-dark)}
-.ctrl-textarea::placeholder{color:var(--text-muted)}
-
-/* PROGRESS */
-.progress-wrap{padding:0 28px;display:none}
-.progress-wrap.visible{display:block;padding:16px 28px}
-.progress-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;color:var(--gold-dark);margin-bottom:8px;text-transform:uppercase}
-.progress-track{height:2px;background:rgba(212,175,55,0.08);border-radius:1px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--bright));border-radius:1px;transition:width .3s;animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.5)}}
-
-/* EDITOR */
-.editor-area{flex:1;padding:32px 28px 28px;display:flex;flex-direction:column}
-.editor-toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.tool-btn{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;padding:7px 12px;cursor:pointer;text-transform:uppercase;border-radius:2px;transition:all .2s}
-.tool-btn:hover{border-color:var(--gold-dark);color:var(--gold);background:var(--gold-glow)}
-.tool-btn.primary{border-color:var(--gold-dark);color:var(--gold)}
-#editor{flex:1;min-height:500px;padding:28px 4px;line-height:1.95;font-size:clamp(1rem,2vw,1.15rem);white-space:pre-wrap;outline:none;color:var(--text);font-family:'Cormorant Garamond',serif;caret-color:var(--gold);word-break:break-word;overflow-wrap:break-word}
-#editor:empty::before{content:'A narrativa nasce aqui...';color:rgba(212,175,55,0.12);font-style:italic;pointer-events:none}
-
-/* ===================== SCREEN: BIBLIOTECA IMPERIAL ===================== */
-#screen-library{padding:48px 24px 80px;max-width:1000px;margin:0 auto}
-.lib-title{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:16px}
-.lib-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.lib-tabs{display:flex;gap:4px;margin-bottom:32px;border-bottom:1px solid var(--border)}
-.lib-tab{background:transparent;border:none;color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:3px;padding:12px 20px;cursor:pointer;text-transform:uppercase;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-1px}
-.lib-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.lib-tab:hover{color:var(--gold-dark)}
-.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.lib-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:20px;transition:all .25s;cursor:pointer;position:relative}
-.lib-card:hover{border-color:var(--gold-dark);box-shadow:0 4px 20px rgba(0,0,0,0.4)}
-.lib-card-type{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:3px;color:var(--gold-dark);text-transform:uppercase;margin-bottom:8px}
-.lib-card-name{font-family:'Cinzel',serif;font-size:0.85rem;color:var(--bright);letter-spacing:1px;margin-bottom:6px}
-.lib-card-desc{font-size:0.78rem;color:var(--text-dim);font-style:italic;line-height:1.6}
-.lib-card-del{position:absolute;top:12px;right:12px;background:none;border:none;color:#3a2010;cursor:pointer;font-size:0.8rem;padding:4px 8px;border-radius:2px;transition:color .2s}
-.lib-card-del:hover{color:var(--crimson-light)}
-.btn-add-lib{background:transparent;border:1px dashed rgba(212,175,55,0.2);color:var(--gold-dark);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:3px;padding:20px;cursor:pointer;text-transform:uppercase;border-radius:3px;transition:all .2s;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-add-lib:hover{border-color:var(--gold-dark);color:var(--gold);background:var(--gold-glow)}
-.lib-empty{text-align:center;padding:60px 24px;color:var(--text-muted);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;text-transform:uppercase}
-
-/* ADD LIB MODAL */
-.lib-modal-overlay{visibility:hidden;pointer-events:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1500;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-.lib-modal-overlay.show{visibility:visible;pointer-events:all;opacity:1}
-.lib-modal-box{background:var(--surface);border:1px solid var(--gold-dark);border-radius:4px;padding:36px;max-width:500px;width:92%;max-height:80vh;overflow-y:auto}
-.lib-modal-title{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--bright);letter-spacing:3px;margin-bottom:24px;text-transform:uppercase}
-.lib-modal-fields{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
-.lib-modal-actions{display:flex;gap:10px}
-.btn-save-lib{flex:1;background:linear-gradient(135deg,var(--bright) 0%,var(--gold) 100%);color:#000;font-family:'Cinzel',serif;font-weight:900;font-size:0.65rem;letter-spacing:3px;padding:14px;border:none;border-radius:3px;cursor:pointer;text-transform:uppercase;transition:all .3s}
-.btn-cancel-lib{flex:1;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:3px;padding:14px;cursor:pointer;text-transform:uppercase;border-radius:3px;transition:all .2s}
-.btn-cancel-lib:hover{border-color:var(--gold-dark);color:var(--gold)}
-
-/* ===================== TOAST ===================== */
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface);border:1px solid var(--gold-dark);color:var(--bright);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:2px;padding:14px 28px;border-radius:3px;opacity:0;transition:all .3s;pointer-events:none;z-index:5000;white-space:nowrap}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.error{border-color:var(--crimson-light);color:#e74c3c}
-
-/* ===================== CONFIRM DIALOG ===================== */
-.confirm-overlay{visibility:hidden;pointer-events:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-.confirm-overlay.show{visibility:visible;pointer-events:all;opacity:1}
-.confirm-box{background:var(--surface);border:1px solid var(--gold-dark);border-radius:4px;padding:32px;max-width:360px;width:90%;text-align:center}
-.confirm-text{font-family:'Cinzel',serif;font-size:0.75rem;color:var(--bright);letter-spacing:1px;margin-bottom:24px;line-height:1.7}
-.confirm-actions{display:flex;gap:10px}
-.confirm-yes{flex:1;background:var(--crimson);border:1px solid var(--crimson-light);color:#fff;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;padding:12px;cursor:pointer;text-transform:uppercase;border-radius:3px;transition:all .2s}
-.confirm-yes:hover{background:var(--crimson-light)}
-.confirm-no{flex:1;background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:3px;padding:12px;cursor:pointer;text-transform:uppercase;border-radius:3px;transition:all .2s}
-.confirm-no:hover{border-color:var(--gold-dark);color:var(--gold)}
-
-/* ===================== FORGE UPGRADES ===================== */
-.forge-textarea-giant{resize:vertical;min-height:280px;line-height:1.75;font-size:1rem;font-style:italic}
-.forge-textarea-xl{resize:vertical;min-height:180px;line-height:1.75;font-size:1rem;font-style:italic}
-.forge-textarea-bible{resize:vertical;min-height:400px;line-height:1.75;font-size:1rem}
-.forge-char-counter{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--text-muted);letter-spacing:1px;margin-bottom:6px;text-align:right}
-.forge-char-counter.warn{color:var(--gold-dark)}
-.forge-arc-box{background:rgba(212,175,55,0.03);border:1px solid var(--border);border-radius:3px;padding:24px;min-height:120px;font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--text-dim);line-height:1.8;white-space:pre-wrap}
-.rel-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.rel-pill{background:transparent;border:1px solid var(--border);color:var(--text-dim);font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;padding:7px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;transition:all .2s;user-select:none}
-.rel-pill.selected{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
-
-/* ===================== RESPONSIVE ===================== */
-@media(max-width:768px){
-  .write-layout{grid-template-columns:1fr}
-  .write-sidebar{display:none;position:fixed;inset:0;z-index:600;height:100vh;top:0}
-  .write-sidebar.mobile-open{display:flex}
-  .field-row.cols-2,.field-row.cols-3{grid-template-columns:1fr}
-  .stats-bar{flex-wrap:wrap}
-  .stat-item{min-width:50%}
-  .write-controls{gap:10px}
-  .ctrl-input-sm{width:80px}
-}
-@media(max-width:520px){
-  .topbar-nav{gap:0}
-  .nav-btn{padding:6px 10px;font-size:0.52rem}
-  .genre-grid{grid-template-columns:repeat(3,1fr)}
-  .pov-grid{grid-template-columns:1fr 1fr}
-  .lib-grid{grid-template-columns:1fr}
-}
-</style>
+    </style>
 </head>
 <body>
 
-<!-- ======== API KEY MODAL ======== -->
-<div class="modal-overlay" id="api-modal">
-  <div class="modal-box">
-    <div class="modal-crown">⚜</div>
-    <div class="modal-title">Chave de Acesso</div>
-    <div class="modal-sub">Insira sua chave da API Gemini para ativar a inteligência narrativa da plataforma.</div>
-    <label class="modal-label">Gemini API Key</label>
-    <input class="modal-input" id="api-key-input" type="password" placeholder="AIzaSy..." autocomplete="off" spellcheck="false">
-    <div class="modal-hint">Sua chave é salva localmente e nunca enviada a terceiros.</div>
-    <button class="modal-btn" onclick="saveApiKey()">Ativar Plataforma</button>
-    <div class="modal-link">Não tem uma chave? <a href="https://aistudio.google.com/app/apikey" target="_blank">Obter no Google AI Studio</a></div>
-  </div>
-</div>
-
-<!-- ======== TOPBAR ======== -->
-<div class="topbar">
-  <div class="topbar-logo" onclick="goScreen('home')">IMPERIUM <span>STORYFORGE</span></div>
-  <div class="topbar-title" id="topbar-title-wrap" style="display:none">
-    <input id="topbar-book-title" placeholder="Título da Obra..." oninput="onTitleChange()">
-  </div>
-  <div class="topbar-nav">
-    <button class="nav-btn active" id="nav-home" onclick="goScreen('home')">Biblioteca</button>
-    <button class="nav-btn" id="nav-forjar" onclick="goScreen('forjar')">Forjar</button>
-    <button class="nav-btn" id="nav-library" onclick="goScreen('library')">Imperial</button>
-    <button class="nav-btn cta" onclick="openApiModal()">⚙ API</button>
-  </div>
-  <div class="word-badge" id="word-badge" style="display:none">0 palavras</div>
-</div>
-
-<!-- ======== SCREEN: HOME ======== -->
-<div class="screen active" id="screen-home">
-  <div class="home-hero">
-    <div class="hero-eyebrow">Ateliê de Narrativas</div>
-    <div class="hero-title">IMPERIUM STORYFORGE</div>
-    <div class="hero-sub">A plataforma literária mais avançada já construída</div>
-    <div class="hero-actions">
-      <button class="btn-forjar" onclick="goScreen('forjar')">✦ Forjar Nova Obra</button>
-      <button class="btn-outline" onclick="openApiModal()">⚙ Configurar API</button>
-    </div>
-  </div>
-  <div class="stats-bar" id="stats-bar">
-    <div class="stat-item"><div class="stat-num" id="stat-obras">0</div><div class="stat-label">Obras</div></div>
-    <div class="stat-item"><div class="stat-num" id="stat-caps">0</div><div class="stat-label">Capítulos</div></div>
-    <div class="stat-item"><div class="stat-num" id="stat-words">0</div><div class="stat-label">Palavras</div></div>
-    <div class="stat-item"><div class="stat-num" id="stat-chars">0</div><div class="stat-label">Personagens</div></div>
-  </div>
-  <div class="library-section" id="library-section"></div>
-</div>
-
-<!-- ======== SCREEN: FORJAR ======== -->
-<div class="screen" id="screen-forjar">
-  <div class="forge-hero">
-    <div class="forge-title">SALA DE CRIAÇÃO DE SAGAS</div>
-    <div class="forge-sub">Central de planejamento literário profissional — prepare sua bíblia antes da IA começar</div>
-  </div>
-  <div class="forge-form">
-
-    <!-- PAINEL 1: IDENTIDADE -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">01</div>Identidade da Obra</div>
-      <div class="field-row cols-2">
-        <div class="field-group">
-          <label class="field-label">Título</label>
-          <input class="field-input" id="f-title" placeholder="O nome da sua saga...">
+    <aside>
+        <div class="brand-box">
+            <h1>CHRONICLE FORGE</h1>
+            <p>Construa Lendas</p>
         </div>
-        <div class="field-group">
-          <label class="field-label">Subtítulo</label>
-          <input class="field-input" id="f-subtitle" placeholder="Ex: A Ascensão das Sombras...">
+        <nav>
+            <ul>
+                <li class="active" onclick="setView('dash')">🏛 Dashboard</li>
+                <li onclick="setView('library')">📚 Biblioteca</li>
+                <li onclick="setView('bible')">📖 Bíblia da Saga</li>
+                <li onclick="setView('chars')">👥 Personagens</li>
+                <li onclick="setView('forge')">⚔ O Forge</li>
+                <li onclick="setView('settings')">⚙ Configurações</li>
+            </ul>
+        </nav>
+        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border);">
+            <div id="api-indicator" style="font-size: 0.6rem; color: var(--crimson); text-align: center; letter-spacing: 2px;">● IA OFFLINE</div>
         </div>
-      </div>
-      <div class="field-row cols-2">
-        <div class="field-group">
-          <label class="field-label">Gênero Principal</label>
-          <div class="genre-grid" id="genre-grid"></div>
+    </aside>
+
+    <main>
+        <!-- DASHBOARD -->
+        <div id="view-dash" class="view active">
+            <div class="page-header">
+                <h2>Cidadela de Controle</h2>
+                <p>Métricas da sua ascensão literária.</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="widget"><h4>Sagas Ativas</h4><strong id="stat-sagas">0</strong></div>
+                <div class="widget"><h4>Total de Capítulos</h4><strong id="stat-caps">0</strong></div>
+                <div class="widget"><h4>Palavras Escritas</h4><strong id="stat-words">0</strong></div>
+                <div class="widget"><h4>Personagens Códice</h4><strong id="stat-chars">0</strong></div>
+            </div>
+            <h3 style="font-family: 'Cinzel'; color: var(--gold); margin-bottom: 30px;">Sagas em Andamento</h3>
+            <div id="dash-grid" class="library-grid"></div>
         </div>
-        <div class="field-group">
-          <label class="field-label" style="margin-bottom:10px">Subgênero</label>
-          <input class="field-input" id="f-subgenre" placeholder="Ex: Romantasia, Dark Fantasy, Xianxia...">
-          <label class="field-label" style="margin-top:20px;margin-bottom:10px">Classificação Etária</label>
-          <select class="field-select" id="f-class">
-            <option value="Todos os públicos">Todos os públicos</option>
-            <option value="+12">+12</option>
-            <option value="+16">+16</option>
-            <option value="+18">+18</option>
-            <option value="+18 Explícito">+18 Explícito</option>
-          </select>
-          <label class="field-label" style="margin-top:20px;margin-bottom:10px">Status</label>
-          <select class="field-select" id="f-status">
-            <option value="Escrevendo">Escrevendo</option>
-            <option value="Pausado">Pausado</option>
-            <option value="Concluído">Concluído</option>
-          </select>
+
+        <!-- BIBLIOTECA -->
+        <div id="view-library" class="view">
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2>Sua Biblioteca</h2>
+                    <p>Gerencie seus universos.</p>
+                </div>
+                <button class="btn-gold" onclick="newSaga()">+ Iniciar Nova Lenda</button>
+            </div>
+            <div id="lib-grid" class="library-grid"></div>
         </div>
-      </div>
-      <div class="field-row cols-3" style="margin-top:20px">
-        <div class="field-group">
-          <label class="field-label">Total de Capítulos</label>
-          <input class="field-input" type="number" id="f-total-caps" min="1" max="9999" value="20">
+
+        <!-- BÍBLIA DA SAGA -->
+        <div id="view-bible" class="view">
+            <div class="page-header">
+                <h2>Bíblia da Saga</h2>
+                <p>O conhecimento absoluto para a IA Suprema.</p>
+            </div>
+            <div class="bible-editor">
+                <label class="field-label">Título da Obra</label>
+                <input id="saga-title" class="giant-input" oninput="saveSagaData()">
+                
+                <label class="field-label">Diretrizes da Saga (A estrutura de 200 capítulos)</label>
+                <textarea id="saga-bible" class="giant-textarea" placeholder="Descreva aqui o planejamento completo..." oninput="saveSagaData()"></textarea>
+            </div>
         </div>
-        <div class="field-group">
-          <label class="field-label">Palavras por Capítulo</label>
-          <input class="field-input" type="number" id="f-words-cap" min="100" max="15000" step="100" value="2000">
+
+        <!-- PERSONAGENS -->
+        <div id="view-chars" class="view">
+            <div class="page-header"><h2>Códice de Personagens</h2><p>Vidas forjadas em tinta.</p></div>
+            <div class="char-grid">
+                <div class="bible-editor">
+                    <label class="field-label">Nome Completo</label>
+                    <input id="char-name" class="giant-input">
+                    <label class="field-label">Psicologia, Poderes e Segredos</label>
+                    <textarea id="char-bio" class="giant-textarea" style="min-height: 250px;"></textarea>
+                    <button class="btn-gold" style="width: 100%;" onclick="addCharacter()">Registrar na Saga</button>
+                </div>
+                <div class="char-list-panel" id="char-registry">
+                    <!-- List of chars -->
+                </div>
+            </div>
         </div>
-        <div class="field-group">
-          <label class="field-label">Número de Arcos</label>
-          <input class="field-input" type="number" id="f-arcs" min="1" max="50" value="3">
+
+        <!-- O FORGE (EDITOR) -->
+        <div id="view-forge" class="view" style="padding: 20px;">
+            <div class="forge-layout">
+                <div class="editor-container">
+                    <div class="editor-toolbar">
+                        <input id="cap-title" placeholder="Título do Capítulo..." style="background: transparent; border: none; font-family: 'Cinzel'; color: var(--gold); font-size: 1.3rem; width: 70%;">
+                        <div id="word-counter" style="font-size: 0.7rem; color: var(--gold-dim); letter-spacing: 1px;">0 PALAVRAS</div>
+                    </div>
+                    <div id="editor" contenteditable="true" oninput="updateWordCount()"></div>
+                    <div class="editor-toolbar" style="border-top: 1px solid var(--border); border-bottom: none;">
+                        <button class="btn-gold" onclick="saveCap()">Salvar Capítulo</button>
+                    </div>
+                </div>
+                <div class="sidebar-editor">
+                    <div class="widget" style="margin-bottom: 20px;">
+                        <h4>Ação do Capítulo</h4>
+                        <textarea id="ai-context" style="width: 100%; height: 200px; background: #000; border: 1px solid #222; color: white; padding: 15px; border-radius: 8px;" placeholder="O que acontece agora?"></textarea>
+                        <button class="btn-gold" style="width: 100%; margin-top: 20px;" onclick="canalizarIA()">Canalizar IA Suprema</button>
+                    </div>
+                    <div class="widget">
+                        <h4>Memória da Saga</h4>
+                        <p style="font-size: 0.7rem; color: #555; line-height: 1.5;">A IA está consultando a Bíblia e os Personagens em tempo real.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="field-row cols-2" style="margin-top:20px">
-        <div class="field-group">
-          <label class="field-label">Tema Principal</label>
-          <input class="field-input" id="f-theme-main" placeholder="Ex: Redenção, Poder absoluto, Amor proibido...">
+
+        <!-- SETTINGS -->
+        <div id="view-settings" class="view">
+            <div class="page-header"><h2>Configurações da Forja</h2></div>
+            <div class="bible-editor" style="max-width: 600px;">
+                <label class="field-label">Gemini API Key</label>
+                <input id="api-key" type="password" class="giant-input" placeholder="AIzaSy...">
+                <button class="btn-gold" onclick="saveAPI()">Salvar Chave</button>
+                <p style="margin-top: 20px; font-size: 0.7rem; color: var(--text-muted);">Sua chave é salva apenas no seu navegador local.</p>
+            </div>
         </div>
-        <div class="field-group">
-          <label class="field-label">Temas Secundários</label>
-          <input class="field-input" id="f-theme-sec" placeholder="Ex: Traição, Família, Identidade...">
-        </div>
-      </div>
-      <div class="field-row cols-2">
-        <div class="field-group">
-          <label class="field-label">Mensagem Central da Obra</label>
-          <input class="field-input" id="f-message" placeholder="O que o leitor deve sentir/pensar ao terminar a saga...">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Tom Geral da História</label>
-          <select class="field-select" id="f-style">
-            <option value="Épico e grandioso">Épico e grandioso</option>
-            <option value="Intimista e emocional">Intimista e emocional</option>
-            <option value="Dark e tenso">Dark e tenso</option>
-            <option value="Poético e lírico">Poético e lírico</option>
-            <option value="Dinâmico e ágil">Dinâmico e ágil</option>
-            <option value="Atmosférico e denso">Atmosférico e denso</option>
-            <option value="Sombrio e visceral">Sombrio e visceral</option>
-            <option value="Sensual e intenso">Sensual e intenso</option>
-          </select>
-        </div>
-      </div>
-      <div class="field-row cols-2">
-        <div class="field-group">
-          <label class="field-label">Tipo de Narrador</label>
-          <select class="field-select" id="f-narrator">
-            <option value="Onisciente">Onisciente</option>
-            <option value="Limitado">Limitado</option>
-            <option value="Não-confiável">Não-confiável</option>
-            <option value="Observador neutro">Observador neutro</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Tipo de POV</label>
-          <div class="pov-grid" id="pov-grid" style="margin-top:8px"></div>
-        </div>
-      </div>
-      <div class="field-group" style="margin-top:20px">
-        <label class="field-label">Tons Emocionais</label>
-        <div class="tone-pills" id="tone-pills"></div>
-      </div>
-    </div>
-
-    <!-- PAINEL 2: SINOPSE COMPLETA -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">02</div>Sinopse Completa</div>
-      <div class="field-group">
-        <label class="field-label">Sinopse — escreva livremente, sem limitações</label>
-        <div class="forge-char-counter" id="counter-synopsis">0 caracteres</div>
-        <textarea class="field-input forge-textarea-giant" id="f-synopsis" placeholder="Escreva a sinopse completa da sua saga. Não se limite — quanto mais detalhes você fornecer aqui, mais precisa e consistente a IA será ao longo de centenas de capítulos. Inclua: início, desenvolvimento, clímax, reviravolta final, final emocional. Mínimo recomendado: 10.000 caracteres." oninput="updateCounter('f-synopsis','counter-synopsis')"></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 3: PREMISSA DETALHADA -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">03</div>Premissa Detalhada</div>
-      <div class="field-group">
-        <label class="field-label">Como a história começa — contexto completo do mundo, conflito, mistérios e perigos</label>
-        <div class="forge-char-counter" id="counter-premise">0 caracteres</div>
-        <textarea class="field-input forge-textarea-giant" id="f-premise" placeholder="Descreva em profundidade:
-• Como a história começa — o momento zero
-• Como o universo funciona (leis, poderes, hierarquias, regras)
-• Qual o conflito central que move toda a saga
-• Quais mistérios existem e quando devem ser revelados
-• Quais os objetivos de cada força da narrativa
-• Quais os perigos que ameaçam os personagens
-• Quais segredos ainda não foram revelados aos protagonistas
-• A lógica interna do mundo que a IA deve nunca violar" oninput="updateCounter('f-premise','counter-premise')"></textarea>
-      </div>
-      <div class="field-row cols-2" style="margin-top:20px">
-        <div class="field-group">
-          <label class="field-label">Objetivo da Saga</label>
-          <input class="field-input" id="f-goal" placeholder="O que o protagonista precisa alcançar ao final...">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Conflito Principal</label>
-          <textarea class="field-input textarea" id="f-conflict" placeholder="O grande obstáculo central..."></textarea>
-        </div>
-      </div>
-      <div class="field-row" style="margin-top:16px">
-        <div class="field-group">
-          <label class="field-label">Conflitos Secundários e Subtramas</label>
-          <textarea class="field-input textarea" id="f-conflicts2" placeholder="Tensões paralelas, arcos menores, subtramas que enriquecem a saga..."></textarea>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAINEL 4: RELACIONAMENTOS -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">04</div>Relacionamentos</div>
-      <div class="field-group" style="margin-bottom:20px">
-        <label class="field-label">Tipo de Relacionamento entre os Protagonistas</label>
-        <div class="rel-pills" id="rel-pills"></div>
-      </div>
-      <div class="field-group">
-        <label class="field-label">Descrição completa dos relacionamentos — contexto, história, tensões, dinâmica de poder</label>
-        <div class="forge-char-counter" id="counter-rel">0 caracteres</div>
-        <textarea class="field-input forge-textarea-xl" id="f-relationships" placeholder="Descreva em detalhe:
-• Os protagonistas já se conhecem antes da história começar?
-• Qual é a dinâmica de poder entre eles?
-• Existe diferença de classe social, espécie, poder ou status?
-• Há triângulo amoroso? Amor proibido? Rivalidade?
-• O que os aproxima? O que os separa?
-• Existe segredo que um guarda do outro?
-• Como cada um percebe o outro no início da história?
-• Como essa percepção muda ao longo da saga?" oninput="updateCounter('f-relationships','counter-rel')"></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 5: LINHA EVOLUTIVA DO ROMANCE -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">05</div>Linha Evolutiva do Romance</div>
-      <div class="field-group">
-        <label class="field-label">Mapa emocional completo — como o romance nasce, evolui e se transforma ao longo da saga</label>
-        <div class="forge-char-counter" id="counter-romance">0 caracteres</div>
-        <textarea class="field-input forge-textarea-giant" id="f-romance-arc" placeholder="A IA deve respeitar RIGOROSAMENTE esta progressão. Defina:
-
-• Quando e como nasce o primeiro interesse (capítulo aproximado)
-• Quando surge o primeiro ciúme — e de quem
-• Quando acontece a primeira tensão sexual ou emocional
-• Quando começa a construção de confiança
-• Quando ocorre o primeiro momento de vulnerabilidade real
-• Quando acontece o primeiro beijo
-• Quando surge a primeira declaração (explícita ou implícita)
-• Quando acontece a primeira intimidade emocional profunda
-• Quando e por qual motivo ocorre a primeira ruptura ou afastamento
-• Como acontece a reconciliação
-• Qual é o ápice do romance na saga
-• Como o romance termina (ou como evolui para sempre)
-
-Seja o mais específico possível — mencione capítulos aproximados se souber." oninput="updateCounter('f-romance-arc','counter-romance')"></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 6: PERSONAGENS PRINCIPAIS -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">06</div>Personagens Principais</div>
-      <div class="field-row cols-2">
-        <div class="field-group">
-          <label class="field-label">Protagonista 1 — Nome</label>
-          <input class="field-input" id="f-hero1" placeholder="Nome completo...">
-          <label class="field-label" style="margin-top:16px;margin-bottom:8px">Ficha completa</label>
-          <div class="forge-char-counter" id="counter-hero1">0 caracteres</div>
-          <textarea class="field-input forge-textarea-xl" id="f-hero1-desc" placeholder="Idade, aparência detalhada, personalidade, história de vida, traumas, medos, desejos, poderes, segredos, objetivos, defeitos, virtudes, como fala, como age sob pressão, o que esconde, o que nunca diria em voz alta..." oninput="updateCounter('f-hero1-desc','counter-hero1')"></textarea>
-        </div>
-        <div class="field-group">
-          <label class="field-label">Protagonista 2 — Nome</label>
-          <input class="field-input" id="f-hero2" placeholder="Nome completo...">
-          <label class="field-label" style="margin-top:16px;margin-bottom:8px">Ficha completa</label>
-          <div class="forge-char-counter" id="counter-hero2">0 caracteres</div>
-          <textarea class="field-input forge-textarea-xl" id="f-hero2-desc" placeholder="Idade, aparência detalhada, personalidade, história de vida, traumas, medos, desejos, poderes, segredos, objetivos, defeitos, virtudes, como fala, como age sob pressão, o que esconde, o que nunca diria em voz alta..." oninput="updateCounter('f-hero2-desc','counter-hero2')"></textarea>
-        </div>
-      </div>
-      <div class="field-group" style="margin-top:24px">
-        <label class="field-label">Personagens Secundários e Antagonistas</label>
-        <div class="forge-char-counter" id="counter-secondary">0 caracteres</div>
-        <textarea class="field-input forge-textarea-xl" id="f-secondary-chars" placeholder="Para cada personagem secundário importante, descreva: nome, papel na história, relação com os protagonistas, motivações, segredos, e em que capítulos aproximados aparecem com maior relevância..." oninput="updateCounter('f-secondary-chars','counter-secondary')"></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 7: EVENTOS OBRIGATÓRIOS -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">07</div>Eventos Obrigatórios da Saga</div>
-      <div class="field-group">
-        <label class="field-label">Acontecimentos que DEVEM ocorrer — a IA lembrará deles durante toda a saga</label>
-        <div class="field-hint" style="margin-bottom:12px">Exemplos: morte de personagem, traição, descoberta, casamento, guerra, revelação, separação, retorno, plot twist, transformação. Indique o capítulo aproximado se souber.</div>
-        <div class="forge-char-counter" id="counter-events">0 caracteres</div>
-        <textarea class="field-input forge-textarea-xl" id="f-mandatory-events" placeholder="CAPÍTULO ~5: [descreva o evento]
-CAPÍTULO ~20: [descreva o evento]
-CAPÍTULO ~50: [descreva o evento]
-ARCO 2: [descreva o evento]
-CLÍMAX: [descreva o evento]
-FINAL: [descreva o evento]
-
-Ou escreva livremente — a IA entenderá e respeitará esses marcos." oninput="updateCounter('f-mandatory-events','counter-events')"></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 8: COISAS QUE A IA NUNCA PODE ESQUECER -->
-    <div class="forge-section" style="border-color:rgba(212,175,55,0.3)">
-      <div class="forge-section-title" style="color:var(--bright)"><div class="forge-section-num" style="border-color:var(--gold);color:var(--gold)">08</div>O Que a IA Nunca Pode Esquecer</div>
-      <div class="field-hint" style="margin-bottom:12px;color:rgba(212,175,55,0.6)">⚡ Prioridade máxima. Este campo é consultado antes de cada geração. Tudo aqui é lei absoluta.</div>
-      <div class="field-group">
-        <div class="forge-char-counter" id="counter-never-forget">0 caracteres</div>
-        <textarea class="field-input forge-textarea-xl" id="f-never-forget" placeholder="Exemplos:
-• O protagonista NUNCA chora em público — é seu maior tabu
-• A magia NUNCA pode ser usada para matar diretamente
-• Os dois protagonistas NÃO podem se declarar antes do capítulo 80
-• O antagonista principal NUNCA deve parecer completamente mau — ele tem razão em partes
-• A cidade de Valdris foi destruída no capítulo 12 — ela não existe mais
-• [personagem X] é secretamente o pai de [personagem Y] — isso só é revelado no final
-• Escreva aqui TUDO que a IA não pode ignorar ou contradizer" oninput="updateCounter('f-never-forget','counter-never-forget')"></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 9: BÍBLIA DA SAGA -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">09</div>Bíblia da Saga</div>
-      <div class="field-group">
-        <label class="field-label">Documento mestre — tudo aqui é verdade absoluta da obra</label>
-        <div class="field-hint" style="margin-bottom:12px">Use este campo como um documento vivo. Cole aqui regras de mundo, lore, história do universo, sistemas de magia/poder, facções, geografia, linha do tempo, leis físicas do universo, religiões, mitologia — tudo que define sua saga.</div>
-        <div class="forge-char-counter" id="counter-bible">0 caracteres</div>
-        <textarea class="field-input forge-textarea-bible" id="f-saga-bible" placeholder="SISTEMA DE MAGIA:
-[descreva]
-
-FACÇÕES E ORGANIZAÇÕES:
-[descreva]
-
-GEOGRAFIA E LOCAIS IMPORTANTES:
-[descreva]
-
-LINHA DO TEMPO DO UNIVERSO:
-[descreva]
-
-HISTÓRIA ANTES DA HISTÓRIA:
-[descreva]
-
-LEIS ABSOLUTAS DO UNIVERSO:
-[descreva]
-
-RELIGIÕES E MITOLOGIAS:
-[descreva]
-
-OUTROS ELEMENTOS ESSENCIAIS:
-[descreva]" oninput="updateCounter('f-saga-bible','counter-bible')"></textarea>
-      </div>
-      <div class="field-group" style="margin-top:20px">
-        <label class="field-label">Universo & Ambientação — descrição narrativa</label>
-        <textarea class="field-input forge-textarea-xl" id="f-universe" placeholder="Descreva o mundo como se estivesse apresentando ao leitor: atmosfera, regras não ditas, o que o torna único, o que o torna perigoso, o que o torna belo..."></textarea>
-      </div>
-    </div>
-
-    <!-- PAINEL 10: PLANEJAMENTO AUTOMÁTICO -->
-    <div class="forge-section">
-      <div class="forge-section-title"><div class="forge-section-num">10</div>Planejamento Automático de Arcos</div>
-      <div class="field-hint" style="margin-bottom:20px">Após criar a obra, use o botão abaixo para que a IA gere automaticamente o planejamento completo de arcos, divisão de capítulos, evolução emocional e momentos de impacto.</div>
-      <div class="forge-arc-box" id="forge-arc-preview">
-        <div style="text-align:center;padding:32px;color:var(--text-muted);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:3px;text-transform:uppercase">Crie a obra e use "Gerar Planejamento" para ver os arcos aqui</div>
-      </div>
-    </div>
-
-    <div class="forge-submit">
-      <button class="btn-create-obra" onclick="createBook()">⚜ Forjar Esta Saga</button>
-      <div style="margin-top:12px;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase">Apenas o título é obrigatório. Todos os outros campos enriquecem a IA.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ======== SCREEN: ESCREVER ======== -->
-<div class="screen" id="screen-escrever">
-  <div class="write-layout">
-
-    <!-- SIDEBAR -->
-    <div class="write-sidebar" id="write-sidebar">
-      <div class="ws-head">
-        <div class="ws-book-title" id="ws-book-title">—</div>
-        <div class="ws-book-meta" id="ws-book-meta">—</div>
-      </div>
-      <div class="ws-tabs">
-        <button class="ws-tab active" onclick="wsTab('chapters',this)">Caps</button>
-        <button class="ws-tab" onclick="wsTab('chars',this)">Personagens</button>
-        <button class="ws-tab" onclick="wsTab('memory',this)">Memória</button>
-      </div>
-      <div class="ws-content" id="ws-content-chapters">
-        <div id="chapters-sidebar-list"></div>
-        <button class="btn-add-ch" onclick="addChapter()">+ Novo Capítulo</button>
-      </div>
-      <div class="ws-content" id="ws-content-chars" style="display:none">
-        <div id="chars-sidebar-list"></div>
-        <button class="btn-add-ch" onclick="goScreen('library')">+ Biblioteca Imperial</button>
-      </div>
-      <div class="ws-content" id="ws-content-memory" style="display:none">
-        <div id="memory-sidebar-content" style="font-family:'Cormorant Garamond',serif;font-size:0.8rem;color:var(--text-dim);font-style:italic;line-height:1.7"></div>
-      </div>
-    </div>
-
-    <!-- MAIN -->
-    <div class="write-main">
-      <div class="write-controls">
-        <div class="ctrl-group">
-          <span class="ctrl-label">Cena / Sinopse do Capítulo</span>
-        </div>
-        <div class="ctrl-spacer"></div>
-        <div class="ctrl-group">
-          <span class="ctrl-label">POV</span>
-          <select class="ctrl-select" id="w-pov">
-            <option>Terceira Pessoa Onisciente</option>
-            <option>Terceira Pessoa Limitado</option>
-            <option>Primeira Pessoa</option>
-            <option>Segunda Pessoa</option>
-            <option>POV Alternado</option>
-            <option>POV Duplo</option>
-            <option>POV Múltiplo</option>
-            <option>POV Dinâmico</option>
-          </select>
-        </div>
-        <div class="ctrl-group">
-          <span class="ctrl-label">Palavras</span>
-          <input class="ctrl-input ctrl-input-sm" type="number" id="w-words" value="2000" min="100" max="15000" step="100">
-        </div>
-        <button class="btn-canalizar" id="btn-canalizar" onclick="canalizar()">✦ Canalizar</button>
-      </div>
-
-      <div class="synopsis-area">
-        <textarea class="ctrl-textarea" id="w-vibe" placeholder="Descreva o que acontece nesta cena — personagens, conflito, tom emocional, eventos-chave..."></textarea>
-      </div>
-
-      <div class="progress-wrap" id="progress-wrap">
-        <div class="progress-label" id="progress-label">Invocando narrativa...</div>
-        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-      </div>
-
-      <div class="editor-area">
-        <div class="editor-toolbar">
-          <button class="tool-btn primary" onclick="saveChapter()">Salvar Capítulo</button>
-          <button class="tool-btn" onclick="copyText()">Copiar</button>
-          <button class="tool-btn" onclick="exportTxt()">Exportar .txt</button>
-          <button class="tool-btn" onclick="clearEditor()">Limpar</button>
-          <button class="tool-btn" id="sidebar-toggle-btn" style="display:none" onclick="toggleMobileSidebar()">☰ Caps</button>
-        </div>
-        <div id="editor" contenteditable="true" spellcheck="false" oninput="onEditorInput()"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ======== SCREEN: BIBLIOTECA IMPERIAL ======== -->
-<div class="screen" id="screen-library">
-  <div class="lib-title">Biblioteca Imperial</div>
-  <div class="lib-tabs">
-    <button class="lib-tab active" onclick="libTab('personagens',this)">Personagens</button>
-    <button class="lib-tab" onclick="libTab('locais',this)">Locais</button>
-    <button class="lib-tab" onclick="libTab('faccoes',this)">Facções</button>
-    <button class="lib-tab" onclick="libTab('artefatos',this)">Artefatos</button>
-    <button class="lib-tab" onclick="libTab('criaturas',this)">Criaturas</button>
-  </div>
-  <div id="lib-content"></div>
-</div>
-
-<!-- ======== LIBRARY MODAL ======== -->
-<div class="lib-modal-overlay" id="lib-modal">
-  <div class="lib-modal-box">
-    <div class="lib-modal-title" id="lib-modal-title">Adicionar</div>
-    <div class="lib-modal-fields">
-      <div class="field-group">
-        <label class="field-label">Nome</label>
-        <input class="field-input" id="lib-name" placeholder="Nome...">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Vinculada à Obra</label>
-        <select class="field-select" id="lib-obra-link"></select>
-      </div>
-      <div class="field-group">
-        <label class="field-label">Descrição / Detalhes</label>
-        <textarea class="field-input textarea-lg" id="lib-desc" placeholder="Descrição completa..."></textarea>
-      </div>
-    </div>
-    <div class="lib-modal-actions">
-      <button class="btn-save-lib" onclick="saveLibItem()">Salvar</button>
-      <button class="btn-cancel-lib" onclick="closeLibModal()">Cancelar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ======== CONFIRM DIALOG ======== -->
-<div class="confirm-overlay" id="confirm-overlay">
-  <div class="confirm-box">
-    <div class="confirm-text" id="confirm-text"></div>
-    <div class="confirm-actions">
-      <button class="confirm-yes" id="confirm-yes-btn">Confirmar</button>
-      <button class="confirm-no" onclick="closeConfirm()">Cancelar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ======== TOAST ======== -->
-<div id="toast"></div>
-
-<script>
-/* ============================================================
-   DATA HELPERS
-============================================================ */
-var DB_KEY = 'imperium_v1';
-var IMPERIAL_KEY = 'imperium_imperial_v1';
-
-function getDB() { try { return JSON.parse(localStorage.getItem(DB_KEY) || '{}'); } catch(e) { return {}; } }
-function saveDB(d) { localStorage.setItem(DB_KEY, JSON.stringify(d)); }
-function getImperial() { try { return JSON.parse(localStorage.getItem(IMPERIAL_KEY) || '{"personagens":[],"locais":[],"faccoes":[],"artefatos":[],"criaturas":[]}'); } catch(e) { return {personagens:[],locais:[],faccoes:[],artefatos:[],criaturas:[]}; } }
-function saveImperial(d) { localStorage.setItem(IMPERIAL_KEY, JSON.stringify(d)); }
-function genId() { return 'b' + Date.now() + Math.random().toString(36).slice(2,6); }
-
-/* ============================================================
-   API KEY
-============================================================ */
-function getApiKey() { return localStorage.getItem('imperium_api_key') || ''; }
-function saveApiKey() {
-  var k = document.getElementById('api-key-input').value.trim();
-  if (!k) { showToast('Cole sua chave API','error'); return; }
-  localStorage.setItem('imperium_api_key', k);
-  document.getElementById('api-modal').classList.remove('show');
-  showToast('Chave ativada com sucesso!');
-}
-function openApiModal() {
-  var k = getApiKey();
-  if (k) document.getElementById('api-key-input').value = k;
-  document.getElementById('api-modal').classList.add('show');
-}
-
-/* ============================================================
-   STATE
-============================================================ */
-var currentBookId = null;
-var currentChapterId = null;
-var currentLibTab = 'personagens';
-var currentForgeGenre = '';
-var currentForgePov = 'Terceira Pessoa Onisciente';
-var selectedTones = [];
-var selectedRelTypes = [];
-
-function updateCounter(fieldId, counterId) {
-  var val = document.getElementById(fieldId).value;
-  var n = val.length;
-  var el = document.getElementById(counterId);
-  el.textContent = n.toLocaleString('pt-BR') + ' caracteres';
-  el.className = 'forge-char-counter' + (n > 5000 ? ' warn' : '');
-}
-
-/* ============================================================
-   SCREENS
-============================================================ */
-function goScreen(name) {
-  try {
-    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-    var target = document.getElementById('screen-' + name);
-    if (!target) return;
-    target.classList.add('active');
-    document.querySelectorAll('.nav-btn[id^=nav-]').forEach(function(b){ b.classList.remove('active'); });
-    var nb = document.getElementById('nav-' + name);
-    if (nb) nb.classList.add('active');
-    var ttw = document.getElementById('topbar-title-wrap');
-    var wb  = document.getElementById('word-badge');
-    if (name === 'escrever') {
-      if (ttw) ttw.style.display = 'flex';
-      if (wb)  wb.style.display  = 'block';
-      renderWriteScreen();
-    } else {
-      if (ttw) ttw.style.display = 'none';
-      if (wb)  wb.style.display  = 'none';
-    }
-    if (name === 'home')    renderHome();
-    if (name === 'forjar')  buildForgeUI();
-    if (name === 'library') renderLibraryScreen();
-    window.scrollTo(0,0);
-  } catch(e) { console.error('goScreen error:', e); }
-}
-
-/* ============================================================
-   GENRE & POV SETUP
-============================================================ */
-var GENRES = [
-  {id:'Romance',icon:'💕',color:'#e8738a'},
-  {id:'Fantasia',icon:'⚔️',color:'#8b5cf6'},
-  {id:'Ação',icon:'🔥',color:'#ef4444'},
-  {id:'Suspense',icon:'🕵',color:'#6b7280'},
-  {id:'Drama',icon:'🎭',color:'#f59e0b'},
-  {id:'Ficção Científica',icon:'🚀',color:'#06b6d4'},
-  {id:'Horror',icon:'🖤',color:'#374151'},
-  {id:'BL',icon:'💙',color:'#3b82f6'},
-  {id:'GL',icon:'💜',color:'#a855f7'},
-  {id:'Mistério',icon:'🔮',color:'#7c3aed'},
-  {id:'Aventura',icon:'🗺',color:'#10b981'},
-  {id:'Histórico',icon:'📜',color:'#d97706'},
-];
-var POVS = [
-  {id:'Terceira Pessoa Onisciente',desc:'Narrador sabe tudo de todos'},
-  {id:'Terceira Pessoa Limitado',desc:'Narrador acompanha um personagem'},
-  {id:'Primeira Pessoa',desc:'O protagonista narra'},
-  {id:'Segunda Pessoa',desc:'O leitor é o protagonista'},
-  {id:'POV Alternado',desc:'Troca entre dois personagens'},
-  {id:'POV Duplo',desc:'Dois POVs no mesmo capítulo'},
-  {id:'POV Múltiplo',desc:'Vários perspectivas ao longo da saga'},
-  {id:'POV Dinâmico',desc:'IA decide o melhor POV para cada cena'},
-];
-var TONES = ['Épico','Sombrio','Romântico','Tenso','Esperançoso','Trágico','Cômico','Filosófico','Sensual','Brutal','Poético','Misterioso','Onírico','Nostálgico'];
-
-function buildForgeUI() {
-  try {
-    var gg = document.getElementById('genre-grid');
-    if (gg) gg.innerHTML = GENRES.map(function(g){
-      return '<div class="genre-card" data-genre="'+g.id+'" onclick="selectGenre(\''+g.id+'\',this)"><div class="genre-card-icon">'+g.icon+'</div><div class="genre-card-name">'+g.id+'</div></div>';
-    }).join('');
-    var pg = document.getElementById('pov-grid');
-    if (pg) pg.innerHTML = POVS.map(function(p){
-      var sel = p.id === currentForgePov ? ' selected' : '';
-      return '<div class="pov-card'+sel+'" data-pov="'+p.id+'" onclick="selectPov(\''+p.id+'\',this)"><div class="pov-card-name">'+p.id+'</div><div class="pov-card-desc">'+p.desc+'</div></div>';
-    }).join('');
-    var tp = document.getElementById('tone-pills');
-    if (tp) tp.innerHTML = TONES.map(function(t){
-      return '<div class="tone-pill" onclick="toggleTone(\''+t+'\',this)">'+t+'</div>';
-    }).join('');
-    var rels = ['Estranhos','Amigos','Inimigos','Ex-amantes','Rivais','Almas gêmeas','Reencarnações','Amor proibido','Triângulo amoroso','Diferença de classe','Diferença de espécie','Diferença de poder','Casados','Parceiros forçados','Mentor e pupilo'];
-    var rp = document.getElementById('rel-pills');
-    if (rp) rp.innerHTML = rels.map(function(r){
-      return '<div class="rel-pill" onclick="toggleRel(\''+r+'\',this)">'+r+'</div>';
-    }).join('');
-  } catch(e) { console.error('buildForgeUI error:', e); }
-}
-function selectGenre(id, el) {
-  currentForgeGenre = id;
-  document.querySelectorAll('.genre-card').forEach(function(c){ c.classList.remove('selected'); });
-  el.classList.add('selected');
-}
-function selectPov(id, el) {
-  currentForgePov = id;
-  document.querySelectorAll('.pov-card').forEach(function(c){ c.classList.remove('selected'); });
-  el.classList.add('selected');
-}
-function toggleTone(t, el) {
-  var idx = selectedTones.indexOf(t);
-  if (idx > -1) { selectedTones.splice(idx,1); el.classList.remove('selected'); }
-  else { selectedTones.push(t); el.classList.add('selected'); }
-}
-function toggleRel(r, el) {
-  var idx = selectedRelTypes.indexOf(r);
-  if (idx > -1) { selectedRelTypes.splice(idx,1); el.classList.remove('selected'); }
-  else { selectedRelTypes.push(r); el.classList.add('selected'); }
-}
-
-/* ============================================================
-   CREATE BOOK
-============================================================ */
-function createBook() {
-  var title = document.getElementById('f-title').value.trim();
-  if (!title) { showToast('O título é obrigatório','error'); return; }
-  var db = getDB();
-  var id = genId();
-  db[id] = {
-    id: id,
-    title: title,
-    subtitle: document.getElementById('f-subtitle').value.trim(),
-    synopsis: document.getElementById('f-synopsis').value.trim(),
-    premise: document.getElementById('f-premise').value.trim(),
-    genre: currentForgeGenre,
-    subgenre: document.getElementById('f-subgenre').value.trim(),
-    classification: document.getElementById('f-class').value,
-    status: document.getElementById('f-status').value,
-    themeMain: document.getElementById('f-theme-main').value.trim(),
-    themeSec: document.getElementById('f-theme-sec').value.trim(),
-    message: document.getElementById('f-message').value.trim(),
-    pov: currentForgePov,
-    style: document.getElementById('f-style').value,
-    narrator: document.getElementById('f-narrator').value,
-    totalCaps: parseInt(document.getElementById('f-total-caps').value) || 20,
-    wordsCap: parseInt(document.getElementById('f-words-cap').value) || 2000,
-    arcs: parseInt(document.getElementById('f-arcs').value) || 3,
-    goal: document.getElementById('f-goal').value.trim(),
-    conflict: document.getElementById('f-conflict').value.trim(),
-    conflicts2: document.getElementById('f-conflicts2').value.trim(),
-    relationships: document.getElementById('f-relationships').value.trim(),
-    relationshipTypes: selectedRelTypes.slice(),
-    romanceArc: document.getElementById('f-romance-arc').value.trim(),
-    hero1: document.getElementById('f-hero1').value.trim(),
-    hero1desc: document.getElementById('f-hero1-desc').value.trim(),
-    hero2: document.getElementById('f-hero2').value.trim(),
-    hero2desc: document.getElementById('f-hero2-desc').value.trim(),
-    secondaryChars: document.getElementById('f-secondary-chars').value.trim(),
-    mandatoryEvents: document.getElementById('f-mandatory-events').value.trim(),
-    neverForget: document.getElementById('f-never-forget').value.trim(),
-    sagaBible: document.getElementById('f-saga-bible').value.trim(),
-    universe: document.getElementById('f-universe').value.trim(),
-    tones: selectedTones.slice(),
-    chapters: [],
-    createdAt: Date.now(),
-    savedAt: Date.now(),
-  };
-  saveDB(db);
-  currentBookId = id;
-  showToast('Saga forjada! Iniciando...');
-  goScreen('escrever');
-}
-
-/* ============================================================
-   HOME RENDER
-============================================================ */
-function renderHome() {
-  try {
-    var db = getDB();
-    var books = Object.values(db).sort(function(a,b){ return (b.savedAt||0)-(a.savedAt||0); });
-    var totalCaps=0, totalWords=0;
-    books.forEach(function(b){ totalCaps+=(b.chapters||[]).length; (b.chapters||[]).forEach(function(c){ totalWords+=(c.words||0); }); });
-    var imperial = getImperial();
-    var totalChars = (imperial.personagens||[]).length;
-    document.getElementById('stat-obras').textContent = books.length;
-    document.getElementById('stat-caps').textContent = totalCaps;
-    document.getElementById('stat-words').textContent = totalWords >= 1000 ? (totalWords/1000).toFixed(1)+'k' : totalWords;
-    document.getElementById('stat-chars').textContent = totalChars;
-    var section = document.getElementById('library-section');
-    if (books.length === 0) {
-      section.innerHTML = '<div style="text-align:center;padding:60px 24px"><div style="font-family:Cinzel,serif;font-size:0.62rem;letter-spacing:4px;color:rgba(212,175,55,0.25);text-transform:uppercase;margin-bottom:24px">Nenhuma obra forjada</div><button class="btn-forjar" onclick="goScreen(\'forjar\')">✦ Forjar Primeira Obra</button></div>';
-      return;
-    }
-    var byGenre = {};
-    books.forEach(function(b){
-      var g = b.genre || 'Outros';
-      if (!byGenre[g]) byGenre[g] = [];
-      byGenre[g].push(b);
-    });
-    var html = '';
-    Object.keys(byGenre).forEach(function(genre){
-      var bks = byGenre[genre];
-      var gInfo = GENRES.find(function(g){ return g.id===genre; }) || {icon:'📖',color:'#d4af37'};
-      html += '<div style="margin-bottom:48px">';
-      html += '<div class="section-header"><div class="section-title">'+gInfo.icon+' '+genre+'</div><span class="section-count">'+bks.length+' obra'+(bks.length>1?'s':'')+'</span></div>';
-      html += '<div class="carousel">';
-      bks.forEach(function(b){
-        var caps = (b.chapters||[]).length;
-        var totalW = 0; (b.chapters||[]).forEach(function(c){ totalW+=(c.words||0); });
-        var prog = b.totalCaps ? Math.min(100, Math.round(caps/b.totalCaps*100)) : 0;
-        var statusClass = b.status==='Escrevendo'?'status-escrevendo':b.status==='Pausado'?'status-pausado':'status-concluido';
-        html += '<div class="book-card" onclick="openBook(\''+b.id+'\')">';
-        html += '<div class="book-card-cover" style="background:linear-gradient(135deg,rgba('+hexToRgb(gInfo.color)+',0.2),rgba(0,0,0,0.8))">';
-        html += '<div class="book-card-cover-bg" style="background:'+gInfo.color+'"></div>';
-        html += '<div class="book-card-icon">'+gInfo.icon+'</div>';
-        html += '<div class="book-card-genre-badge" style="background:'+gInfo.color+'">'+genre+'</div>';
-        html += '<div class="book-card-status '+statusClass+'"></div>';
-        html += '</div>';
-        html += '<div class="book-card-body">';
-        html += '<div class="book-card-title">'+escHtml(b.title)+'</div>';
-        html += '<div class="book-card-meta">'+caps+'/'+b.totalCaps+' cap · '+(totalW>=1000?(totalW/1000).toFixed(1)+'k':totalW)+' palavras</div>';
-        html += '<div class="book-card-progress"><div class="book-card-progress-fill" style="width:'+prog+'%"></div></div>';
-        html += '<div class="book-card-actions">';
-        html += '<button class="card-btn" onclick="event.stopPropagation();openBook(\''+b.id+'\')">Escrever</button>';
-        html += '<button class="card-btn danger" onclick="event.stopPropagation();deleteBook(\''+b.id+'\')">Excluir</button>';
-        html += '</div></div></div>';
-      });
-      html += '</div></div>';
-    });
-    section.innerHTML = html;
-  } catch(e) { console.error('renderHome error:', e); }
-}
-
-function hexToRgb(hex) {
-  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return r+','+g+','+b;
-}
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function openBook(id) {
-  currentBookId = id;
-  currentChapterId = null;
-  goScreen('escrever');
-}
-function deleteBook(id) {
-  var db = getDB();
-  var name = (db[id]&&db[id].title) ? db[id].title : 'esta obra';
-  askConfirm('Excluir "'+name+'" e todos os seus capítulos? Esta ação não pode ser desfeita.', function(){
-    delete db[id];
-    saveDB(db);
-    if (currentBookId===id) currentBookId=null;
-    renderHome();
-    showToast('Obra excluída');
-  });
-}
-
-/* ============================================================
-   WRITE SCREEN
-============================================================ */
-function renderWriteScreen() {
-  var db = getDB();
-  var book = currentBookId ? db[currentBookId] : null;
-  if (!book) {
-    // No book selected – go home
-    goScreen('home');
-    return;
-  }
-  document.getElementById('topbar-book-title').value = book.title || '';
-  document.getElementById('ws-book-title').textContent = book.title || '—';
-  document.getElementById('ws-book-meta').textContent = (book.genre||'') + (book.pov?' · '+book.pov:'');
-  document.getElementById('w-pov').value = book.pov || 'Terceira Pessoa Onisciente';
-  document.getElementById('w-words').value = book.wordsCap || 2000;
-  renderChaptersSidebar();
-  renderCharsSidebar();
-  renderMemorySidebar();
-  // Load chapter if selected
-  if (currentChapterId) loadChapterToEditor(currentChapterId);
-  else document.getElementById('editor').innerText = '';
-  updateWordBadge();
-  if (window.innerWidth <= 768) document.getElementById('sidebar-toggle-btn').style.display='block';
-}
-
-function onTitleChange() {
-  if (!currentBookId) return;
-  var db = getDB();
-  if (!db[currentBookId]) return;
-  db[currentBookId].title = document.getElementById('topbar-book-title').value;
-  db[currentBookId].savedAt = Date.now();
-  saveDB(db);
-  document.getElementById('ws-book-title').textContent = db[currentBookId].title || '—';
-}
-
-function wsTab(tab, el) {
-  document.querySelectorAll('.ws-tab').forEach(function(t){ t.classList.remove('active'); });
-  el.classList.add('active');
-  document.getElementById('ws-content-chapters').style.display = tab==='chapters'?'block':'none';
-  document.getElementById('ws-content-chars').style.display    = tab==='chars'?'block':'none';
-  document.getElementById('ws-content-memory').style.display   = tab==='memory'?'block':'none';
-}
-
-function renderChaptersSidebar() {
-  var db = getDB();
-  var book = db[currentBookId];
-  var caps = book ? (book.chapters||[]) : [];
-  var list = document.getElementById('chapters-sidebar-list');
-  if (caps.length===0) { list.innerHTML='<div style="font-family:Cinzel,serif;font-size:0.58rem;letter-spacing:2px;color:rgba(212,175,55,0.2);text-align:center;padding:24px 0;text-transform:uppercase">Nenhum capítulo</div>'; return; }
-  var html='';
-  caps.forEach(function(c){
-    var isActive = c.id===currentChapterId;
-    html+='<div class="ch-item'+(isActive?' active':'')+'"><div class="ch-num">'+c.num+'</div><div class="ch-info" onclick="selectChapter(\''+c.id+'\')"><div class="ch-title">'+escHtml(c.title)+'</div><div class="ch-meta">'+(c.words||0).toLocaleString('pt-BR')+' palavras</div></div><button class="ch-del" onclick="deleteChapter(\''+c.id+'\')">✕</button></div>';
-  });
-  list.innerHTML=html;
-}
-
-function renderCharsSidebar() {
-  var imperial = getImperial();
-  var chars = (imperial.personagens||[]).filter(function(p){ return p.obra===currentBookId || !p.obra; });
-  var list = document.getElementById('chars-sidebar-list');
-  if (chars.length===0) { list.innerHTML='<div style="font-family:Cinzel,serif;font-size:0.58rem;letter-spacing:2px;color:rgba(212,175,55,0.2);text-align:center;padding:24px 0;text-transform:uppercase">Nenhum personagem</div>'; return; }
-  list.innerHTML = chars.map(function(c){
-    return '<div class="char-item"><div class="char-name">'+escHtml(c.name)+'</div><div class="char-role">'+escHtml(c.desc||'').substring(0,60)+'...</div></div>';
-  }).join('');
-}
-
-function renderMemorySidebar() {
-  var db = getDB();
-  var book = db[currentBookId];
-  var mem = document.getElementById('memory-sidebar-content');
-  if (!book) { mem.innerHTML=''; return; }
-  var caps = book.chapters||[];
-  if (caps.length===0) { mem.innerHTML='<em>Nenhum capítulo salvo ainda. A memória se constrói à medida que você escreve.</em>'; return; }
-  var txt = '<strong style="font-family:Cinzel,serif;font-size:0.58rem;letter-spacing:2px;color:var(--gold-dark)">'+caps.length+' CAPÍTULO'+(caps.length>1?'S':'')+' NA MEMÓRIA</strong><br><br>';
-  caps.slice(-3).forEach(function(c){ txt+='<strong style="color:var(--bright)">'+c.title+'</strong><br>'+escHtml((c.content||'').substring(0,150))+'...<br><br>'; });
-  mem.innerHTML = txt;
-}
-
-function addChapter() {
-  var db = getDB();
-  var book = db[currentBookId];
-  if (!book) return;
-  var num = (book.chapters||[]).length + 1;
-  var cap = { id: genId(), num: num, title: 'Capítulo '+num, content: '', words: 0, savedAt: Date.now() };
-  if (!book.chapters) book.chapters=[];
-  book.chapters.push(cap);
-  book.savedAt=Date.now();
-  saveDB(db);
-  currentChapterId=cap.id;
-  document.getElementById('editor').innerText='';
-  updateWordBadge();
-  renderChaptersSidebar();
-  showToast('Capítulo '+num+' criado');
-}
-
-function selectChapter(id) {
-  var editor = document.getElementById('editor');
-  var current = editor.innerText.trim();
-  if (current) {
-    askConfirm('O editor tem conteúdo não salvo. Descartar e carregar outro capítulo?', function(){
-      currentChapterId=id;
-      loadChapterToEditor(id);
-      renderChaptersSidebar();
-    });
-    return;
-  }
-  currentChapterId=id;
-  loadChapterToEditor(id);
-  renderChaptersSidebar();
-}
-
-function loadChapterToEditor(id) {
-  var db = getDB();
-  var book = db[currentBookId];
-  if (!book) return;
-  var cap = (book.chapters||[]).find(function(c){ return c.id===id; });
-  if (!cap) return;
-  document.getElementById('editor').innerText = cap.content||'';
-  updateWordBadge();
-}
-
-function saveChapter() {
-  var text = document.getElementById('editor').innerText.trim();
-  if (!text) { showToast('Nada para salvar','error'); return; }
-  var db = getDB();
-  var book = db[currentBookId];
-  if (!book) return;
-  if (!book.chapters) book.chapters=[];
-  if (!currentChapterId) {
-    var num = book.chapters.length+1;
-    currentChapterId = genId();
-    book.chapters.push({ id:currentChapterId, num:num, title:'Capítulo '+num, content:text, words:countWords(text), savedAt:Date.now() });
-  } else {
-    var cap = book.chapters.find(function(c){ return c.id===currentChapterId; });
-    if (cap) { cap.content=text; cap.words=countWords(text); cap.savedAt=Date.now(); }
-    else {
-      var num2=book.chapters.length+1;
-      book.chapters.push({ id:currentChapterId, num:num2, title:'Capítulo '+num2, content:text, words:countWords(text), savedAt:Date.now() });
-    }
-  }
-  book.savedAt=Date.now();
-  saveDB(db);
-  renderChaptersSidebar();
-  renderMemorySidebar();
-  showToast('Capítulo salvo!');
-}
-
-function deleteChapter(id) {
-  askConfirm('Excluir este capítulo? Não pode ser desfeito.', function(){
-    var db = getDB();
-    var book = db[currentBookId];
-    book.chapters = (book.chapters||[]).filter(function(c){ return c.id!==id; });
-    book.chapters.forEach(function(c,i){ c.num=i+1; c.title='Capítulo '+(i+1); });
-    book.savedAt=Date.now();
-    saveDB(db);
-    if (currentChapterId===id) { currentChapterId=null; document.getElementById('editor').innerText=''; updateWordBadge(); }
-    renderChaptersSidebar();
-    showToast('Capítulo excluído');
-  });
-}
-
-function onEditorInput() { updateWordBadge(); }
-function countWords(t) { return t.trim() ? t.trim().split(/\s+/).length : 0; }
-function updateWordBadge() {
-  var txt = document.getElementById('editor').innerText.trim();
-  var n = countWords(txt);
-  document.getElementById('word-badge').textContent = n.toLocaleString('pt-BR')+' palavras';
-}
-
-function clearEditor() {
-  if (!document.getElementById('editor').innerText.trim()) { showToast('Editor já está vazio'); return; }
-  askConfirm('Limpar o editor? Conteúdo não salvo será perdido.', function(){
-    document.getElementById('editor').innerText='';
-    updateWordBadge();
-    showToast('Editor limpo');
-  });
-}
-function copyText() {
-  var txt = document.getElementById('editor').innerText.trim();
-  if (!txt) { showToast('Nada para copiar','error'); return; }
-  navigator.clipboard.writeText(txt).then(function(){ showToast('Copiado!'); }).catch(function(){ showToast('Falha ao copiar','error'); });
-}
-function exportTxt() {
-  var txt = document.getElementById('editor').innerText.trim();
-  var db = getDB(); var book = db[currentBookId];
-  var title = (book&&book.title) ? book.title : 'obra';
-  if (!txt) { showToast('Nada para exportar','error'); return; }
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));
-  a.download = title.replace(/\s+/g,'_')+'.txt';
-  a.click(); URL.revokeObjectURL(a.href);
-  showToast('Exportado!');
-}
-function toggleMobileSidebar() {
-  document.getElementById('write-sidebar').classList.toggle('mobile-open');
-}
-
-/* ============================================================
-   GENERATE (CANALIZAR)
-============================================================ */
-var API_MODEL = 'gemini-2.5-flash';
-var API_BASE  = 'https://generativelanguage.googleapis.com/v1beta/models/'+API_MODEL;
-
-function buildPrompt() {
-  var db = getDB();
-  var book = db[currentBookId];
-  var vibe = document.getElementById('w-vibe').value.trim();
-  var pov = document.getElementById('w-pov').value;
-  var meta = parseInt(document.getElementById('w-words').value) || 2000;
-
-  // Memory: last 2 chapters
-  var mem='';
-  if (book && book.chapters && book.chapters.length>0) {
-    var recent = book.chapters.slice(-2);
-    mem = '\n\nCAPÍTULOS ANTERIORES (contexto de memória):\n';
-    recent.forEach(function(c){ mem += c.title+': '+c.content.substring(0,600)+'...\n\n'; });
-  }
-
-  // Characters
-  var imperial = getImperial();
-  var chars = (imperial.personagens||[]).filter(function(p){ return p.obra===currentBookId || !p.obra; });
-  var charContext = chars.length>0 ? '\n\nPERSONAGENS DA BIBLIOTECA IMPERIAL:\n'+chars.map(function(c){ return c.name+': '+c.desc; }).join('\n') : '';
-
-  // Book context
-  var bookCtx = '';
-  if (book) {
-    bookCtx = '\nUNIVERSO: '+(book.universe||'Não especificado')+
-      '\nCONFLITO PRINCIPAL: '+(book.conflict||'Não especificado')+
-      '\nOBJETIVO DA SAGA: '+(book.goal||'Não especificado')+
-      '\nESTILO: '+(book.style||'Épico')+
-      '\nTONS: '+(book.tones&&book.tones.length?book.tones.join(', '):'Não especificado')+
-      (book.subtitle?'\nSUBTÍTULO: '+book.subtitle:'')+
-      (book.themeMain?'\nTEMA PRINCIPAL: '+book.themeMain:'')+
-      (book.themeSec?'\nTEMAS SECUNDÁRIOS: '+book.themeSec:'')+
-      (book.message?'\nMENSAGEM CENTRAL: '+book.message:'')+
-      (book.synopsis?'\n\nSINOPSE COMPLETA:\n'+book.synopsis:'')+
-      (book.premise?'\n\nPREMISSA DETALHADA:\n'+book.premise:'')+
-      (book.sagaBible?'\n\nBÍBLIA DA SAGA (lei absoluta):\n'+book.sagaBible:'')+
-      (book.neverForget?'\n\n⚡ NUNCA ESQUECER — PRIORIDADE MÁXIMA:\n'+book.neverForget:'')+
-      (book.relationships?'\n\nRELACIONAMENTOS:\n'+book.relationships:'')+
-      (book.romanceArc?'\n\nLINHA EVOLUTIVA DO ROMANCE (respeite esta progressão):\n'+book.romanceArc:'')+
-      (book.mandatoryEvents?'\n\nEVENTOS OBRIGATÓRIOS DA SAGA:\n'+book.mandatoryEvents:'');
-    if (book.hero1) bookCtx += '\n\nPROTAGONISTA 1 — '+book.hero1+(book.hero1desc?':\n'+book.hero1desc:'');
-    if (book.hero2) bookCtx += '\n\nPROTAGONISTA 2 — '+book.hero2+(book.hero2desc?':\n'+book.hero2desc:'');
-    if (book.secondaryChars) bookCtx += '\n\nPERSONAGENS SECUNDÁRIOS:\n'+book.secondaryChars;
-  }
-
-  var capNum = '';
-  if (book && book.chapters) {
-    var idx = book.chapters.findIndex(function(c){ return c.id===currentChapterId; });
-    capNum = idx>=0 ? 'CAPÍTULO '+(idx+1) : 'CAPÍTULO '+(book.chapters.length+1);
-  }
-
-  var minWords = Math.round(meta * 0.95);
-
-  return (
-    '╔══════════════════════════════════════════════════╗\n' +
-    '║   NÚCLEO SUPREMO DA MENTE IMPERIAL — ATIVADO    ║\n' +
-    '╚══════════════════════════════════════════════════╝\n\n' +
-
-    /* IDENTIDADE */
-    'Você NÃO é uma IA geradora de texto.\n' +
-    'Você NÃO é um chatbot. Você NÃO é um assistente virtual.\n' +
-    'Você é um ESTÚDIO LITERÁRIO COMPLETO operando simultaneamente como:\n\n' +
-    '  → ESCRITORA BEST-SELLER: prosa viva, ritmo magistral, voz inconfundível.\n' +
-    '  → ROTEIRISTA PROFISSIONAL: estrutura de cena, beats dramáticos, timing perfeito.\n' +
-    '  → EDITORA LITERÁRIA: corta o supérfluo, potencializa o essencial, exige excelência.\n' +
-    '  → ESPECIALISTA EM PERSONAGENS: cada pessoa é um universo com historia própria.\n' +
-    '  → ESPECIALISTA EM EMOÇÕES: cada cena provoca algo real no leitor.\n' +
-    '  → ESPECIALISTA EM CONSTRUÇÃO DE MUNDO: o universo respira e tem consequências.\n' +
-    '  → ESPECIALISTA EM CONTINUIDADE: nada contradiz o que foi estabelecido.\n' +
-    '  → LEITORA BETA PROFISSIONAL: avalia se o texto prende, emociona e surpreende.\n\n' +
-    'Todas essas vozes trabalham juntas. O resultado é o único aceitável: excelência absoluta.\n\n' +
-
-    /* DADOS DA OBRA */
-    '══════════════════════════════════════════════════\n' +
-    'DADOS DA OBRA\n' +
-    '══════════════════════════════════════════════════\n' +
-    'TÍTULO: ' + (book ? book.title : 'Sem título') + '\n' +
-    capNum + '\n' +
-    'PONTO DE VISTA: ' + pov + '\n' +
-    'META DE PALAVRAS: ' + meta + ' (mínimo absoluto: ' + minWords + ' palavras)\n' +
-    bookCtx +
-    charContext +
-    mem +
-    '\nCENA DESTE CAPÍTULO:\n' + vibe + '\n\n' +
-
-    /* PLANEJAMENTO INTERNO OBRIGATÓRIO */
-    '══════════════════════════════════════════════════\n' +
-    'SISTEMA DE PLANEJAMENTO INTERNO — EXECUTE ANTES DE ESCREVER\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Antes de digitar a primeira palavra da cena, defina internamente:\n\n' +
-    '  1. OBJETIVO EMOCIONAL: qual emoção dominante esta cena vai provocar?\n' +
-    '     Tensão | Desejo | Fascínio | Medo | Esperança | Dor | Ciúme | Obsessão | Amor | Ódio\n\n' +
-    '  2. OBJETIVO NARRATIVO: o que muda no mundo da história ao fim desta cena?\n' +
-    '     (uma relação, um segredo, um poder, uma aliança, uma perda)\n\n' +
-    '  3. CONFLITO CENTRAL DA CENA: qual é o embate — interno ou externo — que gera tensão?\n\n' +
-    '  4. EVOLUÇÃO DOS PERSONAGENS: quem entra diferente de quem sai?\n' +
-    '     Mesmo uma mudança sutil deve existir. Personagens estáticos são personagens mortos.\n\n' +
-    '  5. GANCHO FINAL: como esta cena termina de forma que o leitor não consiga parar?\n\n' +
-    'Somente após definir esses 5 pontos internamente, inicie a escrita.\n\n' +
-
-    /* REGRA ABSOLUTA */
-    '══════════════════════════════════════════════════\n' +
-    'REGRA ABSOLUTA DE QUALIDADE\n' +
-    '══════════════════════════════════════════════════\n' +
-    'A qualidade da história é MAIS IMPORTANTE do que velocidade ou quantidade.\n' +
-    'JAMAIS gere texto para preencher espaço.\n' +
-    'JAMAIS escreva capítulos genéricos, vazios ou previsíveis.\n' +
-    'JAMAIS repita padrões, estruturas ou emoções de capítulos anteriores sem intenção clara.\n' +
-    'JAMAIS escreva como chatbot, IA ou assistente virtual.\n' +
-    'Cada capítulo deve parecer escrito por uma autora profissional experiente que viveu cada cena.\n\n' +
-
-    /* MOTOR DE PERSONAGENS */
-    '══════════════════════════════════════════════════\n' +
-    'MOTOR DE PERSONAGENS VIVOS\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Nenhum personagem pode ser superficial. Nenhum personagem existe apenas para servir ao enredo.\n\n' +
-    'Cada personagem nesta cena possui:\n' +
-    '  • Medos que influenciam cada decisão\n' +
-    '  • Desejos que entram em conflito com os medos\n' +
-    '  • Traumas que distorcem a percepção da realidade\n' +
-    '  • Contradições humanas genuínas\n' +
-    '  • Falhas que os tornam reais, não vilões nem heróis perfeitos\n' +
-    '  • Virtudes que surgem nos momentos errados\n' +
-    '  • Segredos que mudam o peso de cada palavra que dizem\n' +
-    '  • Objetivos pessoais que existem independente da trama\n\n' +
-    'Os personagens agem de acordo com QUEM SÃO — nunca porque o roteiro precisa.\n' +
-    'Se um personagem tomaria uma decisão idiota por quem é, ele toma. E sofre as consequências.\n\n' +
-
-    /* MOTOR DE DIÁLOGOS */
-    '══════════════════════════════════════════════════\n' +
-    'MOTOR DE DIÁLOGOS REAIS\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Diálogos são o lugar onde personagens revelam quem são SEM PERCEBER.\n\n' +
-    'PROIBIDO:\n' +
-    '  ✗ Exposição forçada ("Como você sabe, nós nos conhecemos há 10 anos...")\n' +
-    '  ✗ Falas que existem para informar o leitor, não para avançar a relação\n' +
-    '  ✗ Personagens que explicam a própria psicologia ("Acho que faço isso porque meu pai...")\n' +
-    '  ✗ Respostas diretas a perguntas diretas (pessoas reais desviam, hesitam, mentem)\n' +
-    '  ✗ Diálogos simétricos e educados entre pessoas em conflito\n\n' +
-    'OBRIGATÓRIO:\n' +
-    '  ✓ Interrupções, silêncios, meias-frases\n' +
-    '  ✓ O que NÃO é dito importa mais do que o que é dito\n' +
-    '  ✓ Subtexto em cada troca: o que cada um realmente quer desta conversa?\n' +
-    '  ✓ Tensão mesmo em cenas sem conflito aparente\n' +
-    '  ✓ Dialetos, tiques verbais, formas únicas de falar por personagem\n\n' +
-
-    /* MOTOR DE IMERSÃO */
-    '══════════════════════════════════════════════════\n' +
-    'MOTOR DE IMERSÃO — MOSTRE, NÃO CONTE\n' +
-    '══════════════════════════════════════════════════\n' +
-    'NUNCA narre emoções como relatório. NUNCA resuma sentimentos.\n\n' +
-    'PROIBIDO → OBRIGATÓRIO:\n' +
-    '  ✗ "ela ficou nervosa" → ✓ mostre os dedos que não param, a voz que sai um tom acima\n' +
-    '  ✗ "ele estava com raiva" → ✓ mostre a mandíbula travada, o sorriso que não chega aos olhos\n' +
-    '  ✗ "ela estava feliz" → ✓ mostre o detalhe que ela normalmente ignoraria e hoje a encanta\n' +
-    '  ✗ "o ambiente era sombrio" → ✓ descreva o cheiro, a temperatura, o som que a torna sombria\n\n' +
-    'USE sempre: detalhes sensoriais específicos (não "flores" — "jasmim"), gestos involuntários,\n' +
-    'microexpressões, contradições entre o que o personagem diz e o que o corpo faz,\n' +
-    'e atmosfera do ambiente como extensão ou contraste do estado emocional da cena.\n\n' +
-
-    /* MOTOR ANTI-IA */
-    '══════════════════════════════════════════════════\n' +
-    'MOTOR ANTI-IA — LISTA NEGRA ABSOLUTA\n' +
-    '══════════════════════════════════════════════════\n' +
-    'As frases abaixo são assinatura de texto genérico. Se uma aparecer, reescreva imediatamente:\n\n' +
-    '  ✗ "Seu coração disparou."           ✗ "Algo estava prestes a mudar."\n' +
-    '  ✗ "Mal sabia ela."                  ✗ "Tudo parecia normal até que..."\n' +
-    '  ✗ "Ela era diferente de todas."     ✗ "Era uma noite como qualquer outra."\n' +
-    '  ✗ "Ele sentiu uma estranha sensação."  ✗ "Uma garota/garoto comum."\n' +
-    '  ✗ "Ela disse com um sorriso."       ✗ "O silêncio era ensurdecedor."\n' +
-    '  ✗ "As palavras ficaram presas na garganta."  ✗ "Ela não sabia o que dizer."\n' +
-    '  ✗ "Ele não conseguia acreditar."    ✗ "Sua vida nunca mais seria a mesma."\n\n' +
-    'Substitua sempre por: especificidade, sensorialidade, originalidade.\n\n' +
-
-    /* MOTOR DE CONSEQUÊNCIAS */
-    '══════════════════════════════════════════════════\n' +
-    'MOTOR DE CONSEQUÊNCIAS\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Toda ação nesta cena tem consequência — imediata ou plantada para o futuro.\n' +
-    'Escolhas têm custo real. Vitórias exigem sacrifício. Erros deixam marcas permanentes.\n' +
-    'Se alguém mente: essa mentira terá peso. Se alguém perde: essa perda dói.\n' +
-    'Se alguém vence: algo foi sacrificado para isso. Nada é gratuito.\n\n' +
-
-    /* GANCHO FINAL */
-    '══════════════════════════════════════════════════\n' +
-    'GANCHO FINAL — LEI INVIOLÁVEL\n' +
-    '══════════════════════════════════════════════════\n' +
-    'O último parágrafo desta cena DEVE criar compulsão de leitura imediata.\n' +
-    'Use um destes elementos (ou combine mais de um):\n\n' +
-    '  → Uma descoberta que muda o que o leitor pensava saber\n' +
-    '  → Uma revelação que recontextualiza a cena inteira\n' +
-    '  → Uma ameaça que se torna real e inevitável\n' +
-    '  → Uma dúvida que o leitor não consegue ignorar\n' +
-    '  → Um conflito que explode no pior momento possível\n' +
-    '  → Uma decisão que não tem volta\n' +
-    '  → Uma última linha que ressoa e assombra\n\n' +
-    'Se o gancho não criar necessidade física de virar a página: REESCREVA.\n\n' +
-
-    /* SISTEMA DE QUALIDADE */
-    '══════════════════════════════════════════════════\n' +
-    'SISTEMA DE QUALIDADE INTERNO — CHECKLIST OBRIGATÓRIO\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Antes de entregar, avalie internamente cada item. Se QUALQUER um estiver abaixo de 9/10: reescreva.\n\n' +
-    '  [ ] Impacto emocional ............................... ≥ 9/10\n' +
-    '  [ ] Naturalidade e subtexto dos diálogos ............ ≥ 9/10\n' +
-    '  [ ] Profundidade e coerência dos personagens ......... ≥ 9/10\n' +
-    '  [ ] Qualidade da prosa (fluxo, ritmo, voz) ........... ≥ 9/10\n' +
-    '  [ ] Imersão sensorial e especificidade ............... ≥ 9/10\n' +
-    '  [ ] Ausência de frases genéricas ou clichês .......... ≥ 9/10\n' +
-    '  [ ] Força e originalidade do gancho final ............ ≥ 9/10\n' +
-    '  [ ] Consistência com capítulos anteriores ............ ≥ 9/10\n\n' +
-    'Texto mediano não será entregue. Apenas excelência.\n\n' +
-
-    /* CONSISTÊNCIA */
-    '══════════════════════════════════════════════════\n' +
-    'MEMÓRIA E CONSISTÊNCIA\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Respeite absolutamente tudo estabelecido nos capítulos anteriores.\n' +
-    'Não contradiga: fatos, mortes, poderes, traumas, segredos revelados, relações, cronologia.\n' +
-    'POV rigoroso: ' + pov + '. Não vaze para outra perspectiva sem intenção narrativa explícita.\n\n' +
-
-    /* INSTRUÇÃO FINAL */
-    '══════════════════════════════════════════════════\n' +
-    'INSTRUÇÃO FINAL\n' +
-    '══════════════════════════════════════════════════\n' +
-    'Escreva APENAS o texto literário da cena.\n' +
-    'Sem títulos. Sem "Capítulo X". Sem comentários. Sem meta-texto. Sem introduções.\n' +
-    'A primeira palavra já deve ser literatura. O último ponto deve ser inesquecível.\n' +
-    'Mínimo absoluto: ' + minWords + ' palavras. Escreva até a cena estar completa, poderosa e com gancho.'
-  );
-}
-
-async function canalizar() {
-  var key = getApiKey();
-  if (!key) { openApiModal(); showToast('Configure sua API Key primeiro','error'); return; }
-  var vibe = document.getElementById('w-vibe').value.trim();
-  if (!vibe) { showToast('Descreva a cena antes de canalizar','error'); return; }
-
-  var btn = document.getElementById('btn-canalizar');
-  btn.disabled=true; btn.textContent='Canalizando...';
-  setProgress(10,'Invocando narrativa...');
-
-  var prompt = buildPrompt();
-  var ok=false;
-  try {
-    setProgress(22,'Conectando ao Gemini...');
-    ok = await doStreaming(prompt);
-    if (!ok) { setProgress(60,'Modo alternativo...'); ok = await doFallback(prompt); }
-  } catch(e) { console.error(e); }
-
-  if (!ok) showToast('Falha na API. Verifique sua chave Gemini.','error');
-
-  hideProgress();
-  btn.textContent='✦ Canalizar'; btn.disabled=false;
-  updateWordBadge();
-  document.getElementById('editor').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-async function doStreaming(prompt) {
-  var key = getApiKey();
-  var meta = parseInt(document.getElementById('w-words').value)||2000;
-  var res;
-  try {
-    res = await fetch(API_BASE+':streamGenerateContent?alt=sse', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.92,maxOutputTokens:8192,topP:0.95}})
-    });
-  } catch(e){ return false; }
-  if (!res.ok) return false;
-
-  var editor  = document.getElementById('editor');
-  var prefix  = editor.innerText.trim() ? editor.innerText.trim()+'\n\n' : '';
-  var reader  = res.body.getReader();
-  var decoder = new TextDecoder();
-  var buf='', acum='', chars=0, last=0;
-  var est = meta*5.5;
-  setProgress(40,'Escrevendo...');
-
-  while(true) {
-    var r = await reader.read();
-    if (r.done) break;
-    buf += decoder.decode(r.value,{stream:true});
-    var lines = buf.split('\n'); buf=lines.pop();
-    for (var i=0;i<lines.length;i++) {
-      var line=lines[i];
-      if (line.indexOf('data: ')!==0) continue;
-      var raw=line.slice(6).trim();
-      if (raw==='[DONE]') break;
-      try {
-        var parsed=JSON.parse(raw);
-        var chunk=(parsed&&parsed.candidates&&parsed.candidates[0]&&parsed.candidates[0].content&&parsed.candidates[0].content.parts&&parsed.candidates[0].content.parts[0]&&parsed.candidates[0].content.parts[0].text)||'';
-        if (chunk) {
-          acum+=chunk; chars+=chunk.length;
-          var now=performance.now();
-          if (now-last>100) { editor.innerText=prefix+acum; last=now; }
-          setProgress(Math.min(95,40+(chars/est)*55),'Escrevendo... ~'+Math.round(chars/5.5).toLocaleString('pt-BR')+' palavras');
+    </main>
+
+    <div id="toast">Lenda Sincronizada</div>
+
+    <script>
+        let state = {
+            sagas: [],
+            currentSagaIdx: null,
+            currentCapIdx: null
+        };
+
+        const STORAGE_KEY = 'CHRONICLE_FORGE_AAA';
+        const API_KEY_KEY = 'CF_API_SUPREME';
+
+        window.onload = () => {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if(saved) state = JSON.parse(saved);
+            updateStats();
+            renderLibrary();
+            checkAPI();
+        };
+
+        function save() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            updateStats();
         }
-      } catch(_){}
-    }
-  }
-  editor.innerText=prefix+acum;
-  return editor.innerText.trim().length>0;
-}
 
-async function doFallback(prompt) {
-  var key=getApiKey();
-  var res;
-  try {
-    res = await fetch(API_BASE+':generateContent', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.92,maxOutputTokens:8192,topP:0.95}})
-    });
-  } catch(e){ return false; }
-  if (!res.ok) return false;
-  var data=await res.json();
-  if (data.error) return false;
-  var texto=(data&&data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text)||null;
-  if (!texto) return false;
-  var editor=document.getElementById('editor');
-  var ex=editor.innerText.trim();
-  editor.innerText=ex?ex+'\n\n'+texto:texto;
-  return true;
-}
+        function setView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('nav li').forEach(l => l.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            
+            // Highlight nav
+            const navItems = document.querySelectorAll('nav li');
+            navItems.forEach(item => {
+                if(item.innerText.toLowerCase().includes(viewId)) item.classList.add('active');
+            });
+        }
 
-function setProgress(pct,label) {
-  document.getElementById('progress-wrap').classList.add('visible');
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('progress-label').textContent=label||'Canalizando...';
-}
-function hideProgress() {
-  document.getElementById('progress-wrap').classList.remove('visible');
-  document.getElementById('progress-fill').style.width='0%';
-}
+        function notify(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
 
-/* ============================================================
-   BIBLIOTECA IMPERIAL
-============================================================ */
-var libEditId = null;
+        /* LOGICA DE SAGAS */
+        function newSaga() {
+            const t = prompt("Nome da Nova Saga:");
+            if(!t) return;
+            state.sagas.push({
+                title: t,
+                bible: "",
+                chars: [],
+                chapters: [],
+                created: Date.now()
+            });
+            save();
+            renderLibrary();
+            notify("Saga Iniciada");
+        }
 
-function renderLibraryScreen() {
-  renderLibContent();
-}
+        function renderLibrary() {
+            const lib = document.getElementById('lib-grid');
+            const dash = document.getElementById('dash-grid');
+            let html = '';
+            
+            state.sagas.forEach((s, i) => {
+                html += `
+                <div class="saga-card" onclick="openSaga(${i})">
+                    <div class="saga-poster"></div>
+                    <div class="saga-content">
+                        <h3>${s.title}</h3>
+                        <div class="saga-meta">
+                            <span>${s.chapters.length} CAPÍTULOS</span>
+                            <span>${s.chars.length} PERSONAGENS</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            lib.innerHTML = html;
+            dash.innerHTML = html;
+        }
 
-function libTab(tab, el) {
-  currentLibTab=tab;
-  document.querySelectorAll('.lib-tab').forEach(function(t){ t.classList.remove('active'); });
-  el.classList.add('active');
-  renderLibContent();
-}
+        function openSaga(i) {
+            state.currentSagaIdx = i;
+            const s = state.sagas[i];
+            document.getElementById('saga-title').value = s.title;
+            document.getElementById('saga-bible').value = s.bible;
+            renderCharacters();
+            
+            if(s.chapters.length > 0) {
+                openCap(s.chapters.length - 1);
+            } else {
+                state.currentCapIdx = 0;
+                document.getElementById('editor').innerText = '';
+                document.getElementById('cap-title').value = 'Capítulo 1';
+            }
+            setView('forge');
+        }
 
-function renderLibContent() {
-  var imperial=getImperial();
-  var items=(imperial[currentLibTab]||[]);
-  var cont=document.getElementById('lib-content');
-  var label={personagens:'Personagem',locais:'Local',faccoes:'Facção',artefatos:'Artefato',criaturas:'Criatura'}[currentLibTab]||'Item';
-  var html='<div class="lib-grid">';
-  items.forEach(function(item){
-    html+='<div class="lib-card">';
-    html+='<div class="lib-card-type">'+label+'</div>';
-    html+='<div class="lib-card-name">'+escHtml(item.name)+'</div>';
-    html+='<div class="lib-card-desc">'+escHtml(item.desc||'').substrin
+        function saveSagaData() {
+            const s = state.sagas[state.currentSagaIdx];
+            s.title = document.getElementById('saga-title').value;
+            s.bible = document.getElementById('saga-bible').value;
+            save();
+        }
+
+        /* PERSONAGENS */
+        function addCharacter() {
+            const name = document.getElementById('char-name').value;
+            const bio = document.getElementById('char-bio').value;
+            if(!name) return;
+            state.sagas[state.currentSagaIdx].chars.push({name, bio});
+            save();
+            renderCharacters();
+            document.getElementById('char-name').value = '';
+            document.getElementById('char-bio').value = '';
+            notify("Códice Atualizado");
+        }
+
+        function renderCharacters() {
+            const reg = document.getElementById('char-registry');
+            const saga = state.sagas[state.currentSagaIdx];
+            reg.innerHTML = saga.chars.map((c, idx) => `
+                <div class="char-item">
+                    <div>
+                        <strong style="color:var(--gold);">${c.name}</strong>
+                        <p style="font-size:0.7rem; color:#555; margin-top:5px;">${c.bio.substring(0, 100)}...</p>
+                    </div>
+                    <button onclick="removeChar(${idx})" style="background:none; border:none; color:var(--crimson); cursor:pointer;">✕</button>
+                </div>
+            `).join('');
+        }
+
+        /* EDITOR & IA */
+        function openCap(idx) {
+            state.currentCapIdx = idx;
+            const c = state.sagas[state.currentSagaIdx].chapters[idx];
+            document.getElementById('cap-title').value = c.title;
+            document.getElementById('editor').innerText = c.content;
+            updateWordCount();
+        }
+
+        function saveCap() {
+            const saga = state.sagas[state.currentSagaIdx];
+            const cap = {
+                title: document.getElementById('cap-title').value,
+                content: document.getElementById('editor').innerText
+            };
+            saga.chapters[state.currentCapIdx] = cap;
+            save();
+            notify("Capítulo Sincronizado");
+        }
+
+        async function canalizarIA() {
+            const key = localStorage.getItem(API_KEY_KEY);
+            if(!key) { setView('settings'); return; }
+
+            const saga = state.sagas[state.currentSagaIdx];
+            const context = document.getElementById('ai-context').value;
+            
+            // ENGINE DE MEMÓRIA PERMANENTE
+            const prompt = `
+                AJA COMO UM ROMANCISTA SUPREMO.
+                DIRETRIZES DA SAGA: ${saga.bible}
+                CÓDICE DE PERSONAGENS: ${JSON.stringify(saga.chars)}
+                MEMÓRIA RECENTE: ${saga.chapters.slice(-2).map(c => c.content.substring(0, 600)).join('\n')}
+                
+                COMANDO ATUAL: Escreva o capítulo ${state.currentCapIdx + 1} focado em: ${context}.
+                ESTILO: Denso, diálogos profundos, mostre-não-conte, narrativa AAA.
+            `;
+
+            notify("Invocando IA Suprema...");
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await res.json();
+                const text = data.candidates[0].content.parts[0].text;
+                document.getElementById('editor').innerText += "\n\n" + text;
+                updateWordCount();
+                notify("Sinfonia Gerada");
+            } catch(e) { notify("Erro na Forja"); }
+        }
+
+        /* METRICAS */
+        function updateWordCount() {
+            const txt = document.getElementById('editor').innerText;
+            const count = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+            document.getElementById('word-counter').innerText = count + " PALAVRAS";
+        }
+
+        function updateStats() {
+            document.getElementById('stat-sagas').innerText = state.sagas.length;
+            let c = 0, w = 0, ch = 0;
+            state.sagas.forEach(s => {
+                c += s.chapters.length;
+                ch += s.chars.length;
+                s.chapters.forEach(cap => w += cap.content.split(/\s+/).length);
+            });
+            document.getElementById('stat-caps').innerText = c;
+            document.getElementById('stat-words').innerText = w.toLocaleString();
+            document.getElementById('stat-chars').innerText = ch;
+        }
+
+        /* SETTINGS */
+        function saveAPI() {
+            const key = document.getElementById('api-key').value;
+            localStorage.setItem(API_KEY_KEY, key);
+            checkAPI();
+            notify("Chave Configurada");
+        }
+
+        function checkAPI() {
+            const k = localStorage.getItem(API_KEY_KEY);
+            const ind = document.getElementById('api-indicator');
+            if(k) { ind.innerText = "● IA ONLINE"; ind.style.color = "var(--gold)"; }
+        }
+    </script>
+</body>
+</html>
