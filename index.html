@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -250,6 +250,10 @@
             line-height: 1.7;
         }
 
+        .campo-pequeno {
+            min-height: 120px;
+        }
+
         .campo-medio {
             min-height: 220px;
         }
@@ -381,28 +385,28 @@
             <div class="grade-modulos">
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-saga')">
                     <div class="modulo-icone">⚔️</div>
-                    <h3 class="modulo-titulo">Forjar Saga Completa</h3>
-                    <p class="modulo-desc">Defina tudo da história, salve personagens e estrutura</p>
+                    <h3 class="modulo-titulo">Forjar Nova Saga</h3>
+                    <p class="modulo-desc">Crie toda a estrutura da história, dados gerais e enredo completo</p>
                 </div>
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-capitulo')">
                     <div class="modulo-icone">📖</div>
                     <h3 class="modulo-titulo">Forjar Capítulo</h3>
-                    <p class="modulo-desc">Escreva cada capítulo usando os dados já salvos</p>
+                    <p class="modulo-desc">Escreva e gere cada capítulo separadamente, sem precisar de estrutura prévia</p>
                 </div>
                 <div class="modulo-card" onclick="abrirAmbiente('mapa-mental')">
                     <div class="modulo-icone">🗺️</div>
                     <h3 class="modulo-titulo">Mapa Mental</h3>
-                    <p class="modulo-desc">10 blocos para separar ideias, regras e dados para a IA</p>
+                    <p class="modulo-desc">10 blocos para separar ideias, regras e detalhes para qualquer história</p>
                 </div>
                 <div class="modulo-card" onclick="abrirAmbiente('gaveta-literaria')">
                     <div class="modulo-icone">📚</div>
                     <h3 class="modulo-titulo">Gaveta Literária</h3>
-                    <p class="modulo-desc">Suas histórias salvas, prontas para continuar</p>
+                    <p class="modulo-desc">Armazene todos os seus textos e histórias já criadas</p>
                 </div>
                 <div class="modulo-card" onclick="abrirAmbiente('editor')">
                     <div class="modulo-icone">✍️</div>
                     <h3 class="modulo-titulo">Editor Imperial</h3>
-                    <p class="modulo-desc">Edite e organize todos os textos gerados</p>
+                    <p class="modulo-desc">Edite, revise e organize todos os textos gerados</p>
                 </div>
             </div>
         </div>
@@ -437,27 +441,27 @@
 
                 <div class="bloco-campo">
                     <h3 style="color:var(--dourado-claro); margin-bottom:1rem; font-family:Cinzel;">Dois Protagonistas Principais</h3>
-                    <label>Protagonista 1 (<span class="destaque">ficará salvo para todos os capítulos</span>)</label>
-                    <textarea id="protagonista-1" class="campo-medio" placeholder="Nome, idade, aparência, personalidade, passado, motivações, sonhos, medos..."></textarea>
+                    <label>Protagonista 1</label>
+                    <textarea id="protagonista-1-saga" class="campo-medio" placeholder="Nome, idade, aparência, personalidade, passado, motivações..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
-                    <label>Protagonista 2 (<span class="destaque">ficará salvo para todos os capítulos</span>)</label>
-                    <textarea id="protagonista-2" class="campo-medio" placeholder="Nome, idade, aparência, personalidade, passado, motivações, relação com o outro protagonista..."></textarea>
+                    <label>Protagonista 2</label>
+                    <textarea id="protagonista-2-saga" class="campo-medio" placeholder="Nome, idade, aparência, personalidade, passado, relação com o outro..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
                     <label>Resumo Completo da História</label>
-                    <textarea id="resumo-historia" class="campo-grande" placeholder="Do que se trata? Qual o conflito principal? Onde se passa? Como funciona o universo? Descreva tudo em detalhes."></textarea>
+                    <textarea id="resumo-historia" class="campo-grande" placeholder="Do que se trata? Qual o conflito principal? Onde se passa? Como funciona o universo?"></textarea>
                 </div>
 
                 <div class="bloco-campo">
                     <label>Linha Geral da Trama</label>
-                    <textarea id="linha-trama" class="campo-imenso" placeholder="Como a história vai se desenvolver do início ao fim? Quais os eventos mais importantes, reviravoltas e desfecho?"></textarea>
+                    <textarea id="linha-trama" class="campo-imenso" placeholder="Como a história vai se desenvolver do início ao fim? Eventos importantes, reviravoltas e desfecho."></textarea>
                 </div>
 
                 <button class="botao-principal" onclick="salvarDadosSaga()">Salvar Dados da Saga</button>
-                <div class="caixa-resultado" id="status-saga">Dados ainda não salvos. Preencha e clique no botão acima.</div>
+                <div class="caixa-resultado" id="status-saga">Dados ainda não salvos.</div>
             </div>
         </div>
 
@@ -470,8 +474,8 @@
             <div class="conteudo-ambiente">
 
                 <div class="bloco-campo">
-                    <label>Número e Título</label>
-                    <input type="text" id="cap-titulo" placeholder="Ex: Capítulo 5 - A Decisão">
+                    <label>Número e Título do Capítulo</label>
+                    <input type="text" id="cap-titulo" placeholder="Ex: Capítulo 1 - O Primeiro Encontro">
                 </div>
 
                 <div class="bloco-campo">
@@ -479,8 +483,20 @@
                     <input type="number" id="cap-palavras" min="800" max="10000" value="2500">
                 </div>
 
+                <!-- CAMPO DOS PROTAGONISTAS DIRETO AQUI -->
                 <div class="bloco-campo">
-                    <label>Ponto de Vista</label>
+                    <h3 style="color:var(--dourado-claro); margin-bottom:1rem; font-family:Cinzel;">Protagonistas da História</h3>
+                    <label>Protagonista 1</label>
+                    <textarea id="prot1-cap" class="campo-pequeno" placeholder="Nome e breve descrição"></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>Protagonista 2</label>
+                    <textarea id="prot2-cap" class="campo-pequeno" placeholder="Nome e breve descrição"></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>Ponto de Vista da Narrativa</label>
                     <div class="grupo-botoes" id="opcoes-pov">
                         <button class="botao-opcao" onclick="definirPov('prot1')">Protagonista 1</button>
                         <button class="botao-opcao" onclick="definirPov('prot2')">Protagonista 2</button>
@@ -497,7 +513,7 @@
                 </div>
 
                 <button class="botao-principal" onclick="gerarCapitulo()">Gerar Capítulo</button>
-                <div class="caixa-resultado" id="resultado-capitulo">Aguardando... Os dados da saga e do mapa mental serão usados automaticamente.</div>
+                <div class="caixa-resultado" id="resultado-capitulo">O capítulo gerado aparecerá aqui.</div>
             </div>
         </div>
 
@@ -509,62 +525,61 @@
             </div>
             <div class="conteudo-ambiente">
                 <p style="color:var(--texto-rotulo); margin-bottom:1.5rem; font-size:0.95rem;">
-                    Use esses blocos para separar regras, detalhes, personagens secundários, locais, linhas paralelas ou dados soltos. Tudo fica salvo e pode ser usado pela IA para construir histórias longas.
+                    Use esses blocos para separar regras, detalhes, personagens secundários, locais, linhas paralelas ou dados soltos.
                 </p>
 
-                <!-- 10 BLOCOS DO MAPA MENTAL -->
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-1" placeholder="Título do Bloco 1">
-                    <textarea class="texto-bloco" id="mapa-texto-1" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-1" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-2" placeholder="Título do Bloco 2">
-                    <textarea class="texto-bloco" id="mapa-texto-2" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-2" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-3" placeholder="Título do Bloco 3">
-                    <textarea class="texto-bloco" id="mapa-texto-3" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-3" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-4" placeholder="Título do Bloco 4">
-                    <textarea class="texto-bloco" id="mapa-texto-4" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-4" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-5" placeholder="Título do Bloco 5">
-                    <textarea class="texto-bloco" id="mapa-texto-5" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-5" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-6" placeholder="Título do Bloco 6">
-                    <textarea class="texto-bloco" id="mapa-texto-6" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-6" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-7" placeholder="Título do Bloco 7">
-                    <textarea class="texto-bloco" id="mapa-texto-7" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-7" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-8" placeholder="Título do Bloco 8">
-                    <textarea class="texto-bloco" id="mapa-texto-8" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-8" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-9" placeholder="Título do Bloco 9">
-                    <textarea class="texto-bloco" id="mapa-texto-9" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-9" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <div class="bloco-mapa">
                     <input type="text" class="titulo-bloco" id="mapa-titulo-10" placeholder="Título do Bloco 10">
-                    <textarea class="texto-bloco" id="mapa-texto-10" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                    <textarea class="texto-bloco" id="mapa-texto-10" placeholder="Anotações, conexões, regras, detalhes..."></textarea>
                 </div>
 
                 <button class="botao-principal" onclick="salvarMapaMental()">Salvar Todo o Mapa Mental</button>
-                <div class="caixa-resultado" id="status-mapa">Todos os blocos são salvos automaticamente para serem usados pela IA.</div>
+                <div class="caixa-resultado" id="status-mapa">Todos os dados ficam salvos automaticamente.</div>
             </div>
         </div>
 
@@ -576,7 +591,7 @@
             </div>
             <div class="conteudo-ambiente">
                 <div class="caixa-resultado" style="text-align:center; color:var(--texto-rotulo);">
-                    Suas obras salvas aparecerão aqui.<br>Comece criando em <span class="destaque">Forjar Nova Saga</span>.
+                    Suas obras e capítulos gerados aparecerão aqui depois de criados.
                 </div>
             </div>
         </div>
@@ -588,25 +603,26 @@
                 <h2 class="titulo-ambiente">Editor Imperial</h2>
             </div>
             <div class="conteudo-ambiente">
-                <div class="caixa-resultado" style="min-height:600px;" id="texto-editor">Cole ou edite seus textos aqui.</div>
+                <div class="caixa-resultado" style="min-height:600px;" id="texto-editor">Cole, edite e organize seus textos aqui.</div>
             </div>
         </div>
     </main>
 
     <script>
-        let dadosSaga = {};
-        const regrasBase = `VOCÊ É O NÚCLEO LITERÁRIO SUPREMO. Crie textos com qualidade profissional, mantenha coerência total com os dados da história, personalidades, universo e todas as regras ou detalhes informados no mapa mental.`;
+        const regrasBase = `VOCÊ É O NÚCLEO LITERÁRIO SUPREMO. Crie textos com qualidade profissional, coerentes, envolventes e de acordo com todos os dados informados.`;
 
+        // Salvar Chave API
         function salvarApi() {
             const chave = document.getElementById('api-key').value.trim();
             if(chave) {
                 localStorage.setItem('gemini_api_key', chave);
-                alert("✅ Chave salva!");
+                alert("✅ Chave salva com sucesso!");
             } else {
                 alert("⚠️ Digite uma chave válida.");
             }
         }
 
+        // Navegação
         function abrirAmbiente(id) {
             document.getElementById('pagina-inicial').style.display = 'none';
             document.querySelectorAll('.ambiente-trabalho').forEach(el => el.classList.remove('ativo'));
@@ -620,34 +636,30 @@
             window.scrollTo({top:0, behavior:'smooth'});
         }
 
+        // Salvar dados da Saga
         function salvarDadosSaga() {
-            dadosSaga = {
+            const dadosSaga = {
                 titulo: document.getElementById('titulo-historia').value.trim(),
                 genero: document.getElementById('genero').value.trim(),
                 totalCap: document.getElementById('total-capitulos').value,
                 palavrasPadrao: document.getElementById('palavras-capitulo').value,
-                prot1: document.getElementById('protagonista-1').value.trim(),
-                prot2: document.getElementById('protagonista-2').value.trim(),
+                prot1: document.getElementById('protagonista-1-saga').value.trim(),
+                prot2: document.getElementById('protagonista-2-saga').value.trim(),
                 resumo: document.getElementById('resumo-historia').value.trim(),
                 trama: document.getElementById('linha-trama').value.trim()
             };
-
-            if(!dadosSaga.titulo || !dadosSaga.prot1 || !dadosSaga.prot2 || !dadosSaga.resumo) {
-                return document.getElementById('status-saga').innerHTML = "❌ Preencha pelo menos título, os dois protagonistas e o resumo.";
-            }
-
             localStorage.setItem('dados_saga_atual', JSON.stringify(dadosSaga));
-            document.getElementById('status-saga').innerHTML = `✅ Saga salva!<br><br><strong>Título:</strong> ${dadosSaga.titulo}<br><strong>Protagonistas:</strong> Definidos e salvos.`;
-            document.getElementById('cap-palavras').value = dadosSaga.palavrasPadrao;
+            document.getElementById('status-saga').innerHTML = "✅ Dados da saga salvos!";
         }
 
+        // Definir Ponto de Vista
         function definirPov(tipo) {
             document.querySelectorAll('#opcoes-pov .botao-opcao').forEach(b => b.classList.remove('ativo'));
             event.currentTarget.classList.add('ativo');
             document.getElementById('ponto-de-vista').value = tipo;
         }
 
-        // Salvar e carregar Mapa Mental
+        // Salvar e Carregar Mapa Mental
         function salvarMapaMental() {
             const blocos = [];
             for(let i = 1; i <= 10; i++) {
@@ -657,7 +669,7 @@
                 });
             }
             localStorage.setItem('mapa_mental', JSON.stringify(blocos));
-            document.getElementById('status-mapa').innerHTML = "✅ Mapa Mental salvo com sucesso!";
+            document.getElementById('status-mapa').innerHTML = "✅ Mapa Mental salvo!";
         }
 
         function carregarMapaMental() {
@@ -677,63 +689,57 @@
             let textoFinal = '';
             dados.forEach((bloco, index) => {
                 if(bloco.titulo || bloco.texto) {
-                    textoFinal += `\n--- ${bloco.titulo || `Bloco ${index+1}`} ---\n${bloco.texto || 'Sem anotações'}\n`;
+                    textoFinal += `\n--- ${bloco.titulo || `Bloco ${index+1}`} ---\n${bloco.texto}\n`;
                 }
             });
-            return textoFinal.trim() ? `\n\nDADOS COMPLEMENTARES DO MAPA MENTAL:${textoFinal}` : '';
+            return textoFinal.trim() ? `\n\nINFORMAÇÕES COMPLEMENTARES:${textoFinal}` : '';
         }
 
+        // Gerar Capítulo - Agora INDEPENDENTE
         async function gerarCapitulo() {
             const chave = localStorage.getItem('gemini_api_key');
             if(!chave) return alert("⚠️ Salve a chave API primeiro!");
 
-            const dadosSalvos = JSON.parse(localStorage.getItem('dados_saga_atual'));
-            if(!dadosSalvos || !dadosSalvos.titulo) {
-                return alert("⚠️ Salve primeiro os dados da sua saga no módulo 'Forjar Nova Saga'!");
-            }
-
             const dadosCap = {
                 titulo: document.getElementById('cap-titulo').value.trim(),
                 palavras: document.getElementById('cap-palavras').value,
+                prot1: document.getElementById('prot1-cap').value.trim(),
+                prot2: document.getElementById('prot2-cap').value.trim(),
                 pov: document.getElementById('ponto-de-vista').value,
                 detalhes: document.getElementById('cap-detalhes').value.trim()
             };
 
             if(!dadosCap.titulo || !dadosCap.detalhes) {
-                return alert("⚠️ Preencha o título e o que deve acontecer no capítulo!");
+                return alert("⚠️ Preencha pelo menos o título e o conteúdo do capítulo!");
             }
 
-            document.getElementById('resultado-capitulo').innerHTML = `⏳ Gerando capítulo usando dados da saga + mapa mental...`;
+            document.getElementById('resultado-capitulo').innerHTML = `⏳ Gerando capítulo...`;
 
             const descPov = {
-                prot1: `Ponto de vista exclusivo do Protagonista 1: ${dadosSalvos.prot1}`,
-                prot2: `Ponto de vista exclusivo do Protagonista 2: ${dadosSalvos.prot2}`,
-                alternado: `Ponto de vista ALTERNADO entre os dois protagonistas: ${dadosSalvos.prot1} e ${dadosSalvos.prot2}`,
+                prot1: `Ponto de vista de ${dadosCap.prot1 || 'Protagonista 1'}`,
+                prot2: `Ponto de vista de ${dadosCap.prot2 || 'Protagonista 2'}`,
+                alternado: `Ponto de vista ALTERNADO entre ${dadosCap.prot1 || 'Protagonista 1'} e ${dadosCap.prot2 || 'Protagonista 2'}`,
                 narrador: `Ponto de vista de narrador onisciente`,
-                antagonista: `Ponto de vista do antagonista da história`
+                antagonista: `Ponto de vista do antagonista`
             };
 
             const mapaTexto = obterTextoMapa();
 
             const prompt = `${regrasBase}
 
-CONTEXTO OFICIAL DA HISTÓRIA:
-Título: ${dadosSalvos.titulo}
-Gênero: ${dadosSalvos.genero}
-Resumo geral: ${dadosSalvos.resumo}
-Linha da trama: ${dadosSalvos.trama}${mapaTexto}
+DADOS PARA O CAPÍTULO:
+Protagonista 1: ${dadosCap.prot1 || 'Não informado'}
+Protagonista 2: ${dadosCap.prot2 || 'Não informado'}
+${descPov[dadosCap.pov]}
 
----
-
-CRIE O CAPÍTULO:
 Título: ${dadosCap.titulo}
 Tamanho: aproximadamente ${dadosCap.palavras} palavras
-${descPov[dadosCap.pov]}
+${mapaTexto}
 
 O que deve acontecer:
 ${dadosCap.detalhes}
 
-Mantenha 100% de coerência com todos os dados informados.`;
+Escreva de forma envolvente, com diálogos naturais e descrições claras. Mantenha a coerência com todos os dados informados.`;
 
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
@@ -745,33 +751,20 @@ Mantenha 100% de coerência com todos os dados informados.`;
                     })
                 });
                 const json = await res.json();
-                const textoGerado = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro ao gerar.";
+                const textoGerado = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro ao gerar o texto. Verifique sua chave API.";
+                
                 document.getElementById('resultado-capitulo').textContent = textoGerado;
                 document.getElementById('texto-editor').textContent = textoGerado;
+
             } catch {
-                document.getElementById('resultado-capitulo').textContent = "❌ Falha de conexão.";
+                document.getElementById('resultado-capitulo').textContent = "❌ Falha na conexão. Verifique sua internet.";
             }
         }
 
-        // Carrega tudo ao abrir
+        // Carregar dados salvos ao abrir
         window.addEventListener('load', () => {
             const chaveSalva = localStorage.getItem('gemini_api_key');
             if(chaveSalva) document.getElementById('api-key').value = chaveSalva;
-
-            const sagaSalva = JSON.parse(localStorage.getItem('dados_saga_atual'));
-            if(sagaSalva) {
-                dadosSaga = sagaSalva;
-                document.getElementById('titulo-historia').value = sagaSalva.titulo || '';
-                document.getElementById('genero').value = sagaSalva.genero || '';
-                document.getElementById('total-capitulos').value = sagaSalva.totalCap || 20;
-                document.getElementById('palavras-capitulo').value = sagaSalva.palavrasPadrao || 2500;
-                document.getElementById('protagonista-1').value = sagaSalva.prot1 || '';
-                document.getElementById('protagonista-2').value = sagaSalva.prot2 || '';
-                document.getElementById('resumo-historia').value = sagaSalva.resumo || '';
-                document.getElementById('linha-trama').value = sagaSalva.trama || '';
-                document.getElementById('cap-palavras').value = sagaSalva.palavrasPadrao || 2500;
-            }
-
             carregarMapaMental();
         });
     </script>
