@@ -7,21 +7,20 @@
     <title>Núcleo Literário Supremo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-principal: #0B0907;
-            --bg-campo: #141210;
+            --bg-principal: #050403;
+            --bg-campo: #0E0C0A;
             --borda-campo: #221F1B;
-            --texto-rotulo: #99948F;
-            --texto-entrada: #E8E2D8;
-            --dourado-primario: #D4AF37;
-            --dourado-claro: #F5E7A0;
-            --dourado-escuro: #B38728;
-            --sombra-dourada: 0 2px 8px rgba(212, 175, 55, 0.15);
-            --verde-sucesso: #34A853;
-            --vermelho-alerta: #EA4335;
-            --azul-acao: #4285F4;
+            --texto-rotulo: #B8B0A6;
+            --texto-entrada: #F2EDE4;
+            --dourado-escuro: #916F20;
+            --dourado-medio: #D4AF37;
+            --dourado-brilhante: #FFE873;
+            --dourado-claro: #FFF9D9;
+            --sombra-brilho: 0 0 12px rgba(255, 232, 115, 0.5), 0 0 24px rgba(212, 175, 55, 0.3);
+            --sombra-intensa: 0 0 20px rgba(255, 232, 115, 0.8), 0 0 40px rgba(212, 175, 55, 0.5);
         }
 
         * {
@@ -32,30 +31,65 @@
         }
 
         body {
-            background-color: var(--bg-principal);
+            background: var(--bg-principal);
             color: var(--texto-entrada);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ANIMAÇÃO DE LUZES DOURADAS NO FUNDO */
+        .luzes-fundo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .luz {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--dourado-brilhante);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--dourado-brilhante), 0 0 16px var(--dourado-medio);
+            animation: piscar 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes piscar {
+            0% { opacity: 0.2; transform: scale(0.6); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        @keyframes gerando {
+            0% { box-shadow: 0 0 15px var(--dourado-brilhante), inset 0 0 10px rgba(255,232,115,0.2); }
+            50% { box-shadow: 0 0 30px var(--dourado-brilhante), inset 0 0 20px rgba(255,232,115,0.4); }
+            100% { box-shadow: 0 0 15px var(--dourado-brilhante), inset 0 0 10px rgba(255,232,115,0.2); }
         }
 
         header {
-            background-color: var(--bg-principal);
-            padding: 1.5rem 1.8rem;
-            border-bottom: 1px solid var(--borda-campo);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            position: relative;
+            z-index: 2;
+            padding: 1.8rem 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            background: linear-gradient(180deg, rgba(10,8,5,0.95) 0%, rgba(5,4,3,0.9) 100%);
         }
 
         .logo {
             font-family: 'Cinzel', serif;
-            font-size: 1.7rem;
+            font-size: 1.9rem;
             font-weight: 700;
-            color: var(--dourado-primario);
+            color: var(--dourado-brilhante);
             text-align: center;
-            margin-bottom: 1.5rem;
-            letter-spacing: 1.2px;
+            margin-bottom: 1.8rem;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 12px rgba(255,232,115,0.6);
         }
 
         .linha-api {
@@ -66,43 +100,43 @@
 
         .input-api {
             flex: 1;
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
+            background: var(--bg-campo);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 12px;
             color: var(--texto-entrada);
-            padding: 1rem 1.4rem;
+            padding: 1.1rem 1.4rem;
             font-size: 1rem;
-        }
-
-        .input-api::placeholder {
-            color: #706C66;
+            transition: all 0.3s ease;
         }
 
         .input-api:focus {
             outline: none;
-            border-color: var(--dourado-primario);
+            border-color: var(--dourado-brilhante);
+            box-shadow: var(--sombra-brilho);
         }
 
         .btn-salvar {
-            background: linear-gradient(180deg, #F8E08E 0%, #D4AF37 50%, #B38728 100%);
+            background: linear-gradient(135deg, var(--dourado-brilhante) 0%, var(--dourado-medio) 50%, var(--dourado-escuro) 100%);
             border: none;
             border-radius: 12px;
-            color: #1A1408;
+            color: #0A0805;
             font-weight: 600;
             font-size: 1rem;
-            padding: 1rem 2rem;
-            min-width: 110px;
+            padding: 1.1rem 1.8rem;
             cursor: pointer;
-            box-shadow: var(--sombra-dourada);
-            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(212,175,55,0.4);
+            transition: all 0.3s ease;
         }
 
         .btn-salvar:hover {
-            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: var(--sombra-intensa);
         }
 
         main {
-            padding: 2rem 1.8rem;
+            position: relative;
+            z-index: 2;
+            padding: 2rem 1.5rem;
         }
 
         .pagina-inicial {
@@ -111,52 +145,73 @@
 
         .titulo-secao {
             font-family: 'Cinzel', serif;
-            font-size: 1.9rem;
-            color: var(--dourado-primario);
+            font-size: 1.8rem;
+            color: var(--dourado-brilhante);
             margin-bottom: 2.5rem;
-            padding-bottom: 0.6rem;
+            padding-bottom: 0.8rem;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            text-shadow: 0 0 8px rgba(255,232,115,0.4);
         }
 
         .grade-modulos {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.6rem;
+            gap: 1.8rem;
         }
 
         .modulo-card {
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
-            border-radius: 16px;
-            padding: 2.2rem 1.6rem;
-            min-height: 220px;
+            background: linear-gradient(145deg, #0E0C0A, #14110E);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 18px;
+            padding: 2.5rem 1.8rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modulo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,232,115,0.12) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .modulo-card:hover {
-            border-color: var(--dourado-primario);
-            background-color: #191613;
+            border-color: var(--dourado-brilhante);
+            transform: translateY(-3px);
+            box-shadow: var(--sombra-brilho);
+        }
+
+        .modulo-card:hover::before {
+            opacity: 1;
         }
 
         .modulo-icone {
-            font-size: 3rem;
-            color: var(--dourado-primario);
-            margin-bottom: 1rem;
+            font-size: 3.2rem;
+            color: var(--dourado-medio);
+            margin-bottom: 1.2rem;
+            filter: drop-shadow(0 0 8px rgba(212,175,55,0.5));
         }
 
         .modulo-titulo {
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--dourado-claro);
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 0 6px rgba(255,232,115,0.4);
         }
 
         .modulo-desc {
             font-size: 0.95rem;
             color: var(--texto-rotulo);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .ambiente-trabalho {
@@ -165,6 +220,12 @@
 
         .ambiente-trabalho.ativo {
             display: block;
+            animation: aparecer 0.5s ease;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .cabecalho-ambiente {
@@ -176,31 +237,30 @@
         }
 
         .btn-voltar {
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
-            border-radius: 10px;
-            width: 44px;
-            height: 44px;
-            font-size: 1.2rem;
+            background: var(--bg-campo);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            width: 46px;
+            height: 46px;
+            font-size: 1.3rem;
+            color: var(--dourado-medio);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dourado-primario);
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .btn-voltar:hover {
-            border-color: var(--dourado-primario);
+            border-color: var(--dourado-brilhante);
+            box-shadow: 0 0 12px rgba(212,175,55,0.5);
         }
 
         .titulo-ambiente {
             font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            color: var(--dourado-primario);
-            padding-bottom: 0.6rem;
+            font-size: 1.9rem;
+            color: var(--dourado-brilhante);
+            padding-bottom: 0.7rem;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             flex: 1;
+            text-shadow: 0 0 10px rgba(255,232,115,0.5);
         }
 
         .bloco-campo {
@@ -211,9 +271,9 @@
             display: block;
             font-size: 0.95rem;
             text-transform: uppercase;
-            color: var(--texto-rotulo);
-            letter-spacing: 1px;
-            margin-bottom: 0.8rem;
+            color: var(--dourado-medio);
+            letter-spacing: 1.2px;
+            margin-bottom: 0.9rem;
             font-weight: 500;
         }
 
@@ -221,136 +281,139 @@
         input[type="number"],
         textarea {
             width: 100%;
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
+            background: var(--bg-campo);
+            border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 14px;
             color: var(--texto-entrada);
             padding: 1.2rem 1.4rem;
             font-size: 1rem;
             font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
         }
 
-        input::placeholder,
-        textarea::placeholder {
-            color: #706C66;
-            opacity: 0.8;
-        }
-
-        input:focus,
-        textarea:focus {
+        input:focus, textarea:focus {
             outline: none;
-            border-color: var(--dourado-primario);
+            border-color: var(--dourado-brilhante);
+            box-shadow: var(--sombra-brilho);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #7A746C;
         }
 
         textarea {
-            min-height: 180px;
+            min-height: 140px;
             resize: vertical;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
-        .campo-pequeno { min-height: 120px; }
-        .campo-medio { min-height: 220px; }
-        .campo-grande { min-height: 320px; }
-        .campo-imenso { min-height: 500px; }
+        .campo-grande { min-height: 220px; }
+        .campo-imenso { min-height: 320px; }
 
         .grupo-botoes {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             margin-top: 0.5rem;
         }
 
         .botao-opcao {
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
-            border-radius: 10px;
+            background: var(--bg-campo);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
             color: var(--texto-rotulo);
-            padding: 0.9rem 1.2rem;
+            padding: 1rem;
             font-size: 0.95rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .botao-opcao.ativo,
         .botao-opcao:hover {
-            border-color: var(--dourado-primario);
+            border-color: var(--dourado-brilhante);
             color: var(--dourado-claro);
-            background-color: #191613;
+            background: linear-gradient(145deg, #14110E, #191613);
+            box-shadow: 0 0 12px rgba(212,175,55,0.4);
         }
 
         .botao-principal {
             width: 100%;
-            background: linear-gradient(180deg, #F8E08E 0%, #D4AF37 50%, #B38728 100%);
+            background: linear-gradient(135deg, var(--dourado-brilhante) 0%, var(--dourado-medio) 50%, var(--dourado-escuro) 100%);
             border: none;
             border-radius: 14px;
-            color: #1A1408;
+            color: #0A0805;
             font-family: 'Cinzel', serif;
             font-size: 1.2rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.5px;
             padding: 1.4rem;
             cursor: pointer;
-            box-shadow: var(--sombra-dourada);
-            margin-top: 1rem;
-            transition: filter 0.2s;
+            box-shadow: 0 0 15px rgba(212,175,55,0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .botao-principal:hover {
-            filter: brightness(1.08);
+            transform: translateY(-2px);
+            box-shadow: var(--sombra-intensa);
+        }
+
+        .botao-principal.gerando {
+            animation: gerando 1.8s ease infinite;
         }
 
         .caixa-resultado {
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
-            border-radius: 14px;
-            padding: 1.8rem;
+            background: linear-gradient(145deg, #0E0C0A, #120F0C);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
             min-height: 300px;
-            margin-top: 2rem;
-            line-height: 1.8;
+            margin-top: 2.2rem;
+            line-height: 1.9;
             white-space: pre-wrap;
             color: var(--texto-entrada);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
         .acoes-texto {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 1.8rem;
             flex-wrap: wrap;
         }
 
         .btn-acao {
-            padding: 0.8rem 1.2rem;
-            border-radius: 10px;
-            border: none;
+            padding: 0.9rem 1.3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(212,175,55,0.3);
+            background: #120F0C;
+            color: var(--dourado-claro);
             font-weight: 500;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .btn-acao:hover { opacity: 0.9; }
-        .btn-refazer { background: #2D261E; color: var(--dourado-claro); border: 1px solid #8B732E; }
-        .btn-salvar { background: #243129; color: #A5D6A7; border: 1px solid var(--verde-sucesso); }
-        .btn-copiar { background: #202A44; color: #B0C4FF; border: 1px solid var(--azul-acao); }
-        .btn-excluir { background: #3A2424; color: #FFBABA; border: 1px solid var(--vermelho-alerta); }
+        .btn-acao:hover {
+            border-color: var(--dourado-brilhante);
+            box-shadow: 0 0 12px rgba(212,175,55,0.4);
+        }
 
         .grupo-historia {
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda-campo);
-            border-radius: 14px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            background: linear-gradient(145deg, #0E0C0A, #120F0C);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
         }
 
         .cabecalho-historia {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             flex-wrap: wrap;
             gap: 1rem;
         }
@@ -365,34 +428,11 @@
             font-size: 0.9rem;
             color: var(--texto-rotulo);
         }
-
-        .lista-capitulos {
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .item-capitulo {
-            background: #1E1B18;
-            border: 1px solid #2E2A26;
-            border-radius: 10px;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: border 0.2s;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .item-capitulo:hover { border-color: var(--dourado-primario); }
-        .titulo-capitulo { font-weight: 500; }
-        .acoes-capitulo { display: flex; gap: 0.6rem; }
     </style>
 </head>
 <body>
+    <!-- Animação de luzes no fundo -->
+    <div class="luzes-fundo" id="luzesFundo"></div>
 
     <header>
         <h1 class="logo">Núcleo Literário Supremo</h1>
@@ -407,7 +447,6 @@
         <div id="pagina-inicial" class="pagina-inicial">
             <h2 class="titulo-secao">Módulos de Criação</h2>
             <div class="grade-modulos">
-
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-historia')">
                     <div class="modulo-icone">📖</div>
                     <h3 class="modulo-titulo">Forjar História</h3>
@@ -417,7 +456,7 @@
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-saga')">
                     <div class="modulo-icone">⚔️</div>
                     <h3 class="modulo-titulo">Forjar Saga</h3>
-                    <p class="modulo-desc">Para obras completas: defina universo, enredo, personagens e estrutura total.</p>
+                    <p class="modulo-desc">Crie sagas completas com até 50 capítulos de uma vez, universo e personagens definidos.</p>
                 </div>
 
                 <div class="modulo-card" onclick="abrirAmbiente('mapa-mental')">
@@ -430,12 +469,6 @@
                     <div class="modulo-icone">📚</div>
                     <h3 class="modulo-titulo">Gaveta Literária</h3>
                     <p class="modulo-desc">Suas obras organizadas por título, prontas para continuar ou compartilhar.</p>
-                </div>
-
-                <div class="modulo-card" onclick="abrirAmbiente('editor')">
-                    <div class="modulo-icone">✍️</div>
-                    <h3 class="modulo-titulo">Editor</h3>
-                    <p class="modulo-desc">Edite, revise e ajuste seus textos com facilidade.</p>
                 </div>
             </div>
         </div>
@@ -460,28 +493,28 @@
 
                 <div class="bloco-campo">
                     <label>PERSONAGEM PRINCIPAL 1</label>
-                    <textarea id="p1-historia" class="campo-pequeno" placeholder="Nome, idade, aparência, personalidade, objetivos..."></textarea>
+                    <textarea id="p1-historia" placeholder="Nome, idade, aparência, personalidade, objetivos..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
                     <label>PERSONAGEM PRINCIPAL 2</label>
-                    <textarea id="p2-historia" class="campo-pequeno" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro..."></textarea>
+                    <textarea id="p2-historia" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
-                    <label>PONTO DE VISTA DA NARRATIVA</label>
-                    <div class="grupo-botoes" id="opcoes-pv-historia">
+                    <label>PONTO DE VISTA</label>
+                    <div class="grupo-botoes">
                         <button class="botao-opcao" onclick="definirPV('p1')">🧍 Personagem 1</button>
                         <button class="botao-opcao" onclick="definirPV('p2')">🧍 Personagem 2</button>
                         <button class="botao-opcao ativo" onclick="definirPV('ambos')">👥 Ambos os Protagonistas</button>
                         <button class="botao-opcao" onclick="definirPV('narrador')">🗣️ Narrador Onisciente</button>
                     </div>
-                    <input type="hidden" id="pv-escolhido" value="ambos">
+                    <input type="hidden" id="pv-historia" value="ambos">
                 </div>
 
-                <hr style="border: none; border-top: 1px solid var(--borda-campo); margin: 2rem 0;">
+                <hr style="border: none; border-top: 1px solid rgba(212,175,55,0.25); margin: 2rem 0;">
 
-                <h3 style="font-family:Cinzel; color:var(--dourado-claro); margin-bottom:1.5rem;">CAPÍTULO</h3>
+                <h3 style="font-family:Cinzel; color:var(--dourado-brilhante); margin-bottom:1.5rem; font-size:1.3rem;">CAPÍTULO</h3>
 
                 <div class="bloco-campo">
                     <label>TÍTULO DO CAPÍTULO</label>
@@ -489,32 +522,27 @@
                 </div>
 
                 <div class="bloco-campo">
-                    <label>TAMANHO DO CAPÍTULO (quantidade de palavras)</label>
+                    <label>TAMANHO DO CAPÍTULO (PALAVRAS)</label>
                     <input type="number" id="palavras-historia" min="800" max="15000" value="2500">
                 </div>
 
                 <div class="bloco-campo">
-                    <label>O QUE DEVE ACONTECER NESTE CAPÍTULO</label>
-                    <textarea id="enredo-cap-historia" class="campo-imenso" placeholder="Descreva cenas, diálogos, sentimentos, conflitos e o que deve ser mostrado. Se escolher 'Ambos os Protagonistas', indique o que cada um pensa, sente e faz."></textarea>
+                    <label>O QUE DEVE ACONTECER</label>
+                    <textarea id="enredo-historia" class="campo-imenso" placeholder="Descreva cenas, sentimentos, diálogos. Se usar 'Ambos', explique o que cada um sente e pensa."></textarea>
                 </div>
 
-                <div class="check-continuar">
-                    <input type="checkbox" id="usar-mapa-historia" checked>
-                    <label for="usar-mapa-historia">🔁 Manter coerência com capítulos anteriores e dados do Mapa Mental</label>
-                </div>
+                <button class="botao-principal" onclick="gerarCapitulo('historia')">GERAR CAPÍTULO</button>
 
-                <button class="botao-principal" onclick="gerarCapitulo('historia')">GERAR E SALVAR CAPÍTULO</button>
-
-                <div class="caixa-resultado" id="resultado-historia">O texto do capítulo aparecerá aqui após a geração</div>
-                <div class="acoes-texto" id="acoes-resultado-historia" style="display:none;">
-                    <button class="btn-acao btn-refazer" onclick="gerarCapitulo('historia')">🔄 Refazer</button>
-                    <button class="btn-acao btn-copiar" onclick="copiarTexto()">📋 Copiar</button>
-                    <button class="btn-acao btn-salvar" onclick="salvarObra()">💾 Salvar na Gaveta</button>
+                <div class="caixa-resultado" id="resultado-historia">O texto aparecerá aqui após a geração</div>
+                <div class="acoes-texto" id="acoes-historia" style="display:none;">
+                    <button class="btn-acao" onclick="gerarCapitulo('historia')">🔄 Refazer</button>
+                    <button class="btn-acao" onclick="copiarTexto('resultado-historia')">📋 Copiar</button>
+                    <button class="btn-acao" onclick="salvarObra()">💾 Salvar na Gaveta</button>
                 </div>
             </div>
         </div>
 
-        <!-- Ambiente: Forjar Saga -->
+        <!-- Ambiente: Forjar Saga - AQUI ADICIONEI A QUANTIDADE DE CAPÍTULOS -->
         <div id="ambiente-forjar-saga" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
@@ -529,89 +557,54 @@
 
                 <div class="bloco-campo">
                     <label>GÊNERO E UNIVERSO</label>
-                    <textarea id="universo-saga" class="campo-medio" placeholder="Descreva o mundo, regras, magia, época, sociedade e tudo que define a história."></textarea>
+                    <textarea id="universo-saga" class="campo-grande" placeholder="Descreva o mundo, regras, magia, época, sociedade..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
                     <label>PERSONAGEM PRINCIPAL 1</label>
-                    <textarea id="p1-saga" class="campo-pequeno" placeholder="Nome, idade, aparência, personalidade, motivações..."></textarea>
+                    <textarea id="p1-saga" placeholder="Nome, idade, aparência, personalidade, motivações..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
                     <label>PERSONAGEM PRINCIPAL 2</label>
-                    <textarea id="p2-saga" class="campo-pequeno" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro..."></textarea>
+                    <textarea id="p2-saga" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
                     <label>PONTO DE VISTA</label>
-                    <div class="grupo-botoes" id="opcoes-pv-saga">
+                    <div class="grupo-botoes">
                         <button class="botao-opcao" onclick="definirPV('p1')">🧍 Personagem 1</button>
                         <button class="botao-opcao" onclick="definirPV('p2')">🧍 Personagem 2</button>
                         <button class="botao-opcao ativo" onclick="definirPV('ambos')">👥 Ambos os Protagonistas</button>
                         <button class="botao-opcao" onclick="definirPV('narrador')">🗣️ Narrador Onisciente</button>
                     </div>
+                    <input type="hidden" id="pv-saga" value="ambos">
                 </div>
 
                 <div class="bloco-campo">
                     <label>ENREDO GERAL DA SAGA</label>
-                    <textarea id="enredo-geral-saga" class="campo-grande" placeholder="Começo, desenvolvimento, conflitos principais e desfecho planejado para toda a obra."></textarea>
+                    <textarea id="enredo-saga" class="campo-grande" placeholder="Começo, desenvolvimento, conflitos e desfecho planejado."></textarea>
                 </div>
 
-                <hr style="border: none; border-top: 1px solid var(--borda-campo); margin: 2rem 0;">
-
-                <h3 style="font-family:Cinzel; color:var(--dourado-claro); margin-bottom:1.5rem;">ADICIONAR CAPÍTULO</h3>
-
+                <!-- 🆕 CAMPO NOVO: QUANTIDADE DE CAPÍTULOS -->
                 <div class="bloco-campo">
-                    <label>TÍTULO DO CAPÍTULO</label>
-                    <input type="text" id="titulo-cap-saga" placeholder="Ex: Capítulo 5 - A Decisão">
+                    <label>QUANTIDADE DE CAPÍTULOS A GERAR (até 50)</label>
+                    <input type="number" id="qtd-capitulos-saga" min="1" max="50" value="5">
+                    <p style="font-size:0.85rem; color:var(--texto-rotulo); margin-top:0.5rem;">Você pode criar de 1 a 50 capítulos completos de uma vez</p>
                 </div>
 
                 <div class="bloco-campo">
-                    <label>TAMANHO DO CAPÍTULO</label>
-                    <input type="number" id="palavras-saga" min="800" max="20000" value="3000">
+                    <label>TAMANHO MÉDIO POR CAPÍTULO (PALAVRAS)</label>
+                    <input type="number" id="palavras-saga" min="800" max="15000" value="3000">
                 </div>
 
-                <div class="bloco-campo">
-                    <label>CONTEÚDO DO CAPÍTULO</label>
-                    <textarea id="conteudo-cap-saga" class="campo-imenso" placeholder="O que deve acontecer, detalhes das cenas, sentimentos dos personagens. Se usar 'Ambos', descreva como cada um vê e sente a situação."></textarea>
+                <button class="botao-principal" onclick="gerarSagaCompleta()">GERAR TODA A SAGA</button>
+
+                <div class="caixa-resultado" id="resultado-saga">Os capítulos da saga aparecerão aqui em sequência</div>
+                <div class="acoes-texto" id="acoes-saga" style="display:none;">
+                    <button class="btn-acao" onclick="copiarTexto('resultado-saga')">📋 Copiar Tudo</button>
+                    <button class="btn-acao" onclick="salvarObra()">💾 Salvar na Gaveta</button>
                 </div>
-
-                <button class="botao-principal" onclick="gerarCapitulo('saga')">GERAR E ADICIONAR À SAGA</button>
-
-                <div class="caixa-resultado" id="resultado-saga"></div>
-                <div class="acoes-texto" id="acoes-resultado-saga" style="display:none;">
-                    <button class="btn-acao btn-refazer" onclick="gerarCapitulo('saga')">🔄 Refazer</button>
-                    <button class="btn-acao btn-copiar" onclick="copiarTexto()">📋 Copiar</button>
-                    <button class="btn-acao btn-salvar" onclick="salvarObra()">💾 Salvar na Gaveta</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ambiente: Mapa Mental -->
-        <div id="ambiente-mapa-mental" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">Mapa Mental</h2>
-            </div>
-            <div class="conteudo-ambiente">
-                <p style="color:var(--texto-rotulo); margin-bottom:1.5rem;">Todas as informações aqui ficam ligadas à obra que você está criando e são usadas para manter a coerência.</p>
-
-                <div class="bloco-mapa">
-                    <input type="text" class="titulo-bloco" placeholder="Ex: Regras da Magia">
-                    <textarea class="texto-bloco" placeholder="Como funciona, limitações, custos, efeitos..."></textarea>
-                </div>
-
-                <div class="bloco-mapa">
-                    <input type="text" class="titulo-bloco" placeholder="Ex: História do Reino">
-                    <textarea class="texto-bloco" placeholder="Eventos passados, guerras, tradições que influenciam a trama..."></textarea>
-                </div>
-
-                <div class="bloco-mapa">
-                    <input type="text" class="titulo-bloco" placeholder="Ex: Outros Personagens">
-                    <textarea class="texto-bloco" placeholder="Aliados, inimigos, secundários, suas características e papéis..."></textarea>
-                </div>
-
-                <button class="botao-principal" onclick="salvarMapa()">SALVAR MAPA MENTAL</button>
             </div>
         </div>
 
@@ -622,22 +615,7 @@
                 <h2 class="titulo-ambiente">Gaveta Literária</h2>
             </div>
             <div class="conteudo-ambiente" id="lista-obras">
-                <p style="text-align:center; color:var(--texto-rotulo); padding:3rem;">Nenhuma obra salva ainda. Comece criando uma nova história ou saga!</p>
-            </div>
-        </div>
-
-        <!-- Ambiente: Editor -->
-        <div id="ambiente-editor" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">Editor de Texto</h2>
-            </div>
-            <div class="conteudo-ambiente">
-                <textarea id="texto-editor" class="campo-imenso" placeholder="Texto para edição aparecerá aqui..."></textarea>
-                <div class="acoes-texto">
-                    <button class="btn-acao btn-copiar" onclick="copiarTextoEditor()">📋 Copiar</button>
-                    <button class="btn-acao btn-salvar" onclick="salvarAlteracoes()">💾 Salvar Alterações</button>
-                </div>
+                <p style="text-align:center; color:var(--texto-rotulo); padding:3rem;">Nenhuma obra salva ainda. Comece criando!</p>
             </div>
         </div>
     </main>
@@ -645,23 +623,34 @@
     <script>
         let obraAtual = null;
 
-        // Salvar API
+        // Criar luzes animadas no fundo
+        window.addEventListener('load', () => {
+            const fundo = document.getElementById('luzesFundo');
+            for (let i = 0; i < 50; i++) {
+                const luz = document.createElement('div');
+                luz.classList.add('luz');
+                luz.style.left = `${Math.random() * 100}%`;
+                luz.style.top = `${Math.random() * 100}%`;
+                luz.style.animationDelay = `${Math.random() * 3}s`;
+                fundo.appendChild(luz);
+            }
+
+            const chaveSalva = localStorage.getItem('chave_api_gemini');
+            if (chaveSalva) document.getElementById('api-key').value = chaveSalva;
+            carregarGaveta();
+        });
+
         function salvarApi() {
             const chave = document.getElementById('api-key').value.trim();
-            if (chave) {
-                localStorage.setItem('chave_api_gemini', chave);
-                alert("✅ Chave salva com sucesso!");
-            } else {
-                alert("⚠️ Digite a chave antes de salvar.");
-            }
+            if (!chave) return alert("⚠️ Digite a chave primeiro!");
+            localStorage.setItem('chave_api_gemini', chave);
+            alert("✅ Chave salva!");
         }
 
-        // Navegação
         function abrirAmbiente(id) {
             document.getElementById('pagina-inicial').style.display = 'none';
             document.querySelectorAll('.ambiente-trabalho').forEach(el => el.classList.remove('ativo'));
             document.getElementById(`ambiente-${id}`).classList.add('ativo');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function voltarInicio() {
@@ -669,142 +658,179 @@
             document.getElementById('pagina-inicial').style.display = 'block';
         }
 
-        // Definir Ponto de Vista
         function definirPV(opcao) {
-            document.querySelectorAll('.botao-opcao').forEach(btn => btn.classList.remove('ativo'));
+            document.querySelectorAll('.botao-opcao').forEach(b => b.classList.remove('ativo'));
             event.currentTarget.classList.add('ativo');
-            document.getElementById('pv-escolhido').value = opcao;
+            const campo = document.querySelector('.ambiente-trabalho.ativo input[type="hidden"]');
+            if (campo) campo.value = opcao;
         }
 
-        // Gerar Capítulo
         async function gerarCapitulo(tipo) {
             const chave = localStorage.getItem('chave_api_gemini');
-            if (!chave) return alert("⚠️ Salve sua chave API primeiro!");
+            if (!chave) return alert("⚠️ Salve sua chave primeiro!");
 
-            let dados = {};
+            const btn = event.currentTarget;
+            btn.classList.add('gerando');
+
+            let dados;
             if (tipo === 'historia') {
                 dados = {
                     titulo: document.getElementById('titulo-obra-historia').value.trim(),
                     genero: document.getElementById('genero-historia').value.trim(),
                     p1: document.getElementById('p1-historia').value.trim(),
                     p2: document.getElementById('p2-historia').value.trim(),
-                    pv: document.getElementById('pv-escolhido').value,
+                    pv: document.getElementById('pv-historia').value,
                     tituloCap: document.getElementById('titulo-cap-historia').value.trim(),
                     palavras: document.getElementById('palavras-historia').value,
-                    enredo: document.getElementById('enredo-cap-historia').value.trim()
-                };
-            } else {
-                dados = {
-                    titulo: document.getElementById('titulo-saga').value.trim(),
-                    genero: document.getElementById('universo-saga').value.trim(),
-                    p1: document.getElementById('p1-saga').value.trim(),
-                    p2: document.getElementById('p2-saga').value.trim(),
-                    pv: document.getElementById('pv-escolhido').value,
-                    tituloCap: document.getElementById('titulo-cap-saga').value.trim(),
-                    palavras: document.getElementById('palavras-saga').value,
-                    enredo: document.getElementById('conteudo-cap-saga').value.trim()
+                    enredo: document.getElementById('enredo-historia').value.trim()
                 };
             }
 
-            if (!dados.titulo || !dados.tituloCap || !dados.enredo) {
-                return alert("⚠️ Preencha todos os campos obrigatórios!");
+            if (!dados.titulo || !dados.enredo) {
+                btn.classList.remove('gerando');
+                return alert("⚠️ Preencha todos os campos!");
             }
 
-            const pvDescricao = {
-                'p1': 'Sob o ponto de vista do Personagem 1, em primeira ou terceira pessoa.',
-                'p2': 'Sob o ponto de vista do Personagem 2, em primeira ou terceira pessoa.',
-                'ambos': 'Alternando e mesclando o ponto de vista dos dois protagonistas. Mostre claramente o que cada um pensa, sente, percebe e reage, captando sentimentos e reações de ambos na mesma cena ou situação.',
-                'narrador': 'Sob o ponto de vista de um narrador onisciente, contando a história de forma ampla.'
+            const pvTexto = {
+                'p1': 'Sob a visão e sentimentos do Personagem 1.',
+                'p2': 'Sob a visão e sentimentos do Personagem 2.',
+                'ambos': 'Alternar e mostrar claramente os pensamentos, sentimentos e reações de ambos os personagens. Em situações como acidentes, conflitos ou emoções fortes, descreva como cada um sente, reage e interpreta o que acontece.',
+                'narrador': 'Sob visão de narrador onisciente.'
             };
 
             const prompt = `
-Você é o Núcleo Literário Supremo. Escreva um texto literário de qualidade, envolvente, com diálogos naturais e descrições ricas.
+Escreva um capítulo literário envolvente, com diálogos naturais e descrições ricas.
 
 Obra: ${dados.titulo}
-Gênero/Contexto: ${dados.genero}
+Gênero: ${dados.genero}
 
 Personagem 1: ${dados.p1}
 Personagem 2: ${dados.p2}
 
-Ponto de vista: ${pvDescricao[dados.pv]}
+Ponto de vista: ${pvTexto[dados.pv]}
 
 Capítulo: ${dados.tituloCap}
-Tamanho: aproximadamente ${dados.palavras} palavras.
+Tamanho: ${dados.palavras} palavras.
 
-Acontecimentos a descrever:
+O que deve acontecer:
 ${dados.enredo}
 
-Mantenha a coerência, mostre emoções, reações e, se o ponto de vista for "ambos", não deixe de demonstrar a perspectiva e os sentimentos de cada personagem envolvido.
+Mantenha a coesão e aprofunde as emoções dos personagens.
             `;
 
-            const elementoResultado = document.getElementById(tipo === 'historia' ? 'resultado-historia' : 'resultado-saga');
-            const elementoAcoes = document.getElementById(tipo === 'historia' ? 'acoes-resultado-historia' : 'acoes-resultado-saga');
-
-            elementoResultado.textContent = "⏳ Gerando capítulo, aguarde alguns instantes...";
-            elementoAcoes.style.display = 'none';
+            const resultado = document.getElementById(`resultado-${tipo}`);
+            const acoes = document.getElementById(`acoes-${tipo}`);
+            resultado.textContent = "✨ Gerando capítulo, aguarde...";
 
             try {
-                const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
+                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { temperature: 0.8, maxOutputTokens: 30000 }
-                    })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.85, maxOutputTokens: 35000 } })
                 });
 
-                const dadosResposta = await resposta.json();
-                const textoGerado = dadosResposta?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Não foi possível gerar o texto. Verifique sua chave API e tente novamente.";
+                const json = await resp.json();
+                const texto = json?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro: verifique a chave API ou tente novamente.";
 
-                elementoResultado.textContent = textoGerado;
-                elementoAcoes.style.display = 'flex';
-
-                obraAtual = {
-                    tipo: tipo,
-                    titulo: dados.titulo,
-                    dados: dados,
-                    texto: textoGerado,
-                    data: new Date().toLocaleString('pt-BR')
-                };
-
-            } catch (erro) {
-                elementoResultado.textContent = "❌ Erro na conexão. Verifique sua internet e chave API.";
-                console.error(erro);
+                resultado.textContent = texto;
+                acoes.style.display = 'flex';
+                obraAtual = { tipo, dados, texto, data: new Date().toLocaleString('pt-BR') };
+            } catch (e) {
+                resultado.textContent = "❌ Falha na conexão. Verifique sua internet.";
+            } finally {
+                btn.classList.remove('gerando');
             }
         }
 
-        // Salvar Obra na Gaveta
-        function salvarObra() {
-            if (!obraAtual) return alert("⚠️ Não há obra para salvar.");
-            const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
-            const existente = todas.findIndex(o => o.titulo === obraAtual.titulo);
-            if (existente >= 0) todas[existente] = obraAtual;
-            else todas.push(obraAtual);
-            localStorage.setItem('obras_gaveta', JSON.stringify(todas));
-            alert("✅ Obra salva na Gaveta Literária!");
+        // 🆕 Função para gerar toda a saga com vários capítulos
+        async function gerarSagaCompleta() {
+            const chave = localStorage.getItem('chave_api_gemini');
+            if (!chave) return alert("⚠️ Salve sua chave primeiro!");
+
+            const btn = event.currentTarget;
+            btn.classList.add('gerando');
+
+            const dados = {
+                titulo: document.getElementById('titulo-saga').value.trim(),
+                universo: document.getElementById('universo-saga').value.trim(),
+                p1: document.getElementById('p1-saga').value.trim(),
+                p2: document.getElementById('p2-saga').value.trim(),
+                pv: document.getElementById('pv-saga').value,
+                enredo: document.getElementById('enredo-saga').value.trim(),
+                qtd: parseInt(document.getElementById('qtd-capitulos-saga').value),
+                palavras: document.getElementById('palavras-saga').value
+            };
+
+            if (!dados.titulo || !dados.enredo || dados.qtd < 1) {
+                btn.classList.remove('gerando');
+                return alert("⚠️ Preencha todos os campos e defina ao menos 1 capítulo!");
+            }
+
+            const pvTexto = {
+                'p1': 'Visão e sentimentos do Personagem 1.',
+                'p2': 'Visão e sentimentos do Personagem 2.',
+                'ambos': 'Mostre claramente pensamentos, sentimentos e reações de ambos os personagens. Em momentos de emoção forte, demonstre a dor, a surpresa e a visão de cada um.',
+                'narrador': 'Visão de narrador onisciente.'
+            };
+
+            const prompt = `
+Crie uma saga completa com ${dados.qtd} capítulos, com qualidade literária, coesão e continuidade.
+
+Título da Saga: ${dados.titulo}
+Mundo e Regras: ${dados.universo}
+
+Personagem 1: ${dados.p1}
+Personagem 2: ${dados.p2}
+
+Ponto de vista: ${pvTexto[dados.pv]}
+
+Enredo completo:
+${dados.enredo}
+
+Cada capítulo deve ter aproximadamente ${dados.palavras} palavras.
+Numere e dê título a cada capítulo. Mantenha a sequência, a coerência e o desenvolvimento da história.
+            `;
+
+            const resultado = document.getElementById('resultado-saga');
+            const acoes = document.getElementById('acoes-saga');
+            resultado.textContent = "✨ Gerando toda a saga, isso pode levar alguns segundos...";
+
+            try {
+                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.8, maxOutputTokens: 60000 } })
+                });
+
+                const json = await resp.json();
+                const texto = json?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro: verifique sua chave ou tente novamente.";
+
+                resultado.textContent = texto;
+                acoes.style.display = 'flex';
+                obraAtual = { tipo: 'saga', dados, texto, data: new Date().toLocaleString('pt-BR') };
+            } catch (e) {
+                resultado.textContent = "❌ Falha na conexão. Verifique sua internet.";
+            } finally {
+                btn.classList.remove('gerando');
+            }
         }
 
-        // Copiar texto
-        function copiarTexto() {
-            const texto = document.querySelector('.caixa-resultado').textContent;
+        function copiarTexto(id) {
+            const texto = document.getElementById(id).textContent;
             navigator.clipboard.writeText(texto).then(() => alert("📋 Texto copiado!"));
         }
 
-        function copiarTextoEditor() {
-            navigator.clipboard.writeText(document.getElementById('texto-editor').value).then(() => alert("📋 Texto copiado!"));
+        function salvarObra() {
+            if (!obraAtual) return alert("⚠️ Nenhuma obra para salvar!");
+            const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
+            const existe = todas.findIndex(o => o.titulo === obraAtual.dados.titulo);
+            if (existe >= 0) todas[existe] = obraAtual;
+            else todas.push(obraAtual);
+            localStorage.setItem('obras_gaveta', JSON.stringify(todas));
+            alert("✅ Salvo na Gaveta!");
+            carregarGaveta();
         }
 
-        // Salvar Mapa Mental
-        function salvarMapa() {
-            const blocos = Array.from(document.querySelectorAll('.bloco-mapa')).map(b => ({
-                titulo: b.querySelector('.titulo-bloco').value.trim(),
-                conteudo: b.querySelector('.texto-bloco').value.trim()
-            }));
-            localStorage.setItem('mapa_mental', JSON.stringify(blocos));
-            alert("✅ Mapa Mental salvo!");
-        }
-
-        // Carregar Gaveta
         function carregarGaveta() {
             const lista = document.getElementById('lista-obras');
             const obras = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
@@ -819,38 +845,23 @@ Mantenha a coerência, mostre emoções, reações e, se o ponto de vista for "a
                 div.innerHTML = `
                     <div class="cabecalho-historia">
                         <div>
-                            <h3 class="titulo-historia">${obra.titulo}</h3>
-                            <p class="info-historia">Tipo: ${obra.tipo === 'historia' ? 'História' : 'Saga'} • Salvo em: ${obra.data}</p>
+                            <h3 class="titulo-historia">${obra.dados.titulo}</h3>
+                            <p class="info-historia">${obra.tipo === 'historia' ? '📖 História' : '⚔️ Saga'} • Salvo em: ${obra.data}</p>
                         </div>
-                        <button class="btn-acao btn-excluir" onclick="excluirObra('${obra.titulo}')">🗑️ Excluir</button>
+                        <button class="btn-acao" onclick="excluirObra('${obra.dados.titulo}')">🗑️ Excluir</button>
                     </div>
-                    <button class="btn-acao btn-copiar" onclick="carregarParaEditar('${obra.titulo}')">📝 Abrir e Continuar</button>
                 `;
                 lista.appendChild(div);
             });
         }
 
         function excluirObra(titulo) {
-            if (!confirm("Tem certeza que deseja excluir esta obra?")) return;
+            if (!confirm("Deseja excluir essa obra?")) return;
             const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
-            const filtradas = todas.filter(o => o.titulo !== titulo);
+            const filtradas = todas.filter(o => o.dados.titulo !== titulo);
             localStorage.setItem('obras_gaveta', JSON.stringify(filtradas));
             carregarGaveta();
         }
-
-        function carregarParaEditar(titulo) {
-            const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
-            const obra = todas.find(o => o.titulo === titulo);
-            if (!obra) return;
-            obraAtual = obra;
-            abrirAmbiente(obra.tipo === 'historia' ? 'forjar-historia' : 'forjar-saga');
-        }
-
-        // Carregar chave salva
-        window.addEventListener('load', () => {
-            const chaveSalva = localStorage.getItem('chave_api_gemini');
-            if (chaveSalva) document.getElementById('api-key').value = chaveSalva;
-        });
     </script>
 </body>
 </html>
