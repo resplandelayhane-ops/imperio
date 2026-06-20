@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -10,27 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --obsidian-900: #020205;
-            --obsidian-800: #050508;
-            --obsidian-700: #0a0a0f;
-            --obsidian-600: #0f0f15;
-            --obsidian-500: #14141f;
-            --obsidian-400: #1a1a27;
-            
-            --gold-imperial: #D4AF37;
-            --gold-light: #F5E7A0;
-            --gold-dark: #B38728;
-            --gold-gradient: linear-gradient(135deg, #BF953F 0%, #FCF6BA 40%, #F7EF99 60%, #B38728 100%);
-            --gold-glow: 0 0 15px rgba(212, 175, 55, 0.25), 0 0 30px rgba(212, 175, 55, 0.1);
-            
-            --text-primary: #F8F8FC;
-            --text-secondary: #BFBFCF;
-            --text-muted: #7E7E92;
-            
-            --glass-bg: rgba(20, 20, 31, 0.65);
-            --glass-border: rgba(212, 175, 55, 0.12);
-            --shadow-premium: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25);
-            --shadow-deep: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --bg-principal: #0B0907;
+            --bg-campo: #141210;
+            --borda-campo: #221F1B;
+            --texto-rotulo: #99948F;
+            --texto-entrada: #E8E2D8;
+            --dourado-primario: #D4AF37;
+            --dourado-claro: #F5E7A0;
+            --dourado-escuro: #B38728;
+            --sombra-dourada: 0 2px 8px rgba(212, 175, 55, 0.15);
         }
 
         * {
@@ -41,189 +29,139 @@
         }
 
         body {
-            background-color: var(--obsidian-800);
-            color: var(--text-primary);
+            background-color: var(--bg-principal);
+            color: var(--texto-entrada);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        /* CABEÇALHO PRINCIPAL */
+        /* CABEÇALHO */
         header {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1.5rem 2.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: var(--bg-principal);
+            padding: 1.5rem 1.8rem;
+            border-bottom: 1px solid var(--borda-campo);
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-premium);
+            z-index: 10;
         }
 
         .logo {
             font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 700;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--dourado-primario);
+            text-align: center;
+            margin-bottom: 1.5rem;
             letter-spacing: 1.2px;
         }
 
-        .api-area {
+        .linha-api {
             display: flex;
             gap: 1rem;
             align-items: center;
-            flex-wrap: wrap;
         }
 
-        .api-input {
-            background: var(--obsidian-600);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            padding: 0.9rem 1.4rem;
-            border-radius: 10px;
+        .input-api {
+            flex: 1;
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
+            border-radius: 12px;
+            color: var(--texto-entrada);
+            padding: 1rem 1.4rem;
             font-size: 1rem;
-            min-width: 280px;
-            transition: all 0.3s ease;
         }
 
-        .api-input:focus {
+        .input-api::placeholder {
+            color: #706C66;
+        }
+
+        .input-api:focus {
             outline: none;
-            border-color: var(--gold-imperial);
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+            border-color: var(--dourado-primario);
         }
 
         .btn-salvar {
-            background: var(--gold-gradient);
-            color: var(--obsidian-900);
+            background: linear-gradient(180deg, #F8E08E 0%, #D4AF37 50%, #B38728 100%);
             border: none;
-            padding: 0.9rem 1.8rem;
-            border-radius: 10px;
+            border-radius: 12px;
+            color: #1A1408;
             font-weight: 600;
             font-size: 1rem;
+            padding: 1rem 2rem;
+            min-width: 110px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+            box-shadow: var(--sombra-dourada);
+            transition: all 0.2s ease;
         }
 
         .btn-salvar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.3);
+            filter: brightness(1.1);
         }
 
         /* CONTEÚDO PRINCIPAL */
         main {
-            padding: 3rem 2.5rem;
-            min-height: calc(100vh - 90px);
+            padding: 2rem 1.8rem;
         }
 
-        /* PÁGINA INICIAL - GRADE DE MÓDULOS */
+        /* PÁGINA INICIAL */
         .pagina-inicial {
             display: block;
-            animation: entradaSuave 0.5s ease;
         }
 
         .titulo-secao {
             font-family: 'Cinzel', serif;
             font-size: 1.9rem;
+            color: var(--dourado-primario);
             margin-bottom: 2.5rem;
-            position: relative;
-            color: var(--gold-light);
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        .titulo-secao::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 70px;
-            height: 2px;
-            background: var(--gold-gradient);
-            border-radius: 2px;
-        }
-
-        /* GRADE DE QUADRADOS - IGUAL A BIBLIOTECA */
         .grade-modulos {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.6rem;
         }
 
         .modulo-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            min-height: 260px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
+            border-radius: 16px;
+            padding: 2.2rem 1.6rem;
+            min-height: 220px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: var(--shadow-premium);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modulo-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: all 0.25s ease;
         }
 
         .modulo-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            border-color: rgba(212, 175, 55, 0.3);
-            box-shadow: var(--shadow-deep), 0 0 30px rgba(212, 175, 55, 0.12);
-        }
-
-        .modulo-card:hover::before {
-            opacity: 1;
+            border-color: var(--dourado-primario);
+            background-color: #191613;
         }
 
         .modulo-icone {
-            font-size: 3.2rem;
-            margin-bottom: 1.2rem;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.25));
+            font-size: 3rem;
+            color: var(--dourado-primario);
+            margin-bottom: 1rem;
         }
 
         .modulo-titulo {
             font-family: 'Cinzel', serif;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--gold-light);
-            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            color: var(--dourado-claro);
+            margin-bottom: 0.6rem;
         }
 
         .modulo-desc {
             font-size: 0.95rem;
-            color: var(--text-secondary);
+            color: var(--texto-rotulo);
             line-height: 1.5;
         }
 
-        /* ÁREAS DE TRABALHO - AMBIENTES EXCLUSIVOS */
+        /* AMBIENTES */
         .ambiente-trabalho {
             display: none;
-            animation: entradaSuave 0.5s ease;
-            width: 100%;
         }
 
         .ambiente-trabalho.ativo {
@@ -233,51 +171,50 @@
         .cabecalho-ambiente {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
         }
 
         .btn-voltar {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--gold-light);
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            font-size: 1.3rem;
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
+            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            font-size: 1.2rem;
+            color: var(--dourado-primario);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .btn-voltar:hover {
-            border-color: var(--gold-imperial);
-            background: rgba(212, 175, 55, 0.1);
-            transform: translateX(-3px);
+            border-color: var(--dourado-primario);
         }
 
-        .conteudo-ambiente {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+        .titulo-ambiente {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--dourado-primario);
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            flex: 1;
         }
 
-        /* FORMULÁRIOS E CAMPOS GRANDES */
+        /* FORMULÁRIOS */
         .bloco-campo {
             margin-bottom: 2.2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
         }
 
         .bloco-campo label {
-            font-size: 1rem;
+            display: block;
+            font-size: 0.95rem;
             text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 1.2px;
-            font-weight: 600;
+            color: var(--texto-rotulo);
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
         }
 
         input[type="text"],
@@ -285,305 +222,242 @@
         select,
         textarea {
             width: 100%;
-            background: var(--obsidian-600);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            padding: 1.4rem 1.8rem;
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
             border-radius: 14px;
-            font-size: 1.1rem;
+            color: var(--texto-entrada);
+            padding: 1.2rem 1.4rem;
+            font-size: 1rem;
             font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #706C66;
+            opacity: 0.8;
         }
 
         input:focus,
         select:focus,
         textarea:focus {
             outline: none;
-            border-color: var(--gold-imperial);
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18), inset 0 1px 3px rgba(0,0,0,0.2);
-            background: var(--obsidian-500);
+            border-color: var(--dourado-primario);
+        }
+
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        .campo-medio {
+            min-height: 220px;
         }
 
         .campo-grande {
-            min-height: 400px;
-            resize: vertical;
-            line-height: 1.8;
+            min-height: 320px;
         }
 
         .campo-imenso {
-            min-height: 900px;
-            resize: vertical;
-            line-height: 1.85;
-            background: linear-gradient(to bottom, var(--obsidian-600) 0%, var(--obsidian-700) 100%);
+            min-height: 500px;
         }
 
         .grupo-botoes {
-            display: flex;
-            gap: 1.2rem;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
             margin-top: 0.5rem;
         }
 
         .botao-opcao {
-            background: var(--obsidian-600);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            padding: 1.1rem 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
+            border-radius: 10px;
+            color: var(--texto-rotulo);
+            padding: 0.9rem 1.2rem;
+            font-size: 0.95rem;
+            text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
+        .botao-opcao.ativo,
         .botao-opcao:hover {
-            border-color: rgba(212, 175, 55, 0.25);
-            color: var(--gold-light);
-            transform: translateY(-2px);
-        }
-
-        .botao-opcao.ativo {
-            background: rgba(212, 175, 55, 0.12);
-            border-color: var(--gold-imperial);
-            color: var(--gold-imperial);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+            border-color: var(--dourado-primario);
+            color: var(--dourado-claro);
+            background-color: #191613;
         }
 
         .botao-principal {
             width: 100%;
-            background: var(--gold-gradient);
-            color: var(--obsidian-900);
+            background: linear-gradient(180deg, #F8E08E 0%, #D4AF37 50%, #B38728 100%);
             border: none;
-            padding: 1.6rem;
             border-radius: 14px;
+            color: #1A1408;
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 2rem;
+            letter-spacing: 1.2px;
+            padding: 1.4rem;
             cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+            box-shadow: var(--sombra-dourada);
+            margin-top: 1rem;
         }
 
         .botao-principal:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35);
+            filter: brightness(1.08);
         }
 
-        /* ÁREA DE RESULTADO */
         .caixa-resultado {
-            background: var(--obsidian-600);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 3rem;
-            min-height: 500px;
-            margin-top: 2.5rem;
-            font-size: 1.15rem;
-            line-height: 1.9;
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
+            border-radius: 14px;
+            padding: 1.8rem;
+            min-height: 300px;
+            margin-top: 2rem;
+            line-height: 1.8;
             white-space: pre-wrap;
-            box-shadow: var(--shadow-premium);
+            color: var(--texto-entrada);
         }
 
-        /* ANIMAÇÃO */
-        @keyframes entradaSuave {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .destaque {
+            color: var(--dourado-primario);
+            font-weight: 600;
         }
 
-        /* RESPONSIVIDADE */
-        @media (max-width: 1024px) {
-            main {
-                padding: 2.5rem 2rem;
-            }
-            .grade-modulos {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-                gap: 1.5rem;
-            }
-            .modulo-card {
-                min-height: 220px;
-                padding: 2rem 1.5rem;
-            }
+        /* ESTILO DO MAPA MENTAL */
+        .bloco-mapa {
+            background-color: var(--bg-campo);
+            border: 1px solid var(--borda-campo);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+            transition: border 0.2s;
         }
 
-        @media (max-width: 768px) {
-            header {
-                padding: 1.2rem 1.5rem;
-                flex-direction: column;
-                gap: 1.2rem;
-                align-items: stretch;
-            }
-            .api-area {
-                width: 100%;
-            }
-            .api-input {
-                flex: 1;
-                min-width: auto;
-            }
-            main {
-                padding: 2rem 1.5rem;
-            }
-            .grade-modulos {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 1.2rem;
-            }
-            .modulo-card {
-                min-height: 190px;
-                padding: 1.5rem 1rem;
-            }
-            .modulo-icone {
-                font-size: 2.5rem;
-            }
-            .modulo-titulo {
-                font-size: 1.1rem;
-            }
-            .campo-imenso {
-                min-height: 500px;
-            }
+        .bloco-mapa:hover {
+            border-color: rgba(212, 175, 55, 0.4);
         }
 
-        @media (max-width: 480px) {
-            .grade-modulos {
-                grid-template-columns: 1fr 1fr;
-            }
-            .modulo-card {
-                min-height: 170px;
-            }
-            .modulo-icone {
-                font-size: 2.2rem;
-            }
-            .modulo-titulo {
-                font-size: 1rem;
-            }
-            .caixa-resultado {
-                padding: 1.8rem;
-            }
+        .titulo-bloco {
+            width: 100%;
+            background-color: #1A1714;
+            border: 1px solid var(--borda-campo);
+            border-radius: 10px;
+            color: var(--dourado-claro);
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .texto-bloco {
+            width: 100%;
+            min-height: 160px;
+            background-color: #1A1714;
+            border: 1px solid var(--borda-campo);
+            border-radius: 10px;
+            color: var(--texto-entrada);
+            padding: 1rem 1.2rem;
+            resize: vertical;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Núcleo Literário Supremo</div>
-        <div class="api-area">
-            <input type="password" id="api-key" class="api-input" placeholder="Chave API Gemini">
+        <h1 class="logo">Núcleo Literário Supremo</h1>
+        <div class="linha-api">
+            <input type="password" id="api-key" class="input-api" placeholder="Chave API Gemini">
             <button class="btn-salvar" onclick="salvarApi()">Salvar</button>
         </div>
     </header>
 
     <main>
-        <!-- PÁGINA INICIAL - BIBLIOTECA DE MÓDULOS -->
+        <!-- PÁGINA INICIAL -->
         <div id="pagina-inicial" class="pagina-inicial">
             <h2 class="titulo-secao">Módulos de Criação</h2>
-
             <div class="grade-modulos">
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-saga')">
                     <div class="modulo-icone">⚔️</div>
-                    <h3 class="modulo-titulo">Forjar Saga</h3>
-                    <p class="modulo-desc">Crie o universo, história e estrutura completa da sua obra</p>
+                    <h3 class="modulo-titulo">Forjar Saga Completa</h3>
+                    <p class="modulo-desc">Defina tudo da história, salve personagens e estrutura</p>
                 </div>
-
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-capitulo')">
                     <div class="modulo-icone">📖</div>
                     <h3 class="modulo-titulo">Forjar Capítulo</h3>
-                    <p class="modulo-desc">Escreva cenas, diálogos e capítulos com qualidade profissional</p>
+                    <p class="modulo-desc">Escreva cada capítulo usando os dados já salvos</p>
                 </div>
-
-                <div class="modulo-card" onclick="abrirAmbiente('forjar-personagem')">
-                    <div class="modulo-icone">👤</div>
-                    <h3 class="modulo-titulo">Forjar Personagem</h3>
-                    <p class="modulo-desc">Defina perfis, histórias, personalidade e motivações</p>
-                </div>
-
-                <div class="modulo-card" onclick="abrirAmbiente('gaveta-literaria')">
-                    <div class="modulo-icone">📚</div>
-                    <h3 class="modulo-titulo">Gaveta Literária</h3>
-                    <p class="modulo-desc">Gerencie todas as suas sagas, projetos e obras em andamento</p>
-                </div>
-
                 <div class="modulo-card" onclick="abrirAmbiente('mapa-mental')">
                     <div class="modulo-icone">🗺️</div>
                     <h3 class="modulo-titulo">Mapa Mental</h3>
-                    <p class="modulo-desc">Conecte ideias, personagens e eventos da sua trama</p>
+                    <p class="modulo-desc">10 blocos para separar ideias, regras e dados para a IA</p>
                 </div>
-
-                <div class="modulo-card" onclick="abrirAmbiente('atlas')">
-                    <div class="modulo-icone">🌍</div>
-                    <h3 class="modulo-titulo">Atlas</h3>
-                    <p class="modulo-desc">Descreva geografia, locais, reinos e cenários da história</p>
+                <div class="modulo-card" onclick="abrirAmbiente('gaveta-literaria')">
+                    <div class="modulo-icone">📚</div>
+                    <h3 class="modulo-titulo">Gaveta Literária</h3>
+                    <p class="modulo-desc">Suas histórias salvas, prontas para continuar</p>
                 </div>
-
-                <div class="modulo-card" onclick="abrirAmbiente('cronologia')">
-                    <div class="modulo-icone">⏳</div>
-                    <h3 class="modulo-titulo">Cronologia</h3>
-                    <p class="modulo-desc">Organize todos os eventos em ordem linear e consistente</p>
-                </div>
-
                 <div class="modulo-card" onclick="abrirAmbiente('editor')">
                     <div class="modulo-icone">✍️</div>
                     <h3 class="modulo-titulo">Editor Imperial</h3>
-                    <p class="modulo-desc">Revise, edite e finalize o texto com formatação profissional</p>
+                    <p class="modulo-desc">Edite e organize todos os textos gerados</p>
                 </div>
             </div>
         </div>
 
-        <!-- AMBIENTE: FORJAR SAGA -->
+        <!-- AMBIENTE: FORJAR SAGA COMPLETA -->
         <div id="ambiente-forjar-saga" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Forjar Nova Saga</h2>
+                <h2 class="titulo-ambiente">Forjar Nova Saga</h2>
             </div>
             <div class="conteudo-ambiente">
+
                 <div class="bloco-campo">
-                    <label>Nome da Saga</label>
-                    <input type="text" id="fs-nome" placeholder="Título principal da obra">
+                    <label>Título da História</label>
+                    <input type="text" id="titulo-historia" placeholder="Nome oficial da sua obra">
                 </div>
+
                 <div class="bloco-campo">
                     <label>Gênero Principal</label>
-                    <select id="fs-genero">
-                        <option value="Fantasia">Fantasia</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Ficção Científica">Ficção Científica</option>
-                        <option value="Mistério">Mistério</option>
-                        <option value="Aventura">Aventura</option>
-                        <option value="Drama">Drama</option>
-                        <option value="Suspense">Suspense</option>
-                        <option value="Terror">Terror</option>
-                    </select>
+                    <input type="text" id="genero" placeholder="Ex: Romance, Fantasia, Mistério, Ação...">
                 </div>
-                <div class="bloco-campo">
-                    <label>Subgênero</label>
-                    <input type="text" id="fs-subgenero" placeholder="Ex: Sombria, Épica, Futurista, Histórica...">
-                </div>
-                <div class="bloco-campo">
-                    <label>Descrição Geral</label>
-                    <textarea id="fs-descricao" class="campo-grande" placeholder="Ideia central, premissa e objetivo da história..."></textarea>
-                </div>
-                <div class="bloco-campo">
-                    <label>Regras e Universo</label>
-                    <textarea id="fs-universo" class="campo-grande" placeholder="Como funciona o mundo? Magia, tecnologia, leis, cultura, limites..."></textarea>
-                </div>
-                <div class="bloco-campo">
-                    <label>Personagens Principais</label>
-                    <textarea id="fs-personagens" class="campo-grande" placeholder="Quem são? Idade, origem, papel, motivações..."></textarea>
-                </div>
-                <div class="bloco-campo">
-                    <label>Observações e Ideias</label>
-                    <textarea id="fs-observacoes" class="campo-imenso" placeholder="Todas as referências, detalhes, direções e anotações..."></textarea>
-                </div>
+
                 <div class="bloco-campo">
                     <label>Total de Capítulos</label>
-                    <input type="number" id="fs-capitulos" min="1" max="200" value="10">
+                    <input type="number" id="total-capitulos" min="5" max="200" value="20">
                 </div>
-                <button class="botao-principal" onclick="gerarEstrutura()">Gerar Estrutura Completa</button>
-                <div class="caixa-resultado" id="resultado-saga">Aguardando geração...</div>
+
+                <div class="bloco-campo">
+                    <label>Quantidade de Palavras por Capítulo</label>
+                    <input type="number" id="palavras-capitulo" min="800" max="10000" value="2500" placeholder="Ex: 2000, 3000, 5000...">
+                </div>
+
+                <div class="bloco-campo">
+                    <h3 style="color:var(--dourado-claro); margin-bottom:1rem; font-family:Cinzel;">Dois Protagonistas Principais</h3>
+                    <label>Protagonista 1 (<span class="destaque">ficará salvo para todos os capítulos</span>)</label>
+                    <textarea id="protagonista-1" class="campo-medio" placeholder="Nome, idade, aparência, personalidade, passado, motivações, sonhos, medos..."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>Protagonista 2 (<span class="destaque">ficará salvo para todos os capítulos</span>)</label>
+                    <textarea id="protagonista-2" class="campo-medio" placeholder="Nome, idade, aparência, personalidade, passado, motivações, relação com o outro protagonista..."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>Resumo Completo da História</label>
+                    <textarea id="resumo-historia" class="campo-grande" placeholder="Do que se trata? Qual o conflito principal? Onde se passa? Como funciona o universo? Descreva tudo em detalhes."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>Linha Geral da Trama</label>
+                    <textarea id="linha-trama" class="campo-imenso" placeholder="Como a história vai se desenvolver do início ao fim? Quais os eventos mais importantes, reviravoltas e desfecho?"></textarea>
+                </div>
+
+                <button class="botao-principal" onclick="salvarDadosSaga()">Salvar Dados da Saga</button>
+                <div class="caixa-resultado" id="status-saga">Dados ainda não salvos. Preencha e clique no botão acima.</div>
             </div>
         </div>
 
@@ -591,122 +465,137 @@
         <div id="ambiente-forjar-capitulo" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Forjar Capítulo</h2>
+                <h2 class="titulo-ambiente">Forjar Capítulo</h2>
             </div>
             <div class="conteudo-ambiente">
+
                 <div class="bloco-campo">
                     <label>Número e Título</label>
-                    <input type="text" id="fc-titulo" placeholder="Ex: Capítulo 3 - O Encontro na Floresta">
+                    <input type="text" id="cap-titulo" placeholder="Ex: Capítulo 5 - A Decisão">
                 </div>
+
                 <div class="bloco-campo">
                     <label>Quantidade de Palavras</label>
-                    <input type="number" id="fc-palavras" min="500" max="15000" value="2500">
+                    <input type="number" id="cap-palavras" min="800" max="10000" value="2500">
                 </div>
+
                 <div class="bloco-campo">
                     <label>Ponto de Vista</label>
-                    <div class="grupo-botoes">
-                        <button class="botao-opcao" onclick="definirPov('protagonista')">Protagonista</button>
+                    <div class="grupo-botoes" id="opcoes-pov">
+                        <button class="botao-opcao" onclick="definirPov('prot1')">Protagonista 1</button>
+                        <button class="botao-opcao" onclick="definirPov('prot2')">Protagonista 2</button>
+                        <button class="botao-opcao ativo" onclick="definirPov('alternado')">Alternado entre os dois</button>
+                        <button class="botao-opcao" onclick="definirPov('narrador')">Narrador Onisciente</button>
                         <button class="botao-opcao" onclick="definirPov('antagonista')">Antagonista</button>
-                        <button class="botao-opcao" onclick="definirPov('narrador')">Narrador</button>
-                        <button class="botao-opcao" onclick="definirPov('alternado')">Alternado</button>
                     </div>
-                    <input type="hidden" id="fc-pov" value="">
+                    <input type="hidden" id="ponto-de-vista" value="alternado">
                 </div>
+
                 <div class="bloco-campo">
-                    <label>O que deve acontecer</label>
-                    <textarea id="fc-detalhes" class="campo-imenso" placeholder="Cenas, diálogos, locais, clima emocional, desenvolvimento..."></textarea>
+                    <label>O que deve acontecer neste capítulo</label>
+                    <textarea id="cap-detalhes" class="campo-imenso" placeholder="Descreva cenas, diálogos, locais, sentimentos, eventos, tudo o que deve acontecer neste trecho da história."></textarea>
                 </div>
-                <button class="botao-principal" onclick="gerarCapitulo()">Escrever Capítulo</button>
-                <div class="caixa-resultado" id="resultado-capitulo">Aguardando...</div>
+
+                <button class="botao-principal" onclick="gerarCapitulo()">Gerar Capítulo</button>
+                <div class="caixa-resultado" id="resultado-capitulo">Aguardando... Os dados da saga e do mapa mental serão usados automaticamente.</div>
             </div>
         </div>
 
-        <!-- AMBIENTE: FORJAR PERSONAGEM -->
-        <div id="ambiente-forjar-personagem" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Forjar Personagem</h2>
-            </div>
-            <div class="conteudo-ambiente">
-                <div class="bloco-campo">
-                    <label>Nome Completo</label>
-                    <input type="text" id="fp-nome" placeholder="Nome e apelidos">
-                </div>
-                <div class="bloco-campo">
-                    <label>Dados Básicos</label>
-                    <input type="text" id="fp-dados" placeholder="Idade, sexo, origem, cargo, classe...">
-                </div>
-                <div class="bloco-campo">
-                    <label>Aparência Física</label>
-                    <textarea id="fp-aparencia" class="campo-grande" placeholder="Altura, cor de pele, cabelo, roupas, características marcantes..."></textarea>
-                </div>
-                <div class="bloco-campo">
-                    <label>Personalidade e História</label>
-                    <textarea id="fp-historia" class="campo-imenso" placeholder="Traços de caráter, gostos, medos, traumas, objetivos, segredos, passado..."></textarea>
-                </div>
-                <button class="botao-principal" onclick="salvarPersonagem()">Salvar Perfil</button>
-            </div>
-        </div>
-
-        <!-- OUTROS AMBIENTES RESUMIDOS, NO MESMO PADRÃO -->
-        <div id="ambiente-gaveta-literaria" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Gaveta Literária</h2>
-            </div>
-            <div class="conteudo-ambiente">
-                <div class="netflix-row" style="display:flex; gap:2rem; overflow-x:auto; padding:1rem 0;">
-                    <div class="saga-card" style="min-width:320px; height:460px; border-radius:16px; background:var(--glass-bg); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; text-align:center; padding:2rem;">
-                        <p style="color:var(--text-secondary);">Nenhuma saga cadastrada ainda.<br>Crie sua primeira obra em <strong style="color:var(--gold-imperial)">Forjar Saga</strong>.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!-- AMBIENTE: MAPA MENTAL -->
         <div id="ambiente-mapa-mental" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Mapa Mental</h2>
+                <h2 class="titulo-ambiente">Mapa Mental</h2>
             </div>
             <div class="conteudo-ambiente">
-                <textarea class="campo-imenso" placeholder="Anotações, conexões, relações, ideias soltas, ligações entre pontos da história..."></textarea>
+                <p style="color:var(--texto-rotulo); margin-bottom:1.5rem; font-size:0.95rem;">
+                    Use esses blocos para separar regras, detalhes, personagens secundários, locais, linhas paralelas ou dados soltos. Tudo fica salvo e pode ser usado pela IA para construir histórias longas.
+                </p>
+
+                <!-- 10 BLOCOS DO MAPA MENTAL -->
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-1" placeholder="Título do Bloco 1">
+                    <textarea class="texto-bloco" id="mapa-texto-1" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-2" placeholder="Título do Bloco 2">
+                    <textarea class="texto-bloco" id="mapa-texto-2" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-3" placeholder="Título do Bloco 3">
+                    <textarea class="texto-bloco" id="mapa-texto-3" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-4" placeholder="Título do Bloco 4">
+                    <textarea class="texto-bloco" id="mapa-texto-4" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-5" placeholder="Título do Bloco 5">
+                    <textarea class="texto-bloco" id="mapa-texto-5" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-6" placeholder="Título do Bloco 6">
+                    <textarea class="texto-bloco" id="mapa-texto-6" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-7" placeholder="Título do Bloco 7">
+                    <textarea class="texto-bloco" id="mapa-texto-7" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-8" placeholder="Título do Bloco 8">
+                    <textarea class="texto-bloco" id="mapa-texto-8" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-9" placeholder="Título do Bloco 9">
+                    <textarea class="texto-bloco" id="mapa-texto-9" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <div class="bloco-mapa">
+                    <input type="text" class="titulo-bloco" id="mapa-titulo-10" placeholder="Título do Bloco 10">
+                    <textarea class="texto-bloco" id="mapa-texto-10" placeholder="Anotações, conexões, regras, detalhes, ideias para a história..."></textarea>
+                </div>
+
+                <button class="botao-principal" onclick="salvarMapaMental()">Salvar Todo o Mapa Mental</button>
+                <div class="caixa-resultado" id="status-mapa">Todos os blocos são salvos automaticamente para serem usados pela IA.</div>
             </div>
         </div>
 
-        <div id="ambiente-atlas" class="ambiente-trabalho">
+        <!-- AMBIENTE: GAVETA LITERÁRIA -->
+        <div id="ambiente-gaveta-literaria" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Atlas do Universo</h2>
+                <h2 class="titulo-ambiente">Gaveta Literária</h2>
             </div>
             <div class="conteudo-ambiente">
-                <textarea class="campo-imenso" placeholder="Continentes, reinos, cidades, estradas, climas, culturas, limites geográficos..."></textarea>
+                <div class="caixa-resultado" style="text-align:center; color:var(--texto-rotulo);">
+                    Suas obras salvas aparecerão aqui.<br>Comece criando em <span class="destaque">Forjar Nova Saga</span>.
+                </div>
             </div>
         </div>
 
-        <div id="ambiente-cronologia" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Linha Cronológica</h2>
-            </div>
-            <div class="conteudo-ambiente">
-                <textarea class="campo-imenso" placeholder="Ordem de eventos: passado, presente, futuro, datas, marcos históricos da trama..."></textarea>
-            </div>
-        </div>
-
+        <!-- AMBIENTE: EDITOR IMPERIAL -->
         <div id="ambiente-editor" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-secao">Editor Imperial</h2>
+                <h2 class="titulo-ambiente">Editor Imperial</h2>
             </div>
             <div class="conteudo-ambiente">
-                <div class="caixa-resultado" style="min-height:700px;" id="texto-editor">Aqui aparecerão os textos gerados, prontos para edição e ajustes.</div>
+                <div class="caixa-resultado" style="min-height:600px;" id="texto-editor">Cole ou edite seus textos aqui.</div>
             </div>
         </div>
     </main>
 
     <script>
-        let memoria = {};
-        const regras = `VOCÊ É O NÚCLEO LITERÁRIO SUPREMO. Escreva com profundidade, coerência e qualidade literária, sem textos genéricos.`;
+        let dadosSaga = {};
+        const regrasBase = `VOCÊ É O NÚCLEO LITERÁRIO SUPREMO. Crie textos com qualidade profissional, mantenha coerência total com os dados da história, personalidades, universo e todas as regras ou detalhes informados no mapa mental.`;
 
         function salvarApi() {
             const chave = document.getElementById('api-key').value.trim();
@@ -731,85 +620,159 @@
             window.scrollTo({top:0, behavior:'smooth'});
         }
 
-        function definirPov(tipo) {
-            document.querySelectorAll('.botao-opcao').forEach(b => b.classList.remove('ativo'));
-            event.currentTarget.classList.add('ativo');
-            document.getElementById('fc-pov').value = tipo;
-        }
-
-        async function gerarEstrutura() {
-            const chave = localStorage.getItem('gemini_api_key');
-            if(!chave) return alert("⚠️ Salve a chave API primeiro!");
-
-            const dados = {
-                nome: document.getElementById('fs-nome').value.trim(),
-                genero: document.getElementById('fs-genero').value,
-                subgenero: document.getElementById('fs-subgenero').value.trim(),
-                descricao: document.getElementById('fs-descricao').value.trim(),
-                universo: document.getElementById('fs-universo').value.trim(),
-                personagens: document.getElementById('fs-personagens').value.trim(),
-                observacoes: document.getElementById('fs-observacoes').value.trim(),
-                capitulos: document.getElementById('fs-capitulos').value
+        function salvarDadosSaga() {
+            dadosSaga = {
+                titulo: document.getElementById('titulo-historia').value.trim(),
+                genero: document.getElementById('genero').value.trim(),
+                totalCap: document.getElementById('total-capitulos').value,
+                palavrasPadrao: document.getElementById('palavras-capitulo').value,
+                prot1: document.getElementById('protagonista-1').value.trim(),
+                prot2: document.getElementById('protagonista-2').value.trim(),
+                resumo: document.getElementById('resumo-historia').value.trim(),
+                trama: document.getElementById('linha-trama').value.trim()
             };
 
-            if(!dados.nome || !dados.descricao) return alert("⚠️ Preencha pelo menos nome e descrição!");
-
-            document.getElementById('resultado-saga').innerHTML = `<span style="color:var(--gold-imperial)">⏳ Gerando estrutura...</span>`;
-
-            const prompt = `${regras}\n\nCRIE A ESTRUTURA COMPLETA:\n${JSON.stringify(dados, null, 2)}`;
-
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
-                    method: 'POST',
-                    headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature:0.8 } })
-                });
-                const json = await res.json();
-                document.getElementById('resultado-saga').textContent = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro ao gerar.";
-            } catch {
-                document.getElementById('resultado-saga').textContent = "❌ Falha de conexão.";
+            if(!dadosSaga.titulo || !dadosSaga.prot1 || !dadosSaga.prot2 || !dadosSaga.resumo) {
+                return document.getElementById('status-saga').innerHTML = "❌ Preencha pelo menos título, os dois protagonistas e o resumo.";
             }
+
+            localStorage.setItem('dados_saga_atual', JSON.stringify(dadosSaga));
+            document.getElementById('status-saga').innerHTML = `✅ Saga salva!<br><br><strong>Título:</strong> ${dadosSaga.titulo}<br><strong>Protagonistas:</strong> Definidos e salvos.`;
+            document.getElementById('cap-palavras').value = dadosSaga.palavrasPadrao;
+        }
+
+        function definirPov(tipo) {
+            document.querySelectorAll('#opcoes-pov .botao-opcao').forEach(b => b.classList.remove('ativo'));
+            event.currentTarget.classList.add('ativo');
+            document.getElementById('ponto-de-vista').value = tipo;
+        }
+
+        // Salvar e carregar Mapa Mental
+        function salvarMapaMental() {
+            const blocos = [];
+            for(let i = 1; i <= 10; i++) {
+                blocos.push({
+                    titulo: document.getElementById(`mapa-titulo-${i}`).value.trim(),
+                    texto: document.getElementById(`mapa-texto-${i}`).value.trim()
+                });
+            }
+            localStorage.setItem('mapa_mental', JSON.stringify(blocos));
+            document.getElementById('status-mapa').innerHTML = "✅ Mapa Mental salvo com sucesso!";
+        }
+
+        function carregarMapaMental() {
+            const dados = JSON.parse(localStorage.getItem('mapa_mental'));
+            if(!dados) return;
+            for(let i = 1; i <= 10; i++) {
+                if(dados[i-1]) {
+                    document.getElementById(`mapa-titulo-${i}`).value = dados[i-1].titulo || '';
+                    document.getElementById(`mapa-texto-${i}`).value = dados[i-1].texto || '';
+                }
+            }
+        }
+
+        function obterTextoMapa() {
+            const dados = JSON.parse(localStorage.getItem('mapa_mental'));
+            if(!dados) return '';
+            let textoFinal = '';
+            dados.forEach((bloco, index) => {
+                if(bloco.titulo || bloco.texto) {
+                    textoFinal += `\n--- ${bloco.titulo || `Bloco ${index+1}`} ---\n${bloco.texto || 'Sem anotações'}\n`;
+                }
+            });
+            return textoFinal.trim() ? `\n\nDADOS COMPLEMENTARES DO MAPA MENTAL:${textoFinal}` : '';
         }
 
         async function gerarCapitulo() {
             const chave = localStorage.getItem('gemini_api_key');
             if(!chave) return alert("⚠️ Salve a chave API primeiro!");
 
-            const dados = {
-                titulo: document.getElementById('fc-titulo').value.trim(),
-                palavras: document.getElementById('fc-palavras').value,
-                pov: document.getElementById('fc-pov').value || 'narrador',
-                detalhes: document.getElementById('fc-detalhes').value.trim()
+            const dadosSalvos = JSON.parse(localStorage.getItem('dados_saga_atual'));
+            if(!dadosSalvos || !dadosSalvos.titulo) {
+                return alert("⚠️ Salve primeiro os dados da sua saga no módulo 'Forjar Nova Saga'!");
+            }
+
+            const dadosCap = {
+                titulo: document.getElementById('cap-titulo').value.trim(),
+                palavras: document.getElementById('cap-palavras').value,
+                pov: document.getElementById('ponto-de-vista').value,
+                detalhes: document.getElementById('cap-detalhes').value.trim()
             };
 
-            if(!dados.titulo || !dados.detalhes) return alert("⚠️ Preencha título e detalhes!");
+            if(!dadosCap.titulo || !dadosCap.detalhes) {
+                return alert("⚠️ Preencha o título e o que deve acontecer no capítulo!");
+            }
 
-            document.getElementById('resultado-capitulo').innerHTML = `<span style="color:var(--gold-imperial)">⏳ Escrevendo capítulo...</span>`;
+            document.getElementById('resultado-capitulo').innerHTML = `⏳ Gerando capítulo usando dados da saga + mapa mental...`;
 
-            const prompt = `${regras}\n\nESCREVA O CAPÍTULO:\n${JSON.stringify(dados, null, 2)}`;
+            const descPov = {
+                prot1: `Ponto de vista exclusivo do Protagonista 1: ${dadosSalvos.prot1}`,
+                prot2: `Ponto de vista exclusivo do Protagonista 2: ${dadosSalvos.prot2}`,
+                alternado: `Ponto de vista ALTERNADO entre os dois protagonistas: ${dadosSalvos.prot1} e ${dadosSalvos.prot2}`,
+                narrador: `Ponto de vista de narrador onisciente`,
+                antagonista: `Ponto de vista do antagonista da história`
+            };
+
+            const mapaTexto = obterTextoMapa();
+
+            const prompt = `${regrasBase}
+
+CONTEXTO OFICIAL DA HISTÓRIA:
+Título: ${dadosSalvos.titulo}
+Gênero: ${dadosSalvos.genero}
+Resumo geral: ${dadosSalvos.resumo}
+Linha da trama: ${dadosSalvos.trama}${mapaTexto}
+
+---
+
+CRIE O CAPÍTULO:
+Título: ${dadosCap.titulo}
+Tamanho: aproximadamente ${dadosCap.palavras} palavras
+${descPov[dadosCap.pov]}
+
+O que deve acontecer:
+${dadosCap.detalhes}
+
+Mantenha 100% de coerência com todos os dados informados.`;
 
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
                     method: 'POST',
                     headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature:0.85 } })
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { temperature: 0.85, maxOutputTokens: 8192 }
+                    })
                 });
                 const json = await res.json();
-                document.getElementById('resultado-capitulo').textContent = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro.";
+                const textoGerado = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro ao gerar.";
+                document.getElementById('resultado-capitulo').textContent = textoGerado;
+                document.getElementById('texto-editor').textContent = textoGerado;
             } catch {
                 document.getElementById('resultado-capitulo').textContent = "❌ Falha de conexão.";
             }
         }
 
-        function salvarPersonagem() {
-            const nome = document.getElementById('fp-nome').value.trim();
-            if(!nome) return alert("⚠️ Digite pelo menos o nome!");
-            alert("✅ Perfil salvo na memória da saga!");
-        }
-
+        // Carrega tudo ao abrir
         window.addEventListener('load', () => {
             const chaveSalva = localStorage.getItem('gemini_api_key');
             if(chaveSalva) document.getElementById('api-key').value = chaveSalva;
+
+            const sagaSalva = JSON.parse(localStorage.getItem('dados_saga_atual'));
+            if(sagaSalva) {
+                dadosSaga = sagaSalva;
+                document.getElementById('titulo-historia').value = sagaSalva.titulo || '';
+                document.getElementById('genero').value = sagaSalva.genero || '';
+                document.getElementById('total-capitulos').value = sagaSalva.totalCap || 20;
+                document.getElementById('palavras-capitulo').value = sagaSalva.palavrasPadrao || 2500;
+                document.getElementById('protagonista-1').value = sagaSalva.prot1 || '';
+                document.getElementById('protagonista-2').value = sagaSalva.prot2 || '';
+                document.getElementById('resumo-historia').value = sagaSalva.resumo || '';
+                document.getElementById('linha-trama').value = sagaSalva.trama || '';
+                document.getElementById('cap-palavras').value = sagaSalva.palavrasPadrao || 2500;
+            }
+
+            carregarMapaMental();
         });
     </script>
 </body>
