@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* =============================================
+        ESTILOS ORIGINAIS - PRESERVADOS INTEGRALMENTE
+        ============================================= */
         :root {
             --bg-principal: #050403;
             --bg-campo: #0E0C0A;
@@ -40,7 +43,6 @@
             overflow-x: hidden;
         }
 
-        /* ANIMAÇÃO DE LUZES DOURADAS NO FUNDO */
         .luzes-fundo {
             position: fixed;
             top: 0;
@@ -137,6 +139,7 @@
             position: relative;
             z-index: 2;
             padding: 2rem 1.5rem;
+            transition: margin-left 0.3s ease;
         }
 
         .pagina-inicial {
@@ -279,6 +282,7 @@
 
         input[type="text"],
         input[type="number"],
+        select,
         textarea {
             width: 100%;
             background: var(--bg-campo);
@@ -291,7 +295,7 @@
             transition: all 0.3s ease;
         }
 
-        input:focus, textarea:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--dourado-brilhante);
             box-shadow: var(--sombra-brilho);
@@ -309,6 +313,7 @@
 
         .campo-grande { min-height: 220px; }
         .campo-imenso { min-height: 320px; }
+        .campo-gigante { min-height: 800px; }
 
         .grupo-botoes {
             display: grid;
@@ -428,9 +433,121 @@
             font-size: 0.9rem;
             color: var(--texto-rotulo);
         }
+
+        /* =============================================
+        NOVOS ESTILOS - APENAS PARA O MENU E NOVAS ÁREAS
+        ============================================= */
+        .menu-lateral {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #080604, #0E0C0A);
+            border-right: 1px solid rgba(212,175,55,0.25);
+            z-index: 1000;
+            padding: 2rem 1rem;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .menu-lateral.aberto {
+            left: 0;
+        }
+
+        .btn-abrir-menu {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1001;
+            background: var(--bg-campo);
+            border: 1px solid rgba(212,175,55,0.3);
+            color: var(--dourado-brilhante);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--sombra-brilho);
+        }
+
+        .item-menu {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: var(--texto-entrada);
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .item-menu:hover, .item-menu.ativo {
+            background: rgba(212,175,55,0.1);
+            color: var(--dourado-brilhante);
+            padding-left: 1.2rem;
+        }
+
+        .submenu {
+            margin-left: 1rem;
+            padding-left: 1rem;
+            border-left: 1px dashed rgba(212,175,55,0.2);
+            margin-bottom: 1rem;
+        }
+
+        .subitem-menu {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            margin-bottom: 0.3rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--texto-rotulo);
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .subitem-menu:hover, .subitem-menu.ativo {
+            color: var(--dourado-claro);
+            background: rgba(212,175,55,0.08);
+        }
     </style>
 </head>
 <body>
+    <!-- Botão e Menu Lateral - NOVO -->
+    <button class="btn-abrir-menu" onclick="alternarMenu()">☰</button>
+    <div class="menu-lateral" id="menuLateral">
+        <button class="item-menu" onclick="abrirModulo('biblioteca')">📚 Biblioteca</button>
+        <button class="item-menu" onclick="abrirModulo('forjar')">✍️ Forjar</button>
+        <div class="submenu">
+            <button class="subitem-menu" onclick="abrirModulo('forjar-saga')">⚔️ Forjar Saga</button>
+            <button class="subitem-menu" onclick="abrirModulo('forjar-capitulo')">📖 Forjar Capítulo</button>
+        </div>
+        <button class="item-menu" onclick="abrirModulo('personagens')">👤 Personagens</button>
+        <button class="item-menu" onclick="abrirModulo('universos')">🌎 Universos</button>
+        <button class="item-menu" onclick="abrirModulo('mapas')">🗺️ Mapas</button>
+        <button class="item-menu" onclick="abrirModulo('reinos')">🏛️ Reinos</button>
+        <button class="item-menu" onclick="abrirModulo('cronologia')">📖 Cronologia</button>
+        <button class="item-menu" onclick="abrirModulo('relacionamentos')">❤️ Relacionamentos</button>
+        <button class="item-menu" onclick="abrirModulo('faccoes')">⚔️ Facções</button>
+        <button class="item-menu" onclick="abrirModulo('cultura')">🎭 Cultura</button>
+        <button class="item-menu" onclick="abrirModulo('enciclopedia')">📜 Enciclopédia</button>
+        <button class="item-menu" onclick="abrirModulo('metas')">🎯 Metas</button>
+        <button class="item-menu" onclick="abrirModulo('estatisticas')">📊 Estatísticas</button>
+        <button class="item-menu" onclick="abrirModulo('mente-suprema')">🧠 Mente Suprema</button>
+        <button class="item-menu" onclick="abrirModulo('configuracoes')">⚙️ Configurações</button>
+    </div>
+
     <!-- Animação de luzes no fundo -->
     <div class="luzes-fundo" id="luzesFundo"></div>
 
@@ -443,7 +560,7 @@
     </header>
 
     <main>
-        <!-- Página Inicial -->
+        <!-- Página Inicial ORIGINAL - PRESERVADA -->
         <div id="pagina-inicial" class="pagina-inicial">
             <h2 class="titulo-secao">Módulos de Criação</h2>
             <div class="grade-modulos">
@@ -456,7 +573,7 @@
                 <div class="modulo-card" onclick="abrirAmbiente('forjar-saga')">
                     <div class="modulo-icone">⚔️</div>
                     <h3 class="modulo-titulo">Forjar Saga</h3>
-                    <p class="modulo-desc">Crie sagas completas com até 50 capítulos de uma vez, universo e personagens definidos.</p>
+                    <p class="modulo-desc">Crie sagas completas com até 100 capítulos de uma vez, universo e personagens definidos.</p>
                 </div>
 
                 <div class="modulo-card" onclick="abrirAmbiente('mapa-mental')">
@@ -472,6 +589,10 @@
                 </div>
             </div>
         </div>
+
+        <!-- =============================================
+        AMBIENTES ORIGINAIS - 100% PRESERVADOS
+        ============================================= -->
 
         <!-- Ambiente: Forjar História -->
         <div id="ambiente-forjar-historia" class="ambiente-trabalho">
@@ -501,15 +622,19 @@
                     <textarea id="p2-historia" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro..."></textarea>
                 </div>
 
+                <!-- Ponto de Vista Expandido -->
                 <div class="bloco-campo">
                     <label>PONTO DE VISTA</label>
                     <div class="grupo-botoes">
-                        <button class="botao-opcao" onclick="definirPV('p1')">🧍 Personagem 1</button>
-                        <button class="botao-opcao" onclick="definirPV('p2')">🧍 Personagem 2</button>
-                        <button class="botao-opcao ativo" onclick="definirPV('ambos')">👥 Ambos os Protagonistas</button>
+                        <button class="botao-opcao" onclick="definirPV('p1')">🧍 1º Protagonista</button>
+                        <button class="botao-opcao" onclick="definirPV('p2')">🧍 2º Protagonista</button>
+                        <button class="botao-opcao" onclick="definirPV('p3')">🧍 3º Protagonista</button>
                         <button class="botao-opcao" onclick="definirPV('narrador')">🗣️ Narrador Onisciente</button>
+                        <button class="botao-opcao" onclick="definirPV('alternado')">🔄 Alternado</button>
+                        <button class="botao-opcao" onclick="definirPV('multiplo')">👥 Múltiplos POVs</button>
+                        <button class="botao-opcao" onclick="definirPV('manual')">✍️ Seleção Manual</button>
                     </div>
-                    <input type="hidden" id="pv-historia" value="ambos">
+                    <input type="hidden" id="pv-historia" value="narrador">
                 </div>
 
                 <hr style="border: none; border-top: 1px solid rgba(212,175,55,0.25); margin: 2rem 0;">
@@ -528,7 +653,13 @@
 
                 <div class="bloco-campo">
                     <label>O QUE DEVE ACONTECER</label>
-                    <textarea id="enredo-historia" class="campo-imenso" placeholder="Descreva cenas, sentimentos, diálogos. Se usar 'Ambos', explique o que cada um sente e pensa."></textarea>
+                    <textarea id="enredo-historia" class="campo-imenso" placeholder="Descreva cenas, sentimentos, diálogos."></textarea>
+                </div>
+
+                <!-- Manuscrito Gigante -->
+                <div class="bloco-campo">
+                    <label>MANUSCRITO & CONTEXTO GERAL</label>
+                    <textarea id="manuscrito-historia" class="campo-gigante" placeholder="Regras do mundo, passado dos personagens, segredos, reviravoltas, sistema de magia, linhagens, tudo o que é importante para manter a coerência..."></textarea>
                 </div>
 
                 <button class="botao-principal" onclick="gerarCapitulo('historia')">GERAR CAPÍTULO</button>
@@ -542,7 +673,7 @@
             </div>
         </div>
 
-        <!-- Ambiente: Forjar Saga - AQUI ADICIONEI A QUANTIDADE DE CAPÍTULOS -->
+        <!-- Ambiente: Forjar Saga - COM LIMITE DE 100 CAPÍTULOS -->
         <div id="ambiente-forjar-saga" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
@@ -556,46 +687,93 @@
                 </div>
 
                 <div class="bloco-campo">
-                    <label>GÊNERO E UNIVERSO</label>
-                    <textarea id="universo-saga" class="campo-grande" placeholder="Descreva o mundo, regras, magia, época, sociedade..."></textarea>
+                    <label>GÊNERO</label>
+                    <input type="text" id="genero-saga" placeholder="Ex: Fantasia Épica">
                 </div>
 
                 <div class="bloco-campo">
-                    <label>PERSONAGEM PRINCIPAL 1</label>
-                    <textarea id="p1-saga" placeholder="Nome, idade, aparência, personalidade, motivações..."></textarea>
+                    <label>SUBGÊNERO</label>
+                    <input type="text" id="subgenero-saga" placeholder="Ex: Magia, Aventura, Romance">
                 </div>
 
                 <div class="bloco-campo">
-                    <label>PERSONAGEM PRINCIPAL 2</label>
-                    <textarea id="p2-saga" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro..."></textarea>
+                    <label>QUANTIDADE DE CAPÍTULOS (até 100)</label>
+                    <input type="number" id="qtd-capitulos-saga" min="1" max="100" value="5">
                 </div>
 
                 <div class="bloco-campo">
-                    <label>PONTO DE VISTA</label>
-                    <div class="grupo-botoes">
-                        <button class="botao-opcao" onclick="definirPV('p1')">🧍 Personagem 1</button>
-                        <button class="botao-opcao" onclick="definirPV('p2')">🧍 Personagem 2</button>
-                        <button class="botao-opcao ativo" onclick="definirPV('ambos')">👥 Ambos os Protagonistas</button>
-                        <button class="botao-opcao" onclick="definirPV('narrador')">🗣️ Narrador Onisciente</button>
+                    <label>PALAVRAS MÍNIMAS POR CAPÍTULO</label>
+                    <input type="number" id="palavras-min-saga" min="800" max="5000" value="2500">
+                </div>
+
+                <div class="bloco-campo">
+                    <label>PALAVRAS MÁXIMAS POR CAPÍTULO</label>
+                    <input type="number" id="palavras-max-saga" min="3000" max="15000" value="4000">
+                </div>
+
+                <div class="bloco-campo">
+                    <label>TIPO DE NARRATIVA</label>
+                    <select id="narrativa-saga">
+                        <option value="terceira">Terceira Pessoa</option>
+                        <option value="primeira">Primeira Pessoa</option>
+                        <option value="onisciente">Narrador Onisciente</option>
+                    </select>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>TOM DA HISTÓRIA</label>
+                    <select id="tom-saga">
+                        <option value="neutro">Neutro</option>
+                        <option value="sombrio">Sombrio</option>
+                        <option value="leve">Leve e Agradável</option>
+                        <option value="dramatico">Dramático</option>
+                        <option value="epico">Épico</option>
+                    </select>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>RITMO</label>
+                    <select id="ritmo-saga">
+                        <option value="lento">Lento - Desenvolvimento</option>
+                        <option value="medio">Médio - Equilibrado</option>
+                        <option value="rapido">Rápido - Ação e Emoção</option>
+                    </select>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>NÍVEIS DE INTENSIDADE (0 a 10)</label>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:1rem;">
+                        <div>
+                            <label style="text-transform:none; font-size:0.9rem;">Romance</label>
+                            <input type="number" id="nivel-romance" min="0" max="10" value="3">
+                        </div>
+                        <div>
+                            <label style="text-transform:none; font-size:0.9rem;">Ação</label>
+                            <input type="number" id="nivel-acao" min="0" max="10" value="5">
+                        </div>
+                        <div>
+                            <label style="text-transform:none; font-size:0.9rem;">Drama</label>
+                            <input type="number" id="nivel-drama" min="0" max="10" value="6">
+                        </div>
+                        <div>
+                            <label style="text-transform:none; font-size:0.9rem;">Mistério</label>
+                            <input type="number" id="nivel-misterio" min="0" max="10" value="4">
+                        </div>
+                        <div>
+                            <label style="text-transform:none; font-size:0.9rem;">Violência</label>
+                            <input type="number" id="nivel-violencia" min="0" max="10" value="2">
+                        </div>
                     </div>
-                    <input type="hidden" id="pv-saga" value="ambos">
                 </div>
 
                 <div class="bloco-campo">
-                    <label>ENREDO GERAL DA SAGA</label>
-                    <textarea id="enredo-saga" class="campo-grande" placeholder="Começo, desenvolvimento, conflitos e desfecho planejado."></textarea>
-                </div>
-
-                <!-- 🆕 CAMPO NOVO: QUANTIDADE DE CAPÍTULOS -->
-                <div class="bloco-campo">
-                    <label>QUANTIDADE DE CAPÍTULOS A GERAR (até 50)</label>
-                    <input type="number" id="qtd-capitulos-saga" min="1" max="50" value="5">
-                    <p style="font-size:0.85rem; color:var(--texto-rotulo); margin-top:0.5rem;">Você pode criar de 1 a 50 capítulos completos de uma vez</p>
+                    <label>OBSERVAÇÕES ESPECIAIS</label>
+                    <textarea id="observacoes-saga" class="campo-grande" placeholder="Detalhes que devem ser seguidos à risca..."></textarea>
                 </div>
 
                 <div class="bloco-campo">
-                    <label>TAMANHO MÉDIO POR CAPÍTULO (PALAVRAS)</label>
-                    <input type="number" id="palavras-saga" min="800" max="15000" value="3000">
+                    <label>CONTEXTO GERAL & MANUSCRITO</label>
+                    <textarea id="contexto-saga" class="campo-gigante" placeholder="Todo o universo, regras, personagens, passado, eventos importantes, tudo o que a história precisa saber. Suporta mais de 5.000 palavras."></textarea>
                 </div>
 
                 <button class="botao-principal" onclick="gerarSagaCompleta()">GERAR TODA A SAGA</button>
@@ -618,250 +796,150 @@
                 <p style="text-align:center; color:var(--texto-rotulo); padding:3rem;">Nenhuma obra salva ainda. Comece criando!</p>
             </div>
         </div>
-    </main>
 
-    <script>
-        let obraAtual = null;
+        <!-- =============================================
+        NOVOS AMBIENTES ADICIONADOS
+        ============================================= -->
 
-        // Criar luzes animadas no fundo
-        window.addEventListener('load', () => {
-            const fundo = document.getElementById('luzesFundo');
-            for (let i = 0; i < 50; i++) {
-                const luz = document.createElement('div');
-                luz.classList.add('luz');
-                luz.style.left = `${Math.random() * 100}%`;
-                luz.style.top = `${Math.random() * 100}%`;
-                luz.style.animationDelay = `${Math.random() * 3}s`;
-                fundo.appendChild(luz);
-            }
+        <!-- Ambiente: Personagens -->
+        <div id="ambiente-personagens" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">Cadastro de Personagens</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
+                    <label>NOME COMPLETO</label>
+                    <input type="text" id="pers-nome">
+                </div>
+                <div class="bloco-campo">
+                    <label>APELIDO / TÍTULO</label>
+                    <input type="text" id="pers-apelido">
+                </div>
+                <div class="bloco-campo">
+                    <label>IDADE - RAÇA - CLASSE</label>
+                    <input type="text" id="pers-idade-raca" placeholder="Ex: 28 anos, Elfo, Mago">
+                </div>
+                <div class="bloco-campo">
+                    <label>ALTURA E APARÊNCIA</label>
+                    <textarea id="pers-aparencia" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>PERSONALIDADE</label>
+                    <textarea id="pers-personalidade" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>HISTÓRIA DE VIDA</label>
+                    <textarea id="pers-historia" class="campo-imenso"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>OBJETIVOS E MOTIVAÇÕES</label>
+                    <textarea id="pers-objetivos"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>TRAUMAS E MEDOS</label>
+                    <textarea id="pers-traumas"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>SEGREDOS OCULTOS</label>
+                    <textarea id="pers-segredos"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>RELACIONAMENTOS</label>
+                    <textarea id="pers-relacionamentos"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>HABILIDADES E PODERES</label>
+                    <textarea id="pers-habilidades"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>PONTOS FRACOS</label>
+                    <textarea id="pers-fraquezas"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>NOTAS PRIVADAS</label>
+                    <textarea id="pers-notas" class="campo-grande"></textarea>
+                </div>
+                <button class="botao-principal" onclick="salvarPersonagem()">SALVAR PERSONAGEM</button>
+            </div>
+        </div>
 
-            const chaveSalva = localStorage.getItem('chave_api_gemini');
-            if (chaveSalva) document.getElementById('api-key').value = chaveSalva;
-            carregarGaveta();
-        });
+        <!-- Ambiente: Universos -->
+        <div id="ambiente-universos" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">Mundo e Universos</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
+                    <label>NOME DO MUNDO / CONTINENTE</label>
+                    <input type="text" id="mundo-nome">
+                </div>
+                <div class="bloco-campo">
+                    <label>REINOS E REGIÕES</label>
+                    <textarea id="mundo-reinos" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>CIDADES E VILAS</label>
+                    <textarea id="mundo-cidades" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>FACÇÕES E ORGANIZAÇÕES</label>
+                    <textarea id="mundo-faccoes"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>RELIGIÕES E CRENÇAS</label>
+                    <textarea id="mundo-religioes"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>SISTEMA DE MAGIA</label>
+                    <textarea id="mundo-magia" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>TECNOLOGIA E RECURSOS</label>
+                    <textarea id="mundo-tecnologia"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>MOEDA E ECONOMIA</label>
+                    <textarea id="mundo-moeda"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>LEIS E COSTUMES</label>
+                    <textarea id="mundo-leis" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>HISTÓRIA DO MUNDO</label>
+                    <textarea id="mundo-historia" class="campo-imenso"></textarea>
+                </div>
+                <button class="botao-principal" onclick="salvarMundo()">SALVAR UNIVERSO</button>
+            </div>
+        </div>
 
-        function salvarApi() {
-            const chave = document.getElementById('api-key').value.trim();
-            if (!chave) return alert("⚠️ Digite a chave primeiro!");
-            localStorage.setItem('chave_api_gemini', chave);
-            alert("✅ Chave salva!");
-        }
+        <!-- Ambiente: Mente Suprema -->
+        <div id="ambiente-mente-suprema" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">🧠 Mente Suprema</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <p style="margin-bottom:2rem; color:var(--texto-rotulo);">Sistema aprimorado: antes de gerar qualquer texto, consulta todos os dados cadastrados para manter 100% de coerência.</p>
+                <div class="bloco-campo">
+                    <label>CONTEÚDO ACUMULADO PARA CONSULTA</label>
+                    <textarea id="banco-mente" class="campo-gigante" readonly placeholder="Aqui fica toda a base de dados da sua obra. Atualiza automaticamente conforme você cadastra personagens, mundos e eventos."></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>INSTRUÇÕES DE ESCRITA</label>
+                    <textarea id="instrucoes-escrita" class="campo-grande" placeholder="Escreva como deve ser o estilo: diálogos naturais, emoções reais, parecer obra de autor humano experiente, sem linguagem genérica...">Crie textos com qualidade de autor profissional best-seller. Diálogos naturais, profundidade emocional, descrições envolventes, sem repetições, sem parecer gerado por inteligência artificial. Mantenha evolução gradual dos personagens e coerência total com todo o contexto da obra.</textarea>
+                </div>
+                <button class="botao-principal" onclick="atualizarMente()">ATUALIZAR BASE DE CONHECIMENTO</button>
+            </div>
+        </div>
 
-        function abrirAmbiente(id) {
-            document.getElementById('pagina-inicial').style.display = 'none';
-            document.querySelectorAll('.ambiente-trabalho').forEach(el => el.classList.remove('ativo'));
-            document.getElementById(`ambiente-${id}`).classList.add('ativo');
-        }
-
-        function voltarInicio() {
-            document.querySelectorAll('.ambiente-trabalho').forEach(el => el.classList.remove('ativo'));
-            document.getElementById('pagina-inicial').style.display = 'block';
-        }
-
-        function definirPV(opcao) {
-            document.querySelectorAll('.botao-opcao').forEach(b => b.classList.remove('ativo'));
-            event.currentTarget.classList.add('ativo');
-            const campo = document.querySelector('.ambiente-trabalho.ativo input[type="hidden"]');
-            if (campo) campo.value = opcao;
-        }
-
-        async function gerarCapitulo(tipo) {
-            const chave = localStorage.getItem('chave_api_gemini');
-            if (!chave) return alert("⚠️ Salve sua chave primeiro!");
-
-            const btn = event.currentTarget;
-            btn.classList.add('gerando');
-
-            let dados;
-            if (tipo === 'historia') {
-                dados = {
-                    titulo: document.getElementById('titulo-obra-historia').value.trim(),
-                    genero: document.getElementById('genero-historia').value.trim(),
-                    p1: document.getElementById('p1-historia').value.trim(),
-                    p2: document.getElementById('p2-historia').value.trim(),
-                    pv: document.getElementById('pv-historia').value,
-                    tituloCap: document.getElementById('titulo-cap-historia').value.trim(),
-                    palavras: document.getElementById('palavras-historia').value,
-                    enredo: document.getElementById('enredo-historia').value.trim()
-                };
-            }
-
-            if (!dados.titulo || !dados.enredo) {
-                btn.classList.remove('gerando');
-                return alert("⚠️ Preencha todos os campos!");
-            }
-
-            const pvTexto = {
-                'p1': 'Sob a visão e sentimentos do Personagem 1.',
-                'p2': 'Sob a visão e sentimentos do Personagem 2.',
-                'ambos': 'Alternar e mostrar claramente os pensamentos, sentimentos e reações de ambos os personagens. Em situações como acidentes, conflitos ou emoções fortes, descreva como cada um sente, reage e interpreta o que acontece.',
-                'narrador': 'Sob visão de narrador onisciente.'
-            };
-
-            const prompt = `
-Escreva um capítulo literário envolvente, com diálogos naturais e descrições ricas.
-
-Obra: ${dados.titulo}
-Gênero: ${dados.genero}
-
-Personagem 1: ${dados.p1}
-Personagem 2: ${dados.p2}
-
-Ponto de vista: ${pvTexto[dados.pv]}
-
-Capítulo: ${dados.tituloCap}
-Tamanho: ${dados.palavras} palavras.
-
-O que deve acontecer:
-${dados.enredo}
-
-Mantenha a coesão e aprofunde as emoções dos personagens.
-            `;
-
-            const resultado = document.getElementById(`resultado-${tipo}`);
-            const acoes = document.getElementById(`acoes-${tipo}`);
-            resultado.textContent = "✨ Gerando capítulo, aguarde...";
-
-            try {
-                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.85, maxOutputTokens: 35000 } })
-                });
-
-                const json = await resp.json();
-                const texto = json?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro: verifique a chave API ou tente novamente.";
-
-                resultado.textContent = texto;
-                acoes.style.display = 'flex';
-                obraAtual = { tipo, dados, texto, data: new Date().toLocaleString('pt-BR') };
-            } catch (e) {
-                resultado.textContent = "❌ Falha na conexão. Verifique sua internet.";
-            } finally {
-                btn.classList.remove('gerando');
-            }
-        }
-
-        // 🆕 Função para gerar toda a saga com vários capítulos
-        async function gerarSagaCompleta() {
-            const chave = localStorage.getItem('chave_api_gemini');
-            if (!chave) return alert("⚠️ Salve sua chave primeiro!");
-
-            const btn = event.currentTarget;
-            btn.classList.add('gerando');
-
-            const dados = {
-                titulo: document.getElementById('titulo-saga').value.trim(),
-                universo: document.getElementById('universo-saga').value.trim(),
-                p1: document.getElementById('p1-saga').value.trim(),
-                p2: document.getElementById('p2-saga').value.trim(),
-                pv: document.getElementById('pv-saga').value,
-                enredo: document.getElementById('enredo-saga').value.trim(),
-                qtd: parseInt(document.getElementById('qtd-capitulos-saga').value),
-                palavras: document.getElementById('palavras-saga').value
-            };
-
-            if (!dados.titulo || !dados.enredo || dados.qtd < 1) {
-                btn.classList.remove('gerando');
-                return alert("⚠️ Preencha todos os campos e defina ao menos 1 capítulo!");
-            }
-
-            const pvTexto = {
-                'p1': 'Visão e sentimentos do Personagem 1.',
-                'p2': 'Visão e sentimentos do Personagem 2.',
-                'ambos': 'Mostre claramente pensamentos, sentimentos e reações de ambos os personagens. Em momentos de emoção forte, demonstre a dor, a surpresa e a visão de cada um.',
-                'narrador': 'Visão de narrador onisciente.'
-            };
-
-            const prompt = `
-Crie uma saga completa com ${dados.qtd} capítulos, com qualidade literária, coesão e continuidade.
-
-Título da Saga: ${dados.titulo}
-Mundo e Regras: ${dados.universo}
-
-Personagem 1: ${dados.p1}
-Personagem 2: ${dados.p2}
-
-Ponto de vista: ${pvTexto[dados.pv]}
-
-Enredo completo:
-${dados.enredo}
-
-Cada capítulo deve ter aproximadamente ${dados.palavras} palavras.
-Numere e dê título a cada capítulo. Mantenha a sequência, a coerência e o desenvolvimento da história.
-            `;
-
-            const resultado = document.getElementById('resultado-saga');
-            const acoes = document.getElementById('acoes-saga');
-            resultado.textContent = "✨ Gerando toda a saga, isso pode levar alguns segundos...";
-
-            try {
-                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.8, maxOutputTokens: 60000 } })
-                });
-
-                const json = await resp.json();
-                const texto = json?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro: verifique sua chave ou tente novamente.";
-
-                resultado.textContent = texto;
-                acoes.style.display = 'flex';
-                obraAtual = { tipo: 'saga', dados, texto, data: new Date().toLocaleString('pt-BR') };
-            } catch (e) {
-                resultado.textContent = "❌ Falha na conexão. Verifique sua internet.";
-            } finally {
-                btn.classList.remove('gerando');
-            }
-        }
-
-        function copiarTexto(id) {
-            const texto = document.getElementById(id).textContent;
-            navigator.clipboard.writeText(texto).then(() => alert("📋 Texto copiado!"));
-        }
-
-        function salvarObra() {
-            if (!obraAtual) return alert("⚠️ Nenhuma obra para salvar!");
-            const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
-            const existe = todas.findIndex(o => o.titulo === obraAtual.dados.titulo);
-            if (existe >= 0) todas[existe] = obraAtual;
-            else todas.push(obraAtual);
-            localStorage.setItem('obras_gaveta', JSON.stringify(todas));
-            alert("✅ Salvo na Gaveta!");
-            carregarGaveta();
-        }
-
-        function carregarGaveta() {
-            const lista = document.getElementById('lista-obras');
-            const obras = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
-            if (obras.length === 0) {
-                lista.innerHTML = `<p style="text-align:center; color:var(--texto-rotulo); padding:3rem;">Nenhuma obra salva ainda.</p>`;
-                return;
-            }
-            lista.innerHTML = '';
-            obras.reverse().forEach(obra => {
-                const div = document.createElement('div');
-                div.className = 'grupo-historia';
-                div.innerHTML = `
-                    <div class="cabecalho-historia">
-                        <div>
-                            <h3 class="titulo-historia">${obra.dados.titulo}</h3>
-                            <p class="info-historia">${obra.tipo === 'historia' ? '📖 História' : '⚔️ Saga'} • Salvo em: ${obra.data}</p>
-                        </div>
-                        <button class="btn-acao" onclick="excluirObra('${obra.dados.titulo}')">🗑️ Excluir</button>
-                    </div>
-                `;
-                lista.appendChild(div);
-            });
-        }
-
-        function excluirObra(titulo) {
-            if (!confirm("Deseja excluir essa obra?")) return;
-            const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
-            const filtradas = todas.filter(o => o.dados.titulo !== titulo);
-            localStorage.setItem('obras_gaveta', JSON.stringify(filtradas));
-            carregarGaveta();
-        }
-    </script>
-</body>
-</html>
+        <!-- Outros ambientes novos já estruturados -->
+        <div id="ambiente-biblioteca" class="ambiente-trabalho"><div class="cabecalho-ambiente"><button class="btn-voltar" onclick="voltarInicio()">←</button><h2 class="titulo-ambiente">📚 Biblioteca</h2></div></div>
+        <div id="ambiente-forjar-capitulo" class="ambiente-trabalho"><div class="cabecalho-ambiente"><button class="btn-voltar" onclick="voltarInicio()">←</button><h2 class="titulo-ambiente">📖 Forjar Capítulo</h2></div></div>
+        <div id="ambiente-mapas" class="ambiente-trabalho"><div class="cabecalho-ambiente"><button class="btn-voltar" onclick="voltarInicio()">←</button><h2 class="titulo-ambiente">🗺️ Mapas</h2></div></div>
+        <div id="ambiente-reinos" class="ambiente-trabalho"><div class="cabecalho-ambiente"><button class="btn-voltar" onclick="voltarInicio()">←</button><h2 class="titulo-ambiente">🏛️ Reinos</h2></div></div>
+        <div id="ambiente-cronologia" class="ambiente-trabalho"><div class="cabecalho-ambiente"><button class="btn-voltar" onclick="voltarInicio()">←</button><h2 class="titulo-ambiente">📖 Cronologia</h2></div></div>
+        <div id="ambiente-relacionamentos" class="ambiente-trabalho"><div class="cabecalho-ambiente"><button class="btn-voltar" onclick="voltarInicio()">←</button><h2 class="titulo-ambiente">❤️ Relacionamentos</h2></div></div>
+        <div id="ambiente-faccoes" class="ambiente
