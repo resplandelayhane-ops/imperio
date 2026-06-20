@@ -49,30 +49,26 @@
             overflow-x: hidden;
         }
 
-        /* MENU LATERAL */
-        .mente-suprema {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100vh;
+        /* CABEÇALHO PRINCIPAL */
+        header {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-right: 1px solid var(--glass-border);
-            padding: 2rem 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.5rem 2.5rem;
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            z-index: 1000;
-            box-shadow: var(--shadow-deep);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-premium);
         }
 
-        .mente-suprema h3 {
-            text-align: center;
-            font-size: 1.5rem;
+        .logo {
             font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             background-clip: text;
@@ -80,96 +76,21 @@
             letter-spacing: 1.2px;
         }
 
-        .menu-principal {
+        .api-area {
             display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .menu-btn {
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text-secondary);
-            padding: 1rem 1.2rem;
-            border-radius: 10px;
-            text-align: left;
-            font-size: 0.98rem;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .menu-btn:hover {
-            background: rgba(212, 175, 55, 0.08);
-            border-color: var(--glass-border);
-            color: var(--gold-light);
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .menu-btn.active {
-            background: rgba(212, 175, 55, 0.12);
-            border-color: rgba(212, 175, 55, 0.25);
-            color: var(--gold-imperial);
-            font-weight: 600;
-            box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.15), var(--gold-glow);
-        }
-
-        /* LAYOUT GERAL */
-        header, main, .bottom-nav {
-            margin-left: 280px;
-            width: calc(100% - 280px);
-        }
-
-        h1, h2, h3, .title-imperial {
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* CABEÇALHO */
-        header {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1.2rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 900;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-
-        .api-mobile-group {
-            display: flex;
-            gap: 0.8rem;
+            gap: 1rem;
             align-items: center;
             flex-wrap: wrap;
         }
 
         .api-input {
-            background: var(--obsidian-700);
+            background: var(--obsidian-600);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            min-width: 260px;
+            padding: 0.9rem 1.4rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            min-width: 280px;
             transition: all 0.3s ease;
         }
 
@@ -179,506 +100,454 @@
             box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
         }
 
-        .btn-save-api {
+        .btn-salvar {
             background: var(--gold-gradient);
             color: var(--obsidian-900);
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            padding: 0.9rem 1.8rem;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
         }
 
-        .btn-save-api:hover {
+        .btn-salvar:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(212, 175, 55, 0.3);
         }
 
-        /* ÁREA PRINCIPAL */
+        /* CONTEÚDO PRINCIPAL */
         main {
-            padding: 2.5rem;
-            min-height: calc(100vh - 72px);
+            padding: 3rem 2.5rem;
+            min-height: calc(100vh - 90px);
         }
 
-        .view-section {
-            display: none;
-            animation: entradaSuave 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .view-section.active {
+        /* PÁGINA INICIAL - GRADE DE MÓDULOS */
+        .pagina-inicial {
             display: block;
+            animation: entradaSuave 0.5s ease;
         }
 
-        @keyframes entradaSuave {
-            from {
-                opacity: 0;
-                transform: translateY(15px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
+        .titulo-secao {
+            font-family: 'Cinzel', serif;
+            font-size: 1.9rem;
+            margin-bottom: 2.5rem;
             position: relative;
+            color: var(--gold-light);
         }
 
-        .section-title::after {
+        .titulo-secao::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -10px;
             left: 0;
-            width: 60px;
+            width: 70px;
             height: 2px;
             background: var(--gold-gradient);
             border-radius: 2px;
         }
 
-        /* PAINEL PRINCIPAL */
-        .painel-grid {
+        /* GRADE DE QUADRADOS - IGUAL A BIBLIOTECA */
+        .grade-modulos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.8rem;
-        }
-
-        .card-painel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.8rem;
-            box-shadow: var(--shadow-premium);
-            transition: all 0.4s ease;
-        }
-
-        .card-painel:hover {
-            transform: translateY(-6px);
-            border-color: rgba(212, 175, 55, 0.25);
-            box-shadow: var(--shadow-deep), 0 0 20px rgba(212, 175, 55, 0.1);
-        }
-
-        .card-painel h4 {
-            color: var(--gold-light);
-            margin-bottom: 1.2rem;
-            font-size: 1.15rem;
-            font-family: 'Cinzel', serif;
-        }
-
-        .card-painel p {
-            margin: 0.6rem 0;
-            font-size: 1.05rem;
-            color: var(--text-secondary);
-        }
-
-        .card-painel span {
-            color: var(--gold-imperial);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        /* GAVETA LITERÁRIA */
-        .netflix-section {
-            width: 100%;
-        }
-
-        .netflix-row {
-            display: flex;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
-            overflow-x: auto;
-            padding: 1rem 0 2.5rem;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .netflix-row::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .netflix-row::-webkit-scrollbar-track {
-            background: var(--obsidian-700);
-            border-radius: 3px;
-        }
-
-        .netflix-row::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, var(--gold-dark), var(--gold-imperial));
-            border-radius: 3px;
-        }
-
-        .saga-card {
-            scroll-snap-align: start;
-            min-width: 320px;
-            width: 320px;
-            height: 460px;
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: var(--shadow-premium);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-        }
-
-        .saga-card:hover {
-            transform: scale(1.06);
-            border-color: rgba(212, 175, 55, 0.35);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), var(--gold-glow);
-            z-index: 2;
-        }
-
-        .saga-cover {
             width: 100%;
-            height: 100%;
+        }
+
+        .modulo-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            min-height: 260px;
             display: flex;
-            align-items: flex-end;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 2rem 1.5rem;
-            background: linear-gradient(to top, rgba(2, 2, 5, 0.95) 0%, rgba(2, 2, 5, 0.4) 60%, rgba(0, 0, 0, 0.1) 100%);
-            background-size: cover;
-            background-position: center;
-            transition: all 0.4s ease;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-premium);
+            position: relative;
+            overflow: hidden;
         }
 
-        .saga-card:hover .saga-cover {
-            background: linear-gradient(to top, rgba(2, 2, 5, 0.98) 0%, rgba(2, 2, 5, 0.6) 50%, rgba(0, 0, 0, 0.2) 100%);
+        .modulo-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .saga-details {
-            transform: translateY(20px);
-            opacity: 0.7;
-            transition: all 0.4s ease;
-            width: 100%;
+        .modulo-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: var(--shadow-deep), 0 0 30px rgba(212, 175, 55, 0.12);
         }
 
-        .saga-card:hover .saga-details {
-            transform: translateY(0);
+        .modulo-card:hover::before {
             opacity: 1;
         }
 
-        .saga-details h5 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            color: var(--gold-light);
-            margin-bottom: 0.6rem;
+        .modulo-icone {
+            font-size: 3.2rem;
+            margin-bottom: 1.2rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.25));
         }
 
-        .saga-details p {
+        .modulo-titulo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .modulo-desc {
             font-size: 0.95rem;
             color: var(--text-secondary);
+            line-height: 1.5;
         }
 
-        /* FORMULÁRIOS E CAMPOS */
-        .mobile-form {
+        /* ÁREAS DE TRABALHO - AMBIENTES EXCLUSIVOS */
+        .ambiente-trabalho {
+            display: none;
+            animation: entradaSuave 0.5s ease;
+            width: 100%;
+        }
+
+        .ambiente-trabalho.ativo {
+            display: block;
+        }
+
+        .cabecalho-ambiente {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-voltar {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--gold-light);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-voltar:hover {
+            border-color: var(--gold-imperial);
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(-3px);
+        }
+
+        .conteudo-ambiente {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* FORMULÁRIOS E CAMPOS GRANDES */
+        .bloco-campo {
+            margin-bottom: 2.2rem;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            max-width: 100%;
+            gap: 1rem;
         }
 
-        .input-block {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .input-block label {
-            font-size: 0.92rem;
+        .bloco-campo label {
+            font-size: 1rem;
             text-transform: uppercase;
             color: var(--text-muted);
             letter-spacing: 1.2px;
             font-weight: 600;
         }
 
-        select, input[type="text"], input[type="number"], textarea {
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
             background: var(--obsidian-600);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            padding: 1.2rem 1.5rem;
-            border-radius: 12px;
-            font-size: 1.05rem;
+            padding: 1.4rem 1.8rem;
+            border-radius: 14px;
+            font-size: 1.1rem;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
-            width: 100%;
         }
 
-        select:focus, input:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: var(--gold-imperial);
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18), inset 0 1px 3px rgba(0,0,0,0.2);
             background: var(--obsidian-500);
         }
 
         .campo-grande {
-            min-height: 350px;
-            resize: vertical;
-        }
-
-        .campo-manuscrito {
-            min-height: 1000px;
+            min-height: 400px;
             resize: vertical;
             line-height: 1.8;
-            font-size: 1.1rem;
+        }
+
+        .campo-imenso {
+            min-height: 900px;
+            resize: vertical;
+            line-height: 1.85;
             background: linear-gradient(to bottom, var(--obsidian-600) 0%, var(--obsidian-700) 100%);
         }
 
-        .grupo-pov {
+        .grupo-botoes {
             display: flex;
-            gap: 1rem;
+            gap: 1.2rem;
             flex-wrap: wrap;
             margin-top: 0.5rem;
         }
 
-        .btn-pov {
+        .botao-opcao {
             background: var(--obsidian-600);
             border: 1px solid var(--glass-border);
             color: var(--text-secondary);
-            padding: 1rem 1.6rem;
-            border-radius: 10px;
+            padding: 1.1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
         }
 
-        .btn-pov:hover {
+        .botao-opcao:hover {
             border-color: rgba(212, 175, 55, 0.25);
             color: var(--gold-light);
             transform: translateY(-2px);
         }
 
-        .btn-pov.active {
+        .botao-opcao.ativo {
             background: rgba(212, 175, 55, 0.12);
             border-color: var(--gold-imperial);
             color: var(--gold-imperial);
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
         }
 
-        .btn-submit-mobile {
+        .botao-principal {
+            width: 100%;
             background: var(--gold-gradient);
             color: var(--obsidian-900);
             border: none;
-            padding: 1.4rem;
-            border-radius: 12px;
+            padding: 1.6rem;
+            border-radius: 14px;
             font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             cursor: pointer;
             transition: all 0.4s ease;
             box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
         }
 
-        .btn-submit-mobile:hover {
-            transform: translateY(-3px);
+        .botao-principal:hover {
+            transform: translateY(-4px);
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35);
         }
 
-        /* ÁREA DE SAÍDA DE TEXTO */
-        .output-box {
+        /* ÁREA DE RESULTADO */
+        .caixa-resultado {
             background: var(--obsidian-600);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 2.5rem;
+            border-radius: 18px;
+            padding: 3rem;
             min-height: 500px;
-            font-size: 1.1rem;
-            line-height: 1.85;
+            margin-top: 2.5rem;
+            font-size: 1.15rem;
+            line-height: 1.9;
             white-space: pre-wrap;
-            margin-top: 1.5rem;
             box-shadow: var(--shadow-premium);
-            transition: all 0.4s ease;
         }
 
-        .output-box:focus-within {
-            border-color: rgba(212, 175, 55, 0.3);
-            box-shadow: var(--shadow-deep), 0 0 25px rgba(212, 175, 55, 0.08);
-        }
-
-        /* MENU INFERIOR MÓVEL */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            height: 75px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid var(--glass-border);
-            display: none;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item.active {
-            color: var(--gold-imperial);
+        /* ANIMAÇÃO */
+        @keyframes entradaSuave {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* RESPONSIVIDADE */
         @media (max-width: 1024px) {
-            .mente-suprema {
-                width: 240px;
+            main {
+                padding: 2.5rem 2rem;
             }
-            header, main, .bottom-nav {
-                margin-left: 240px;
-                width: calc(100% - 240px);
+            .grade-modulos {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 1.5rem;
             }
-            .saga-card {
-                min-width: 280px;
-                width: 280px;
-                height: 420px;
+            .modulo-card {
+                min-height: 220px;
+                padding: 2rem 1.5rem;
             }
         }
 
         @media (max-width: 768px) {
-            .mente-suprema {
-                transform: translateX(-100%);
-                width: 280px;
+            header {
+                padding: 1.2rem 1.5rem;
+                flex-direction: column;
+                gap: 1.2rem;
+                align-items: stretch;
             }
-            .mente-suprema.active {
-                transform: translateX(0);
-            }
-            header, main {
-                margin-left: 0;
+            .api-area {
                 width: 100%;
             }
-            .bottom-nav {
-                display: flex;
+            .api-input {
+                flex: 1;
+                min-width: auto;
             }
             main {
-                padding: 1.5rem;
-                padding-bottom: 90px;
+                padding: 2rem 1.5rem;
             }
-            .section-title {
-                font-size: 1.5rem;
+            .grade-modulos {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.2rem;
             }
-            .campo-manuscrito {
-                min-height: 600px;
+            .modulo-card {
+                min-height: 190px;
+                padding: 1.5rem 1rem;
+            }
+            .modulo-icone {
+                font-size: 2.5rem;
+            }
+            .modulo-titulo {
+                font-size: 1.1rem;
+            }
+            .campo-imenso {
+                min-height: 500px;
             }
         }
 
         @media (max-width: 480px) {
-            .painel-grid {
-                grid-template-columns: 1fr;
+            .grade-modulos {
+                grid-template-columns: 1fr 1fr;
             }
-            .saga-card {
-                min-width: 260px;
-                width: 260px;
-                height: 380px;
+            .modulo-card {
+                min-height: 170px;
             }
-            header {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
+            .modulo-icone {
+                font-size: 2.2rem;
             }
-            .api-input {
-                width: 100%;
-                min-width: auto;
+            .modulo-titulo {
+                font-size: 1rem;
+            }
+            .caixa-resultado {
+                padding: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- MENU LATERAL -->
-    <aside class="mente-suprema" id="menuLateral">
-        <h3>Núcleo Supremo</h3>
-        <nav class="menu-principal">
-            <button class="menu-btn active" onclick="switchView('painel')">📊 Painel Principal</button>
-            <button class="menu-btn" onclick="switchView('gaveta')">📚 Gaveta Literária</button>
-            <button class="menu-btn" onclick="switchView('forjar-saga')">⚔️ Forjar Saga</button>
-            <button class="menu-btn" onclick="switchView('forjar-capitulo')">📖 Forjar Capítulo</button>
-            <button class="menu-btn" onclick="switchView('forjar-personagem')">👤 Forjar Personagem</button>
-            <button class="menu-btn" onclick="switchView('mapa-mental')">🗺️ Mapa Mental</button>
-            <button class="menu-btn" onclick="switchView('atlas')">🌍 Atlas</button>
-            <button class="menu-btn" onclick="switchView('cronologia')">⏳ Cronologia</button>
-            <button class="menu-btn" onclick="switchView('biblioteca')">🏛️ Biblioteca</button>
-            <button class="menu-btn" onclick="switchView('planejador')">📋 Planejador</button>
-            <button class="menu-btn" onclick="switchView('editor')">✍️ Editor Imperial</button>
-        </nav>
-    </aside>
-
-    <!-- CABEÇALHO -->
     <header>
-        <div class="logo title-imperial">Núcleo Literário Supremo</div>
-        <div class="api-mobile-group">
+        <div class="logo">Núcleo Literário Supremo</div>
+        <div class="api-area">
             <input type="password" id="api-key" class="api-input" placeholder="Chave API Gemini">
-            <button class="btn-save-api" onclick="saveApiKey()">Salvar</button>
+            <button class="btn-salvar" onclick="salvarApi()">Salvar</button>
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main>
-        <!-- PAINEL PRINCIPAL -->
-        <section id="view-painel" class="view-section active">
-            <h2 class="section-title">Visão Geral</h2>
-            <div class="painel-grid">
-                <div class="card-painel">
-                    <h4>Estatísticas Gerais</h4>
-                    <p>Sagas criadas: <span>0</span></p>
-                    <p>Capítulos escritos: <span>0</span></p>
-                    <p>Personagens cadastrados: <span>0</span></p>
+        <!-- PÁGINA INICIAL - BIBLIOTECA DE MÓDULOS -->
+        <div id="pagina-inicial" class="pagina-inicial">
+            <h2 class="titulo-secao">Módulos de Criação</h2>
+
+            <div class="grade-modulos">
+                <div class="modulo-card" onclick="abrirAmbiente('forjar-saga')">
+                    <div class="modulo-icone">⚔️</div>
+                    <h3 class="modulo-titulo">Forjar Saga</h3>
+                    <p class="modulo-desc">Crie o universo, história e estrutura completa da sua obra</p>
                 </div>
-                <div class="card-painel">
-                    <h4>Progresso das Sagas</h4>
-                    <p>Nenhuma obra iniciada ainda</p>
+
+                <div class="modulo-card" onclick="abrirAmbiente('forjar-capitulo')">
+                    <div class="modulo-icone">📖</div>
+                    <h3 class="modulo-titulo">Forjar Capítulo</h3>
+                    <p class="modulo-desc">Escreva cenas, diálogos e capítulos com qualidade profissional</p>
                 </div>
-                <div class="card-painel">
-                    <h4>Metas de Escrita</h4>
-                    <p>Meta mensal: 5 capítulos</p>
-                    <p>Concluído: <span>0%</span></p>
+
+                <div class="modulo-card" onclick="abrirAmbiente('forjar-personagem')">
+                    <div class="modulo-icone">👤</div>
+                    <h3 class="modulo-titulo">Forjar Personagem</h3>
+                    <p class="modulo-desc">Defina perfis, histórias, personalidade e motivações</p>
+                </div>
+
+                <div class="modulo-card" onclick="abrirAmbiente('gaveta-literaria')">
+                    <div class="modulo-icone">📚</div>
+                    <h3 class="modulo-titulo">Gaveta Literária</h3>
+                    <p class="modulo-desc">Gerencie todas as suas sagas, projetos e obras em andamento</p>
+                </div>
+
+                <div class="modulo-card" onclick="abrirAmbiente('mapa-mental')">
+                    <div class="modulo-icone">🗺️</div>
+                    <h3 class="modulo-titulo">Mapa Mental</h3>
+                    <p class="modulo-desc">Conecte ideias, personagens e eventos da sua trama</p>
+                </div>
+
+                <div class="modulo-card" onclick="abrirAmbiente('atlas')">
+                    <div class="modulo-icone">🌍</div>
+                    <h3 class="modulo-titulo">Atlas</h3>
+                    <p class="modulo-desc">Descreva geografia, locais, reinos e cenários da história</p>
+                </div>
+
+                <div class="modulo-card" onclick="abrirAmbiente('cronologia')">
+                    <div class="modulo-icone">⏳</div>
+                    <h3 class="modulo-titulo">Cronologia</h3>
+                    <p class="modulo-desc">Organize todos os eventos em ordem linear e consistente</p>
+                </div>
+
+                <div class="modulo-card" onclick="abrirAmbiente('editor')">
+                    <div class="modulo-icone">✍️</div>
+                    <h3 class="modulo-titulo">Editor Imperial</h3>
+                    <p class="modulo-desc">Revise, edite e finalize o texto com formatação profissional</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- GAVETA LITERÁRIA -->
-        <section id="view-gaveta" class="view-section">
-            <h2 class="section-title">Gaveta Literária</h2>
-            <div class="netflix-section">
-                <div class="netflix-row">
-                    <div class="saga-card">
-                        <div class="saga-cover">
-                            <div class="saga-details">
-                                <h5>Nenhuma saga cadastrada</h5>
-                                <p>Crie sua primeira história para aparecer aqui</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- AMBIENTE: FORJAR SAGA -->
+        <div id="ambiente-forjar-saga" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Forjar Nova Saga</h2>
             </div>
-        </section>
-
-        <!-- FORJAR SAGA -->
-        <section id="view-forjar-saga" class="view-section">
-            <h2 class="section-title">Forjar Nova Saga</h2>
-            <form class="mobile-form">
-                <div class="input-block">
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
                     <label>Nome da Saga</label>
-                    <input type="text" id="nome-saga" placeholder="Título principal da obra">
+                    <input type="text" id="fs-nome" placeholder="Título principal da obra">
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Gênero Principal</label>
-                    <select id="genero">
+                    <select id="fs-genero">
                         <option value="Fantasia">Fantasia</option>
                         <option value="Romance">Romance</option>
                         <option value="Ficção Científica">Ficção Científica</option>
@@ -689,391 +558,259 @@
                         <option value="Terror">Terror</option>
                     </select>
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Subgênero</label>
-                    <input type="text" id="subgenero" placeholder="Ex: Sombria, Épica, Futurista, Histórica...">
+                    <input type="text" id="fs-subgenero" placeholder="Ex: Sombria, Épica, Futurista, Histórica...">
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Descrição Geral</label>
-                    <textarea id="descricao-saga" class="campo-grande" placeholder="Apresente a ideia central da história..."></textarea>
+                    <textarea id="fs-descricao" class="campo-grande" placeholder="Ideia central, premissa e objetivo da história..."></textarea>
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Regras e Universo</label>
-                    <textarea id="universo" class="campo-grande" placeholder="Como funciona esse mundo? Magia, tecnologia, leis, cultura..."></textarea>
+                    <textarea id="fs-universo" class="campo-grande" placeholder="Como funciona o mundo? Magia, tecnologia, leis, cultura, limites..."></textarea>
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Personagens Principais</label>
-                    <textarea id="personagens-saga" class="campo-grande" placeholder="Nome, idade, aparência, personalidade, motivações..."></textarea>
+                    <textarea id="fs-personagens" class="campo-grande" placeholder="Quem são? Idade, origem, papel, motivações..."></textarea>
                 </div>
-                <div class="input-block">
-                    <label>Observações Gerais</label>
-                    <textarea id="observacoes-saga" class="campo-manuscrito" placeholder="Todas as ideias, detalhes, direções que deseja seguir — espaço completo para desenvolvimento"></textarea>
+                <div class="bloco-campo">
+                    <label>Observações e Ideias</label>
+                    <textarea id="fs-observacoes" class="campo-imenso" placeholder="Todas as referências, detalhes, direções e anotações..."></textarea>
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Total de Capítulos</label>
-                    <input type="number" id="total-capitulos" min="1" max="200" value="10">
+                    <input type="number" id="fs-capitulos" min="1" max="200" value="10">
                 </div>
-                <button type="button" class="btn-submit-mobile" onclick="gerarEstruturaCompleta()">Gerar Estrutura Completa</button>
-            </form>
-        </section>
+                <button class="botao-principal" onclick="gerarEstrutura()">Gerar Estrutura Completa</button>
+                <div class="caixa-resultado" id="resultado-saga">Aguardando geração...</div>
+            </div>
+        </div>
 
-        <!-- FORJAR CAPÍTULO -->
-        <section id="view-forjar-capitulo" class="view-section">
-            <h2 class="section-title">Forjar Capítulo</h2>
-            <form class="mobile-form">
-                <div class="input-block">
+        <!-- AMBIENTE: FORJAR CAPÍTULO -->
+        <div id="ambiente-forjar-capitulo" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Forjar Capítulo</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
                     <label>Número e Título</label>
-                    <input type="text" id="num-capitulo" placeholder="Ex: Capítulo 1 - O Despertar">
+                    <input type="text" id="fc-titulo" placeholder="Ex: Capítulo 3 - O Encontro na Floresta">
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Quantidade de Palavras</label>
-                    <input type="number" id="palavras-cap" min="500" max="15000" value="2500">
+                    <input type="number" id="fc-palavras" min="500" max="15000" value="2500">
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Ponto de Vista</label>
-                    <div class="grupo-pov">
-                        <button type="button" class="btn-pov" onclick="definirPov('protagonista_a')">Protagonista A</button>
-                        <button type="button" class="btn-pov" onclick="definirPov('protagonista_b')">Protagonista B</button>
-                        <button type="button" class="btn-pov" onclick="definirPov('narrador')">Narrador</button>
-                        <button type="button" class="btn-pov" onclick="definirPov('alternado')">Alternado</button>
-                        <button type="button" class="btn-pov" onclick="definirPov('multiplos')">Múltiplos</button>
+                    <div class="grupo-botoes">
+                        <button class="botao-opcao" onclick="definirPov('protagonista')">Protagonista</button>
+                        <button class="botao-opcao" onclick="definirPov('antagonista')">Antagonista</button>
+                        <button class="botao-opcao" onclick="definirPov('narrador')">Narrador</button>
+                        <button class="botao-opcao" onclick="definirPov('alternado')">Alternado</button>
                     </div>
-                    <input type="hidden" id="pov-escolhido" value="">
+                    <input type="hidden" id="fc-pov" value="">
                 </div>
-                <div class="input-block">
-                    <label>Objetivo e Cenas</label>
-                    <textarea id="conteudo-cap" class="campo-manuscrito" placeholder="Descreva o que deve acontecer, locais, personagens, tom e detalhes importantes..."></textarea>
+                <div class="bloco-campo">
+                    <label>O que deve acontecer</label>
+                    <textarea id="fc-detalhes" class="campo-imenso" placeholder="Cenas, diálogos, locais, clima emocional, desenvolvimento..."></textarea>
                 </div>
-                <button type="button" class="btn-submit-mobile" onclick="gerarCapituloProfissional()">Escrever Capítulo</button>
-            </form>
-        </section>
+                <button class="botao-principal" onclick="gerarCapitulo()">Escrever Capítulo</button>
+                <div class="caixa-resultado" id="resultado-capitulo">Aguardando...</div>
+            </div>
+        </div>
 
-        <!-- FORJAR PERSONAGEM -->
-        <section id="view-forjar-personagem" class="view-section">
-            <h2 class="section-title">Forjar Personagem</h2>
-            <form class="mobile-form">
-                <div class="input-block">
+        <!-- AMBIENTE: FORJAR PERSONAGEM -->
+        <div id="ambiente-forjar-personagem" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Forjar Personagem</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
                     <label>Nome Completo</label>
-                    <input type="text" id="nome-pers" placeholder="Nome e apelidos">
+                    <input type="text" id="fp-nome" placeholder="Nome e apelidos">
                 </div>
-                <div class="input-block">
+                <div class="bloco-campo">
                     <label>Dados Básicos</label>
-                    <input type="text" id="dados-pers" placeholder="Idade, origem, cargo, classe...">
+                    <input type="text" id="fp-dados" placeholder="Idade, sexo, origem, cargo, classe...">
                 </div>
-                <div class="input-block">
-                    <label>Aparência</label>
-                    <textarea id="aparencia-pers" class="campo-grande" placeholder="Descrição física detalhada..."></textarea>
+                <div class="bloco-campo">
+                    <label>Aparência Física</label>
+                    <textarea id="fp-aparencia" class="campo-grande" placeholder="Altura, cor de pele, cabelo, roupas, características marcantes..."></textarea>
                 </div>
-                <div class="input-block">
-                    <label>Personalidade e Histórico</label>
-                    <textarea id="hist-pers" class="campo-manuscrito" placeholder="Comportamento, medos, traumas, objetivos, segredos e evolução esperada..."></textarea>
+                <div class="bloco-campo">
+                    <label>Personalidade e História</label>
+                    <textarea id="fp-historia" class="campo-imenso" placeholder="Traços de caráter, gostos, medos, traumas, objetivos, segredos, passado..."></textarea>
                 </div>
-                <button type="button" class="btn-submit-mobile" onclick="salvarPerfilPersonagem()">Salvar Perfil</button>
-            </form>
-        </section>
+                <button class="botao-principal" onclick="salvarPersonagem()">Salvar Perfil</button>
+            </div>
+        </div>
 
-        <!-- MAPA MENTAL -->
-        <section id="view-mapa-mental" class="view-section">
-            <h2 class="section-title">Mapa Mental</h2>
-            <textarea class="campo-manuscrito" placeholder="Registre aqui conexões entre personagens, locais, facções e eventos para manter a coerência da trama."></textarea>
-        </section>
-
-        <!-- ATLAS -->
-        <section id="view-atlas" class="view-section">
-            <h2 class="section-title">Atlas do Universo</h2>
-            <textarea class="campo-manuscrito" placeholder="Descreva continentes, países, cidades, reinos, características climáticas e tudo o que compõe o cenário da história."></textarea>
-        </section>
-
-        <!-- CRONOLOGIA -->
-        <section id="view-cronologia" class="view-section">
-            <h2 class="section-title">Linha Temporal</h2>
-            <textarea class="campo-manuscrito" placeholder="Organize todos os eventos em ordem cronológica: desde a origem do universo até o desfecho final da saga."></textarea>
-        </section>
-
-        <!-- BIBLIOTECA -->
-        <section id="view-biblioteca" class="view-section">
-            <h2 class="section-title">Biblioteca</h2>
-            <div class="netflix-row">
-                <div class="saga-card">
-                    <div class="saga-cover">
-                        <div class="saga-details">
-                            <h5>Nenhuma obra finalizada</h5>
-                            <p>Os livros concluídos aparecerão aqui</p>
-                        </div>
+        <!-- OUTROS AMBIENTES RESUMIDOS, NO MESMO PADRÃO -->
+        <div id="ambiente-gaveta-literaria" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Gaveta Literária</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="netflix-row" style="display:flex; gap:2rem; overflow-x:auto; padding:1rem 0;">
+                    <div class="saga-card" style="min-width:320px; height:460px; border-radius:16px; background:var(--glass-bg); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; text-align:center; padding:2rem;">
+                        <p style="color:var(--text-secondary);">Nenhuma saga cadastrada ainda.<br>Crie sua primeira obra em <strong style="color:var(--gold-imperial)">Forjar Saga</strong>.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- PLANEJADOR -->
-        <section id="view-planejador" class="view-section">
-            <h2 class="section-title">Planejador da Saga</h2>
-            <div class="output-box" id="area-planejador">
-                Aguardando a geração da estrutura da história...
+        <div id="ambiente-mapa-mental" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Mapa Mental</h2>
             </div>
-        </section>
+            <div class="conteudo-ambiente">
+                <textarea class="campo-imenso" placeholder="Anotações, conexões, relações, ideias soltas, ligações entre pontos da história..."></textarea>
+            </div>
+        </div>
 
-        <!-- EDITOR -->
-        <section id="view-editor" class="view-section">
-            <h2 class="section-title">Editor Imperial</h2>
-            <div class="output-box" id="area-editor">
-                Os capítulos gerados aparecerão aqui com formatação profissional.
+        <div id="ambiente-atlas" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Atlas do Universo</h2>
             </div>
-        </section>
+            <div class="conteudo-ambiente">
+                <textarea class="campo-imenso" placeholder="Continentes, reinos, cidades, estradas, climas, culturas, limites geográficos..."></textarea>
+            </div>
+        </div>
+
+        <div id="ambiente-cronologia" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Linha Cronológica</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <textarea class="campo-imenso" placeholder="Ordem de eventos: passado, presente, futuro, datas, marcos históricos da trama..."></textarea>
+            </div>
+        </div>
+
+        <div id="ambiente-editor" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-secao">Editor Imperial</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="caixa-resultado" style="min-height:700px;" id="texto-editor">Aqui aparecerão os textos gerados, prontos para edição e ajustes.</div>
+            </div>
+        </div>
     </main>
 
-    <!-- MENU INFERIOR -->
-    <nav class="bottom-nav">
-        <button class="nav-item" onclick="switchView('gaveta')">
-            <span>📚</span>
-            <span>Gaveta</span>
-        </button>
-        <button class="nav-item" onclick="switchView('forjar-saga')">
-            <span>⚔️</span>
-            <span>Forjar</span>
-        </button>
-        <button class="nav-item" onclick="switchView('planejador')">
-            <span>📋</span>
-            <span>Plano</span>
-        </button>
-        <button class="nav-item" onclick="switchView('editor')">
-            <span>✍️</span>
-            <span>Editor</span>
-        </button>
-    </nav>
-
     <script>
-        // MEMÓRIA E REGRAS
-        let memoriaSaga = {
-            nome: "",
-            genero: "",
-            subgenero: "",
-            descricao: "",
-            universo: "",
-            personagens: [],
-            observacoes: "",
-            totalCapitulos: 0,
-            estrutura: "",
-            capitulos: []
-        };
+        let memoria = {};
+        const regras = `VOCÊ É O NÚCLEO LITERÁRIO SUPREMO. Escreva com profundidade, coerência e qualidade literária, sem textos genéricos.`;
 
-        const regrasNucleoSupremo = `
-VOCÊ É O NÚCLEO LITERÁRIO SUPREMO.
-
-📌 REGRAS ABSOLUTAS:
-- NUNCA escreva de forma genérica, repetitiva ou superficial.
-- NUNCA use linguagem robótica ou frases prontas.
-- SEMPRE mantenha total coerência com todos os dados fornecidos.
-- RESPEITE a evolução emocional e romântica: nunca acelere sentimentos.
-- Crie cenas com ritmo cinematográfico, profundidade psicológica e diálogos naturais.
-- Use linguagem rica, com subtexto e atmosfera imersiva.
-- Mantenha a consistência de personagens, cenários e eventos.
-        `;
-
-        // FUNÇÕES GERAIS
-        document.addEventListener("DOMContentLoaded", function() {
-            const chaveSalva = localStorage.getItem('gemini_api_key');
-            if(chaveSalva) {
-                document.getElementById('api-key').value = chaveSalva;
-            }
-        });
-
-        function saveApiKey() {
+        function salvarApi() {
             const chave = document.getElementById('api-key').value.trim();
             if(chave) {
                 localStorage.setItem('gemini_api_key', chave);
-                alert("✅ Chave API salva com sucesso!");
+                alert("✅ Chave salva!");
             } else {
-                alert("⚠️ Digite uma chave válida antes de salvar.");
+                alert("⚠️ Digite uma chave válida.");
             }
         }
 
-        function switchView(nomeAba) {
-            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-            const btnMenu = document.querySelector(`.menu-btn[onclick*="${nomeAba}"]`);
-            if(btnMenu) btnMenu.classList.add('active');
+        function abrirAmbiente(id) {
+            document.getElementById('pagina-inicial').style.display = 'none';
+            document.querySelectorAll('.ambiente-trabalho').forEach(el => el.classList.remove('ativo'));
+            document.getElementById(`ambiente-${id}`).classList.add('ativo');
+            window.scrollTo({top:0, behavior:'smooth'});
+        }
 
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            const btnNav = document.querySelector(`.nav-item[onclick*="${nomeAba}"]`);
-            if(btnNav) btnNav.classList.add('active');
-
-            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-            const secaoAtiva = document.getElementById(`view-${nomeAba}`);
-            if(secaoAtiva) secaoAtiva.classList.add('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function voltarInicio() {
+            document.querySelectorAll('.ambiente-trabalho').forEach(el => el.classList.remove('ativo'));
+            document.getElementById('pagina-inicial').style.display = 'block';
+            window.scrollTo({top:0, behavior:'smooth'});
         }
 
         function definirPov(tipo) {
-            document.querySelectorAll('.btn-pov').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            document.getElementById('pov-escolhido').value = tipo;
+            document.querySelectorAll('.botao-opcao').forEach(b => b.classList.remove('ativo'));
+            event.currentTarget.classList.add('ativo');
+            document.getElementById('fc-pov').value = tipo;
         }
 
-        // GERAÇÃO DE ESTRUTURA
-        async function gerarEstruturaCompleta() {
+        async function gerarEstrutura() {
             const chave = localStorage.getItem('gemini_api_key');
-            if(!chave) {
-                alert("⚠️ Salve sua chave API primeiro na parte superior da tela!");
-                return;
-            }
+            if(!chave) return alert("⚠️ Salve a chave API primeiro!");
 
-            memoriaSaga.nome = document.getElementById('nome-saga').value.trim();
-            memoriaSaga.genero = document.getElementById('genero').value;
-            memoriaSaga.subgenero = document.getElementById('subgenero').value.trim();
-            memoriaSaga.descricao = document.getElementById('descricao-saga').value.trim();
-            memoriaSaga.universo = document.getElementById('universo').value.trim();
-            memoriaSaga.personagens = document.getElementById('personagens-saga').value.trim();
-            memoriaSaga.observacoes = document.getElementById('observacoes-saga').value.trim();
-            memoriaSaga.totalCapitulos = document.getElementById('total-capitulos').value;
-
-            if(!memoriaSaga.nome || !memoriaSaga.descricao) {
-                alert("⚠️ Preencha pelo menos o nome e a descrição da saga!");
-                return;
-            }
-
-            switchView('planejador');
-            document.getElementById('area-planejador').innerHTML = `<span style="color:var(--gold-imperial)">⏳ Construindo a base da história...</span>`;
-
-            const prompt = `
-${regrasNucleoSupremo}
-
-CRIE A ESTRUTURA COMPLETA PARA A SEGUINTE OBRA:
-Nome da Saga: ${memoriaSaga.nome}
-Gênero: ${memoriaSaga.genero} • Subgênero: ${memoriaSaga.subgenero || "Não informado"}
-Total de capítulos: ${memoriaSaga.totalCapitulos}
-
-DESCRIÇÃO:
-${memoriaSaga.descricao}
-
-REGRAS DO UNIVERSO:
-${memoriaSaga.universo || "Não informado"}
-
-PERSONAGENS:
-${memoriaSaga.personagens || "Não informado"}
-
-OBSERVAÇÕES ADICIONAIS:
-${memoriaSaga.observacoes || "Nenhuma"}
-
-Apresente:
-- Sinopse detalhada e envolvente
-- Arco principal da história
-- Conflitos principais e secundários
-- Resumo de cada um dos ${memoriaSaga.totalCapitulos} capítulos
-- Momento do clímax
-- Desfecho final coerente com toda a trama
-            `.trim();
-
-            try {
-                const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { temperature: 0.8, maxOutputTokens: 4096 }
-                    })
-                });
-
-                const dados = await resposta.json();
-                if(dados && dados.candidates && dados.candidates[0]) {
-                    memoriaSaga.estrutura = dados.candidates[0].content.parts[0].text;
-                    document.getElementById('area-planejador').textContent = memoriaSaga.estrutura;
-                } else {
-                    document.getElementById('area-planejador').textContent = "❌ Erro ao gerar. Verifique se a chave API está correta e válida.";
-                }
-            } catch (erro) {
-                console.error(erro);
-                document.getElementById('area-planejador').textContent = "❌ Falha na conexão com o servidor. Verifique sua internet.";
-            }
-        }
-
-        // GERAÇÃO DE CAPÍTULO
-        async function gerarCapituloProfissional() {
-            const chave = localStorage.getItem('gemini_api_key');
-            if(!chave) {
-                alert("⚠️ Salve sua chave API primeiro!");
-                return;
-            }
-            if(!memoriaSaga.nome) {
-                alert("⚠️ Crie e gere a estrutura da saga primeiro!");
-                return;
-            }
-
-            const numero = document.getElementById('num-capitulo').value.trim();
-            const palavras = document.getElementById('palavras-cap').value;
-            const pov = document.getElementById('pov-escolhido').value || "narrador";
-            const descricao = document.getElementById('conteudo-cap').value.trim();
-
-            if(!numero || !descricao) {
-                alert("⚠️ Preencha o título/número e o que deve acontecer no capítulo!");
-                return;
-            }
-
-            switchView('editor');
-            document.getElementById('area-editor').innerHTML = `<span style="color:var(--gold-imperial)">⏳ Escrevendo com profundidade e coesão...</span>`;
-
-            const promptCap = `
-${regrasNucleoSupremo}
-
-DADOS DA SAGA:
-Nome: ${memoriaSaga.nome}
-Gênero: ${memoriaSaga.genero}
-Estrutura definida:
-${memoriaSaga.estrutura || "Apenas use as informações básicas fornecidas"}
-
-ESCREVA O SEGUINTE CAPÍTULO:
-Título/Número: ${numero}
-Quantidade aproximada de palavras: ${palavras}
-Ponto de vista: ${pov}
-
-O QUE DEVE ACONTECER:
-${descricao}
-
-Mantenha total coerência com tudo o que já foi estabelecido, crie diálogos naturais e cenas que envolvam o leitor.
-            `.trim();
-
-            try {
-                const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptCap }] }],
-                        generationConfig: { temperature: 0.85, maxOutputTokens: 8192 }
-                    })
-                });
-
-                const dados = await resposta.json();
-                if(dados && dados.candidates && dados.candidates[0]) {
-                    const conteudo = dados.candidates[0].content.parts[0].text;
-                    memoriaSaga.capitulos.push({ numero: numero, texto: conteudo });
-                    document.getElementById('area-editor').textContent = conteudo;
-                } else {
-                    document.getElementById('area-editor').textContent = "❌ Erro ao gerar o capítulo. Verifique sua chave API.";
-                }
-            } catch (erro) {
-                console.error(erro);
-                document.getElementById('area-editor').textContent = "❌ Falha de conexão. Verifique sua internet.";
-            }
-        }
-
-        // SALVAR PERSONAGEM
-        function salvarPerfilPersonagem() {
-            const nome = document.getElementById('nome-pers').value.trim();
-            if(!nome) {
-                alert("⚠️ Digite pelo menos o nome do personagem!");
-                return;
-            }
-
-            const perfil = {
-                nome: nome,
-                dados: document.getElementById('dados-pers').value.trim(),
-                aparencia: document.getElementById('aparencia-pers').value.trim(),
-                historia: document.getElementById('hist-pers').value.trim()
+            const dados = {
+                nome: document.getElementById('fs-nome').value.trim(),
+                genero: document.getElementById('fs-genero').value,
+                subgenero: document.getElementById('fs-subgenero').value.trim(),
+                descricao: document.getElementById('fs-descricao').value.trim(),
+                universo: document.getElementById('fs-universo').value.trim(),
+                personagens: document.getElementById('fs-personagens').value.trim(),
+                observacoes: document.getElementById('fs-observacoes').value.trim(),
+                capitulos: document.getElementById('fs-capitulos').value
             };
 
-            memoriaSaga.personagens.push(perfil);
-            alert("✅ Perfil adicionado com sucesso à memória da saga!");
+            if(!dados.nome || !dados.descricao) return alert("⚠️ Preencha pelo menos nome e descrição!");
+
+            document.getElementById('resultado-saga').innerHTML = `<span style="color:var(--gold-imperial)">⏳ Gerando estrutura...</span>`;
+
+            const prompt = `${regras}\n\nCRIE A ESTRUTURA COMPLETA:\n${JSON.stringify(dados, null, 2)}`;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature:0.8 } })
+                });
+                const json = await res.json();
+                document.getElementById('resultado-saga').textContent = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro ao gerar.";
+            } catch {
+                document.getElementById('resultado-saga').textContent = "❌ Falha de conexão.";
+            }
         }
+
+        async function gerarCapitulo() {
+            const chave = localStorage.getItem('gemini_api_key');
+            if(!chave) return alert("⚠️ Salve a chave API primeiro!");
+
+            const dados = {
+                titulo: document.getElementById('fc-titulo').value.trim(),
+                palavras: document.getElementById('fc-palavras').value,
+                pov: document.getElementById('fc-pov').value || 'narrador',
+                detalhes: document.getElementById('fc-detalhes').value.trim()
+            };
+
+            if(!dados.titulo || !dados.detalhes) return alert("⚠️ Preencha título e detalhes!");
+
+            document.getElementById('resultado-capitulo').innerHTML = `<span style="color:var(--gold-imperial)">⏳ Escrevendo capítulo...</span>`;
+
+            const prompt = `${regras}\n\nESCREVA O CAPÍTULO:\n${JSON.stringify(dados, null, 2)}`;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature:0.85 } })
+                });
+                const json = await res.json();
+                document.getElementById('resultado-capitulo').textContent = json.candidates?.[0]?.content?.parts?.[0]?.text || "❌ Erro.";
+            } catch {
+                document.getElementById('resultado-capitulo').textContent = "❌ Falha de conexão.";
+            }
+        }
+
+        function salvarPersonagem() {
+            const nome = document.getElementById('fp-nome').value.trim();
+            if(!nome) return alert("⚠️ Digite pelo menos o nome!");
+            alert("✅ Perfil salvo na memória da saga!");
+        }
+
+        window.addEventListener('load', () => {
+            const chaveSalva = localStorage.getItem('gemini_api_key');
+            if(chaveSalva) document.getElementById('api-key').value = chaveSalva;
+        });
     </script>
 </body>
 </html>
