@@ -1,10 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Núcleo Literário - Versão Completa Funcional</title>
+    <title>Núcleo Literário - Versão Completa e Funcional</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -730,7 +730,6 @@ let sagaGerada = [];
 let configuracaoSaga = {};
 let blocoAtual = 0;
 
-// Navegação básica
 function abrirTela(id) {
     document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
     document.getElementById(id).classList.add('ativa');
@@ -965,31 +964,4 @@ Tensão: ${configuracaoSaga.tensao}% | Ação: ${configuracaoSaga.acao}%
 --- ENREDO GERAL ---
 ${configuracaoSaga.enredo}
 
---- INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO ---
-${instrucao}
-
---- REGRAS ---
-- Mantenha total coerência com tudo o que já foi definido
-- Cada capítulo deve ter título próprio e desenvolvimento completo
-- Use linguagem envolvente e fluida
-- Não repita acontecimentos
-- Seja detalhado mas direto
-
-Formato da resposta:
-Capítulo X - Título
-[conteúdo completo]
-
----
-`;
-
-    const resultado = await chamarIA(prompt);
-    if (!resultado) return;
-
-    processarCapitulosBloco(resultado, inicio);
-
-    blocoAtual++;
-    if (blocoAtual <= configuracaoSaga.qtdBlocos) {
-        setTimeout(gerarBloco, 2000);
-    } else {
-        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-sucesso">✅ Todos os blocos e capítulos foram gerados com sucesso!</div>`;
-   
+--- INSTRUÇÕES ESPECÍF
