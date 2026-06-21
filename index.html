@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Núcleo Literário - Versão Completa</title>
+    <title>Núcleo Literário - Versão Completa Funcional</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -576,7 +576,7 @@
         <div class="bloco-campo">
             <label>Eles são destinados a se encontrar?</label>
             <select id="destinoSaga">
-                <option value="sim">Sim — The encontro faz parte do destino e do rumo da história</option>
+                <option value="sim">Sim — O encontro faz parte do destino e do rumo da história</option>
                 <option value="nao">Não — É apenas uma coincidência ou circunstância do momento</option>
                 <option value="parcial">Parcialmente — Há uma força maior, mas também escolha própria</option>
             </select>
@@ -730,6 +730,7 @@ let sagaGerada = [];
 let configuracaoSaga = {};
 let blocoAtual = 0;
 
+// Funções de navegação e controle básico
 function abrirTela(id) {
     document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
     document.getElementById(id).classList.add('ativa');
@@ -987,8 +988,4 @@ Capítulo X - Título
     }
 }
 
-function processarCapitulosBloco(texto, numeroInicial) {
-    const partes = texto.split(/---+/);
-    let contador = numeroInicial;
-
-    partes
+function processarCapitulosBloco(texto,
