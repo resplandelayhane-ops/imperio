@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Núcleo Literário - Versão Completa e Funcional</title>
+    <title>Núcleo Literário</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -483,19 +483,15 @@
             <h3>Forjar História</h3>
             <p>Desenvolva capítulo por capítulo com toda a liberdade e detalhamento</p>
         </div>
-        <div class="card" onclick="abrirTela('telaMapa')">
-            <div class="card-icone">🌍</div>
-            <h3>Mapa do Mundo</h3>
-            <p>Construa e documente todo o universo, regras e locais da sua história</p>
-        </div>
         <div class="card" onclick="abrirTela('telaGaveta')">
             <div class="card-icone">🗄️</div>
             <h3>Gaveta Literária</h3>
-            <p>Armazene, visualize e gerencie todas as suas criações salvas</p>
+            <p>Armazene, visualize e gerencie todas as suas criações salvas por título</p>
         </div>
     </div>
 </div>
 
+<!-- TELA FORJAR SAGA -->
 <div id="telaSaga" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
@@ -620,6 +616,7 @@
     <div id="listaCapitulosSaga" class="lista-capitulos"></div>
 </div>
 
+<!-- TELA FORJAR HISTÓRIA -->
 <div id="telaHistoria" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
@@ -677,51 +674,20 @@
     </div>
     <button class="btn-principal" onclick="gerarCapituloUnico()">Gerar Capítulo</button>
     <div class="caixa-resultado" id="resultadoCap">O capítulo gerado aparecerá aqui...</div>
-    <div class="grupo-acoes">
+    <div class="grupo-acoes" style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
         <button class="btn-acao" onclick="copiarTexto('resultadoCap')">📋 Copiar</button>
-        <button class="btn-acao" onclick="salvarConteudo('capitulo')">💾 Salvar</button>
+        <button class="btn-acao" onclick="salvarConteudo('capitulo', document.getElementById('tituloCap').value)">💾 Salvar</button>
         <button class="btn-acao" onclick="limparFormulario('telaHistoria')">🗑️ Limpar</button>
     </div>
 </div>
 
-<div id="telaMapa" class="tela">
-    <div class="cabecalho-tela">
-        <button class="btn-voltar" onclick="voltarMenu()">←</button>
-        <h2 class="titulo-tela">🌍 Mapa e Descrição do Mundo</h2>
-    </div>
-    <div class="secao">
-        <h3 class="secao-titulo">📝 Detalhes do Universo</h3>
-        <div class="bloco-campo">
-            <label>Nome do Universo ou Mundo</label>
-            <input type="text" id="nomeMundo" placeholder="Ex: Terras de Valíria">
-        </div>
-        <div class="bloco-campo">
-            <label>Regras, Cultura e Funcionamento</label>
-            <textarea class="grande" id="regrasMundo" placeholder="Como funciona esse lugar? Existem magia, tecnologia? Como é a política, religião e costumes?"></textarea>
-        </div>
-        <div class="bloco-campo">
-            <label>Locais e Regiões Importantes</label>
-            <textarea class="grande" id="locaisMundo" placeholder="Descreva cidades, reinos, florestas, oceanos, montanhas, dimensões e suas características..."></textarea>
-        </div>
-        <div class="bloco-campo">
-            <label>História e Eventos Marcantes</label>
-            <textarea class="grande" id="historiaMundo" placeholder="O que aconteceu no passado? Guerras, lendas, civilizações antigas, fatos que moldaram o mundo..."></textarea>
-        </div>
-    </div>
-    <button class="btn-principal" onclick="gerarMundo()">Gerar Descrição Completa</button>
-    <div class="caixa-resultado" id="resultadoMundo">A documentação completa do universo aparecerá aqui...</div>
-    <div class="grupo-acoes">
-        <button class="btn-acao" onclick="copiarTexto('resultadoMundo')">📋 Copiar</button>
-        <button class="btn-acao" onclick="salvarConteudo('mundo')">💾 Salvar</button>
-    </div>
-</div>
-
+<!-- TELA GAVETA LITERÁRIA -->
 <div id="telaGaveta" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
         <h2 class="titulo-tela">🗄️ Gaveta Literária</h2>
     </div>
-    <p style="color: var(--texto-cinza); margin-bottom: 1.5rem;">Todas as suas criações ficam armazenadas aqui, mesmo ao fechar e abrir o programa novamente:</p>
+    <p style="color: var(--texto-cinza); margin-bottom: 1.5rem;">Todas as suas criações ficam armazenadas aqui, organizadas por título:</p>
     <div id="listaItensSalvos" style="display: flex; flex-direction: column; gap: 1.2rem;"></div>
 </div>
 
@@ -730,9 +696,11 @@ let sagaGerada = [];
 let configuracaoSaga = {};
 let blocoAtual = 0;
 
+// Navegação
 function abrirTela(id) {
     document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
     document.getElementById(id).classList.add('ativa');
+    if(id === 'telaGaveta') carregarItensSalvos();
 }
 
 function voltarMenu() {
@@ -784,6 +752,7 @@ function gerarCamposInstrucoes() {
     }
 }
 
+// Gerenciamento da chave
 function salvarChaveUsuario() {
     const chave = document.getElementById('chaveUsuario').value.trim();
     if (!chave) {
@@ -791,20 +760,21 @@ function salvarChaveUsuario() {
         return;
     }
     localStorage.setItem('chaveApiUsuario', chave);
-    alert('✅ Chave salva com sucesso! Não precisará digitar novamente neste aparelho.');
+    alert('✅ Chave salva com sucesso!');
 }
 
 function pegarChaveAtual() {
     return localStorage.getItem('chaveApiUsuario') || '';
 }
 
+// Funções gerais
 function copiarTexto(idElemento) {
     const elemento = document.getElementById(idElemento);
     if (!elemento) return;
     const texto = elemento.innerText;
     navigator.clipboard.writeText(texto)
-        .then(() => alert('✅ Texto copiado com sucesso!'))
-        .catch(() => alert('❌ Não foi possível copiar o texto.'));
+        .then(() => alert('✅ Texto copiado!'))
+        .catch(() => alert('❌ Não foi possível copiar.'));
 }
 
 function limparFormulario(idTela) {
@@ -815,20 +785,28 @@ function limparFormulario(idTela) {
     document.querySelectorAll(`#${idTela} .caixa-resultado`).forEach(caixa => caixa.innerText = '');
 }
 
+// Funções da Gaveta
 function salvarConteudo(tipo, nome = '') {
     let conteudo = '';
-    if (tipo === 'capitulo') conteudo = document.getElementById('resultadoCap').innerText;
-    if (tipo === 'mundo') conteudo = document.getElementById('resultadoMundo').innerText;
-    if (tipo === 'saga') conteudo = sagaGerada.map(c => `${c.titulo}\n\n${c.conteudo}`).join('\n\n---\n\n');
+    let tituloFinal = nome;
+
+    if (tipo === 'capitulo') {
+        conteudo = document.getElementById('resultadoCap').innerText;
+        if (!tituloFinal) tituloFinal = 'Capítulo sem título';
+    }
+    if (tipo === 'saga') {
+        conteudo = sagaGerada.map(c => `${c.titulo}\n\n${c.conteudo}`).join('\n\n---\n\n');
+        tituloFinal = configuracaoSaga.nome || 'Saga sem nome';
+    }
 
     if (!conteudo || conteudo.length < 20) {
-        alert('⚠️ Gere um conteúdo primeiro antes de salvar!');
+        alert('⚠️ Gere o conteúdo primeiro antes de salvar!');
         return;
     }
 
     const dados = {
-        nome: nome || (tipo === 'saga' ? configuracaoSaga.nome : ''),
-        tipo: tipo,
+        nome: tituloFinal,
+        tipo: tipo === 'saga' ? 'Saga Completa' : 'Capítulo',
         conteudo: conteudo,
         data: new Date().toLocaleString('pt-BR')
     };
@@ -836,8 +814,7 @@ function salvarConteudo(tipo, nome = '') {
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
     salvos.push(dados);
     localStorage.setItem('obrasSalvas', JSON.stringify(salvos));
-    alert('💾 Conteúdo salvo na Gaveta Literária!');
-    carregarItensSalvos();
+    alert('💾 Salvo na Gaveta Literária!');
 }
 
 function carregarItensSalvos() {
@@ -852,11 +829,12 @@ function carregarItensSalvos() {
         const div = document.createElement('div');
         div.style = `border: 1px solid var(--borda); border-radius: 10px; padding: 1.2rem; background: rgba(18, 15, 12, 0.92); margin-bottom: 1rem;`;
         div.innerHTML = `
-            <strong style="color: var(--dourado-brilhante); text-transform: uppercase;">${item.nome || item.tipo}</strong><br>
-            <small style="color: var(--texto-cinza);">${item.data}</small><br>
-            <div style="margin-top: 0.8rem; display: flex; gap: 0.8rem;">
-                <button class="btn-acao" onclick="verItemSalvo(${indice})">Ver</button>
-                <button class="btn-acao btn-perigo" onclick="apagarItemSalvo(${indice})">Apagar</button>
+            <strong style="color: var(--dourado-brilhante); font-size: 1.1rem;">${item.nome}</strong><br>
+            <span style="color: var(--texto-cinza); font-size: 0.9rem;">${item.tipo} • ${item.data}</span>
+            <div style="margin-top: 1rem; display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <button class="btn-acao" onclick="verItemSalvo(${indice})">👁️ Ver</button>
+                <button class="btn-acao" onclick="copiarItemSalvo(${indice})">📋 Copiar</button>
+                <button class="btn-acao btn-perigo" onclick="apagarItemSalvo(${indice})">🗑️ Apagar</button>
             </div>
         `;
         lista.appendChild(div);
@@ -867,37 +845,34 @@ function verItemSalvo(indice) {
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
     if (salvos[indice]) {
         const janela = window.open('', '_blank', 'width=800,height=600');
-        janela.document.write(`
-            <html>
-            <head>
-                <style>
-                    body { background: #050403; color: #F2EDE4; padding: 2rem; font-family: Inter, sans-serif; line-height: 1.8; }
-                    h1 { color: #FFE873; font-family: Cinzel, serif; margin-bottom: 1.5rem; }
-                    pre { white-space: pre-wrap; word-wrap: break-word; }
-                </style>
-            </head>
-            <body>
-                <h1>${salvos[indice].nome || 'Conteúdo Salvo'}</h1>
-                <pre>${salvos[indice].conteudo}</pre>
-            </body>
-            </html>
-        `);
+        janela.document.write(`<html><head><style>body{background:#050403;color:#F2EDE4;padding:2rem;font-family:Inter;}pre{white-space:pre-wrap;line-height:1.8;}</style></head><body><h2>${salvos[indice].nome}</h2><p>${salvos[indice].tipo} - ${salvos[indice].data}</p><pre>${salvos[indice].conteudo}</pre></body></html>`);
         janela.document.close();
     }
 }
 
+function copiarItemSalvo(indice) {
+    const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
+    if (salvos[indice]) {
+        navigator.clipboard.writeText(salvos[indice].conteudo)
+            .then(() => alert('✅ Conteúdo copiado!'))
+            .catch(() => alert('❌ Erro ao copiar.'));
+    }
+}
+
 function apagarItemSalvo(indice) {
+    if (!confirm('Tem certeza que deseja apagar esta obra?')) return;
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
     salvos.splice(indice, 1);
     localStorage.setItem('obrasSalvas', JSON.stringify(salvos));
     carregarItensSalvos();
 }
 
+// Integração com IA
 async function chamarIA(textoPrompt) {
     const chave = pegarChaveAtual();
     if (!chave) {
-        const status = document.getElementById('statusGeracao') || document.getElementById('resultadoCap') || document.getElementById('resultadoMundo');
-        if (status) status.innerHTML = `<div class="aviso-erro">⚠️ Primeiro insira e salve sua chave da API no topo da página!</div>`;
+        document.getElementById('statusGeracao')?.innerHTML = `<div class="aviso-erro">⚠️ Insira e salve sua chave da API primeiro!</div>`;
+        alert('⚠️ Insira e salve sua chave da API no topo da página!');
         return '';
     }
     try {
@@ -913,16 +888,18 @@ async function chamarIA(textoPrompt) {
         if (dados.error) throw new Error(dados.error.message);
         return dados.candidates[0].content.parts[0].text;
     } catch (erro) {
-        const status = document.getElementById('statusGeracao') || document.getElementById('resultadoCap') || document.getElementById('resultadoMundo');
+        const status = document.getElementById('statusGeracao');
         if (status) status.innerHTML = `<div class="aviso-erro">❌ Erro: ${erro.message}</div>`;
+        alert(`❌ Erro: ${erro.message}`);
         return '';
     }
 }
 
+// Funções Forjar Saga
 function iniciarGeracaoSaga() {
     const totalCapitulos = parseInt(document.getElementById('qtdCapSaga').value);
     if (totalCapitulos < 1 || totalCapitulos > 150) {
-        alert('⚠️ A quantidade deve ser entre 1 e 150 capítulos!');
+        alert('⚠️ Quantidade entre 1 e 150 capítulos!');
         return;
     }
     configuracaoSaga = {
@@ -979,3 +956,39 @@ Destino: ${configuracaoSaga.destino}
 --- NÍVEIS ---
 Drama: ${configuracaoSaga.drama}% | Emoção: ${configuracaoSaga.emocao}%
 Tensão: ${configuracaoSaga.tensao}% | Ação: ${configuracaoSaga.acao}%
+
+--- ENREDO GERAL ---
+${configuracaoSaga.enredo}
+
+--- INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO ---
+${instrucao}
+
+--- REGRAS ---
+- Mantenha total coerência com tudo o que foi definido
+- Cada capítulo com título próprio e desenvolvimento completo
+- Use linguagem envolvente e fluida
+- Não repita acontecimentos
+- Formato exato:
+Capítulo X - Título
+[conteúdo completo]
+
+---
+`;
+
+    const resultado = await chamarIA(prompt);
+    if (!resultado) return;
+
+    processarCapitulosBloco(resultado, inicio);
+
+    blocoAtual++;
+    if (blocoAtual <= configuracaoSaga.qtdBlocos) {
+        setTimeout(gerarBloco, 2000);
+    } else {
+        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-sucesso">✅ Saga completa gerada! <button class="btn-acao" onclick="salvarConteudo('saga')">💾 Salvar toda a saga</button></div>`;
+    }
+}
+
+function processarCapitulosBloco(texto, numeroInicio) {
+    const regex = /Capítulo\s*(\d+)\s*-\s*(.+?)\s*\n/g;
+    let correspondencia;
+    while ((correspondencia = regex.exec(texto))
