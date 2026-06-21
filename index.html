@@ -32,7 +32,6 @@
         }
 
         body {
-            /* Fundo animado com textura e brilho suave */
             background: 
                 radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 232, 115, 0.06) 0%, transparent 50%),
@@ -51,7 +50,6 @@
             100% { background-position: 5% 5%, 95% 95%, 0 0, 0 0; }
         }
 
-        /* Cabeçalho */
         header {
             padding: 1.8rem;
             text-align: center;
@@ -70,7 +68,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* Campo de Chave API */
         .campo-chave {
             display: flex;
             gap: 0.8rem;
@@ -107,7 +104,6 @@
             box-shadow: var(--sombra-leve);
         }
 
-        /* Menu Principal */
         .menu-principal {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -153,7 +149,6 @@
             font-size: 0.95rem;
         }
 
-        /* Telas */
         .tela {
             display: none;
             padding: 2rem 1.5rem;
@@ -207,7 +202,6 @@
             text-shadow: 0 0 10px rgba(255, 232, 115, 0.3);
         }
 
-        /* Campos e Seções */
         .secao {
             background: rgba(18, 15, 12, 0.92);
             border: 1px solid var(--borda);
@@ -266,7 +260,6 @@
             min-height: 250px;
         }
 
-        /* Controles de Intensidade */
         .controle-linha {
             display: flex;
             align-items: center;
@@ -307,7 +300,6 @@
             font-weight: 500;
         }
 
-        /* Botões */
         .btn-principal {
             width: 100%;
             padding: 1.3rem;
@@ -358,7 +350,6 @@
             box-shadow: 0 0 8px rgba(255, 100, 100, 0.3);
         }
 
-        /* Área de Resultado e Capítulos */
         .caixa-resultado {
             padding: 1.5rem;
             background-color: rgba(14, 12, 10, 0.92);
@@ -404,7 +395,40 @@
             gap: 0.8rem;
         }
 
-        /* Responsividade */
+        .aviso-bloco {
+            padding: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 1.5rem 0;
+            font-weight: 500;
+        }
+
+        .aviso-aguarde {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--dourado-brilhante);
+        }
+
+        .aviso-sucesso {
+            background: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #81e785;
+        }
+
+        .aviso-erro {
+            background: rgba(244, 67, 54, 0.15);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #ff9e9e;
+        }
+
+        .config-bloco {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
         @media (max-width: 768px) {
             .menu-principal {
                 grid-template-columns: 1fr;
@@ -433,14 +457,12 @@
 
 <header>
     <h1 class="logo">NÚCLEO LITERÁRIO SUPREMO</h1>
-    <!-- Campo de Chave API visível e funcional -->
     <div class="campo-chave">
         <input type="password" id="chaveUsuario" placeholder="Cole aqui sua chave da API Gemini para começar">
         <button class="btn-salvar-chave" onclick="salvarChaveUsuario()">Salvar Chave</button>
     </div>
 </header>
 
-<!-- Menu Inicial -->
 <div id="menuInicial" class="tela ativa">
     <div class="menu-principal">
         <div class="card" onclick="abrirTela('telaSaga')">
@@ -448,19 +470,16 @@
             <h3>Forjar Saga</h3>
             <p>Crie sagas completas com até 100 capítulos, detalhes profundos e controle total</p>
         </div>
-
         <div class="card" onclick="abrirTela('telaHistoria')">
             <div class="card-icone">📖</div>
             <h3>Forjar História</h3>
             <p>Desenvolva capítulo por capítulo com toda a liberdade e detalhamento</p>
         </div>
-
         <div class="card" onclick="abrirTela('telaMapa')">
             <div class="card-icone">🌍</div>
             <h3>Mapa do Mundo</h3>
             <p>Construa e documente todo o universo, regras e locais da sua história</p>
         </div>
-
         <div class="card" onclick="abrirTela('telaGaveta')">
             <div class="card-icone">🗄️</div>
             <h3>Gaveta Literária</h3>
@@ -469,14 +488,12 @@
     </div>
 </div>
 
-<!-- Tela: Forjar Saga -->
 <div id="telaSaga" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
         <h2 class="titulo-tela">⚔️ Forjar Saga</h2>
     </div>
 
-    <!-- Dados Gerais -->
     <div class="secao">
         <h3 class="secao-titulo">📋 Dados Gerais</h3>
         <div class="bloco-campo">
@@ -489,11 +506,22 @@
         </div>
         <div class="bloco-campo">
             <label>Quantidade de Capítulos (máximo 100)</label>
-            <input type="number" id="qtdCapSaga" min="1" max="100" value="20">
+            <input type="number" id="qtdCapSaga" min="1" max="100" value="100" oninput="mostrarOpcoesBlocos()">
+        </div>
+        <div class="bloco-campo" id="divConfigBlocos" style="display: none;">
+            <div class="config-bloco">
+                <label>Dividir a saga em quantos blocos?</label>
+                <input type="number" id="qtdBlocos" min="1" max="20" value="5" oninput="calcularCapitulosPorBloco()">
+                <small style="color: var(--texto-cinza);">A saga será dividida em blocos menores para evitar erros e facilitar a análise</small>
+                <br><br>
+                <label>Quantos capítulos por bloco?</label>
+                <input type="number" id="capPorBloco" min="1" max="100" value="20">
+                <small style="color: var(--texto-cinza);">Você pode ajustar esse valor manualmente se quiser quantidades diferentes</small>
+            </div>
         </div>
         <div class="bloco-campo">
             <label>Quantidade de palavras por capítulo</label>
-            <input type="number" id="palavrasCapSaga" min="500" max="5000" value="1500">
+            <input type="number" id="palavrasCapSaga" min="500" max="5000" value="2000">
         </div>
         <div class="bloco-campo">
             <label>Ponto de Vista da Narrativa</label>
@@ -506,7 +534,6 @@
         </div>
     </div>
 
-    <!-- Personagens -->
     <div class="secao">
         <h3 class="secao-titulo">👥 Detalhamento dos Personagens</h3>
         <div class="bloco-campo">
@@ -519,7 +546,6 @@
         </div>
     </div>
 
-    <!-- Mundo e Cenário -->
     <div class="secao">
         <h3 class="secao-titulo">🌍 Mundo e Cenário da História</h3>
         <div class="bloco-campo">
@@ -532,7 +558,6 @@
         </div>
     </div>
 
-    <!-- Encontro dos Protagonistas -->
     <div class="secao">
         <h3 class="secao-titulo">🤝 Encontro dos Protagonistas</h3>
         <div class="bloco-campo">
@@ -549,32 +574,30 @@
         </div>
     </div>
 
-    <!-- Controles de Intensidade -->
     <div class="secao">
         <h3 class="secao-titulo">🎚️ Nível de Intensidade por Capítulo</h3>
         <div class="controle-linha">
             <label>Drama</label>
-            <input type="range" min="0" max="100" value="60" id="nivelDrama" oninput="atualizarValor('nivelDrama', 'valDrama')">
-            <span class="valor-controle" id="valDrama">60</span>
+            <input type="range" min="0" max="100" value="71" id="nivelDrama" oninput="atualizarValor('nivelDrama', 'valDrama')">
+            <span class="valor-controle" id="valDrama">71</span>
         </div>
         <div class="controle-linha">
             <label>Emoção e Sentimento</label>
-            <input type="range" min="0" max="100" value="70" id="nivelEmocao" oninput="atualizarValor('nivelEmocao', 'valEmocao')">
-            <span class="valor-controle" id="valEmocao">70</span>
+            <input type="range" min="0" max="100" value="100" id="nivelEmocao" oninput="atualizarValor('nivelEmocao', 'valEmocao')">
+            <span class="valor-controle" id="valEmocao">100</span>
         </div>
         <div class="controle-linha">
             <label>Tensão e Suspense</label>
-            <input type="range" min="0" max="100" value="50" id="nivelTensao" oninput="atualizarValor('nivelTensao', 'valTensao')">
-            <span class="valor-controle" id="valTensao">50</span>
+            <input type="range" min="0" max="100" value="75" id="nivelTensao" oninput="atualizarValor('nivelTensao', 'valTensao')">
+            <span class="valor-controle" id="valTensao">75</span>
         </div>
         <div class="controle-linha">
             <label>Ação e Movimento</label>
-            <input type="range" min="0" max="100" value="40" id="nivelAcao" oninput="atualizarValor('nivelAcao', 'valAcao')">
-            <span class="valor-controle" id="valAcao">40</span>
+            <input type="range" min="0" max="100" value="96" id="nivelAcao" oninput="atualizarValor('nivelAcao', 'valAcao')">
+            <span class="valor-controle" id="valAcao">96</span>
         </div>
     </div>
 
-    <!-- Enredo Principal -->
     <div class="secao">
         <h3 class="secao-titulo">📝 Enredo e Conflito Principal</h3>
         <div class="bloco-campo">
@@ -582,22 +605,17 @@
         </div>
     </div>
 
-    <button class="btn-principal" onclick="gerarSagaCompleta()">Gerar Saga Completa</button>
+    <button class="btn-principal" onclick="iniciarGeracaoSaga()">Gerar Saga Completa</button>
 
-    <div id="listaCapitulosSaga" class="lista-capitulos">
-        <div style="text-align:center; color: var(--texto-cinza); padding: 2rem;">
-            Os capítulos gerados aparecerão aqui um por um, com opções para ver, refazer ou apagar individualmente.
-        </div>
-    </div>
+    <div id="statusGeracao"></div>
+    <div id="listaCapitulosSaga" class="lista-capitulos"></div>
 </div>
 
-<!-- Tela: Forjar História -->
 <div id="telaHistoria" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
         <h2 class="titulo-tela">📖 Forjar História</h2>
     </div>
-
     <div class="secao">
         <h3 class="secao-titulo">📋 Dados do Capítulo</h3>
         <div class="bloco-campo">
@@ -618,7 +636,6 @@
             </select>
         </div>
     </div>
-
     <div class="secao">
         <h3 class="secao-titulo">👥 Personagens</h3>
         <div class="bloco-campo">
@@ -630,7 +647,6 @@
             <textarea class="grande" id="prot2Cap" placeholder="Detalhes completos, relação com o outro personagem e função na história..."></textarea>
         </div>
     </div>
-
     <div class="secao">
         <h3 class="secao-titulo">🎚️ Nível de Intensidade</h3>
         <div class="controle-linha">
@@ -644,20 +660,14 @@
             <span class="valor-controle" id="valEmocaoCap">70</span>
         </div>
     </div>
-
     <div class="secao">
         <h3 class="secao-titulo">✍️ Conteúdo do Capítulo</h3>
         <div class="bloco-campo">
             <textarea class="grande" id="ideiaCap" placeholder="Descreva tudo o que deve acontecer neste capítulo: cenas, diálogos, ações, emoções, reviravoltas e o objetivo do trecho..."></textarea>
         </div>
     </div>
-
     <button class="btn-principal" onclick="gerarCapituloUnico()">Gerar Capítulo</button>
-
-    <div class="caixa-resultado" id="resultadoCap">
-        O capítulo gerado aparecerá aqui...
-    </div>
-
+    <div class="caixa-resultado" id="resultadoCap">O capítulo gerado aparecerá aqui...</div>
     <div class="grupo-acoes">
         <button class="btn-acao" onclick="copiarTexto('resultadoCap')">📋 Copiar</button>
         <button class="btn-acao" onclick="salvarConteudo('capitulo')">💾 Salvar</button>
@@ -665,13 +675,11 @@
     </div>
 </div>
 
-<!-- Tela: Mapa do Mundo -->
 <div id="telaMapa" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
         <h2 class="titulo-tela">🌍 Mapa e Descrição do Mundo</h2>
     </div>
-
     <div class="secao">
         <h3 class="secao-titulo">📝 Detalhes do Universo</h3>
         <div class="bloco-campo">
@@ -691,35 +699,28 @@
             <textarea class="grande" id="historiaMundo" placeholder="O que aconteceu no passado? Guerras, lendas, civilizações antigas, fatos que moldaram o mundo..."></textarea>
         </div>
     </div>
-
     <button class="btn-principal" onclick="gerarMundo()">Gerar Descrição Completa</button>
-
-    <div class="caixa-resultado" id="resultadoMundo">
-        A documentação completa do universo aparecerá aqui...
-    </div>
-
+    <div class="caixa-resultado" id="resultadoMundo">A documentação completa do universo aparecerá aqui...</div>
     <div class="grupo-acoes">
         <button class="btn-acao" onclick="copiarTexto('resultadoMundo')">📋 Copiar</button>
         <button class="btn-acao" onclick="salvarConteudo('mundo')">💾 Salvar</button>
     </div>
 </div>
 
-<!-- Tela: Gaveta Literária -->
 <div id="telaGaveta" class="tela">
     <div class="cabecalho-tela">
         <button class="btn-voltar" onclick="voltarMenu()">←</button>
         <h2 class="titulo-tela">🗄️ Gaveta Literária</h2>
     </div>
-
     <p style="color: var(--texto-cinza); margin-bottom: 1.5rem;">Todas as suas criações ficam armazenadas aqui, mesmo ao fechar e abrir o programa novamente:</p>
-
     <div id="listaItensSalvos" style="display: flex; flex-direction: column; gap: 1.2rem;"></div>
 </div>
 
 <script>
 let sagaGerada = [];
+let configuracaoSaga = {};
+let blocoAtual = 0;
 
-// Controle de telas
 function abrirTela(id) {
     document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
     document.getElementById(id).classList.add('ativa');
@@ -729,12 +730,28 @@ function voltarMenu() {
     abrirTela('menuInicial');
 }
 
-// Atualizar valor dos controles deslizantes
 function atualizarValor(idCampo, idTexto) {
     document.getElementById(idTexto).innerText = document.getElementById(idCampo).value;
 }
 
-// Salvar e carregar chave do usuário
+function mostrarOpcoesBlocos() {
+    const total = parseInt(document.getElementById('qtdCapSaga').value) || 0;
+    const div = document.getElementById('divConfigBlocos');
+    if (total >= 10) {
+        div.style.display = 'block';
+        calcularCapitulosPorBloco();
+    } else {
+        div.style.display = 'none';
+    }
+}
+
+function calcularCapitulosPorBloco() {
+    const total = parseInt(document.getElementById('qtdCapSaga').value) || 1;
+    const blocos = parseInt(document.getElementById('qtdBlocos').value) || 1;
+    const porBloco = Math.ceil(total / blocos);
+    document.getElementById('capPorBloco').value = porBloco;
+}
+
 function salvarChaveUsuario() {
     const chave = document.getElementById('chaveUsuario').value.trim();
     if (!chave) {
@@ -749,7 +766,6 @@ function pegarChaveAtual() {
     return localStorage.getItem('chaveApiUsuario') || '';
 }
 
-// Funções auxiliares
 function copiarTexto(idElemento) {
     const texto = document.getElementById(idElemento).innerText;
     navigator.clipboard.writeText(texto)
@@ -765,19 +781,20 @@ function limparFormulario(idTela) {
     document.querySelectorAll(`#${idTela} .caixa-resultado`).forEach(caixa => caixa.innerText = '');
 }
 
-function salvarConteudo(tipo) {
-    const resultado = document.querySelector('.caixa-resultado').innerText.trim();
-    if (!resultado || resultado.startsWith('A ') || resultado.startsWith('O ')) {
+function salvarConteudo(tipo, nome = '') {
+    const conteudo = tipo === 'capitulo' ? document.getElementById('resultadoCap').innerText :
+                     tipo === 'mundo' ? document.getElementById('resultadoMundo').innerText :
+                     tipo === 'saga' ? sagaGerada.map(c => `${c.titulo}\n\n${c.conteudo}`).join('\n\n---\n\n') : '';
+    if (!conteudo || conteudo.startsWith('A ') || conteudo.startsWith('O ')) {
         alert('⚠️ Gere um conteúdo primeiro antes de salvar!');
         return;
     }
-
     const dados = {
+        nome: nome || (tipo === 'saga' ? configuracaoSaga.nome : ''),
         tipo: tipo,
-        conteudo: resultado,
+        conteudo: conteudo,
         data: new Date().toLocaleString('pt-BR')
     };
-
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
     salvos.push(dados);
     localStorage.setItem('obrasSalvas', JSON.stringify(salvos));
@@ -788,23 +805,16 @@ function salvarConteudo(tipo) {
 function carregarItensSalvos() {
     const lista = document.getElementById('listaItensSalvos');
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-
     if (salvos.length === 0) {
         lista.innerHTML = `<p style="color: var(--texto-cinza); text-align: center; padding: 2rem;">Nenhuma criação salva ainda.</p>`;
         return;
     }
-
     lista.innerHTML = '';
     salvos.forEach((item, indice) => {
         const div = document.createElement('div');
-        div.style = `
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-            padding: 1.2rem;
-            background: rgba(18, 15, 12, 0.92);
-        `;
+        div.style = `border: 1px solid var(--borda); border-radius: 10px; padding: 1.2rem; background: rgba(18, 15, 12, 0.92);`;
         div.innerHTML = `
-            <strong style="color: var(--dourado-brilhante); text-transform: uppercase;">${item.tipo}</strong><br>
+            <strong style="color: var(--dourado-brilhante); text-transform: uppercase;">${item.nome || item.tipo}</strong><br>
             <small style="color: var(--texto-cinza);">${item.data}</small><br>
             <div style="margin-top: 0.8rem; display: flex; gap: 0.8rem;">
                 <button class="btn-acao" onclick="verItemSalvo(${indice})">Ver</button>
@@ -827,213 +837,130 @@ function apagarItemSalvo(indice) {
     carregarItensSalvos();
 }
 
-// Integração com a IA
 async function chamarIA(textoPrompt) {
     const chave = pegarChaveAtual();
     if (!chave) {
-        alert('⚠️ Primeiro insira e salve sua chave da API no topo da página!');
+        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-erro">⚠️ Primeiro insira e salve sua chave da API no topo da página!</div>`;
         return '';
     }
-
     try {
         const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${chave}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: textoPrompt }] }],
-                generationConfig: { temperature: 0.85, maxOutputTokens: 16384 }
+                generationConfig: { temperature: 0.85, maxOutputTokens: 32768 }
             })
         });
-
         const dados = await resposta.json();
         if (dados.error) throw new Error(dados.error.message);
         return dados.candidates[0].content.parts[0].text;
     } catch (erro) {
-        return `❌ Erro ao gerar conteúdo: ${erro.message}`;
+        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-erro">❌ Erro: ${erro.message}</div>`;
+        return '';
     }
 }
 
-// Gerar Saga Completa
-async function gerarSagaCompleta() {
-    const lista = document.getElementById('listaCapitulosSaga');
-    lista.innerHTML = `<div style="text-align:center; color: var(--dourado-medio); padding: 2rem;">⏳ Gerando estrutura da saga, aguarde...</div>`;
-    sagaGerada = [];
-
-    const promptBase = `
-Você é um escritor profissional de nível mundial. Crie uma saga literária completa seguindo EXATAMENTE todas as informações abaixo:
-
-📋 DADOS GERAIS:
-- Nome da Saga: ${document.getElementById('nomeSaga').value}
-- Gênero: ${document.getElementById('generoSaga').value}
-- Quantidade total de capítulos: ${document.getElementById('qtdCapSaga').value}
-- Tamanho por capítulo: aproximadamente ${document.getElementById('palavrasCapSaga').value} palavras cada
-- Ponto de vista: ${document.getElementById('pontoVistaSaga').value}
-
-👥 PERSONAGENS:
-- Protagonista 1: ${document.getElementById('prot1Saga').value}
-- Protagonista 2: ${document.getElementById('prot2Saga').value}
-
-🌍 MUNDO E CENÁRIO:
-- Universo: ${document.getElementById('mundoSaga').value}
-- Locais: ${document.getElementById('locaisSaga').value}
-
-🤝 ENCONTRO DOS PROTAGONISTAS:
-- Como e quando: ${document.getElementById('encontroSaga').value}
-- Destinados: ${document.getElementById('destinoSaga').value}
-
-🎚️ INTENSIDADE:
-- Drama: ${document.getElementById('nivelDrama').value}%
-- Emoção: ${document.getElementById('nivelEmocao').value}%
-- Tensão: ${document.getElementById('nivelTensao').value}%
-- Ação: ${document.getElementById('nivelAcao').value}%
-
-📝 ENREDO PRINCIPAL:
-${document.getElementById('enredoSaga').value}
-
-INSTRUÇÕES IMPORTANTES:
-- Escreva cada capítulo com título e número
-- Respeite o nível de intensidade definido
-- Mantenha a personalidade e voz dos personagens
-- Respeite o momento e a forma do encontro entre eles
-- Mantenha coerência com as regras do mundo
-- Separe cada capítulo claramente com o formato:
---- CAPÍTULO X - TÍTULO ---
-[conteúdo do capítulo]
---- FIM DO CAPÍTULO X ---
-
-Comece gerando todos os capítulos agora.
-    `;
-
-    const resultado = await chamarIA(promptBase);
-    
-    // Processar e separar os capítulos
-    const blocos = resultado.split(/--- CAPÍTULO \d+ - .*? ---/);
-    const titulos = resultado.match(/--- CAPÍTULO \d+ - .*? ---/g) || [];
-    
-    sagaGerada = [];
-    for (let i = 1; i < blocos.length; i++) {
-        const numero = i;
-        const titulo = titulos[i-1] ? titulos[i-1].replace(/---|---/g, '').trim() : `Capítulo ${i}`;
-        const conteudo = blocos[i].replace(/--- FIM DO CAPÍTULO \d+ ---/g, '').trim();
-        if (conteudo) sagaGerada.push({ numero, titulo, conteudo });
-    }
-
-    // Exibir na tela
-    if (sagaGerada.length === 0) {
-        lista.innerHTML = `<div style="color: #ff9999; text-align:center; padding:2rem;">❌ Não foi possível gerar os capítulos. Verifique sua chave e tente novamente.</div>`;
+function iniciarGeracaoSaga() {
+    const totalCapitulos = parseInt(document.getElementById('qtdCapSaga').value);
+    if (totalCapitulos < 1 || totalCapitulos > 100) {
+        alert('⚠️ A quantidade deve ser entre 1 e 100 capítulos!');
         return;
     }
-
-    lista.innerHTML = '';
-    sagaGerada.forEach((cap, index) => {
-        const div = document.createElement('div');
-        div.className = 'item-capitulo';
-        div.innerHTML = `
-            <div class="cabecalho-capitulo">
-                <h4 class="titulo-capitulo">${cap.titulo}</h4>
-                <div class="acoes-capitulo">
-                    <button class="btn-acao" onclick="verCapitulo(${index})">👁️ Ver</button>
-                    <button class="btn-acao" onclick="refazerCapitulo(${index})">🔄 Refazer</button>
-                    <button class="btn-acao btn-perigo" onclick="apagarCapitulo(${index})">🗑️ Apagar</button>
-                </div>
-            </div>
-            <div id="conteudoCap${index}" class="caixa-resultado" style="display:none;">${cap.conteudo}</div>
-        `;
-        lista.appendChild(div);
-    });
-}
-
-function verCapitulo(indice) {
-    const el = document.getElementById(`conteudoCap${indice}`);
-    el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-async function refazerCapitulo(indice) {
-    const cap = sagaGerada[indice];
-    if (!cap) return;
-
-    const prompt = `
-Refaça apenas o capítulo abaixo, mantendo todo o resto da estrutura da saga. Use os mesmos dados e regras já definidos:
-
-- ${cap.titulo}
-- Tamanho: aproximadamente ${document.getElementById('palavrasCapSaga').value} palavras
-- Intensidade: Drama ${document.getElementById('nivelDrama').value}%, Emoção ${document.getElementById('nivelEmocao').value}%
-
-Escreva uma nova versão melhorada, mantendo coerência com a história geral.
-Apenas o conteúdo do capítulo, sem explicações extras.
-    `;
-
-    const novoTexto = await chamarIA(prompt);
-    sagaGerada[indice].conteudo = novoTexto;
-    
-    const el = document.getElementById(`conteudoCap${indice}`);
-    el.innerText = novoTexto;
-    alert('✅ Capítulo refeito com sucesso!');
-}
-
-function apagarCapitulo(indice) {
-    if (!confirm('Tem certeza que quer apagar apenas este capítulo?')) return;
-    sagaGerada.splice(indice, 1);
+    configuracaoSaga = {
+        nome: document.getElementById('nomeSaga').value || 'Saga sem nome',
+        total: totalCapitulos,
+        palavras: document.getElementById('palavrasCapSaga').value,
+        pontoVista: document.getElementById('pontoVistaSaga').value,
+        genero: document.getElementById('generoSaga').value,
+        prot1: document.getElementById('prot1Saga').value,
+        prot2: document.getElementById('prot2Saga').value,
+        mundo: document.getElementById('mundoSaga').value,
+        locais: document.getElementById('locaisSaga').value,
+        encontro: document.getElementById('encontroSaga').value,
+        destino: document.getElementById('destinoSaga').value,
+        drama: document.getElementById('nivelDrama').value,
+        emocao: document.getElementById('nivelEmocao').value,
+        tensao: document.getElementById('nivelTensao').value,
+        acao: document.getElementById('nivelAcao').value,
+        enredo: document.getElementById('enredoSaga').value
+    };
+    sagaGerada = [];
+    blocoAtual = 1;
     document.getElementById('listaCapitulosSaga').innerHTML = '';
-    gerarSagaCompleta(); // Atualiza a lista com a nova ordem
+    document.getElementById('statusGeracao').innerHTML = '';
+    gerarBloco();
 }
 
-// Gerar Capítulo Único
-async function gerarCapituloUnico() {
-    const caixa = document.getElementById('resultadoCap');
-    caixa.innerText = 'Gerando capítulo, aguarde...';
+async function gerarBloco() {
+    const capPorBloco = parseInt(document.getElementById('capPorBloco').value) || 20;
+    const inicio = (blocoAtual - 1) * capPorBloco + 1;
+    let fim = blocoAtual * capPorBloco;
+    if (fim > configuracaoSaga.total) fim = configuracaoSaga.total;
+
+    document.getElementById('statusGeracao').innerHTML = `<div class="aviso-aguarde">⏳ Gerando Bloco ${blocoAtual} — Capítulos ${inicio} até ${fim} de ${configuracaoSaga.total}</div>`;
+
+    const ultimoConteudo = sagaGerada.length > 0 ? 
+        `\n\nÚltimos acontecimentos: ${sagaGerada.slice(-2).map(c => c.conteudo.substring(0, 300) + '...').join('\n')}` : '';
 
     const prompt = `
-Você é um escritor experiente. Crie um capítulo bem estruturado e envolvente com base nos dados abaixo:
+Você é um escritor profissional de nível mundial. Crie APENAS os capítulos de ${inicio} a ${fim} da saga, seguindo rigorosamente todas as regras e detalhes abaixo:
 
-- Título da obra: ${document.getElementById('tituloCap').value}
-- Tamanho: aproximadamente ${document.getElementById('palavrasCap').value} palavras
-- Ponto de vista: ${document.getElementById('pontoVistaCap').value}
-- Protagonista 1: ${document.getElementById('prot1Cap').value}
-- Protagonista 2: ${document.getElementById('prot2Cap').value}
-- Nível de Drama: ${document.getElementById('dramaCap').value}%
-- Nível de Emoção: ${document.getElementById('emocaoCap').value}%
-- Conteúdo e eventos do capítulo: ${document.getElementById('ideiaCap').value}
+📋 DADOS GERAIS:
+- Nome da Saga: ${configuracaoSaga.nome}
+- Gênero: ${configuracaoSaga.genero}
+- Tamanho por capítulo: aproximadamente ${configuracaoSaga.palavras} palavras cada
+- Ponto de vista: ${configuracaoSaga.pontoVista}
 
-Regras:
-- Comece com título do capítulo
-- Desenvolva descrições, ações, emoções e diálogos naturais
-- Mantenha a personalidade dos personagens
-- Respeite o nível de intensidade solicitado
-- Texto fluido e bem escrito
-    `;
+👥 PERSONAGENS:
+- Protagonista 1: ${configuracaoSaga.prot1}
+- Protagonista 2: ${configuracaoSaga.prot2}
+
+🌍 MUNDO E CENÁRIO:
+- Universo: ${configuracaoSaga.mundo}
+- Locais: ${configuracaoSaga.locais}
+
+🤝 ENCONTRO DOS PROTAGONISTAS:
+- Como e quando: ${configuracaoSaga.encontro}
+- Destinados: ${configuracaoSaga.destino}
+
+🎚️ INTENSIDADE:
+- Drama: ${configuracaoSaga.drama}%
+- Emoção: ${configuracaoSaga.emocao}%
+- Tensão: ${configuracaoSaga.tensao}%
+- Ação: ${configuracaoSaga.acao}%
+
+📝 ENREDO GERAL:
+${configuracaoSaga.enredo}
+${ultimoConteudo}
+
+📌 REGRAS IMPORTANTES:
+- Comece exatamente onde a história parou
+- Mantenha a continuidade perfeita e coerência total
+- Não repita resumos nem explicações, só o conteúdo dos capítulos
+- Separe cada capítulo com:
+--- CAPÍTULO X - TÍTULO ---
+[conteúdo completo]
+--- FIM DO CAPÍTULO X ---
+`;
 
     const resultado = await chamarIA(prompt);
-    caixa.innerText = resultado;
-}
+    if (!resultado) return;
 
-// Gerar Mundo
-async function gerarMundo() {
-    const caixa = document.getElementById('resultadoMundo');
-    caixa.innerText = 'Gerando descrição do mundo...';
+    const blocosTexto = resultado.split(/--- CAPÍTULO \d+ - .*? ---/);
+    const titulos = resultado.match(/--- CAPÍTULO \d+ - .*? ---/g) || [];
 
-    const prompt = `
-Crie uma documentação completa e organizada do universo da história, para servir de referência em todos os capítulos:
+    for (let i = 1; i < blocosTexto.length; i++) {
+        const numCap = inicio + i - 1;
+        if (numCap > fim) break;
+        const titulo = titulos[i-1] ? titulos[i-1].replace(/---|---/g, '').trim() : `Capítulo ${numCap}`;
+        const conteudo = blocosTexto[i].replace(/--- FIM DO CAPÍTULO \d+ ---/g, '').trim();
+        if (conteudo) sagaGerada.push({ numero: numCap, titulo, conteudo });
+    }
 
-- Nome do mundo: ${document.getElementById('nomeMundo').value}
-- Regras e funcionamento: ${document.getElementById('regrasMundo').value}
-- Locais importantes: ${document.getElementById('locaisMundo').value}
-- História e eventos: ${document.getElementById('historiaMundo').value}
+    atualizarListaCapitulos();
 
-Faça um texto detalhado, dividido em seções claras, com linguagem envolvente e fácil de consultar.
-    `;
-
-    const resultado = await chamarIA(prompt);
-    caixa.innerText = resultado;
-}
-
-// Carregar dados salvos ao abrir
-window.onload = () => {
-    const chaveSalva = localStorage.getItem('chaveApiUsuario');
-    if (chaveSalva) document.getElementById('chaveUsuario').value = chaveSalva;
-    carregarItensSalvos();
-};
-</script>
-
-</body>
-</html>
+    if (fim < configuracaoSaga.total) {
+        document.getElementById('statusGeracao').innerHTML = `
+            <div class="aviso-sucesso">✅ Bloco ${blocoAtual} gerado! Capítulos ${inicio} a ${fim} prontos para análise.</div>
+            <button class="btn-principal" onclick="proximoBloco
