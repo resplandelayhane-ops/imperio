@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -865,7 +865,25 @@ function carregarItensSalvos() {
 
 function verItemSalvo(indice) {
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    if (salvos[indice]) alert(salvos[indice].conteudo);
+    if (salvos[indice]) {
+        const janela = window.open('', '_blank', 'width=800,height=600');
+        janela.document.write(`
+            <html>
+            <head>
+                <style>
+                    body { background: #050403; color: #F2EDE4; padding: 2rem; font-family: Inter, sans-serif; line-height: 1.8; }
+                    h1 { color: #FFE873; font-family: Cinzel, serif; margin-bottom: 1.5rem; }
+                    pre { white-space: pre-wrap; word-wrap: break-word; }
+                </style>
+            </head>
+            <body>
+                <h1>${salvos[indice].nome || 'Conteúdo Salvo'}</h1>
+                <pre>${salvos[indice].conteudo}</pre>
+            </body>
+            </html>
+        `);
+        janela.document.close();
+    }
 }
 
 function apagarItemSalvo(indice) {
@@ -878,7 +896,8 @@ function apagarItemSalvo(indice) {
 async function chamarIA(textoPrompt) {
     const chave = pegarChaveAtual();
     if (!chave) {
-        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-erro">⚠️ Primeiro insira e salve sua chave da API no topo da página!</div>`;
+        const status = document.getElementById('statusGeracao') || document.getElementById('resultadoCap') || document.getElementById('resultadoMundo');
+        if (status) status.innerHTML = `<div class="aviso-erro">⚠️ Primeiro insira e salve sua chave da API no topo da página!</div>`;
         return '';
     }
     try {
@@ -894,7 +913,7 @@ async function chamarIA(textoPrompt) {
         if (dados.error) throw new Error(dados.error.message);
         return dados.candidates[0].content.parts[0].text;
     } catch (erro) {
-        const status = document.getElementById('statusGeracao');
+        const status = document.getElementById('statusGeracao') || document.getElementById('resultadoCap') || document.getElementById('resultadoMundo');
         if (status) status.innerHTML = `<div class="aviso-erro">❌ Erro: ${erro.message}</div>`;
         return '';
     }
@@ -960,8 +979,3 @@ Destino: ${configuracaoSaga.destino}
 --- NÍVEIS ---
 Drama: ${configuracaoSaga.drama}% | Emoção: ${configuracaoSaga.emocao}%
 Tensão: ${configuracaoSaga.tensao}% | Ação: ${configuracaoSaga.acao}%
-
---- ENREDO GERAL ---
-${configuracaoSaga.enredo}
-
---- INSTRUÇÕES ESPECÍF
