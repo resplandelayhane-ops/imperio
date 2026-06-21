@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Núcleo Literário - Versão Teste</title>
+    <title>Núcleo Literário - Versão Completa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -296,7 +296,7 @@
         .valor-controle {
             min-width: 40px;
             text-align: right;
-            color: var(--dourado-claro, #FFF9D9);
+            color: #FFF9D9;
             font-weight: 500;
         }
 
@@ -574,9 +574,9 @@
             <textarea id="encontroSaga" placeholder="Descreva o momento, o lugar, a situação, o ano ou fase da história em que os dois vão se cruzar..."></textarea>
         </div>
         <div class="bloco-campo">
-            <label>Eles são destinados a se findar?</label>
+            <label>Eles são destinados a se encontrar?</label>
             <select id="destinoSaga">
-                <option value="sim">Sim — O encontro faz parte do destino e do rumo da história</option>
+                <option value="sim">Sim — The encontro faz parte do destino e do rumo da história</option>
                 <option value="nao">Não — É apenas uma coincidência ou circunstância do momento</option>
                 <option value="parcial">Parcialmente — Há uma força maior, mas também escolha própria</option>
             </select>
@@ -778,7 +778,7 @@ function gerarCamposInstrucoes() {
         campo.className = 'instrucao-bloco';
         campo.innerHTML = `
             <label>Instruções para o Bloco ${i} — Capítulos ${inicio} a ${fim}</label>
-            <textarea rows="3" id="instrucaoBloco${i}" placeholder="Ex: Nos capítulos 1 a 20 as protagonistas se encontram, começam a se aproximar e surgem os primeiros sentimentos. Sem muita ação ainda, foco no desenvolvimento do vínculo."></textarea>
+            <textarea rows="3" id="instrucaoBloco${i}" placeholder="Ex: Nos capítulos 1 a 20 os personagens se encontram, começam a se aproximar e surgem os primeiros sentimentos. Sem muita ação ainda, foco no desenvolvimento do vínculo."></textarea>
         `;
         div.appendChild(campo);
     }
@@ -930,4 +930,65 @@ function iniciarGeracaoSaga() {
 async function gerarBloco() {
     const inicio = (blocoAtual - 1) * configuracaoSaga.capPorBloco + 1;
     let fim = blocoAtual * configuracaoSaga.capPorBloco;
-    if (fim
+    if (fim > configuracaoSaga.total) fim = configuracaoSaga.total;
+
+    const instrucao = document.getElementById(`instrucaoBloco${blocoAtual}`)?.value || 'Desenvolva normalmente a sequência da história.';
+
+    document.getElementById('statusGeracao').innerHTML = `<div class="aviso-aguarde">🔄 Gerando Bloco ${blocoAtual}: Capítulos ${inicio} a ${fim}...</div>`;
+
+    const prompt = `
+Crie os capítulos de ${inicio} a ${fim} da saga: "${configuracaoSaga.nome}".
+Gênero: ${configuracaoSaga.genero}
+Ponto de vista: ${configuracaoSaga.pontoVista}
+Quantidade de palavras por capítulo: cerca de ${configuracaoSaga.palavras} palavras.
+
+--- DETALHES GERAIS ---
+Personagem 1: ${configuracaoSaga.prot1}
+Personagem 2: ${configuracaoSaga.prot2}
+Mundo e regras: ${configuracaoSaga.mundo}
+Locais principais: ${configuracaoSaga.locais}
+Como se encontram: ${configuracaoSaga.encontro}
+Destino: ${configuracaoSaga.destino}
+
+--- NÍVEIS ---
+Drama: ${configuracaoSaga.drama}% | Emoção: ${configuracaoSaga.emocao}%
+Tensão: ${configuracaoSaga.tensao}% | Ação: ${configuracaoSaga.acao}%
+
+--- ENREDO GERAL ---
+${configuracaoSaga.enredo}
+
+--- INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO ---
+${instrucao}
+
+--- REGRAS ---
+- Mantenha total coerência com tudo o que já foi definido
+- Cada capítulo deve ter título próprio e desenvolvimento completo
+- Use linguagem envolvente e fluida
+- Não repita acontecimentos
+- Seja detalhado mas direto
+
+Formato da resposta:
+Capítulo X - Título
+[conteúdo completo]
+
+---
+`;
+
+    const resultado = await chamarIA(prompt);
+    if (!resultado) return;
+
+    processarCapitulosBloco(resultado, inicio);
+
+    blocoAtual++;
+    if (blocoAtual <= configuracaoSaga.qtdBlocos) {
+        setTimeout(gerarBloco, 2000);
+    } else {
+        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-sucesso">✅ Todos os blocos e capítulos foram gerados com sucesso!</div>`;
+    }
+}
+
+function processarCapitulosBloco(texto, numeroInicial) {
+    const partes = texto.split(/---+/);
+    let contador = numeroInicial;
+
+    partes
