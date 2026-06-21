@@ -730,7 +730,7 @@ let sagaGerada = [];
 let configuracaoSaga = {};
 let blocoAtual = 0;
 
-// Funções de navegação e controle básico
+// Navegação básica
 function abrirTela(id) {
     document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
     document.getElementById(id).classList.add('ativa');
@@ -800,7 +800,9 @@ function pegarChaveAtual() {
 }
 
 function copiarTexto(idElemento) {
-    const texto = document.getElementById(idElemento).innerText;
+    const elemento = document.getElementById(idElemento);
+    if (!elemento) return;
+    const texto = elemento.innerText;
     navigator.clipboard.writeText(texto)
         .then(() => alert('✅ Texto copiado com sucesso!'))
         .catch(() => alert('❌ Não foi possível copiar o texto.'));
@@ -815,19 +817,23 @@ function limparFormulario(idTela) {
 }
 
 function salvarConteudo(tipo, nome = '') {
-    const conteudo = tipo === 'capitulo' ? document.getElementById('resultadoCap').innerText :
-                     tipo === 'mundo' ? document.getElementById('resultadoMundo').innerText :
-                     tipo === 'saga' ? sagaGerada.map(c => `${c.titulo}\n\n${c.conteudo}`).join('\n\n---\n\n') : '';
-    if (!conteudo || conteudo.startsWith('A ') || conteudo.startsWith('O ')) {
+    let conteudo = '';
+    if (tipo === 'capitulo') conteudo = document.getElementById('resultadoCap').innerText;
+    if (tipo === 'mundo') conteudo = document.getElementById('resultadoMundo').innerText;
+    if (tipo === 'saga') conteudo = sagaGerada.map(c => `${c.titulo}\n\n${c.conteudo}`).join('\n\n---\n\n');
+
+    if (!conteudo || conteudo.length < 20) {
         alert('⚠️ Gere um conteúdo primeiro antes de salvar!');
         return;
     }
+
     const dados = {
         nome: nome || (tipo === 'saga' ? configuracaoSaga.nome : ''),
         tipo: tipo,
         conteudo: conteudo,
         data: new Date().toLocaleString('pt-BR')
     };
+
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
     salvos.push(dados);
     localStorage.setItem('obrasSalvas', JSON.stringify(salvos));
@@ -845,7 +851,7 @@ function carregarItensSalvos() {
     lista.innerHTML = '';
     salvos.forEach((item, indice) => {
         const div = document.createElement('div');
-        div.style = `border: 1px solid var(--borda); border-radius: 10px; padding: 1.2rem; background: rgba(18, 15, 12, 0.92);`;
+        div.style = `border: 1px solid var(--borda); border-radius: 10px; padding: 1.2rem; background: rgba(18, 15, 12, 0.92); margin-bottom: 1rem;`;
         div.innerHTML = `
             <strong style="color: var(--dourado-brilhante); text-transform: uppercase;">${item.nome || item.tipo}</strong><br>
             <small style="color: var(--texto-cinza);">${item.data}</small><br>
@@ -860,7 +866,7 @@ function carregarItensSalvos() {
 
 function verItemSalvo(indice) {
     const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    alert(salvos[indice].conteudo);
+    if (salvos[indice]) alert(salvos[indice].conteudo);
 }
 
 function apagarItemSalvo(indice) {
@@ -889,7 +895,8 @@ async function chamarIA(textoPrompt) {
         if (dados.error) throw new Error(dados.error.message);
         return dados.candidates[0].content.parts[0].text;
     } catch (erro) {
-        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-erro">❌ Erro: ${erro.message}</div>`;
+        const status = document.getElementById('statusGeracao');
+        if (status) status.innerHTML = `<div class="aviso-erro">❌ Erro: ${erro.message}</div>`;
         return '';
     }
 }
@@ -985,7 +992,4 @@ Capítulo X - Título
         setTimeout(gerarBloco, 2000);
     } else {
         document.getElementById('statusGeracao').innerHTML = `<div class="aviso-sucesso">✅ Todos os blocos e capítulos foram gerados com sucesso!</div>`;
-    }
-}
-
-function processarCapitulosBloco(texto,
+   
