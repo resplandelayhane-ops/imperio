@@ -65,10 +65,9 @@
             100% { opacity: 0.4; transform: scale(0.8); }
         }
 
-        @keyframes gerando {
-            0% { box-shadow: 0 0 15px var(--dourado-brilhante), inset 0 0 10px rgba(255,232,115,0.2); }
-            50% { box-shadow: 0 0 30px var(--dourado-brilhante), inset 0 0 20px rgba(255,232,115,0.4); }
-            100% { box-shadow: 0 0 15px var(--dourado-brilhante), inset 0 0 10px rgba(255,232,115,0.2); }
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* === MENU LATERAL === */
@@ -148,7 +147,7 @@
             position: relative;
             z-index: 2;
             margin-left: 70px;
-            padding: 1.8rem 1.5rem;
+            padding: 18px 15px;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
             background: linear-gradient(180deg, rgba(10,8,5,0.95) 0%, rgba(5,4,3,0.9) 100%);
             transition: margin-left 0.3s ease;
@@ -164,7 +163,7 @@
             font-weight: 700;
             color: var(--dourado-brilhante);
             text-align: center;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 1.5px;
             text-shadow: 0 0 12px rgba(255,232,115,0.6);
         }
@@ -185,7 +184,7 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 12px;
             color: var(--texto-entrada);
-            padding: 1.1rem 1.4rem;
+            padding: 1rem 1.2rem;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
@@ -203,7 +202,7 @@
             color: #0A0805;
             font-weight: 600;
             font-size: 1rem;
-            padding: 1.1rem 1.8rem;
+            padding: 1rem 1.6rem;
             cursor: pointer;
             box-shadow: 0 0 10px rgba(212,175,55,0.4);
             transition: all 0.3s ease;
@@ -221,10 +220,12 @@
             padding: 2rem 1.5rem;
             min-height: calc(100vh - 180px);
             transition: margin-left 0.3s ease;
+            width: calc(100% - 70px);
         }
 
         .menu-lateral.expandido ~ main {
             margin-left: 260px;
+            width: calc(100% - 260px);
         }
 
         /* === TELAS === */
@@ -241,11 +242,6 @@
 
         .ambiente-trabalho.ativo {
             display: block;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .titulo-secao {
@@ -383,7 +379,7 @@
             border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 14px;
             color: var(--texto-entrada);
-            padding: 1.3rem 1.5rem;
+            padding: 1.2rem 1.4rem;
             font-size: 1.05rem;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
@@ -473,58 +469,6 @@
             width: 100%;
         }
 
-        .acoes-texto {
-            display: flex;
-            gap: 1.2rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-acao {
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(212,175,55,0.3);
-            background: #120F0C;
-            color: var(--dourado-claro);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .btn-acao:hover {
-            border-color: var(--dourado-brilhante);
-            box-shadow: 0 0 12px rgba(212,175,55,0.4);
-        }
-
-        .grupo-historia {
-            background: linear-gradient(145deg, #0E0C0A, #120F0C);
-            border: 1px solid rgba(212,175,55,0.3);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .cabecalho-historia {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .titulo-historia {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--dourado-claro);
-        }
-
-        .info-historia {
-            font-size: 0.95rem;
-            color: var(--texto-rotulo);
-        }
-
         .painel-controle {
             background: linear-gradient(145deg, #0E0C0A, #120F0C);
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -590,15 +534,17 @@
         @media (max-width: 768px) {
             .menu-lateral { width: 60px; }
             .menu-lateral.expandido { width: 230px; }
-            header, main { margin-left: 60px; padding: 1.5rem 1rem; }
-            .menu-lateral.expandido ~ header,
-            .menu-lateral.expandido ~ main { margin-left: 230px; }
+            header { margin-left: 60px; padding: 1.2rem 1rem; }
+            main { margin-left: 60px; padding: 1.5rem 1rem; width: calc(100% - 60px); }
+            .menu-lateral.expandido ~ header { margin-left: 230px; }
+            .menu-lateral.expandido ~ main { margin-left: 230px; width: calc(100% - 230px); }
             .modulo-card { padding: 2rem 1.5rem; min-height: 200px; }
             .modulo-icone { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
+    <!-- MENU LATERAL -->
     <div class="menu-lateral" id="menuLateral">
         <button class="menu-toggle" onclick="alternarMenu()">☰</button>
         
@@ -663,6 +609,7 @@
     </header>
 
     <main id="conteudoPrincipal">
+        <!-- PÁGINA INICIAL -->
         <div id="pagina-inicial" class="pagina-inicial ativo">
             <h2 class="titulo-secao">Módulos de Criação</h2>
             <div class="grade-modulos">
@@ -689,178 +636,64 @@
             </div>
         </div>
 
-        <div id="ambiente-painel-supremo" class="ambiente-trabalho">
+        <!-- AMBIENTE: FORJAR HISTÓRIA -->
+        <div id="ambiente-forjar-historia" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">📊 Painel Supremo</h2>
+                <h2 class="titulo-ambiente">📖 Forjar História</h2>
             </div>
-            <div class="modulo-secao">
-                <h3 class="titulo-secao" style="font-size:1.5rem;">Estatísticas Gerais</h3>
-                <div class="grid-estatisticas" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem;">
-                    <div class="card-estatistica" style="background: linear-gradient(145deg, #0E0C0A, #120F0C); border:1px solid rgba(212,175,55,0.25); border-radius:12px; padding:2rem; text-align:center;">
-                        <div class="valor-estatistica">0</div>
-                        <div class="label-estatistica">Capítulos Escritos</div>
-                    </div>
-                    <div class="card-estatistica" style="background: linear-gradient(145deg, #0E0C0A, #120F0C); border:1px solid rgba(212,175,55,0.25); border-radius:12px; padding:2rem; text-align:center;">
-                        <div class="valor-estatistica">0</div>
-                        <div class="label-estatistica">Personagens Criados</div>
-                    </div>
-                    <div class="card-estatistica" style="background: linear-gradient(145deg, #0E0C0A, #120F0C); border:1px solid rgba(212,175,55,0.25); border-radius:12px; padding:2rem; text-align:center;">
-                        <div class="valor-estatistica">0</div>
-                        <div class="label-estatistica">Mil Palavras Escritas</div>
-                    </div>
-                    <div class="card-estatistica" style="background: linear-gradient(145deg, #0E0C0A, #120F0C); border:1px solid rgba(212,175,55,0.25); border-radius:12px; padding:2rem; text-align:center;">
-                        <div class="valor-estatistica">0%</div>
-                        <div class="label-estatistica">Progresso Médio das Sagas</div>
-                    </div>
-                </div>
+            <div class="bloco-campo">
+                <label>Título da Obra</label>
+                <input type="text" placeholder="Ex: O Legado das Sombras">
             </div>
-        </div>
-
-        <div id="ambiente-personagens" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">👥 Personagens</h2>
+            <div class="bloco-campo">
+                <label>Gênero Literário</label>
+                <input type="text" placeholder="Ex: Fantasia, Romance, Suspense, Ação">
             </div>
-            <div class="categoria-biblioteca">
-                <div class="tag-categoria ativo">Principais</div>
-                <div class="tag-categoria">Secundários</div>
-                <div class="tag-categoria">Antagonistas</div>
+            <div class="bloco-campo">
+                <label>Personagem Principal A</label>
+                <textarea class="campo-grande" placeholder="Nome, idade, aparência, personalidade, objetivos, sonhos, medos..."></textarea>
             </div>
-            <div class="ficha-personagem">
-                <h3 class="titulo-secao" style="font-size:1.6rem;">Ficha Completa do Personagem</h3>
+            <div class="bloco-campo">
+                <label>Personagem Principal B</label>
+                <textarea class="campo-grande" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro, papel na história..."></textarea>
+            </div>
+            <div class="bloco-campo">
+                <label>Personagens Secundários / Antagonista</label>
+                <textarea class="campo-grande" placeholder="Descreva outros personagens importantes, motivações e papel na trama..."></textarea>
+            </div>
+            <div class="painel-controle">
+                <h3 class="painel-titulo">🎛️ Painel de Controle Narrativo</h3>
                 <div class="bloco-campo">
-                    <label>Nome Completo</label>
-                    <input type="text" placeholder="Nome e apelidos">
+                    <label>Ponto de Vista (POV)</label>
+                    <select>
+                        <option>Protagonista A</option>
+                        <option>Protagonista B</option>
+                        <option>Alternado</option>
+                        <option>Narrador Onisciente</option>
+                    </select>
                 </div>
-                <div class="bloco-campo">
-                    <label>História e Origem</label>
-                    <textarea class="campo-imenso" placeholder="Origem, vida passada, família, trajetória..."></textarea>
+                <div class="grupo-slider">
+                    <label>Romance</label>
+                    <input type="range" min="0" max="100" value="30" oninput="this.nextElementSibling.textContent = this.value">
+                    <span class="valor-slider">30</span>
                 </div>
-                <div class="bloco-campo">
-                    <label>Personalidade e Características</label>
-                    <textarea class="campo-grande" placeholder="Temperamento, virtudes, defeitos, medos, sonhos..."></textarea>
+                <div class="grupo-slider">
+                    <label>Drama</label>
+                    <input type="range" min="0" max="100" value="50" oninput="this.nextElementSibling.textContent = this.value">
+                    <span class="valor-slider">50</span>
                 </div>
-                <div class="bloco-campo">
-                    <label>Relacionamentos</label>
-                    <textarea class="campo-grande" placeholder="Amizades, amores, inimizades, laços familiares, alianças..."></textarea>
+                <div class="grupo-slider">
+                    <label>Ação</label>
+                    <input type="range" min="0" max="100" value="40" oninput="this.nextElementSibling.textContent = this.value">
+                    <span class="valor-slider">40</span>
                 </div>
-                <button class="botao-principal">Salvar Ficha</button>
             </div>
+            <button class="botao-principal">Gerar Capítulo</button>
+            <div class="caixa-resultado">Seu capítulo aparecerá aqui após a geração.</div>
         </div>
 
-        <div id="ambiente-atlas-universos" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">🌍 Atlas dos Universos</h2>
-            </div>
-            <div class="categoria-biblioteca">
-                <div class="tag-categoria">Países</div>
-                <div class="tag-categoria">Reinos</div>
-                <div class="tag-categoria">Cidades</div>
-                <div class="tag-categoria">Regiões</div>
-                <div class="tag-categoria">Mapas</div>
-            </div>
-            <div class="bloco-campo">
-                <label>Nome do Local / Região</label>
-                <input type="text" placeholder="Ex: Reino de Eldoria, Floresta das Brumas...">
-            </div>
-            <div class="bloco-campo">
-                <label>Descrição Completa</label>
-                <textarea class="campo-imenso" placeholder="Geografia, clima, cultura, governo, economia, história, pontos importantes..."></textarea>
-            </div>
-            <button class="botao-principal">Salvar Registro</button>
-        </div>
-
-        <div id="ambiente-linha-do-tempo" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">⏳ Linha do Tempo</h2>
-            </div>
-            <div class="categoria-biblioteca">
-                <div class="tag-categoria">Passado</div>
-                <div class="tag-categoria">Presente</div>
-                <div class="tag-categoria">Futuro</div>
-                <div class="tag-categoria">Eventos Históricos</div>
-            </div>
-            <div class="bloco-campo">
-                <label>Ano / Período</label>
-                <input type="text" placeholder="Ex: Ano 342 da 2ª Era, Século XII...">
-            </div>
-            <div class="bloco-campo">
-                <label>Título do Evento</label>
-                <input type="text" placeholder="Ex: A Queda do Império, A Grande Aliança...">
-            </div>
-            <div class="bloco-campo">
-                <label>Descrição e Consequências</label>
-                <textarea class="campo-imenso" placeholder="O que aconteceu, quem participou, impacto na história e nos personagens..."></textarea>
-            </div>
-            <button class="botao-principal">Adicionar à Linha do Tempo</button>
-        </div>
-
-        <div id="ambiente-mente-suprema" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">🧠 Mente Suprema</h2>
-            </div>
-            <div class="bloco-campo">
-                <label>Conteúdo para Análise</label>
-                <textarea class="campo-imenso" placeholder="Cole capítulos, resumos, personagens, enredo completo ou qualquer detalhe da sua obra..."></textarea>
-            </div>
-            <div class="grupo-botoes">
-                <div class="botao-opcao">Detectar Furos de Roteiro</div>
-                <div class="botao-opcao">Verificar Contradições</div>
-                <div class="botao-opcao">Sugerir Melhorias</div>
-                <div class="botao-opcao">Analisar Evolução dos Personagens</div>
-                <div class="botao-opcao">Avaliar Ritmo da Narrativa</div>
-            </div>
-            <button class="botao-principal" style="margin-top:2.5rem;">Iniciar Análise Inteligente</button>
-            <div class="caixa-resultado">Relatório detalhado da análise aparecerá aqui...</div>
-        </div>
-
-        <div id="ambiente-marketing" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">📢 Marketing Literário</h2>
-            </div>
-            <div class="bloco-campo">
-                <label>Dados da Obra</label>
-                <textarea class="campo-grande" placeholder="Título, gênero, enredo principal, personagens, tom e público-alvo..."></textarea>
-            </div>
-            <div class="grupo-botoes">
-                <div class="botao-opcao">Gerar Sinopse</div>
-                <div class="botao-opcao">Criar Descrição de Venda</div>
-                <div class="botao-opcao">Sugerir Títulos Alternativos</div>
-                <div class="botao-opcao">Texto para Contra-capa</div>
-                <div class="botao-opcao">Roteiro para Trailer Literário</div>
-                <div class="botao-opcao">Post para Redes Sociais</div>
-                <div class="botao-opcao">Texto para Plataformas de Venda</div>
-            </div>
-            <button class="botao-principal" style="margin-top:2.5rem;">Gerar Conteúdo</button>
-            <div class="caixa-resultado">Resultado gerado aparecerá aqui...</div>
-        </div>
-
-        <div id="ambiente-biblioteca" class="ambiente-trabalho">
-            <div class="cabecalho-ambiente">
-                <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">📚 Biblioteca Literária</h2>
-            </div>
-            <div class="categoria-biblioteca">
-                <div class="tag-categoria">Romance</div>
-                <div class="tag-categoria">Fantasia</div>
-                <div class="tag-categoria">Terror</div>
-                <div class="tag-categoria">Ficção Científica</div>
-                <div class="tag-categoria">BL</div>
-                <div class="tag-categoria">GL</div>
-                <div class="tag-categoria">Ficção Histórica</div>
-                <div class="tag-categoria">Contos</div>
-                <div class="tag-categoria ativo">Todas</div>
-            </div>
-            <div style="text-align:center; color:var(--texto-rotulo); padding:3rem;">
-                Suas obras organizadas por categoria aparecerão aqui.
-            </div>
-        </div>
-
+        <!-- AMBIENTE: MANUSCRITO SUPREMO -->
         <div id="ambiente-manuscrito-supremo" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
@@ -886,76 +719,183 @@
             <div class="caixa-resultado">A estrutura da obra aparecerá aqui...</div>
         </div>
 
-        <div id="ambiente-forjar-historia" class="ambiente-trabalho">
+        <!-- AMBIENTE: FORJAR SAGA -->
+        <div id="ambiente-forjar-saga" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
-                <h2 class="titulo-ambiente">📖 Forjar História</h2>
+                <h2 class="titulo-ambiente">⚔️ Forjar Saga</h2>
             </div>
             <div class="bloco-campo">
-                <label>Título da Obra</label>
-                <input type="text" id="titulo-obra-historia" placeholder="Ex: O Legado das Sombras">
+                <label>Nome da Saga</label>
+                <input type="text" placeholder="Ex: Crônicas do Reino Esquecido">
             </div>
             <div class="bloco-campo">
-                <label>Gênero Literário</label>
-                <input type="text" id="genero-historia" placeholder="Ex: Fantasia, Romance, Suspense, Ação">
+                <label>Quantidade de Livros Planejados</label>
+                <input type="number" min="1" max="20" value="3">
             </div>
             <div class="bloco-campo">
-                <label>Personagem Principal A</label>
-                <textarea id="p1-historia" class="campo-grande" placeholder="Nome, idade, aparência, personalidade, objetivos, sonhos, medos..."></textarea>
+                <label>Linha do Tempo Geral</label>
+                <textarea class="campo-grande" placeholder="Período da história, acontecimentos principais que ligam todos os livros..."></textarea>
             </div>
             <div class="bloco-campo">
-                <label>Personagem Principal B</label>
-                <textarea id="p2-historia" class="campo-grande" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro, papel na história..."></textarea>
+                <label>Conflito Central da Saga</label>
+                <textarea class="campo-imenso" placeholder="Qual é o problema maior que vai ser resolvido ao final da saga? Quais forças estão em jogo?"></textarea>
             </div>
-            <div class="bloco-campo">
-                <label>Personagens Secundários / Antagonista</label>
-                <textarea id="p-sec-historia" class="campo-grande" placeholder="Descreva outros personagens importantes, motivações e papel na trama..."></textarea>
+            <button class="botao-principal">Gerar Saga Completa</button>
+            <div class="caixa-resultado">A saga estruturada será exibida aqui.</div>
+        </div>
+
+        <!-- AMBIENTE: GAVETA LITERÁRIA -->
+        <div id="ambiente-gaveta-literaria" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">🗄️ Gaveta Literária</h2>
             </div>
-            <div class="painel-controle">
-                <h3 class="painel-titulo🎛️ Painel de Controle Narrativo</h3>
-                <div class="bloco-campo">
-                    <label>Ponto de Vista (POV)</label>
-                    <select id="controle-pov">
-                        <option value="protagonista_a">Protagonista A</option>
-                        <option value="protagonista_b">Protagonista B</option>
-                        <option value="alternado">Alternado entre os dois</option>
-                        <option value="onisciente">Narrador Onisciente</option>
-                        <option value="terceira">Terceira Pessoa Observadora</option>
-                        <option value="automatico">Automático</option>
-                    </select>
-                </div>
-                <div class="bloco-campo">
-                    <label>Intensidade da História (0 a 100)</label>
-                    <div class="grupo-slider">
-                        <label>Romance</label>
-                        <input type="range" min="0" max="100" value="30" id="int-romance" oninput="atualizarValor('int-romance', 'val-romance')">
-                        <span class="valor-slider" id="val-romance">30</span>
-                    </div>
-                    <div class="grupo-slider">
-                        <label>Drama</label>
-                        <input type="range" min="0" max="100" value="50" id="int-drama" oninput="atualizarValor('int-drama', 'val-drama')">
-                        <span class="valor-slider" id="val-drama">50</span>
-                    </div>
-                    <div class="grupo-slider">
-                        <label>Comédia</label>
-                        <input type="range" min="0" max="100" value="20" id="int-comedia" oninput="atualizarValor('int-comedia', 'val-comedia')">
-                        <span class="valor-slider" id="val-comedia">20</span>
-                    </div>
-                    <div class="grupo-slider">
-                        <label>Suspense</label>
-                        <input type="range" min="0" max="100" value="40" id="int-suspense" oninput="atualizarValor('int-suspense', 'val-suspense')">
-                        <span class="valor-slider" id="val-suspense">40</span>
-                    </div>
-                    <div class="grupo-slider">
-                        <label>Mistério</label>
-                        <input type="range" min="0" max="100" value="35" id="int-misterio" oninput="atualizarValor('int-misterio', 'val-misterio')">
-                        <span class="valor-slider" id="val-misterio">35</span>
-                    </div>
-                    <div class="grupo-slider">
-                        <label>Violência</label>
-                        <input type="range" min="0" max="100" value="25" id="int-violencia" oninput="atualizarValor('int-violencia', 'val-violencia')">
-                        <span class="valor-slider" id="val-violencia">25</span>
-                    </div>
-                    <div class="grupo-slider">
-                        <label>Terror</label>
-                        <input type="range" min="0" max="100" value="10" id="int-terror" oninput="atualizarValor('int-terror', 'val-terror
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Suas obras salvas, rascunhos e projetos aparecerão aqui organizados por data e título.
+            </div>
+        </div>
+
+        <!-- OUTROS AMBIENTES SIMPLES -->
+        <div id="ambiente-painel-supremo" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">📊 Painel Supremo</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Estatísticas e progresso das suas criações aparecerão aqui.
+            </div>
+        </div>
+
+        <div id="ambiente-personagens" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">👥 Personagens</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Fichas completas e lista de personagens criados aparecerão aqui.
+            </div>
+        </div>
+
+        <div id="ambiente-atlas-universos" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">🌍 Atlas dos Universos</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Mundos, mapas, locais e regiões criadas aparecerão aqui.
+            </div>
+        </div>
+
+        <div id="ambiente-linha-do-tempo" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">⏳ Linha do Tempo</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Eventos organizados por ordem cronológica aparecerão aqui.
+            </div>
+        </div>
+
+        <div id="ambiente-mente-suprema" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">🧠 Mente Suprema</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Análises, correções e sugestões para as suas obras aparecerão aqui.
+            </div>
+        </div>
+
+        <div id="ambiente-marketing" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">📢 Marketing Literário</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Sinopses, textos de divulgação e materiais de venda aparecerão aqui.
+            </div>
+        </div>
+
+        <div id="ambiente-biblioteca" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">📚 Biblioteca Literária</h2>
+            </div>
+            <div style="text-align:center; color:var(--texto-rotulo); padding:4rem 2rem;">
+                Coleção de referências e materiais de apoio aparecerão aqui.
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Efeito de luzes no fundo
+        function criarLuzes() {
+            const fundo = document.getElementById('luzesFundo');
+            for (let i = 0; i < 40; i++) {
+                const luz = document.createElement('div');
+                luz.classList.add('luz');
+                luz.style.left = Math.random() * 100 + '%';
+                luz.style.top = Math.random() * 100 + '%';
+                luz.style.animationDelay = Math.random() * 5 + 's';
+                fundo.appendChild(luz);
+            }
+        }
+        criarLuzes();
+
+        // Alternar menu lateral
+        function alternarMenu() {
+            document.getElementById('menuLateral').classList.toggle('expandido');
+        }
+
+        // Abrir ambiente / trocar tela
+        function abrirAmbiente(idAmbiente) {
+            // Esconder todas as telas
+            document.querySelectorAll('.pagina-inicial, .ambiente-trabalho').forEach(tela => {
+                tela.classList.remove('ativo');
+            });
+            // Mostrar a tela selecionada
+            document.getElementById(idAmbiente).classList.add('ativo');
+            // Marcar item do menu como ativo
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('ativo');
+            });
+            event.currentTarget.classList.add('ativo');
+            // Fechar menu em telas pequenas após clicar
+            if (window.innerWidth < 768) {
+                document.getElementById('menuLateral').classList.remove('expandido');
+            }
+        }
+
+        // Voltar para a página inicial
+        function voltarInicio() {
+            document.querySelectorAll('.pagina-inicial, .ambiente-trabalho').forEach(tela => {
+                tela.classList.remove('ativo');
+            });
+            document.getElementById('pagina-inicial').classList.add('ativo');
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('ativo');
+            });
+        }
+
+        // Salvar chave da API
+        function salvarApi() {
+            const chave = document.getElementById('api-key').value.trim();
+            if (chave) {
+                localStorage.setItem('geminiApiKey', chave);
+                alert('Chave API salva com sucesso!');
+            } else {
+                alert('Digite uma chave válida antes de salvar.');
+            }
+        }
+
+        // Carregar chave salva ao abrir
+        window.onload = function() {
+            const chaveSalva = localStorage.getItem('geminiApiKey');
+            if (chaveSalva) {
+                document.getElementById('api-key').value = chaveSalva;
+            }
+        };
+    </script>
+</body>
+</html>
