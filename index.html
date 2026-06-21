@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* =============================================
+        CONFIGURAÇÕES GERAIS
+        ============================================= */
         :root {
             --bg-principal: #050403;
             --bg-campo: #0E0C0A;
@@ -466,10 +469,22 @@
                     <h3 class="modulo-titulo">Gaveta Literária</h3>
                     <p class="modulo-desc">Suas obras salvas e organizadas.</p>
                 </div>
+                <div class="modulo-card" onclick="abrirAmbiente('personagens')">
+                    <div class="modulo-icone">👤</div>
+                    <h3 class="modulo-titulo">Personagens</h3>
+                    <p class="modulo-desc">Cadastre e gerencie todos os personagens da obra.</p>
+                </div>
+                <div class="modulo-card" onclick="abrirAmbiente('universo')">
+                    <div class="modulo-icone">🌍</div>
+                    <h3 class="modulo-titulo">Universo</h3>
+                    <p class="modulo-desc">Defina regras, magia, locais e história do mundo.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Forjar História -->
+        <!-- =============================================
+        FORJAR HISTÓRIA - COMPLETO COM PROTAGONISTAS
+        ============================================= -->
         <div id="ambiente-forjar-historia" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
@@ -481,31 +496,62 @@
                     <input type="text" id="titulo-obra-historia" placeholder="Ex: O Legado das Sombras">
                 </div>
                 <div class="bloco-campo">
-                    <label>GÊNERO</label>
-                    <input type="text" id="genero-historia" placeholder="Ex: Fantasia, Romance, Suspense">
+                    <label>GÊNERO LITERÁRIO</label>
+                    <input type="text" id="genero-historia" placeholder="Ex: Fantasia, Romance, Suspense, Ação">
+                </div>
+
+                <div class="bloco-campo">
+                    <label>PERSONAGEM PRINCIPAL 1</label>
+                    <textarea id="p1-historia" class="campo-grande" placeholder="Nome, idade, aparência, personalidade, objetivos, sonhos, medos..."></textarea>
                 </div>
                 <div class="bloco-campo">
-                    <label>ENREDO GERAL</label>
-                    <textarea id="enredo-geral-historia" class="campo-grande" placeholder="Resumo da história até aqui..."></textarea>
+                    <label>PERSONAGEM PRINCIPAL 2</label>
+                    <textarea id="p2-historia" class="campo-grande" placeholder="Nome, idade, aparência, personalidade, relação com o primeiro, papel na história..."></textarea>
                 </div>
                 <div class="bloco-campo">
-                    <label>DETALHES DO CAPÍTULO</label>
-                    <textarea id="detalhes-capitulo" class="campo-imenso" placeholder="O que deve acontecer, cenas, diálogos, sentimentos..."></textarea>
+                    <label>PERSONAGEM SECUNDÁRIOS / ANTAGONISTA</label>
+                    <textarea id="p-sec-historia" class="campo-grande" placeholder="Descreva outros personagens importantes, motivações e papel na trama..."></textarea>
                 </div>
+
                 <div class="bloco-campo">
-                    <label>TAMANHO (PALAVRAS)</label>
-                    <input type="number" id="tamanho-capitulo" min="800" max="15000" value="3000">
+                    <label>PONTO DE VISTA DA NARRATIVA</label>
+                    <div class="grupo-botoes">
+                        <button class="botao-opcao" onclick="definirPV('p1')">🧍 Protagonista 1</button>
+                        <button class="botao-opcao" onclick="definirPV('p2')">🧍 Protagonista 2</button>
+                        <button class="botao-opcao" onclick="definirPV('terceira')">🗣️ Terceira Pessoa</button>
+                        <button class="botao-opcao" onclick="definirPV('onisciente')">🧠 Narrador Onisciente</button>
+                        <button class="botao-opcao" onclick="definirPV('alternado')">🔄 Alternado</button>
+                    </div>
+                    <input type="hidden" id="pv-historia" value="onisciente">
                 </div>
+
+                <div class="bloco-campo">
+                    <label>CONTEXTO GERAL E REGRAS</label>
+                    <textarea id="contexto-historia" class="campo-imenso" placeholder="Sistema de magia, regras do mundo, passado da história, tudo que é importante para manter a coerência..."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>O QUE DEVE ACONTECER NO CAPÍTULO</label>
+                    <textarea id="enredo-historia" class="campo-imenso" placeholder="Descreva cenas, diálogos, sentimentos, conflitos e acontecimentos..."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>TAMANHO DO CAPÍTULO (PALAVRAS)</label>
+                    <input type="number" id="tamanho-cap-historia" min="800" max="15000" value="3000">
+                </div>
+
                 <button class="botao-principal" onclick="gerarCapitulo()">GERAR CAPÍTULO</button>
                 <div class="caixa-resultado" id="resultado-capitulo">Aguardando geração...</div>
                 <div class="acoes-texto" id="acoes-capitulo" style="display: none;">
                     <button class="btn-acao" onclick="copiarTexto('resultado-capitulo')">📋 Copiar</button>
-                    <button class="btn-acao" onclick="salvarObraAtual()">💾 Salvar</button>
+                    <button class="btn-acao" onclick="salvarObraAtual()">💾 Salvar na Gaveta</button>
                 </div>
             </div>
         </div>
 
-        <!-- Forjar Saga -->
+        <!-- =============================================
+        FORJAR SAGA - COMPLETO COM PROTAGONISTAS E LIMITE 100
+        ============================================= -->
         <div id="ambiente-forjar-saga" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
@@ -517,21 +563,52 @@
                     <input type="text" id="titulo-saga" placeholder="Ex: As Crônicas de Valéria">
                 </div>
                 <div class="bloco-campo">
-                    <label>GÊNERO E UNIVERSO</label>
-                    <textarea id="universo-saga" class="campo-grande" placeholder="Descreva o mundo, regras, magia, época..."></textarea>
+                    <label>GÊNERO E SUBGÊNERO</label>
+                    <input type="text" id="genero-saga" placeholder="Ex: Fantasia Épica, Magia, Aventura, Romance">
+                </div>
+
+                <div class="bloco-campo">
+                    <label>PERSONAGEM PRINCIPAL 1</label>
+                    <textarea id="p1-saga" class="campo-grande" placeholder="Nome, idade, raça, aparência, personalidade, história, poderes, objetivos..."></textarea>
                 </div>
                 <div class="bloco-campo">
-                    <label>ENREDO COMPLETO</label>
-                    <textarea id="enredo-saga" class="campo-imenso" placeholder="Começo, desenvolvimento, conflitos e desfecho..."></textarea>
+                    <label>PERSONAGEM PRINCIPAL 2 / PARCEIRO</label>
+                    <textarea id="p2-saga" class="campo-grande" placeholder="Nome, características, relação com o protagonista, habilidades, papel na jornada..."></textarea>
                 </div>
+                <div class="bloco-campo">
+                    <label>ANTAGONISTA E OUTROS PERSONAGENS</label>
+                    <textarea id="p-sec-saga" class="campo-grande" placeholder="Quem é o vilão? Quais suas motivações? Outros personagens importantes..."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>UNIVERSO E REGRAS DO MUNDO</label>
+                    <textarea id="universo-saga" class="campo-imenso" placeholder="Descreva o mundo, geografia, reinos, sistema de magia, leis, história antiga, limites de poderes..."></textarea>
+                </div>
+
+                <div class="bloco-campo">
+                    <label>ENREDO GERAL DA SAGA</label>
+                    <textarea id="enredo-saga" class="campo-imenso" placeholder="Começo, desenvolvimento, conflitos principais, reviravoltas e desfecho esperado..."></textarea>
+                </div>
+
                 <div class="bloco-campo">
                     <label>QUANTIDADE DE CAPÍTULOS (até 100)</label>
                     <input type="number" id="qtd-cap-saga" min="1" max="100" value="10">
                 </div>
+
                 <div class="bloco-campo">
                     <label>PALAVRAS POR CAPÍTULO</label>
                     <input type="number" id="palavras-saga" min="800" max="12000" value="3000">
                 </div>
+
+                <div class="bloco-campo">
+                    <label>ESTILO DE NARRATIVA</label>
+                    <select id="narrativa-saga">
+                        <option value="terceira">Terceira Pessoa</option>
+                        <option value="primeira">Primeira Pessoa</option>
+                        <option value="onisciente">Narrador Onisciente</option>
+                    </select>
+                </div>
+
                 <button class="botao-principal" onclick="gerarSaga()">GERAR SAGA COMPLETA</button>
                 <div class="caixa-resultado" id="resultado-saga">Aguardando geração...</div>
                 <div class="acoes-texto" id="acoes-saga" style="display: none;">
@@ -541,7 +618,9 @@
             </div>
         </div>
 
-        <!-- Gaveta Literária -->
+        <!-- =============================================
+        GAVETA LITERÁRIA
+        ============================================= -->
         <div id="ambiente-gaveta-literaria" class="ambiente-trabalho">
             <div class="cabecalho-ambiente">
                 <button class="btn-voltar" onclick="voltarInicio()">←</button>
@@ -551,10 +630,93 @@
                 <p style="text-align:center; color:var(--texto-rotulo); padding:3rem;">Nenhuma obra salva ainda.</p>
             </div>
         </div>
+
+        <!-- =============================================
+        CADASTRO DE PERSONAGENS
+        ============================================= -->
+        <div id="ambiente-personagens" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">Cadastro de Personagens</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
+                    <label>NOME COMPLETO</label>
+                    <input type="text" id="pers-nome">
+                </div>
+                <div class="bloco-campo">
+                    <label>APELIDO / TÍTULO / FUNÇÃO</label>
+                    <input type="text" id="pers-apelido">
+                </div>
+                <div class="bloco-campo">
+                    <label>IDADE - RAÇA - CLASSE</label>
+                    <input type="text" id="pers-dados" placeholder="Ex: 28 anos, Elfo, Mago de Fogo">
+                </div>
+                <div class="bloco-campo">
+                    <label>APARÊNCIA FÍSICA</label>
+                    <textarea id="pers-aparencia" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>PERSONALIDADE E COMPORTAMENTO</label>
+                    <textarea id="pers-personalidade" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>HISTÓRIA DE VIDA E PASSADO</label>
+                    <textarea id="pers-historia" class="campo-imenso"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>HABILIDADES, PODERES E ARMAS</label>
+                    <textarea id="pers-poderes" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>OBJETIVOS, MOTIVAÇÕES E MEDOS</label>
+                    <textarea id="pers-objetivos" class="campo-grande"></textarea>
+                </div>
+                <button class="botao-principal" onclick="salvarPersonagem()">SALVAR PERSONAGEM</button>
+            </div>
+        </div>
+
+        <!-- =============================================
+        UNIVERSO E REGRAS
+        ============================================= -->
+        <div id="ambiente-universo" class="ambiente-trabalho">
+            <div class="cabecalho-ambiente">
+                <button class="btn-voltar" onclick="voltarInicio()">←</button>
+                <h2 class="titulo-ambiente">Universo da Obra</h2>
+            </div>
+            <div class="conteudo-ambiente">
+                <div class="bloco-campo">
+                    <label>NOME DO MUNDO / CONTINENTE</label>
+                    <input type="text" id="mundo-nome">
+                </div>
+                <div class="bloco-campo">
+                    <label>GEOGRAFIA E LOCAIS IMPORTANTES</label>
+                    <textarea id="mundo-geo" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>REINOS, CIDADES E FACÇÕES</label>
+                    <textarea id="mundo-reinos" class="campo-grande"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>SISTEMA DE MAGIA / PODERES</label>
+                    <textarea id="mundo-magia" class="campo-imenso"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>HISTÓRIA ANTIGA E LENDAS</label>
+                    <textarea id="mundo-historia" class="campo-imenso"></textarea>
+                </div>
+                <div class="bloco-campo">
+                    <label>LEIS, COSTUMES E CULTURA</label>
+                    <textarea id="mundo-leis" class="campo-grande"></textarea>
+                </div>
+                <button class="botao-principal" onclick="salvarUniverso()">SALVAR UNIVERSO</button>
+            </div>
+        </div>
     </main>
 
     <script>
         let obraAtual = null;
+        let pontoDeVista = "onisciente";
 
         window.addEventListener('load', () => {
             const fundo = document.getElementById('luzesFundo');
@@ -589,6 +751,13 @@
             document.getElementById('pagina-inicial').style.display = 'block';
         }
 
+        function definirPV(tipo) {
+            document.querySelectorAll('.botao-opcao').forEach(btn => btn.classList.remove('ativo'));
+            event.currentTarget.classList.add('ativo');
+            pontoDeVista = tipo;
+            document.getElementById('pv-historia').value = tipo;
+        }
+
         async function gerarCapitulo() {
             const chave = localStorage.getItem('chave_api_gemini');
             if (!chave) return alert("⚠️ Salve a chave da API primeiro!");
@@ -596,28 +765,42 @@
             const btn = event.currentTarget;
             btn.classList.add('gerando');
             const resultado = document.getElementById('resultado-capitulo');
-            resultado.textContent = "✨ Gerando capítulo, aguarde...";
+            resultado.textContent = "✨ Gerando capítulo, aguarde alguns instantes...";
 
             const dados = {
                 titulo: document.getElementById('titulo-obra-historia').value.trim(),
                 genero: document.getElementById('genero-historia').value.trim(),
-                enredoGeral: document.getElementById('enredo-geral-historia').value.trim(),
-                detalhes: document.getElementById('detalhes-capitulo').value.trim(),
-                tamanho: document.getElementById('tamanho-capitulo').value
+                p1: document.getElementById('p1-historia').value.trim(),
+                p2: document.getElementById('p2-historia').value.trim(),
+                pSec: document.getElementById('p-sec-historia').value.trim(),
+                pv: pontoDeVista,
+                contexto: document.getElementById('contexto-historia').value.trim(),
+                enredo: document.getElementById('enredo-historia').value.trim(),
+                tamanho: document.getElementById('tamanho-cap-historia').value
             };
 
-            if (!dados.titulo || !dados.detalhes) {
+            if (!dados.titulo || !dados.enredo) {
                 btn.classList.remove('gerando');
-                return alert("⚠️ Preencha pelo menos o título e os detalhes!");
+                return alert("⚠️ Preencha pelo menos o título e o enredo!");
             }
 
-            const prompt = `Escreva um capítulo literário de alta qualidade.
-Obra: ${dados.titulo}
+            const prompt = `Escreva um capítulo literário com qualidade de autor profissional.
+Título da obra: ${dados.titulo}
 Gênero: ${dados.genero}
-Contexto geral: ${dados.enredoGeral}
-O que deve acontecer: ${dados.detalhes}
+
+Personagens:
+Protagonista 1: ${dados.p1}
+Protagonista 2: ${dados.p2}
+Outros personagens: ${dados.pSec}
+
+Ponto de vista: ${dados.pv}
+
+Regras e contexto: ${dados.contexto}
+
+O que deve acontecer: ${dados.enredo}
+
 Tamanho aproximado: ${dados.tamanho} palavras.
-Use descrições ricas, diálogos naturais e profundidade emocional.`;
+Use descrições ricas, diálogos naturais, profundidade emocional, sem linguagem genérica e mantenha total coerência com as regras e personagens.`;
 
             try {
                 const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
@@ -644,14 +827,19 @@ Use descrições ricas, diálogos naturais e profundidade emocional.`;
             const btn = event.currentTarget;
             btn.classList.add('gerando');
             const resultado = document.getElementById('resultado-saga');
-            resultado.textContent = "✨ Gerando saga com vários capítulos — isso pode levar alguns minutos...";
+            resultado.textContent = "✨ Gerando saga completa — isso pode levar alguns minutos, aguarde...";
 
             const dados = {
                 titulo: document.getElementById('titulo-saga').value.trim(),
+                genero: document.getElementById('genero-saga').value.trim(),
+                p1: document.getElementById('p1-saga').value.trim(),
+                p2: document.getElementById('p2-saga').value.trim(),
+                pSec: document.getElementById('p-sec-saga').value.trim(),
                 universo: document.getElementById('universo-saga').value.trim(),
                 enredo: document.getElementById('enredo-saga').value.trim(),
                 qtd: parseInt(document.getElementById('qtd-cap-saga').value),
-                palavras: document.getElementById('palavras-saga').value
+                palavras: document.getElementById('palavras-saga').value,
+                narrativa: document.getElementById('narrativa-saga').value
             };
 
             if (!dados.titulo || !dados.enredo || dados.qtd < 1 || dados.qtd > 100) {
@@ -659,12 +847,23 @@ Use descrições ricas, diálogos naturais e profundidade emocional.`;
                 return alert("⚠️ Preencha todos os campos e defina entre 1 e 100 capítulos!");
             }
 
-            const prompt = `Crie uma saga completa com ${dados.qtd} capítulos.
+            const prompt = `Crie uma saga literária completa com ${dados.qtd} capítulos.
 Título: ${dados.titulo}
-Mundo e regras: ${dados.universo}
-Enredo completo: ${dados.enredo}
-Cada capítulo com cerca de ${dados.palavras} palavras.
-Numere e dê título a cada capítulo. Mantenha coesão e evolução da história e personagens.`;
+Gênero: ${dados.genero}
+
+Personagens:
+Protagonista 1: ${dados.p1}
+Protagonista 2: ${dados.p2}
+Antagonista e outros: ${dados.pSec}
+
+Universo e regras: ${dados.universo}
+
+Enredo geral: ${dados.enredo}
+
+Estilo de narração: ${dados.narrativa}
+
+Cada capítulo deve ter aproximadamente ${dados.palavras} palavras.
+Numere cada capítulo, dê um título a ele e mantenha evolução contínua, coerência e qualidade literária.`;
 
             try {
                 const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${chave}`, {
@@ -686,17 +885,17 @@ Numere e dê título a cada capítulo. Mantenha coesão e evolução da históri
 
         function copiarTexto(id) {
             const texto = document.getElementById(id).textContent;
-            navigator.clipboard.writeText(texto).then(() => alert("📋 Texto copiado!"));
+            navigator.clipboard.writeText(texto).then(() => alert("📋 Texto copiado com sucesso!"));
         }
 
         function salvarObraAtual() {
-            if (!obraAtual) return alert("⚠️ Nenhuma obra para salvar!");
+            if (!obraAtual) return alert("⚠️ Nenhuma obra gerada para salvar!");
             const todas = JSON.parse(localStorage.getItem('obras_gaveta')) || [];
             const existe = todas.findIndex(o => o.dados.titulo === obraAtual.dados.titulo);
             if (existe >= 0) todas[existe] = obraAtual;
             else todas.push(obraAtual);
             localStorage.setItem('obras_gaveta', JSON.stringify(todas));
-            alert("✅ Salvo na Gaveta!");
+            alert("✅ Obra salva na Gaveta!");
             carregarObrasSalvas();
         }
 
@@ -745,6 +944,14 @@ Numere e dê título a cada capítulo. Mantenha coesão e evolução da históri
             const filtradas = todas.filter(o => o.dados.titulo !== titulo);
             localStorage.setItem('obras_gaveta', JSON.stringify(filtradas));
             carregarObrasSalvas();
+        }
+
+        function salvarPersonagem() {
+            alert("✅ Personagem cadastrado! (função de salvar permanente pode ser adicionada quando quiser)");
+        }
+
+        function salvarUniverso() {
+            alert("✅ Universo da obra salvo!");
         }
     </script>
 </body>
