@@ -429,6 +429,14 @@
             margin: 1.5rem 0;
         }
 
+        .instrucao-bloco {
+            background: rgba(255, 232, 115, 0.08);
+            border: 1px solid rgba(255, 232, 115, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.8rem 0;
+        }
+
         @media (max-width: 768px) {
             .menu-principal {
                 grid-template-columns: 1fr;
@@ -468,7 +476,7 @@
         <div class="card" onclick="abrirTela('telaSaga')">
             <div class="card-icone">⚔️</div>
             <h3>Forjar Saga</h3>
-            <p>Crie sagas completas com até 100 capítulos, detalhes profundos e controle total</p>
+            <p>Crie sagas completas com até 150 capítulos, detalhes profundos e controle total</p>
         </div>
         <div class="card" onclick="abrirTela('telaHistoria')">
             <div class="card-icone">📖</div>
@@ -505,19 +513,20 @@
             <input type="text" id="generoSaga" placeholder="Ex: Fantasia Épica, Aventura, Mistério, Romance, Suspense">
         </div>
         <div class="bloco-campo">
-            <label>Quantidade de Capítulos (máximo 100)</label>
-            <input type="number" id="qtdCapSaga" min="1" max="100" value="100" oninput="mostrarOpcoesBlocos()">
+            <label>Quantidade de Capítulos (máximo 150)</label>
+            <input type="number" id="qtdCapSaga" min="1" max="150" value="80" oninput="mostrarOpcoesBlocos()">
         </div>
         <div class="bloco-campo" id="divConfigBlocos" style="display: none;">
             <div class="config-bloco">
                 <label>Dividir a saga em quantos blocos?</label>
-                <input type="number" id="qtdBlocos" min="1" max="20" value="5" oninput="calcularCapitulosPorBloco()">
-                <small style="color: var(--texto-cinza);">A saga será dividida em blocos menores para evitar erros e facilitar a análise</small>
+                <input type="number" id="qtdBlocos" min="1" max="20" value="4" oninput="gerarCamposInstrucoes()">
+                <small style="color: var(--texto-cinza);">Cada bloco terá uma parte da história e instruções próprias</small>
                 <br><br>
                 <label>Quantos capítulos por bloco?</label>
-                <input type="number" id="capPorBloco" min="1" max="100" value="20">
-                <small style="color: var(--texto-cinza);">Você pode ajustar esse valor manualmente se quiser quantidades diferentes</small>
+                <input type="number" id="capPorBloco" min="1" max="150" value="20">
+                <small style="color: var(--texto-cinza);">Ajuste se quiser quantidades diferentes em cada parte</small>
             </div>
+            <div id="divInstrucoesBlocos"></div>
         </div>
         <div class="bloco-campo">
             <label>Quantidade de palavras por capítulo</label>
@@ -565,7 +574,7 @@
             <textarea id="encontroSaga" placeholder="Descreva o momento, o lugar, a situação, o ano ou fase da história em que os dois vão se cruzar..."></textarea>
         </div>
         <div class="bloco-campo">
-            <label>Eles são destinados a se encontrar?</label>
+            <label>Eles são destinados a se findar?</label>
             <select id="destinoSaga">
                 <option value="sim">Sim — O encontro faz parte do destino e do rumo da história</option>
                 <option value="nao">Não — É apenas uma coincidência ou circunstância do momento</option>
@@ -740,6 +749,7 @@ function mostrarOpcoesBlocos() {
     if (total >= 10) {
         div.style.display = 'block';
         calcularCapitulosPorBloco();
+        gerarCamposInstrucoes();
     } else {
         div.style.display = 'none';
     }
@@ -750,6 +760,28 @@ function calcularCapitulosPorBloco() {
     const blocos = parseInt(document.getElementById('qtdBlocos').value) || 1;
     const porBloco = Math.ceil(total / blocos);
     document.getElementById('capPorBloco').value = porBloco;
+}
+
+function gerarCamposInstrucoes() {
+    const qtdBlocos = parseInt(document.getElementById('qtdBlocos').value) || 1;
+    const totalCap = parseInt(document.getElementById('qtdCapSaga').value) || 1;
+    const capPorBloco = parseInt(document.getElementById('capPorBloco').value) || 1;
+    const div = document.getElementById('divInstrucoesBlocos');
+    div.innerHTML = '';
+
+    for (let i = 1; i <= qtdBlocos; i++) {
+        const inicio = (i - 1) * capPorBloco + 1;
+        let fim = i * capPorBloco;
+        if (fim > totalCap) fim = totalCap;
+
+        const campo = document.createElement('div');
+        campo.className = 'instrucao-bloco';
+        campo.innerHTML = `
+            <label>Instruções para o Bloco ${i} — Capítulos ${inicio} a ${fim}</label>
+            <textarea rows="3" id="instrucaoBloco${i}" placeholder="Ex: Nos capítulos 1 a 20 as protagonistas se encontram, começam a se aproximar e surgem os primeiros sentimentos. Sem muita ação ainda, foco no desenvolvimento do vínculo."></textarea>
+        `;
+        div.appendChild(campo);
+    }
 }
 
 function salvarChaveUsuario() {
@@ -863,8 +895,8 @@ async function chamarIA(textoPrompt) {
 
 function iniciarGeracaoSaga() {
     const totalCapitulos = parseInt(document.getElementById('qtdCapSaga').value);
-    if (totalCapitulos < 1 || totalCapitulos > 100) {
-        alert('⚠️ A quantidade deve ser entre 1 e 100 capítulos!');
+    if (totalCapitulos < 1 || totalCapitulos > 150) {
+        alert('⚠️ A quantidade deve ser entre 1 e 150 capítulos!');
         return;
     }
     configuracaoSaga = {
@@ -883,8 +915,11 @@ function iniciarGeracaoSaga() {
         emocao: document.getElementById('nivelEmocao').value,
         tensao: document.getElementById('nivelTensao').value,
         acao: document.getElementById('nivelAcao').value,
-        enredo: document.getElementById('enredoSaga').value
+        enredo: document.getElementById('enredoSaga').value,
+        qtdBlocos: parseInt(document.getElementById('qtdBlocos').value) || 1,
+        capPorBloco: parseInt(document.getElementById('capPorBloco').value) || totalCapitulos
     };
+
     sagaGerada = [];
     blocoAtual = 1;
     document.getElementById('listaCapitulosSaga').innerHTML = '';
@@ -893,74 +928,6 @@ function iniciarGeracaoSaga() {
 }
 
 async function gerarBloco() {
-    const capPorBloco = parseInt(document.getElementById('capPorBloco').value) || 20;
-    const inicio = (blocoAtual - 1) * capPorBloco + 1;
-    let fim = blocoAtual * capPorBloco;
-    if (fim > configuracaoSaga.total) fim = configuracaoSaga.total;
-
-    document.getElementById('statusGeracao').innerHTML = `<div class="aviso-aguarde">⏳ Gerando Bloco ${blocoAtual} — Capítulos ${inicio} até ${fim} de ${configuracaoSaga.total}</div>`;
-
-    const ultimoConteudo = sagaGerada.length > 0 ? 
-        `\n\nÚltimos acontecimentos: ${sagaGerada.slice(-2).map(c => c.conteudo.substring(0, 300) + '...').join('\n')}` : '';
-
-    const prompt = `
-Você é um escritor profissional de nível mundial. Crie APENAS os capítulos de ${inicio} a ${fim} da saga, seguindo rigorosamente todas as regras e detalhes abaixo:
-
-📋 DADOS GERAIS:
-- Nome da Saga: ${configuracaoSaga.nome}
-- Gênero: ${configuracaoSaga.genero}
-- Tamanho por capítulo: aproximadamente ${configuracaoSaga.palavras} palavras cada
-- Ponto de vista: ${configuracaoSaga.pontoVista}
-
-👥 PERSONAGENS:
-- Protagonista 1: ${configuracaoSaga.prot1}
-- Protagonista 2: ${configuracaoSaga.prot2}
-
-🌍 MUNDO E CENÁRIO:
-- Universo: ${configuracaoSaga.mundo}
-- Locais: ${configuracaoSaga.locais}
-
-🤝 ENCONTRO DOS PROTAGONISTAS:
-- Como e quando: ${configuracaoSaga.encontro}
-- Destinados: ${configuracaoSaga.destino}
-
-🎚️ INTENSIDADE:
-- Drama: ${configuracaoSaga.drama}%
-- Emoção: ${configuracaoSaga.emocao}%
-- Tensão: ${configuracaoSaga.tensao}%
-- Ação: ${configuracaoSaga.acao}%
-
-📝 ENREDO GERAL:
-${configuracaoSaga.enredo}
-${ultimoConteudo}
-
-📌 REGRAS IMPORTANTES:
-- Comece exatamente onde a história parou
-- Mantenha a continuidade perfeita e coerência total
-- Não repita resumos nem explicações, só o conteúdo dos capítulos
-- Separe cada capítulo com:
---- CAPÍTULO X - TÍTULO ---
-[conteúdo completo]
---- FIM DO CAPÍTULO X ---
-`;
-
-    const resultado = await chamarIA(prompt);
-    if (!resultado) return;
-
-    const blocosTexto = resultado.split(/--- CAPÍTULO \d+ - .*? ---/);
-    const titulos = resultado.match(/--- CAPÍTULO \d+ - .*? ---/g) || [];
-
-    for (let i = 1; i < blocosTexto.length; i++) {
-        const numCap = inicio + i - 1;
-        if (numCap > fim) break;
-        const titulo = titulos[i-1] ? titulos[i-1].replace(/---|---/g, '').trim() : `Capítulo ${numCap}`;
-        const conteudo = blocosTexto[i].replace(/--- FIM DO CAPÍTULO \d+ ---/g, '').trim();
-        if (conteudo) sagaGerada.push({ numero: numCap, titulo, conteudo });
-    }
-
-    atualizarListaCapitulos();
-
-    if (fim < configuracaoSaga.total) {
-        document.getElementById('statusGeracao').innerHTML = `
-            <div class="aviso-sucesso">✅ Bloco ${blocoAtual} gerado! Capítulos ${inicio} a ${fim} prontos para análise.</div>
-            <button class="btn-principal" onclick="proximoBloco
+    const inicio = (blocoAtual - 1) * configuracaoSaga.capPorBloco + 1;
+    let fim = blocoAtual * configuracaoSaga.capPorBloco;
+    if (fim
