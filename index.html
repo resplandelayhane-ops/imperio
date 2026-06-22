@@ -540,16 +540,31 @@ input[type="range"]::-webkit-slider-thumb {
   font-size: 0.98rem;
 }
 
-.item-cap-acoes { display: flex; gap: 0.6rem; flex-shrink: 0; }
+.item-cap-resumo {
+  padding: 0.8rem 1.2rem;
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.95rem;
+  color: var(--texto-sec);
+  background: rgba(201,168,76,0.03);
+  border-top: 1px solid rgba(201,168,76,0.05);
+  font-style: italic;
+}
+
+.item-cap-corpo-txt {
+  padding: 1.2rem;
+  background: #060504;
+  border-top: 1px solid var(--borda);
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.08rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+}
+
+.item-cap-acoes { display: flex; gap: 0.6rem; flex-shrink: 0; align-items: center; }
 
 .item-cap-conteudo {
   display: none;
-  padding: 1rem 1.2rem 1.2rem;
   border-top: 1px solid var(--borda);
-  font-family: 'Crimson Pro', serif;
-  font-size: 1.05rem;
-  line-height: 2;
-  white-space: pre-wrap;
   color: var(--texto);
 }
 
@@ -746,7 +761,7 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="card-menu" onclick="abrirTela('telaSaga')">
       <div class="card-icone">⚔️</div>
       <h3>Forjar Saga</h3>
-      <p>Sagas completas até 150 capítulos com geração por blocos, memória narrativa e controle absoluto de mundo</p>
+      <p>Sagas completas estruturadas por blocos estratégicos com geração profunda capítulo por capítulo</p>
     </div>
     <div class="card-menu" onclick="abrirTela('telaCapitulo')">
       <div class="card-icone">📖</div>
@@ -804,14 +819,14 @@ input[type="range"]::-webkit-slider-thumb {
     </p>
     <div class="bloco-campo">
       <label style="color: var(--dourado-brilho); font-weight: 700; font-size: 0.95rem;">SINOPSE GERAL GIGANTE</label>
-      <textarea class="grande" id="s-sinopse-geral" style="min-height: 280px; border-color: var(--dourado); background: rgba(8, 6, 4, 0.98); font-size: 1.05rem; line-height: 1.8;" placeholder="Ex: Narre aqui a jornada de forma global (Ex: Uma história sobre um CEO misterioso que na verdade lidera uma organização secreta de magia de runas. Ele conhece Lyra na chuva...). Escreva detalhadamente o desenrolar que deseja para a obra..."></textarea>
+      <textarea class="grande" id="s-sinopse-geral" style="min-height: 280px; border-color: var(--dourado); background: rgba(8, 6, 4, 0.98); font-size: 1.05rem; line-height: 1.8;" placeholder="Ex: Narre aqui a jornada de forma global..."></textarea>
     </div>
   </div>
 
   <div class="secao">
     <div class="secao-titulo">🧩 Planejamento por Blocos</div>
     <p style="color:var(--texto-sec);font-size:0.9rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">
-      Divida a saga em blocos. Cada bloco guiará a IA de forma sequencial (ex: no Bloco 1 descreva o primeiro encontro; no Bloco 2 descreva o início do conflito). A IA criará os capítulos correspondentes seguindo rigorosamente estas caixas.
+      Divida a saga em blocos. Cada bloco guiará a IA de forma sequencial. A IA criará primeiro um índice detalhado dos capítulos com base no bloco, e depois você poderá mandar escrever o texto de cada capítulo individualmente.
     </p>
     <div class="blocos-cabecalho">
       <div class="bloco-campo" style="margin:0">
@@ -835,19 +850,19 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
     <div class="bloco-campo">
       <label>Aparência física (seja detalhista)</label>
-      <textarea class="media" id="s-p1-aparencia" placeholder="Cor dos olhos, cabelo, altura, marcas, como se veste habitualmente..."></textarea>
+      <textarea class="media" id="s-p1-aparencia" placeholder="Cor dos olhos, cabelo, altura..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Personalidade, virtudes e defeitos</label>
-      <textarea class="media" id="s-p1-personalidade" placeholder="Como age sob pressão? Quais são seus pontos cegos? O que os outros amam e odeiam nela?"></textarea>
+      <textarea class="media" id="s-p1-personalidade" placeholder="Como age sob pressão?..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>História de vida, traumas e motivações profundas</label>
-      <textarea class="grande" id="s-p1-historia" placeholder="O que moldou quem ela é? Qual ferida carrega? O que ela quer acima de tudo — e o que teme acima de tudo?"></textarea>
+      <textarea class="grande" id="s-p1-historia" placeholder="O que moldou quem ela é?..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Habilidades, poderes ou talentos especiais</label>
-      <textarea class="media" id="s-p1-poderes" placeholder="Magia, combate, intelecto, carisma, habilidades únicas..."></textarea>
+      <textarea class="media" id="s-p1-poderes" placeholder="Magia, combate, intelecto..."></textarea>
     </div>
   </div>
 
@@ -859,19 +874,19 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
     <div class="bloco-campo">
       <label>Aparência física</label>
-      <textarea class="media" id="s-p2-aparencia" placeholder="Como ele aparece para o mundo? O que sua presença transmite fisicamente?"></textarea>
+      <textarea class="media" id="s-p2-aparencia" placeholder="Como ele aparece para o mundo?..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Personalidade e contradições internas</label>
-      <textarea class="media" id="s-p2-personalidade" placeholder="O que ele esconde? Como age quando está sozinho vs. quando observado? Quais suas contradições?"></textarea>
+      <textarea class="media" id="s-p2-personalidade" placeholder="O que ele esconde?..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>História, motivações e relação com o Protagonista 1</label>
-      <textarea class="grande" id="s-p2-historia" placeholder="O que o trouxe até aqui? Por que ele e o Protagonista 1 estão conectados — ou em conflito? O que cada um representa para o outro?"></textarea>
+      <textarea class="grande" id="s-p2-historia" placeholder="O que o trouxe até aqui?..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Habilidades e papel na trama</label>
-      <textarea class="media" id="s-p2-poderes" placeholder="Força, estratégia, poderes, influência..."></textarea>
+      <textarea class="media" id="s-p2-poderes" placeholder="Força, estratégia, poderes..."></textarea>
     </div>
   </div>
 
@@ -879,34 +894,34 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="secao-titulo">🌍 Motor de Worldbuilding</div>
     <div class="bloco-campo">
       <label>Visão geral do universo</label>
-      <textarea class="grande" id="s-mundo" placeholder="Épocas, tecnologia, magia, estrutura política, religiões, conflitos históricos, o que está em jogo no mundo..."></textarea>
+      <textarea class="grande" id="s-mundo" placeholder="Épocas, tecnologia, magia..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Sistema de magia ou poder (se houver)</label>
-      <textarea class="media" id="s-magia" placeholder="Como funciona? Tem custo? Quem pode usar? Quais são os limites e perigos?"></textarea>
+      <textarea class="media" id="s-magia" placeholder="Como funciona? Tem custo?..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Locais principais onde a história acontece</label>
-      <textarea class="media" id="s-locais" placeholder="Descreva cada lugar importante: sua atmosfera, história, perigos e significado para os personagens..."></textarea>
+      <textarea class="media" id="s-locais" placeholder="Descreva cada lugar importante..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Facções, organizações ou forças em conflito</label>
-      <textarea class="media" id="s-faccoes" placeholder="Quem são os lados? O que cada um quer? Como isso afeta os protagonistas?"></textarea>
+      <textarea class="media" id="s-faccoes" placeholder="Quem são os lados?..."></textarea>
     </div>
   </div>
 
   <div class="secao">
     <div class="secao-titulo">🤝 O Encontro</div>
     <div class="bloco-campo">
-      <label>Como e onde os protagonistas se encontram pela primeira vez?</label>
-      <textarea id="s-encontro" placeholder="Contexto, circunstância, emoção do momento, o que cada um sente ao ver o outro..."></textarea>
+      <label>Como e onde os protagonists se encontram pela primeira vez?</label>
+      <textarea id="s-encontro" placeholder="Contexto, circunstância, emoção..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Natureza da conexão entre eles</label>
       <select id="s-conexao">
-        <option value="destino inevitável — forças maiores os trouxeram juntos">Destino — forças maiores os trouxeram juntos</option>
-        <option value="coincidência que mudou tudo — nenhum esperava">Coincidência — nenhum esperava</option>
-        <option value="escolha deliberada — um buscou o outro com intenção">Escolha — um buscou o outro</option>
+        <option value="destino inevitável">Destino — forças maiores os trouxeram juntos</option>
+        <option value="coincidência que mudou tudo">Coincidência — nenhum esperava</option>
+        <option value="escolha deliberada">Escolha — um buscou o outro</option>
         <option value="inimigos que se tornam algo mais complexo">Inimigos que se tornam algo mais complexo</option>
         <option value="atração e desconfiança simultâneas">Atração e desconfiança simultâneas</option>
       </select>
@@ -965,15 +980,15 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="secao-titulo">📜 Enredo e Arco Geral</div>
     <div class="bloco-campo">
       <label>Conflito central e objetivo maior da saga</label>
-      <textarea class="grande" id="s-enredo" placeholder="O que está realmente em jogo? Qual o objetivo final? Quais os obstáculos? Como a relação entre os protagonistas evolui do início ao fim?"></textarea>
+      <textarea class="grande" id="s-enredo" placeholder="O que está realmente em jogo?..."></textarea>
     </div>
     <div class="bloco-campo">
-      <label>Como a saga termina? (opcional, mas melhora a coerência)</label>
-      <textarea class="media" id="s-fim" placeholder="O fim não precisa ser detalhado — mesmo uma direção geral ajuda a IA a construir um arco coerente..."></textarea>
+      <label>Como a saga termina? (opcional)</label>
+      <textarea class="media" id="s-fim" placeholder="O fim da história..."></textarea>
     </div>
   </div>
 
-  <button class="btn-principal" id="btn-gerar-saga" onclick="iniciarSaga()">⚔️ Iniciar Forja da Saga</button>
+  <button class="btn-principal" id="btn-gerar-saga" onclick="iniciarSaga()">⚔️ Estruturar Bloco 1 da Saga</button>
   <div id="s-status"></div>
   <div id="s-lista-caps" class="lista-caps"></div>
 </div>
@@ -1014,11 +1029,11 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="secao-titulo">👤 Perfil dos Personagens</div>
     <div class="bloco-campo">
       <label>Protagonista 1 — nome, aparência, personalidade e estado emocional AGORA</label>
-      <textarea class="grande" id="c-p1" placeholder="Quem é essa pessoa hoje, neste capítulo? Como está emocionalmente? O que aconteceu antes que ainda pesa nela?"></textarea>
+      <textarea class="grande" id="c-p1" placeholder="Quem é essa pessoa hoje..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Protagonista 2 / Personagem principal — mesmos detalhes</label>
-      <textarea class="grande" id="c-p2" placeholder="Como está? O que quer neste momento específico? O que esconde?"></textarea>
+      <textarea class="grande" id="c-p2" placeholder="Como está?..."></textarea>
     </div>
   </div>
 
@@ -1026,11 +1041,11 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="secao-titulo">🌍 Contexto e Cenário</div>
     <div class="bloco-campo">
       <label>Onde e quando este capítulo se passa?</label>
-      <textarea class="media" id="c-cenario" placeholder="Lugar, hora do dia, clima, atmosfera... detalhes sensoriais que a IA deve tecer na narrativa"></textarea>
+      <textarea class="media" id="c-cenario" placeholder="Lugar, hora do dia, clima..."></textarea>
     </div>
     <div class="bloco-campo">
-      <label>O que aconteceu antes deste capítulo? (contexto acumulado)</label>
-      <textarea class="media" id="c-antes" placeholder="Resuma os eventos anteriores relevantes para manter coerência narrativa..."></textarea>
+      <label>O que aconteceu antes deste capítulo?</label>
+      <textarea class="media" id="c-antes" placeholder="Resuma os eventos anteriores..."></textarea>
     </div>
   </div>
 
@@ -1039,20 +1054,20 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="bloco-campo">
       <label>Como este capítulo começa?</label>
       <select id="c-abertura">
-        <option value="in medias res — direto em ação ou conflito">In medias res — direto em ação</option>
-        <option value="atmosférico e lento — construção de tensão">Atmosférico — construção de tensão</option>
-        <option value="diálogo — dois personagens já interagindo">Diálogo — personagens já interagindo</option>
-        <option value="pensamento interno — mergulho na mente do protagonista">Pensamento interno — mente do protagonista</option>
-        <option value="descrição de cena — estabelece lugar e tempo">Descrição de cena</option>
+        <option value="in medias res">In medias res — direto em ação</option>
+        <option value="atmosférico e lento">Atmosférico — construção de tensão</option>
+        <option value="diálogo">Diálogo — personagens já interagindo</option>
+        <option value="pensamento interno">Pensamento interno — mente do protagonista</option>
+        <option value="descrição de cena">Descrição de cena</option>
       </select>
     </div>
     <div class="bloco-campo">
       <label>Como este capítulo termina?</label>
       <select id="c-fechamento">
-        <option value="cliffhanger — algo surpreendente ou revelador deixa o leitor suspenso">Cliffhanger — suspense no ar</option>
-        <option value="resolução emocional — algo se resolve, mas nem tudo">Resolução emocional parcial</option>
-        <option value="virada de expectation — o oposto do que se esperava acontece">Virada — oposto do esperado</option>
-        <option value="calmaria tensa — silêncio carregado de significado">Calmaria tensa</option>
+        <option value="cliffhanger">Cliffhanger — suspense no ar</option>
+        <option value="resolução emocional">Resolução emocional parcial</option>
+        <option value="virada de expectation">Virada — oposto do esperado</option>
+        <option value="calmaria tensa">Calmaria tensa</option>
         <option value="revelação de informação crucial">Revelação crucial</option>
       </select>
     </div>
@@ -1092,11 +1107,11 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="secao-titulo">✍️ O Capítulo em Si</div>
     <div class="bloco-campo">
       <label>O que acontece neste capítulo — cenas, viradas, diálogos importantes</label>
-      <textarea class="grande" id="c-ideia" placeholder="Seja detalhista. Quanto mais você descrever — cenas específicas, falas que quer que existam, momentos que não podem faltar — mais preciso e poderoso será o resultado."></textarea>
+      <textarea class="grande" id="c-ideia" placeholder="Seja detalhista..."></textarea>
     </div>
     <div class="bloco-campo">
       <label>Qual a função emocional deste capítulo na história toda?</label>
-      <textarea class="media" id="c-funcao" placeholder="Ex: Estabelecer que Lyra tem medo de ser amada. Ou: mostrar que Kael não é o vilão que parecia. Ou: criar a primeira faísca real entre os dois."></textarea>
+      <textarea class="media" id="c-funcao" placeholder="Ex: Estabelecer falhas..."></textarea>
     </div>
   </div>
 
@@ -1326,7 +1341,7 @@ function recalcularBlocos() {
     div.className = 'bloco-instrucao';
     div.innerHTML = `
       <div class="bloco-instrucao-titulo">Bloco ${i} — Capítulos ${inicio} a ${fim}</div>
-      <textarea class="media" id="bloco-inst-${i}" placeholder="O que acontece especificamente neste bloco de capítulos? Quais eventos, encontros, reviravoltas ou progressões devem acontecer aqui? Isso guia a IA por esses ${fim - inicio + 1} capítulos específicos."></textarea>
+      <textarea class="media" id="bloco-inst-${i}" placeholder="O que acontece especificamente neste bloco de capítulos? A IA usará isso para estruturar o índice de capítulos individuais para você mandar escrever."></textarea>
     `;
     lista.appendChild(div);
   }
@@ -1339,16 +1354,15 @@ window.addEventListener('DOMContentLoaded', () => {
 function promptSistemaLiterario() {
   return `
 Você é uma escritora literária de elite — pense em Donna Tartt, Leigh Bardugo, Patrick Rothfuss e George R.R. Martin fundidos em uma única voz.
-
 SEUS PRINCÍPIOS INEGOCIÁVEIS:
 1. NUNCA use clichês ou frases prontas. Cada metáfora deve ser específica e original.
-2. MOSTRE, não conte. Em vez de "ela estava triste", mostre o que a tristeza faz no corpo dela, na forma como segura uma xícara, no que ela não consegue dizer.
+2. MOSTRE, não conte. Em vez de "ela estava triste", mostre o que a tristeza faz no corpo dela.
 3. Diálogos têm SUBTEXTO. O que os personagens dizem raramente é o que querem dizer de verdade.
-4. Cada cena tem um objetivo emocional além do narrativo. O leitor deve sentir algo que talvez não consiga nomear.
-5. O RITMO é uma ferramenta. Frases curtas criam urgência. Frases longas e sinuosas criam contemplação. Use isso com intenção.
-6. Os SENTIDOS ancoram o leitor na cena. Use cheiros, texturas, sons e temperaturas — não apenas o visual.
+4. Cada cena tem um objetivo emocional além do narrativo.
+5. O RITMO é uma ferramenta. Frases curtas criam urgência. Frases longas criam contemplação.
+6. Os SENTIDOS ancoram o leitor na cena. Use cheiros, texturas, sons e temperaturas.
 7. Os PERSONAGENS contradizem a si mesmos porque pessoas reais fazem isso.
-8. NUNCA quebre a imersão com meta-comentários, resumos externos ou explicações desnecessárias.
+8. NUNCA quebre a imersão com meta-comentários ou resumos externos.
 `;
 }
 
@@ -1395,8 +1409,6 @@ function iniciarSaga() {
     toast('⚠️ A Sinopse Geral Gigante é obrigatória!');
     return;
   }
-  
-  // Garante que o usuário digitou enredo no primeiro bloco que vai ser gerado
   const instPrimeiroBloco = document.getElementById('bloco-inst-1');
   if (!instPrimeiroBloco || !instPrimeiroBloco.value.trim()) {
     toast('⚠️ Escreva o enredo do Bloco 1 antes de forjar');
@@ -1410,10 +1422,10 @@ function iniciarSaga() {
   document.getElementById('s-lista-caps').innerHTML = '';
   document.getElementById('s-status').innerHTML = '';
   
-  gerarBlocoSaga();
+  estruturarBlocoSaga();
 }
 
-async function gerarBlocoSaga() {
+async function estruturarBlocoSaga() {
   const total = sagaConfig.totalCap;
   const porBloco = sagaConfig.capPorBloco;
   const inicio = (blocoAtualIdx - 1) * porBloco + 1;
@@ -1427,7 +1439,7 @@ async function gerarBlocoSaga() {
   
   statusEl.innerHTML = `
     <div class="aviso aviso-aguarde">
-      🔄 Tecendo o Bloco ${blocoAtualIdx} de ${sagaConfig.qtdBlocos} — Capítulos ${inicio} a ${fim}...
+      🔄 Mapeando a Estrutura do Bloco ${blocoAtualIdx} (${inicio} ao ${fim})... Por favor, aguarde.
       <div class="barra-progresso-wrap" style="margin-top:0.6rem">
         <div class="barra-progresso" style="width:${((blocoAtualIdx - 1) / sagaConfig.qtdBlocos) * 100}%"></div>
       </div>
@@ -1435,161 +1447,65 @@ async function gerarBlocoSaga() {
   `;
 
   const prompt = `
-${promptSistemaLiterario()}
+Você é um Arquiteto de Enredo literário de elite. Sua tarefa é criar um ÍNDICE E RESUMO DETALHADO para cada um dos capítulos do bloco atual. Você NÃO vai escrever o texto completo do capítulo, apenas o plano de voo detalhado de cada um.
 
 ═══════════════════════════════════════════
 SAGA: "${sagaConfig.nome}"
 Gênero: ${sagaConfig.genero}
-Tom e atmosfera: ${sagaConfig.tom}
-Ponto de vista: ${sagaConfig.pov}
-Palavras por capítulo: ~${sagaConfig.palavras}
-═══════════════════════════════════════════
-
-DIRETRIZ MESTRA / SINOPSE GERAL DA HISTÓRIA (Este é o tema mestre e pano de fundo de toda a obra):
+DIRETRIZ MESTRA / SINOPSE GERAL DA HISTÓRIA:
 ${sagaConfig.sinopseGeral}
-
 ═══════════════════════════════════════════
-PROTAGONISTA 1 — ${sagaConfig.p1nome}
-Aparência: ${sagaConfig.p1aparencia}
-Personalidade: ${sagaConfig.p1personalidade}
-História e traumas: ${sagaConfig.p1historia}
-Poderes/habilidades: ${sagaConfig.p1poderes}
 
-PROTAGONISTA 2 — ${sagaConfig.p2nome}
-Aparência: ${sagaConfig.p2aparencia}
-Personalidade: ${sagaConfig.p2personalidade}
-História e relação: ${sagaConfig.p2historia}
-Poderes/habilidades: ${sagaConfig.p2poderes}
-
-MUNDO E CENÁRIO
-${sagaConfig.mundo}
-
-SISTEMA DE MAGIA/PODER
-${sagaConfig.magia}
-
-LOCAIS PRINCIPAIS
-${sagaConfig.locais}
-
-FACÇÕES E CONFLITOS
-${sagaConfig.faccoes}
-
-O ENCONTRO DOS PROTAGONISTAS
-${sagaConfig.encontro}
-Natureza da conexão: ${sagaConfig.conexao}
-
-CALIBRAÇÃO NARRATIVA
-Drama: ${sagaConfig.drama}% | Emoção: ${sagaConfig.emocao}% | Tensão: ${sagaConfig.tensao}%
-Ação: ${sagaConfig.acao}% | Romance/Conexão: ${sagaConfig.romance}% | Mistério: ${sagaConfig.misterio}%
-
-ENREDO GERAL E CONFLITO CENTRAL
-${sagaConfig.enredo}
-
-COMO A SAGA TERMINA (direção geral)
-${sagaConfig.fim || 'Não especificado — use seu julgamento criativo'}
-
-${resumoNarrativo ? `MEMÓRIA CRUCIAL DO QUE JÁ FOI ESCRITO NOS BLOCOS ANTERIORES:\n${resumoNarrativo}\n` : ''}
-
-═══════════════════════════════════════════
-TAREFA: Escreva os capítulos ${inicio} a ${fim} da saga.
-
-INSTRUÇÕES DESTE BLOCO ATUAL (ROTEIRO OBRIGATÓRIO DE EVENTOS CRONOLÓGICOS DESTE BLOCO):
+INSTRUÇÕES DO BLOCO ATUAL (ROTEIRO OBRIGATÓRIO):
 ${instrucao}
 
-REGRAS DE FORMATO:
-- Cada capítulo começa exatamente assim: "Capítulo [NÚMERO] — [TÍTULO CRIATIVO]"
-- Seguido de uma linha em branco
-- Depois o texto completo do capítulo (~${sagaConfig.palavras} palavras)
-- Depois três hífens em uma linha isolada: ---
-- Repita para cada capítulo deste bloco
+${resumoNarrativo ? `O QUE ACONTECEU ANTES NOS BLOCOS ANTERIORES:\n${resumoNarrativo}\n` : ''}
 
-REGRAS NARRATIVAS E DE SOBERANIA:
-- SOBERANIA DE ENREDO DO BLOCO: A 'Sinopse Geral Gigante' é o pano de fundo mestre de todo o universo da história. No entanto, as 'Instruções deste bloco atual' ditam exatamente os acontecimentos reais e a sequência lógica que deve ocorrer nestes capítulos atuais. Escreva a história com base no roteiro deste bloco, encaixando-o harmoniosamente no universo geral.
-- SOBERANIA DE PONTO DE VISTA (POV) POR BLOCO: Se nas instruções do bloco atual for ditado que o ponto de vista pertence a um personagem específico até determinado capítulo (ex: 'Apenas ponto de vista de Charlotte até o capítulo 4'), esta regra anula e sobrepõe o ponto de vista geral selecionado. A IA deve ajustar o foco narrativo cirurgicamente e manter a transição de sentimentos, ritmo cinematográfico e emoção sem misturar ou bagunçar os pontos de vista.
-- Mantenha coerência absoluta com tudo que foi definido.
-- Desenvolva os personagens — eles devem crescer, falhar, aprender.
-- Cada capítulo deve ter um arco próprio (começo, meio, fim emocional).
-- O último capítulo deste bloco deve criar antecipação para o próximo.
-- Nunca resuma, sempre narre.
+TAREFA EXCLUSIVA:
+Crie a estrutura lógica e cronológica dividida para cada capítulo do número ${inicio} ao número ${fim}. 
+Diga exatamente qual evento, virada emocional e pontos de cena acontecem nesse capítulo específico para que o enredo do bloco renda e dure todos os capítulos necessários de forma cadenciada e rica.
+
+FORMATO DA RESPOSTA (Siga rigorosamente este padrão para cada capítulo):
+Capítulo [NÚMERO] — [TÍTULO PROVISÓRIO]
+Resumo de Cena: [Descreva detalhadamente em 2 ou 3 parágrafos as cenas reais, diálogos planejados, segredos e o ponto de vista ideal que deve ser abordado aqui]
+---
 `;
 
   const resultado = await chamarIA(prompt, 's-status');
-  if (!resultado) {
-    document.getElementById('btn-gerar-saga').disabled = false;
-    return;
-  }
+  document.getElementById('btn-gerar-saga').disabled = false;
 
-  processarBlocoTexto(resultado, inicio, fim);
-  await atualizarResumoNarrativo(resultado, inicio, fim);
+  if (!resultado) return;
 
-  if (blocoAtualIdx < sagaConfig.qtdBlocos) {
-    statusEl.innerHTML = `
-      <div class="aviso aviso-sucesso">
-        🎉 Bloco ${blocoAtualIdx} concluído com sucesso! (Capítulos ${inicio} a ${fim} gerados).
-        <p style="font-size:0.9rem; margin-top:0.5rem; color:var(--texto);">Revise os capítulos gerados abaixo. Escreva as instruções para o Bloco ${blocoAtualIdx + 1} se necessário e clique no botão para autorizar a IA a continuar.</p>
-        <div class="grupo-acoes" style="margin-top:0.8rem">
-          <button class="btn-principal" style="margin:0" onclick="avancarProximoBlocoComando()">⚔️ Avançar e Forjar o Bloco ${blocoAtualIdx + 1}</button>
-          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar o progresso atual na Gaveta</button>
-        </div>
-      </div>
-    `;
-  } else {
-    statusEl.innerHTML = `
-      <div class="aviso aviso-sucesso">
-        ✅ SAGA COMPLETA CONCLUÍDA! Todos os ${sagaCapitulos.length} capítulos foram forjados com maestria.
-        <div class="grupo-acoes" style="margin-top:0.8rem">
-          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar toda a saga na Gaveta Literária</button>
-        </div>
-      </div>
-    `;
-    document.getElementById('btn-gerar-saga').disabled = false;
-  }
-}
+  processarEstruturaBloco(resultado, inicio, fim);
 
-function avancarProximoBlocoComando() {
-  blocoAtualIdx++;
+  statusEl.innerHTML = `
+    <div class="aviso aviso-sucesso">
+      📋 Estrutura dos capítulos do Bloco ${blocoAtualIdx} criada! 
+      <p style="font-size:0.9rem; color:var(--texto); margin-top:0.4rem">Clique no botão dourado <b>"Forjar Texto"</b> ao lado de cada capítulo abaixo para que a IA escreva a história com profundidade literária total!</p>
+    </div>
+  `;
   
-  // Verifica se o usuário preencheu as instruções para o novo bloco antes de continuar
-  const instProximoBloco = document.getElementById(`bloco-inst-${blocoAtualIdx}`);
-  if (!instProximoBloco || !instProximoBloco.value.trim()) {
-    toast(`⚠️ Escreva o enredo do Bloco ${blocoAtualIdx} antes de avançar`);
-    return;
-  }
-  
-  gerarBlocoSaga();
+  verificarEAdicionarBotaoAvanco();
 }
 
-async function atualizarResumoNarrativo(texto, inicio, fim) {
-  const promptResumo = `
-Resuma em até 200 palavras o que aconteceu nos capítulos ${inicio} a ${fim} da saga "${sagaConfig.nome}". 
-Foque em: eventos principais, desenvolvimento dos personagens e onde os personagens estão emocionalmente ao final deste bloco.
-
-TEXTO DOS CAPÍTULOS:
-${texto.substring(0, 3000)}...
-`;
-  const resumo = await chamarIA(promptResumo, null);
-  if (resumo) {
-    resumoNarrativo += `\n[Blocos ${inicio}-${fim}]: ${resumo}`;
-  }
-}
-
-function processarBlocoTexto(texto, inicio, fim) {
+function processarEstruturaBloco(texto, inicio, fim) {
   const partes = texto.split(/\n---\n/);
   const lista = document.getElementById('s-lista-caps');
 
   partes.forEach(parte => {
     parte = parte.trim();
-    if (!parte || parte.length < 50) return;
+    if (!parte || parte.length < 30) return;
 
     const match = parte.match(/^Capítulo\s*(\d+)\s*[—\-]\s*(.+?)(\n|$)/i);
     if (!match) return;
 
     const numero = parseInt(match[1]);
     const titulo = match[2].trim();
-    const conteudo = parte.replace(/^Capítulo\s*\d+\s*[—\-]\s*.+?(\n|$)/i, '').trim();
+    const resumoCena = parte.replace(/^Capítulo\s*\d+\s*[—\-]\s*.+?(\n|$)/i, '').replace(/Resumo de Cena:/i, '').trim();
 
     if (sagaCapitulos.find(c => c.numero === numero)) return;
 
-    sagaCapitulos.push({ numero, titulo, conteudo });
+    sagaCapitulos.push({ numero, titulo, resumo: resumoCena, conteudo: '' });
 
     const item = document.createElement('div');
     item.className = 'item-cap';
@@ -1598,15 +1514,133 @@ function processarBlocoTexto(texto, inicio, fim) {
       <div class="item-cap-cab">
         <span class="item-cap-titulo">Capítulo ${numero} — ${titulo}</span>
         <div class="item-cap-acoes">
-          <button class="btn-acao" onclick="toggleCap(${numero})">👁️</button>
+          <button class="btn-acao" style="background: linear-gradient(135deg, var(--dourado-brilho), var(--dourado)); color:#000; font-weight:700;" id="btn-escrever-${numero}" onclick="forjarTextoCapituloIndividual(${numero})">⚔️ Forjar Texto</button>
+          <button class="btn-acao" onclick="toggleCap(${numero})">👁️ Ver</button>
           <button class="btn-acao" onclick="copiarCap(${numero})">📋</button>
           <button class="btn-acao btn-perigo" onclick="apagarCapSaga(${numero})">🗑️</button>
         </div>
       </div>
-      <div class="item-cap-conteudo" id="cap-conteudo-${numero}">${conteudo}</div>
+      <div class="item-cap-conteudo" id="cap-conteudo-${numero}">
+         <div class="item-cap-resumo"><b>Roteiro do Capítulo:</b> ${resumoCena}</div>
+         <div class="item-cap-corpo-txt" id="cap-txt-real-${numero}" style="display:none;"></div>
+      </div>
     `;
     lista.appendChild(item);
   });
+}
+
+async function forjarTextoCapituloIndividual(numero) {
+  const cap = sagaCapitulos.find(c => c.numero === numero);
+  if (!cap) return;
+
+  const btn = document.getElementById(`btn-escrever-${numero}`);
+  const txtRealEl = document.getElementById(`cap-txt-real-${numero}`);
+  const contEl = document.getElementById(`cap-conteudo-${numero}`);
+  
+  btn.disabled = true;
+  btn.innerText = "🔄 Tecendo...";
+  contEl.style.display = 'block';
+
+  const prompt = `
+${promptSistemaLiterario()}
+
+SAGA: "${sagaConfig.nome}"
+GÊNERO E ESTILO: ${sagaConfig.genero}
+TOM GERAL: ${sagaConfig.tom}
+POV MESTRE SELECIONADO: ${sagaConfig.pov}
+PALAVRAS DESEJADAS: ~${sagaConfig.palavras} palavras
+
+SINOPSE GERAL DA HISTÓRIA (Pano de Fundo Soberano):
+${sagaConfig.sinopseGeral}
+
+PERFIS DOS PROTAGONISTAS:
+- Protagonista 1: ${sagaConfig.p1nome} | ${sagaConfig.p1personalidade} | Histórico: ${sagaConfig.p1historia}
+- Protagonista 2: ${sagaConfig.p2nome} | ${sagaConfig.p2personalidade} | Histórico: ${sagaConfig.p2historia}
+
+MOTOR DE WORLDBUILDING & REGRAS DE MAGIA:
+${sagaConfig.mundo}
+${sagaConfig.magia}
+
+CALIBRAÇÃO EMOCIONAL:
+Drama: ${sagaConfig.drama}% | Emoção: ${sagaConfig.emocao}% | Tensão: ${sagaConfig.tensao}% | Romance: ${sagaConfig.romance}%
+
+═══════════════════════════════════════════
+TAREFA EXCLUSIVA E CRUCIAL:
+Escreva o texto literário completo e definitivo para o:
+Capítulo ${numero} — ${cap.titulo}
+
+ROTEIRO ESPECÍFICO QUE DEVE ACONTECER NESTE CAPÍTULO (Siga à risca sem pular eventos):
+${cap.resumo}
+
+REGRAS NARRATIVAS DE SOBERANIA:
+- SOBERANIA DE PONTO DE VISTA (POV): Se no roteiro específico deste capítulo acima for ditado ou indicado que o ponto de vista pertence a um personagem específico, esta regra anula e sobrepõe o ponto de vista geral selecionado. Ajuste o foco narrativo cirurgicamente.
+- Desenvolva as cenas com riqueza absurda de detalhes, diálogos com subtexto, descrições sensoriais e ritmo imersivo.
+- Não faça resumos. Entregue o capítulo pronto, fluido e longo.
+- Não adicione nenhuma nota de autor, introdução ou conclusão. Comece diretamente no texto literário.
+`;
+
+  const resultado = await chamarIA(prompt, null);
+  
+  if (resultado) {
+    cap.conteudo = resultado.trim();
+    txtRealEl.innerText = cap.conteudo;
+    txtRealEl.style.display = 'block';
+    btn.innerText = "✅ Re-forjar Texto";
+    btn.style.background = "rgba(26,92,58,0.3)";
+    btn.style.color = "#6fcf97";
+    toast(`📖 Capítulo ${numero} forjado com sucesso!`);
+  } else {
+    btn.innerText = "❌ Falhou. Tentar Denovo";
+  }
+  btn.disabled = false;
+}
+
+function verificarEAdicionarBotaoAvanco() {
+  const statusEl = document.getElementById('s-status');
+  if (blocoAtualIdx < sagaConfig.qtdBlocos) {
+    const divAvanco = document.createElement('div');
+    divAvanco.style.marginTop = "1rem";
+    divAvanco.innerHTML = `
+      <div class="aviso" style="background:rgba(201,168,76,0.05); border:1px solid var(--borda);">
+        <p style="font-size:0.95rem; margin-bottom:0.6rem;">Quando estiver satisfeito com a estrutura e a escrita dos capítulos desta fase, preencha a caixa do próximo bloco e clique abaixo para avançar:</p>
+        <div class="grupo-acoes">
+          <button class="btn-principal" style="margin:0" onclick="avancarProximoBlocoComando()">⚔️ Avançar e Mapear Bloco ${blocoAtualIdx + 1}</button>
+          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar Tudo o que foi Gerado até agora na Gaveta</button>
+        </div>
+      </div>
+    `;
+    statusEl.appendChild(divAvanco);
+  } else {
+    const divFim = document.createElement('div');
+    divFim.style.marginTop = "1rem";
+    divFim.innerHTML = `
+      <div class="aviso aviso-sucesso">
+        🎉 Toda a estrutura de blocos da sua saga foi concluída! Certifique-se de forjar os textos e salvar sua obra-prima.
+        <div class="grupo-acoes" style="margin-top:0.6rem">
+          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar toda a saga na Gaveta Literária</button>
+        </div>
+      </div>
+    `;
+    statusEl.appendChild(divFim);
+  }
+}
+
+async function avancarProximoBlocoComando() {
+  // Gera um mini-resumo para a memória antes de mudar o índice
+  const capsDesteBloco = sagaCapitulos.filter(c => c.numero >= (blocoAtualIdx-1)*sagaConfig.capPorBloco+1 && c.numero <= blocoAtualIdx*sagaConfig.capPorBloco);
+  let textoAmostra = capsDesteBloco.map(c => `Cap ${c.numero}: ${c.titulo} - ${c.resumo}`).join('\n');
+  
+  resumoNarrativo += `\n[Bloco ${blocoAtualIdx}]: ${textoAmostra.substring(0, 1000)}`;
+
+  blocoAtualIdx++;
+  const instProximoBloco = document.getElementById(`bloco-inst-${blocoAtualIdx}`);
+  if (!instProximoBloco || !instProximoBloco.value.trim()) {
+    toast(`⚠️ Escreva o enredo do Bloco ${blocoAtualIdx} antes de avançar`);
+    blocoAtualIdx--; // desfaz
+    return;
+  }
+  
+  estruturarBlocoSaga();
 }
 
 function toggleCap(n) {
@@ -1618,8 +1652,10 @@ function toggleCap(n) {
 function copiarCap(n) {
   const cap = sagaCapitulos.find(c => c.numero === n);
   if (!cap) return;
-  navigator.clipboard.writeText(`Capítulo ${cap.numero} — ${cap.titulo}\n\n${cap.conteudo}`)
-    .then(() => toast('📋 Capítulo copiado!'));
+  const textoCopiar = cap.conteudo 
+    ? `Capítulo ${cap.numero} — ${cap.titulo}\n\n${cap.conteudo}`
+    : `Capítulo ${cap.numero} — ${cap.titulo}\n\nResumo de Roteiro:\n${cap.resumo}`;
+  navigator.clipboard.writeText(textoCopiar).then(() => toast('📋 Conteúdo copiado!'));
 }
 
 function apagarCapSaga(n) {
@@ -1631,17 +1667,28 @@ function apagarCapSaga(n) {
 }
 
 function salvarSagaCompleta() {
-  if (sagaCapitulos.length === 0) { toast('⚠️ Nenhum capítulo gerado'); return; }
+  if (sagaCapitulos.length === 0) { toast('⚠️ Nenhum capítulo estruturado'); return; }
   const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
   const chave = sagaConfig.nome || 'Saga Sem Nome';
   if (!salvos[chave]) salvos[chave] = { tipo: 'saga', capitulos: [], data: new Date().toLocaleString('pt-BR') };
+  
   sagaCapitulos.forEach(cap => {
-    const existe = salvos[chave].capitulos.find(c => c.numero === cap.numero);
-    if (!existe) salvos[chave].capitulos.push(cap);
+    const existeIdx = salvos[chave].capitulos.findIndex(c => c.numero === cap.numero);
+    const capDadosSalvar = {
+      numero: cap.numero,
+      titulo: cap.titulo,
+      conteudo: cap.conteudo || `(Roteiro Estruturado):\n${cap.resumo}`
+    };
+    if (existeIdx >= 0) {
+      salvos[chave].capitulos[existeIdx] = capDadosSalvar;
+    } else {
+      salvos[chave].capitulos.push(capDadosSalvar);
+    }
   });
+  
   salvos[chave].data = new Date().toLocaleString('pt-BR');
   localStorage.setItem('nucleo_gaveta', JSON.stringify(salvos));
-  toast('💾 Progresso salvo na Gaveta!');
+  toast('💾 Progresso salvo com segurança na Gaveta!');
 }
 
 async function gerarCapitulo() {
@@ -1703,8 +1750,8 @@ FUNÇÃO EMOCIONAL DO CAPÍTULO:
 ${funcao || 'Não especificado'}
 
 ═══════════════════════════════════════════
-Escreva o capítulo completo, do início ao fim, sem cortar, sem resumir, sem comentários externos.
-Entregue apenas o texto literário puro — nenhuma introdução, nenhuma explicação, nenhum meta-comentário.
+Escreva o capítulo completo, do início ao fim, sem cortar, sem resumir.
+Entregue apenas o texto literário puro.
 `;
 
   const resultado = await chamarIA(prompt, 'c-status');
@@ -1842,5 +1889,6 @@ function copiarTexto(id) { navigator.clipboard.writeText(document.getElementById
 </script>
 </body>
 </html>
+
 
 ```
