@@ -1,1102 +1,1887 @@
- <!DOCTYPE html>
+ ```html
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Núcleo Literário</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-principal: #050403;
-            --bg-campo: #0E0C0A;
-            --bg-bloco: #120F0C;
-            --borda: rgba(212, 175, 55, 0.25);
-            --borda-destaque: rgba(255, 232, 115, 0.5);
-            --dourado-escuro: #916F20;
-            --dourado-medio: #D4AF37;
-            --dourado-brilhante: #FFE873;
-            --texto-claro: #F2EDE4;
-            --texto-cinza: #B8B0A6;
-            --sombra-leve: 0 0 12px rgba(212, 175, 55, 0.25);
-            --sombra-forte: 0 0 20px rgba(255, 232, 115, 0.4);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Núcleo Literário Supremo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --preto: #050403;
+  --preto-medio: #0A0806;
+  --preto-claro: #120E0A;
+  --dourado: #C9A84C;
+  --dourado-brilho: #F0D080;
+  --dourado-escuro: #7A6020;
+  --dourado-sombra: rgba(201,168,76,0.15);
+  --rubi: #8B1A2A;
+  --esmeralda: #1A5C3A;
+  --texto: #EDE8DF;
+  --texto-sec: #9A9189;
+  --borda: rgba(201,168,76,0.2);
+  --borda-hover: rgba(240,208,128,0.45);
+  --glow: 0 0 18px rgba(201,168,76,0.3);
+  --glow-forte: 0 0 30px rgba(240,208,128,0.45);
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
-        body {
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 232, 115, 0.06) 0%, transparent 50%),
-                repeating-linear-gradient(0deg, rgba(20, 18, 15, 0.4) 0px, rgba(20, 18, 15, 0.4) 1px, transparent 1px, transparent 20px),
-                linear-gradient(180deg, #050403 0%, #070605 100%);
-            background-attachment: fixed;
-            animation: brilhoFundo 12s ease-in-out infinite alternate;
-            color: var(--texto-claro);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            line-height: 1.7;
-        }
+body {
+  background-color: var(--preto);
+  color: var(--texto);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-        @keyframes brilhoFundo {
-            0% { background-position: 0% 0%, 100% 100%, 0 0, 0 0; }
-            100% { background-position: 5% 5%, 95% 95%, 0 0, 0 0; }
-        }
+/* CANVAS DE PARTÍCULAS */
+#canvas-centelhas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
 
-        header {
-            padding: 1.8rem;
-            text-align: center;
-            border-bottom: 1px solid var(--borda);
-            background: linear-gradient(180deg, rgba(8, 6, 5, 0.95) 0%, rgba(5, 4, 3, 0.95) 100%);
-            backdrop-filter: blur(8px);
-        }
+/* WRAPPER GERAL */
+.wrapper { position: relative; z-index: 1; }
 
-        .logo {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            font-weight: 700;
-            color: var(--dourado-brilhante);
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(255, 232, 115, 0.5);
-            margin-bottom: 1.2rem;
-        }
+/* HEADER */
+header {
+  padding: 2rem 1.5rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--borda);
+  background: linear-gradient(180deg, rgba(6,5,4,0.98) 0%, rgba(5,4,3,0.95) 100%);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-        .campo-chave {
-            display: flex;
-            gap: 0.8rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            max-width: 700px;
-            margin: 0 auto;
-        }
+.logo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
 
-        .campo-chave input {
-            flex: 1;
-            min-width: 280px;
-            padding: 0.9rem 1.2rem;
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda);
-            border-radius: 8px;
-            color: var(--texto-claro);
-            font-size: 0.95rem;
-        }
+.logo-ornamento { color: var(--dourado); font-size: 1.2rem; opacity: 0.7; }
 
-        .btn-salvar-chave {
-            padding: 0.9rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--dourado-brilhante), var(--dourado-medio));
-            color: var(--bg-principal);
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 4.5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--dourado-brilho);
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(240,208,128,0.4);
+}
 
-        .btn-salvar-chave:hover {
-            box-shadow: var(--sombra-leve);
-        }
+.logo-subtitulo {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.9rem;
+  color: var(--texto-sec);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+  font-style: italic;
+}
 
-        .menu-principal {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.8rem;
-            padding: 2.5rem 1.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+/* SELETOR DE IA */
+.painel-ia {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto 1rem;
+}
 
-        .card {
-            background: linear-gradient(145deg, rgba(14, 12, 10, 0.9), rgba(18, 15, 12, 0.9));
-            border: 1px solid var(--borda);
-            border-radius: 16px;
-            padding: 2.5rem 1.8rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
-        }
+.seletor-provedor {
+  display: flex;
+  background: var(--preto-claro);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-        .card:hover {
-            border-color: var(--borda-destaque);
-            transform: translateY(-4px);
-            box-shadow: var(--sombra-leve);
-        }
+.btn-provedor {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  background: transparent;
+  color: var(--texto-sec);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
 
-        .card-icone {
-            font-size: 3rem;
-            margin-bottom: 1.2rem;
-            color: var(--dourado-medio);
-            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
-        }
+.btn-provedor.ativo {
+  background: linear-gradient(135deg, var(--dourado), var(--dourado-escuro));
+  color: var(--preto);
+  font-weight: 700;
+}
 
-        .card h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--dourado-brilhante);
-            margin-bottom: 0.8rem;
-        }
+.campo-chave-ia {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  gap: 0.6rem;
+}
 
-        .card p {
-            color: var(--texto-cinza);
-            font-size: 0.95rem;
-        }
+.campo-chave-ia input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: var(--preto-claro);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  color: var(--texto);
+  font-size: 0.88rem;
+  font-family: 'Inter', sans-serif;
+}
 
-        .tela {
-            display: none;
-            padding: 2rem 1.5rem;
-            max-width: 950px;
-            margin: 0 auto;
-        }
+.campo-chave-ia input:focus {
+  outline: none;
+  border-color: var(--dourado);
+  box-shadow: var(--glow);
+}
 
-        .tela.ativa {
-            display: block;
-            animation: aparecer 0.4s ease;
-        }
+.btn-salvar-chave {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--dourado-brilho), var(--dourado));
+  color: var(--preto);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
 
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.btn-salvar-chave:hover { box-shadow: var(--glow); }
 
-        .cabecalho-tela {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            margin-bottom: 2.5rem;
-            flex-wrap: wrap;
-        }
+/* DIVISOR ORNAMENTAL */
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0 2rem;
+  padding: 0 1rem;
+}
+.divisor-linha { flex: 1; height: 1px; background: var(--borda); }
+.divisor-ornamento { color: var(--dourado); font-size: 0.8rem; opacity: 0.6; }
 
-        .btn-voltar {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            background-color: var(--bg-campo);
-            border: 1px solid var(--borda);
-            color: var(--dourado-medio);
-            font-size: 1.3rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
+/* TELAS */
+.tela { display: none; padding: 2rem 1.5rem; max-width: 980px; margin: 0 auto; }
+.tela.ativa { display: block; animation: surgir 0.35s ease; }
 
-        .btn-voltar:hover {
-            border-color: var(--dourado-brilhante);
-            box-shadow: var(--sombra-leve);
-            color: var(--dourado-brilhante);
-        }
+@keyframes surgir {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-        .titulo-tela {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            color: var(--dourado-brilhante);
-            text-shadow: 0 0 10px rgba(255, 232, 115, 0.3);
-        }
+/* MENU */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 0;
+}
 
-        .secao {
-            background: rgba(18, 15, 12, 0.92);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(6px);
-        }
+.card-menu {
+  background: linear-gradient(145deg, rgba(12,10,8,0.95), rgba(18,14,10,0.95));
+  border: 1px solid var(--borda);
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
 
-        .secao-titulo {
-            font-family: 'Cinzel', serif;
-            color: var(--dourado-brilhante);
-            font-size: 1.2rem;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(212,175,55,0.2);
-        }
+.card-menu::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--dourado), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
 
-        .bloco-campo {
-            margin-bottom: 1.5rem;
-        }
+.card-menu:hover {
+  border-color: var(--borda-hover);
+  transform: translateY(-5px);
+  box-shadow: var(--glow-forte);
+}
 
-        label {
-            display: block;
-            margin-bottom: 0.6rem;
-            color: var(--dourado-medio);
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
+.card-menu:hover::before { opacity: 1; }
 
-        input, select, textarea {
-            width: 100%;
-            padding: 1.1rem;
-            background-color: rgba(14, 12, 10, 0.95);
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-            color: var(--texto-claro);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: all 0.25s ease;
-        }
+.card-icone {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 10px rgba(201,168,76,0.5));
+}
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--dourado-brilhante);
-            box-shadow: var(--sombra-leve);
-        }
+.card-menu h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.35rem;
+  color: var(--dourado-brilho);
+  margin-bottom: 0.7rem;
+}
 
-        textarea {
-            min-height: 180px;
-            resize: vertical;
-            line-height: 1.8;
-        }
+.card-menu p {
+  font-family: 'Crimson Pro', serif;
+  color: var(--texto-sec);
+  font-size: 1rem;
+  line-height: 1.6;
+}
 
-        textarea.grande {
-            min-height: 250px;
-        }
+/* CABEÇALHO DE TELA */
+.cab-tela {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
 
-        .controle-linha {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
+.btn-voltar {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: var(--preto-claro);
+  border: 1px solid var(--borda);
+  color: var(--dourado);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
 
-        .controle-linha label {
-            flex: 1;
-            min-width: 120px;
-            margin-bottom: 0;
-        }
+.btn-voltar:hover { border-color: var(--dourado-brilho); box-shadow: var(--glow); }
 
-        input[type="range"] {
-            flex: 2;
-            height: 8px;
-            border-radius: 4px;
-            background: #221F1B;
-            outline: none;
-            -webkit-appearance: none;
-        }
+.titulo-tela {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  color: var(--dourado-brilho);
+  text-shadow: 0 0 12px rgba(240,208,128,0.25);
+}
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--dourado-medio);
-            cursor: pointer;
-            box-shadow: 0 0 6px rgba(212,175,55,0.6);
-        }
+/* SEÇÕES */
+.secao {
+  background: rgba(14,11,8,0.9);
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  padding: 1.6rem;
+  margin-bottom: 1.5rem;
+}
 
-        .valor-controle {
-            min-width: 40px;
-            text-align: right;
-            color: #FFF9D9;
-            font-weight: 500;
-        }
+.secao-titulo {
+  font-family: 'Cinzel', serif;
+  color: var(--dourado-brilho);
+  font-size: 1.05rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--borda);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-        .btn-principal {
-            width: 100%;
-            padding: 1.3rem;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--dourado-brilhante) 0%, var(--dourado-medio) 50%, var(--dourado-escuro) 100%);
-            color: var(--bg-principal);
-            font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: var(--sombra-leve);
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
+.bloco-campo { margin-bottom: 1.3rem; }
+.bloco-campo:last-child { margin-bottom: 0; }
 
-        .btn-principal:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--sombra-forte);
-        }
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--dourado);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
 
-        .btn-acao {
-            padding: 0.7rem 1.2rem;
-            border: 1px solid var(--borda);
-            border-radius: 8px;
-            background-color: rgba(14, 12, 10, 0.8);
-            color: var(--texto-cinza);
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-        }
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.95rem 1.1rem;
+  background: rgba(10,8,6,0.98);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  color: var(--texto);
+  font-family: 'Crimson Pro', serif;
+  font-size: 1rem;
+  transition: all 0.25s;
+}
 
-        .btn-acao:hover {
-            border-color: var(--dourado-brilhante);
-            color: var(--dourado-brilhante);
-        }
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--dourado);
+  box-shadow: var(--glow);
+}
 
-        .btn-perigo {
-            border-color: rgba(220, 50, 50, 0.4);
-            color: #ff9999;
-        }
+select option { background: #0A0806; }
 
-        .btn-perigo:hover {
-            border-color: #ff6666;
-            color: #ff6666;
-            box-shadow: 0 0 8px rgba(255, 100, 100, 0.3);
-        }
+textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.8;
+}
 
-        .caixa-resultado {
-            padding: 1.5rem;
-            background-color: rgba(14, 12, 10, 0.92);
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-            min-height: 200px;
-            white-space: pre-wrap;
-            line-height: 1.9;
-            margin-bottom: 1.5rem;
-        }
+textarea.grande { min-height: 220px; }
+textarea.media { min-height: 120px; }
 
-        .lista-capitulos {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            margin-top: 2rem;
-        }
+/* CONTROLES DE RANGE */
+.controles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
 
-        .item-capitulo {
-            background: rgba(18, 15, 12, 0.92);
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-            padding: 1.2rem;
-        }
+@media(max-width:600px){ .controles-grid { grid-template-columns: 1fr; } }
 
-        .cabecalho-capitulo {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
+.controle-item { display: flex; flex-direction: column; gap: 0.4rem; }
 
-        .titulo-capitulo {
-            font-family: 'Cinzel', serif;
-            color: var(--dourado-brilhante);
-            font-size: 1.1rem;
-        }
+.controle-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-        .acoes-capitulo {
-            display: flex;
-            gap: 0.8rem;
-        }
+.controle-label { color: var(--dourado); font-size: 0.85rem; font-weight: 500; }
+.controle-valor {
+  font-family: 'Cinzel', serif;
+  color: var(--dourado-brilho);
+  font-size: 0.9rem;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: right;
+}
 
-        .aviso-bloco {
-            padding: 1.2rem;
-            border-radius: 10px;
-            text-align: center;
-            margin: 1.5rem 0;
-            font-weight: 500;
-        }
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #1A1510;
+  outline: none;
+  -webkit-appearance: none;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
 
-        .aviso-aguarde {
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: var(--dourado-brilhante);
-        }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--dourado);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(201,168,76,0.7);
+}
 
-        .aviso-sucesso {
-            background: rgba(76, 175, 80, 0.15);
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            color: #81e785;
-        }
+/* SISTEMA DE BLOCOS */
+.blocos-config {
+  background: rgba(201,168,76,0.07);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-top: 1rem;
+}
 
-        .aviso-erro {
-            background: rgba(244, 67, 54, 0.15);
-            border: 1px solid rgba(244, 67, 54, 0.3);
-            color: #ff9e9e;
-        }
+.blocos-cabecalho {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
 
-        .config-bloco {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 10px;
-            padding: 1.2rem;
-            margin: 1.5rem 0;
-        }
+@media(max-width:500px){ .blocos-cabecalho { grid-template-columns: 1fr; } }
 
-        .instrucao-bloco {
-            background: rgba(255, 232, 115, 0.08);
-            border: 1px solid rgba(255, 232, 115, 0.2);
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 0.8rem 0;
-        }
+.blocos-lista { display: flex; flex-direction: column; gap: 0.8rem; }
 
-        @media (max-width: 768px) {
-            .menu-principal {
-                grid-template-columns: 1fr;
-                padding: 1.5rem 1rem;
-            }
-            .tela {
-                padding: 1.5rem 1rem;
-            }
-            .card {
-                padding: 2rem 1.5rem;
-            }
-            .secao {
-                padding: 1.2rem;
-            }
-            .campo-chave {
-                flex-direction: column;
-                width: 100%;
-            }
-            .campo-chave input {
-                width: 100%;
-            }
-        }
-    </style>
+.bloco-instrucao {
+  background: rgba(10,8,6,0.8);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.bloco-instrucao-titulo {
+  font-family: 'Cinzel', serif;
+  color: var(--dourado);
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+}
+
+.bloco-instrucao textarea {
+  min-height: 80px;
+  font-size: 0.95rem;
+}
+
+/* BOTÕES */
+.btn-principal {
+  width: 100%;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--dourado-brilho) 0%, var(--dourado) 55%, var(--dourado-escuro) 100%);
+  color: var(--preto);
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.25);
+  transition: all 0.3s;
+  margin-bottom: 1.5rem;
+}
+
+.btn-principal:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-forte);
+}
+
+.btn-principal:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-acao {
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: rgba(10,8,6,0.8);
+  color: var(--texto-sec);
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-acao:hover { border-color: var(--dourado-brilho); color: var(--dourado-brilho); }
+
+.btn-perigo { border-color: rgba(139,26,42,0.5); color: #d47a7a; }
+.btn-perigo:hover { border-color: #c44; color: #f99; box-shadow: 0 0 8px rgba(200,50,50,0.3); }
+
+.grupo-acoes { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.8rem; }
+
+/* AVISOS */
+.aviso {
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.aviso-aguarde {
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--dourado-brilho);
+}
+
+.aviso-sucesso {
+  background: rgba(26,92,58,0.2);
+  border: 1px solid rgba(26,92,58,0.5);
+  color: #6fcf97;
+}
+
+.aviso-erro {
+  background: rgba(139,26,42,0.2);
+  border: 1px solid rgba(139,26,42,0.5);
+  color: #f4a4a4;
+}
+
+/* RESULTADO CAPÍTULO */
+.resultado-cap {
+  padding: 1.5rem;
+  background: rgba(8,6,4,0.95);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  min-height: 200px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+  line-height: 2;
+  white-space: pre-wrap;
+  color: var(--texto);
+  margin-bottom: 1rem;
+}
+
+/* LISTA DE CAPÍTULOS (SAGA) */
+.lista-caps { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+
+.item-cap {
+  background: rgba(12,10,8,0.95);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.item-cap:hover { border-color: rgba(201,168,76,0.35); }
+
+.item-cap-cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.item-cap-titulo {
+  font-family: 'Cinzel', serif;
+  color: var(--dourado-brilho);
+  font-size: 0.98rem;
+}
+
+.item-cap-acoes { display: flex; gap: 0.6rem; flex-shrink: 0; }
+
+.item-cap-conteudo {
+  display: none;
+  padding: 1rem 1.2rem 1.2rem;
+  border-top: 1px solid var(--borda);
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+  line-height: 2;
+  white-space: pre-wrap;
+  color: var(--texto);
+}
+
+/* GAVETA */
+.gaveta-saga {
+  background: rgba(12,10,8,0.95);
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+}
+
+.gaveta-saga-cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.gaveta-saga-cab:hover { background: rgba(201,168,76,0.06); }
+
+.gaveta-saga-titulo {
+  font-family: 'Cinzel', serif;
+  color: var(--dourado-brilho);
+  font-size: 1.05rem;
+}
+
+.gaveta-saga-info {
+  font-size: 0.82rem;
+  color: var(--texto-sec);
+  margin-top: 0.2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.gaveta-saga-acoes { display: flex; gap: 0.6rem; flex-shrink: 0; }
+
+.gaveta-caps {
+  display: none;
+  border-top: 1px solid var(--borda);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.gaveta-cap-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0.9rem;
+  background: rgba(8,6,4,0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(201,168,76,0.1);
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.gaveta-cap-nome {
+  font-family: 'Crimson Pro', serif;
+  color: var(--texto);
+  font-size: 0.98rem;
+  flex: 1;
+}
+
+.gaveta-cap-acoes { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+/* PROGRESS BAR */
+.barra-progresso-wrap {
+  background: rgba(26,21,16,0.8);
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.barra-progresso {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--dourado-escuro), var(--dourado-brilho));
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* MODAL LEITURA */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,2,1,0.95);
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+}
+
+.modal-overlay.aberto { display: flex; }
+
+.modal-cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--borda);
+  background: rgba(6,5,4,0.98);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.modal-titulo {
+  font-family: 'Cinzel', serif;
+  color: var(--dourado-brilho);
+  font-size: 1.05rem;
+}
+
+.modal-corpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 1.5rem;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.modal-texto {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 2.1;
+  color: var(--texto);
+  white-space: pre-wrap;
+}
+
+/* RESPONSIVO */
+@media(max-width:768px) {
+  .tela { padding: 1.2rem 1rem; }
+  .secao { padding: 1.1rem; }
+  .menu-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .card-menu { padding: 2rem 1.5rem; }
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(18,14,10,0.97);
+  border: 1px solid var(--dourado);
+  color: var(--dourado-brilho);
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  z-index: 2000;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+  box-shadow: var(--glow);
+}
+
+.toast.visivel { transform: translateX(-50%) translateY(0); }
+</style>
 </head>
 <body>
 
+<canvas id="canvas-centelhas"></canvas>
+
+<div class="wrapper">
+
+<!-- HEADER -->
 <header>
+  <div class="logo-linha">
+    <span class="logo-ornamento">◆</span>
     <h1 class="logo">NÚCLEO LITERÁRIO SUPREMO</h1>
-    <div class="campo-chave">
-        <input type="password" id="chaveUsuario" placeholder="Cole aqui sua chave da API Gemini para começar">
-        <button class="btn-salvar-chave" onclick="salvarChaveUsuario()">Salvar Chave</button>
+    <span class="logo-ornamento">◆</span>
+  </div>
+  <p class="logo-subtitulo">Motor de Criação Literária de Elite</p>
+
+  <div class="painel-ia">
+    <div class="seletor-provedor">
+      <button class="btn-provedor ativo" id="btn-gemini" onclick="selecionarProvedor('gemini')">✦ Gemini 2.5</button>
+      <button class="btn-provedor" id="btn-gemini1" onclick="selecionarProvedor('gemini1')">✦ Gemini 1.0</button>
+      <button class="btn-provedor" id="btn-claude" onclick="selecionarProvedor('claude')">◈ Claude</button>
     </div>
+    <div class="campo-chave-ia">
+      <input type="password" id="inputChave" placeholder="Cole sua chave da API aqui">
+      <button class="btn-salvar-chave" onclick="salvarChave()">Salvar</button>
+    </div>
+  </div>
 </header>
 
-<div id="menuInicial" class="tela ativa">
-    <div class="menu-principal">
-        <div class="card" onclick="abrirTela('telaSaga')">
-            <div class="card-icone">⚔️</div>
-            <h3>Forjar Saga</h3>
-            <p>Crie sagas completas com até 150 capítulos, detalhes profundos e controle total</p>
-        </div>
-        <div class="card" onclick="abrirTela('telaHistoria')">
-            <div class="card-icone">📖</div>
-            <h3>Forjar História</h3>
-            <p>Desenvolva capítulo por capítulo com toda a liberdade e detalhamento</p>
-        </div>
-        <div class="card" onclick="abrirTela('telaGaveta')">
-            <div class="card-icone">🗄️</div>
-            <h3>Gaveta Literária</h3>
-            <p>Armazene, visualize e gerencie todas as suas criações salvas por título</p>
-        </div>
+<!-- MENU INICIAL -->
+<div id="telaMenu" class="tela ativa">
+  <div class="divisor">
+    <div class="divisor-linha"></div>
+    <span class="divisor-ornamento">◆ ◆ ◆</span>
+    <div class="divisor-linha"></div>
+  </div>
+  <div class="menu-grid">
+    <div class="card-menu" onclick="abrirTela('telaSaga')">
+      <div class="card-icone">⚔️</div>
+      <h3>Forjar Saga</h3>
+      <p>Sagas completas até 150 capítulos com geração por blocos, memória narrativa e controle absoluto de mundo</p>
     </div>
+    <div class="card-menu" onclick="abrirTela('telaCapitulo')">
+      <div class="card-icone">📖</div>
+      <h3>Forjar Capítulo</h3>
+      <p>Construção profunda de capítulos únicos com perfil psicológico e ritmo de cena configurável</p>
+    </div>
+    <div class="card-menu" onclick="abrirTela('telaGaveta')">
+      <div class="card-icone">🗄️</div>
+      <h3>Gaveta Literária</h3>
+      <p>Todas as suas obras organizadas por saga, com gestão individual de cada capítulo</p>
+    </div>
+  </div>
 </div>
 
+<!-- ════════════════════════════════════════ -->
 <!-- TELA FORJAR SAGA -->
+<!-- ════════════════════════════════════════ -->
 <div id="telaSaga" class="tela">
-    <div class="cabecalho-tela">
-        <button class="btn-voltar" onclick="voltarMenu()">←</button>
-        <h2 class="titulo-tela">⚔️ Forjar Saga</h2>
+  <div class="cab-tela">
+    <button class="btn-voltar" onclick="voltarMenu()">←</button>
+    <h2 class="titulo-tela">⚔️ Forjar Saga</h2>
+  </div>
+
+  <!-- DADOS GERAIS -->
+  <div class="secao">
+    <div class="secao-titulo">📋 Identidade da Saga</div>
+    <div class="bloco-campo">
+      <label>Nome da Saga</label>
+      <input type="text" id="s-nome" placeholder="Ex: As Crônicas do Reino Esquecido">
     </div>
-
-    <div class="secao">
-        <h3 class="secao-titulo">📋 Dados Gerais</h3>
-        <div class="bloco-campo">
-            <label>Nome da Saga</label>
-            <input type="text" id="nomeSaga" placeholder="Ex: As Crônicas do Reino Esquecido">
-        </div>
-        <div class="bloco-campo">
-            <label>Gênero e Estilo Narrativo</label>
-            <input type="text" id="generoSaga" placeholder="Ex: Fantasia Épica, Aventura, Mistério, Romance, Suspense">
-        </div>
-        <div class="bloco-campo">
-            <label>Quantidade de Capítulos (máximo 150)</label>
-            <input type="number" id="qtdCapSaga" min="1" max="150" value="80" oninput="mostrarOpcoesBlocos()">
-        </div>
-        <div class="bloco-campo" id="divConfigBlocos" style="display: none;">
-            <div class="config-bloco">
-                <label>Dividir a saga em quantos blocos?</label>
-                <input type="number" id="qtdBlocos" min="1" max="20" value="4" oninput="gerarCamposInstrucoes()">
-                <small style="color: var(--texto-cinza);">Cada bloco terá uma parte da história e instruções próprias</small>
-                <br><br>
-                <label>Quantos capítulos por bloco?</label>
-                <input type="number" id="capPorBloco" min="1" max="150" value="20">
-                <small style="color: var(--texto-cinza);">Ajuste se quiser quantidades diferentes em cada parte</small>
-            </div>
-            <div id="divInstrucoesBlocos"></div>
-        </div>
-        <div class="bloco-campo">
-            <label>Quantidade de palavras por capítulo</label>
-            <input type="number" id="palavrasCapSaga" min="500" max="5000" value="2000">
-        </div>
-        <div class="bloco-campo">
-            <label>Ponto de Vista da Narrativa</label>
-            <select id="pontoVistaSaga">
-                <option value="protagonista_1">Primeiro Protagonista</option>
-                <option value="protagonista_2">Segundo Protagonista</option>
-                <option value="alternado">Alternado entre os dois</option>
-                <option value="onisciente">Narrador Onisciente</option>
-            </select>
-        </div>
+    <div class="bloco-campo">
+      <label>Gênero e Estilo Narrativo</label>
+      <input type="text" id="s-genero" placeholder="Ex: Fantasia Épica Dark, Romance com Magia, Suspense Sobrenatural">
     </div>
-
-    <div class="secao">
-        <h3 class="secao-titulo">👥 Detalhamento dos Personagens</h3>
-        <div class="bloco-campo">
-            <label>Protagonista 1</label>
-            <textarea class="grande" id="prot1Saga" placeholder="Nome completo, idade, aparência física, personalidade, histórico de vida, medos, sonhos, objetivos, defeitos e qualidades..."></textarea>
-        </div>
-        <div class="bloco-campo">
-            <label>Protagonista 2 / Parceiro / Antagonista</label>
-            <textarea class="grande" id="prot2Saga" placeholder="Nome completo, características, história, motivações, relação com o primeiro personagem, papel principal na trama..."></textarea>
-        </div>
+    <div class="bloco-campo">
+      <label>Tom e Atmosfera Geral</label>
+      <input type="text" id="s-tom" placeholder="Ex: Melancólico e épico, com momentos de luz. Inspirado em GRRM e Sanderson.">
     </div>
-
-    <div class="secao">
-        <h3 class="secao-titulo">🌍 Mundo e Cenário da História</h3>
-        <div class="bloco-campo">
-            <label>Descrição Geral do Universo</label>
-            <textarea class="grande" id="mundoSaga" placeholder="Como é esse mundo? Regras, magia, tecnologia, clima, política, religião, cultura, lendas e leis que existem aqui..."></textarea>
-        </div>
-        <div class="bloco-campo">
-            <label>Locais onde a história se passa</label>
-            <textarea class="grande" id="locaisSaga" placeholder="Cidades, reinos, florestas, castelos, ruínas, oceanos e qualquer lugar importante onde os eventos acontecem..."></textarea>
-        </div>
+    <div class="bloco-campo">
+      <label>Ponto de Vista Narrativo</label>
+      <select id="s-pov">
+        <option value="1a pessoa protagonista 1">1ª Pessoa — Protagonista 1</option>
+        <option value="1a pessoa protagonista 2">1ª Pessoa — Protagonista 2</option>
+        <option value="3a pessoa limitada protagonista 1">3ª Pessoa Limitada — Protagonista 1</option>
+        <option value="3a pessoa limitada alternado">3ª Pessoa Limitada — Alternado entre os dois</option>
+        <option value="narrador onisciente">Narrador Onisciente</option>
+      </select>
     </div>
-
-    <div class="secao">
-        <h3 class="secao-titulo">🤝 Encontro dos Protagonistas</h3>
-        <div class="bloco-campo">
-            <label>Como e quando eles vão se encontrar?</label>
-            <textarea id="encontroSaga" placeholder="Descreva o momento, o lugar, a situação, o ano ou fase da história em que os dois vão se cruzar..."></textarea>
-        </div>
-        <div class="bloco-campo">
-            <label>Eles são destinados a se encontrar?</label>
-            <select id="destinoSaga">
-                <option value="sim">Sim — O encontro faz parte do destino e do rumo da história</option>
-                <option value="nao">Não — É apenas uma coincidência ou circunstância do momento</option>
-                <option value="parcial">Parcialmente — Há uma força maior, mas também escolha própria</option>
-            </select>
-        </div>
+    <div class="bloco-campo">
+      <label>Quantidade de palavras por capítulo</label>
+      <input type="number" id="s-palavras" min="500" max="5000" value="2000">
     </div>
+  </div>
 
-    <div class="secao">
-        <h3 class="secao-titulo">🎚️ Nível de Intensidade por Capítulo</h3>
-        <div class="controle-linha">
-            <label>Drama</label>
-            <input type="range" min="0" max="100" value="71" id="nivelDrama" oninput="atualizarValor('nivelDrama', 'valDrama')">
-            <span class="valor-controle" id="valDrama">71</span>
-        </div>
-        <div class="controle-linha">
-            <label>Emoção e Sentimento</label>
-            <input type="range" min="0" max="100" value="100" id="nivelEmocao" oninput="atualizarValor('nivelEmocao', 'valEmocao')">
-            <span class="valor-controle" id="valEmocao">100</span>
-        </div>
-        <div class="controle-linha">
-            <label>Tensão e Suspense</label>
-            <input type="range" min="0" max="100" value="75" id="nivelTensao" oninput="atualizarValor('nivelTensao', 'valTensao')">
-            <span class="valor-controle" id="valTensao">75</span>
-        </div>
-        <div class="controle-linha">
-            <label>Ação e Movimento</label>
-            <input type="range" min="0" max="100" value="96" id="nivelAcao" oninput="atualizarValor('nivelAcao', 'valAcao')">
-            <span class="valor-controle" id="valAcao">96</span>
-        </div>
+  <!-- SISTEMA DE BLOCOS -->
+  <div class="secao">
+    <div class="secao-titulo">🧩 Planejamento por Blocos</div>
+    <p style="color:var(--texto-sec);font-size:0.9rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">
+      Divida a saga em blocos para evitar travamentos e garantir coerência narrativa. Cada bloco é gerado separadamente com memória do que veio antes.
+    </p>
+    <div class="blocos-cabecalho">
+      <div class="bloco-campo" style="margin:0">
+        <label>Total de Capítulos (máx. 150)</label>
+        <input type="number" id="s-total-cap" min="1" max="150" value="80" oninput="recalcularBlocos()">
+      </div>
+      <div class="bloco-campo" style="margin:0">
+        <label>Capítulos por Bloco</label>
+        <input type="number" id="s-cap-bloco" min="5" max="50" value="20" oninput="recalcularBlocos()">
+      </div>
     </div>
+    <div id="s-resumo-blocos" style="color:var(--dourado);font-size:0.88rem;margin:0.8rem 0;font-family:'Inter',sans-serif;"></div>
+    <div class="blocos-lista" id="s-lista-blocos"></div>
+  </div>
 
-    <div class="secao">
-        <h3 class="secao-titulo">📝 Enredo e Conflito Principal</h3>
-        <div class="bloco-campo">
-            <textarea class="grande" id="enredoSaga" placeholder="Resuma o que vai acontecer do início ao fim da saga, o conflito central, os obstáculos, os objetivos e como a história deve evoluir..."></textarea>
-        </div>
+  <!-- PERSONAGENS -->
+  <div class="secao">
+    <div class="secao-titulo">👤 Perfil Psicológico — Protagonista 1</div>
+    <div class="bloco-campo">
+      <label>Nome completo e idade</label>
+      <input type="text" id="s-p1-nome" placeholder="Ex: Lyra Ashveil, 22 anos">
     </div>
+    <div class="bloco-campo">
+      <label>Aparência física (seja detalhista)</label>
+      <textarea class="media" id="s-p1-aparencia" placeholder="Cor dos olhos, cabelo, altura, marcas, como se veste habitualmente..."></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Personalidade, virtudes e defeitos</label>
+      <textarea class="media" id="s-p1-personalidade" placeholder="Como age sob pressão? Quais são seus pontos cegos? O que os outros amam e odeiam nela?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>História de vida, traumas e motivações profundas</label>
+      <textarea class="grande" id="s-p1-historia" placeholder="O que moldou quem ela é? Qual ferida carrega? O que ela quer acima de tudo — e o que teme acima de tudo?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Habilidades, poderes ou talentos especiais</label>
+      <textarea class="media" id="s-p1-poderes" placeholder="Magia, combate, intelecto, carisma, habilidades únicas..."></textarea>
+    </div>
+  </div>
 
-    <button class="btn-principal" onclick="iniciarGeracaoSaga()">Gerar Saga Completa</button>
+  <div class="secao">
+    <div class="secao-titulo">👤 Perfil Psicológico — Protagonista 2 / Antagonista</div>
+    <div class="bloco-campo">
+      <label>Nome completo e idade</label>
+      <input type="text" id="s-p2-nome" placeholder="Ex: Kael Draveth, 27 anos">
+    </div>
+    <div class="bloco-campo">
+      <label>Aparência física</label>
+      <textarea class="media" id="s-p2-aparencia" placeholder="Como ele aparece para o mundo? O que sua presença transmite fisicamente?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Personalidade e contradições internas</label>
+      <textarea class="media" id="s-p2-personalidade" placeholder="O que ele esconde? Como age quando está sozinho vs. quando observado? Quais suas contradições?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>História, motivações e relação com o Protagonista 1</label>
+      <textarea class="grande" id="s-p2-historia" placeholder="O que o trouxe até aqui? Por que ele e o Protagonista 1 estão conectados — ou em conflito? O que cada um representa para o outro?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Habilidades e papel na trama</label>
+      <textarea class="media" id="s-p2-poderes" placeholder="Força, estratégia, poderes, influência..."></textarea>
+    </div>
+  </div>
 
-    <div id="statusGeracao"></div>
-    <div id="listaCapitulosSaga" class="lista-capitulos"></div>
+  <!-- MUNDO -->
+  <div class="secao">
+    <div class="secao-titulo">🌍 Motor de Worldbuilding</div>
+    <div class="bloco-campo">
+      <label>Visão geral do universo</label>
+      <textarea class="grande" id="s-mundo" placeholder="Épocas, tecnologia, magia, estrutura política, religiões, conflitos históricos, o que está em jogo no mundo..."></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Sistema de magia ou poder (se houver)</label>
+      <textarea class="media" id="s-magia" placeholder="Como funciona? Tem custo? Quem pode usar? Quais são os limites e perigos?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Locais principais onde a história acontece</label>
+      <textarea class="media" id="s-locais" placeholder="Descreva cada lugar importante: sua atmosfera, história, perigos e significado para os personagens..."></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Facções, organizações ou forças em conflito</label>
+      <textarea class="media" id="s-faccoes" placeholder="Quem são os lados? O que cada um quer? Como isso afeta os protagonists?"></textarea>
+    </div>
+  </div>
+
+  <!-- ENCONTRO E DESTINO -->
+  <div class="secao">
+    <div class="secao-titulo">🤝 O Encontro</div>
+    <div class="bloco-campo">
+      <label>Como e onde os protagonistas se encontram pela primeira vez?</label>
+      <textarea id="s-encontro" placeholder="Contexto, circunstância, emoção do momento, o que cada um sente ao ver o outro..."></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Natureza da conexão entre eles</label>
+      <select id="s-conexao">
+        <option value="destino inevitável — forças maiores os trouxeram juntos">Destino — forças maiores os trouxeram juntos</option>
+        <option value="coincidência que mudou tudo — nenhum esperava">Coincidência — nenhum esperava</option>
+        <option value="escolha deliberada — um buscou o outro com intenção">Escolha — um buscou o outro</option>
+        <option value="inimigos que se tornam algo mais complexo">Inimigos que se tornam algo mais complexo</option>
+        <option value="atração e desconfiança simultâneas">Atração e desconfiança simultâneas</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- INTENSIDADE -->
+  <div class="secao">
+    <div class="secao-titulo">🎚️ Calibração Narrativa</div>
+    <div class="controles-grid">
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Drama</span>
+          <span class="controle-valor" id="v-drama">75</span>
+        </div>
+        <input type="range" min="0" max="100" value="75" id="r-drama" oninput="document.getElementById('v-drama').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Emoção e Sentimento</span>
+          <span class="controle-valor" id="v-emocao">85</span>
+        </div>
+        <input type="range" min="0" max="100" value="85" id="r-emocao" oninput="document.getElementById('v-emocao').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Tensão e Suspense</span>
+          <span class="controle-valor" id="v-tensao">70</span>
+        </div>
+        <input type="range" min="0" max="100" value="70" id="r-tensao" oninput="document.getElementById('v-tensao').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Ação e Conflito</span>
+          <span class="controle-valor" id="v-acao">65</span>
+        </div>
+        <input type="range" min="0" max="100" value="65" id="r-acao" oninput="document.getElementById('v-acao').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Romance / Conexão</span>
+          <span class="controle-valor" id="v-romance">60</span>
+        </div>
+        <input type="range" min="0" max="100" value="60" id="r-romance" oninput="document.getElementById('v-romance').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Mistério e Revelações</span>
+          <span class="controle-valor" id="v-misterio">80</span>
+        </div>
+        <input type="range" min="0" max="100" value="80" id="r-misterio" oninput="document.getElementById('v-misterio').innerText=this.value">
+      </div>
+    </div>
+  </div>
+
+  <!-- ENREDO -->
+  <div class="secao">
+    <div class="secao-titulo">📜 Enredo e Arco Geral</div>
+    <div class="bloco-campo">
+      <label>Conflito central e objetivo maior da saga</label>
+      <textarea class="grande" id="s-enredo" placeholder="O que está realmente em jogo? Qual o objetivo final? Quais os obstáculos? Como a relação entre os protagonistas evolui do início ao fim?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Como a saga termina? (opcional, mas melhora a coerência)</label>
+      <textarea class="media" id="s-fim" placeholder="O fim não precisa ser detalhado — mesmo uma direção geral ajuda a IA a construir um arco coerente..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn-principal" id="btn-gerar-saga" onclick="iniciarSaga()">⚔️ Iniciar Forja da Saga</button>
+  <div id="s-status"></div>
+  <div id="s-lista-caps" class="lista-caps"></div>
 </div>
 
-<!-- TELA FORJAR HISTÓRIA -->
-<div id="telaHistoria" class="tela">
-    <div class="cabecalho-tela">
-        <button class="btn-voltar" onclick="voltarMenu()">←</button>
-        <h2 class="titulo-tela">📖 Forjar História</h2>
+<!-- ════════════════════════════════════════ -->
+<!-- TELA FORJAR CAPÍTULO -->
+<!-- ════════════════════════════════════════ -->
+<div id="telaCapitulo" class="tela">
+  <div class="cab-tela">
+    <button class="btn-voltar" onclick="voltarMenu()">←</button>
+    <h2 class="titulo-tela">📖 Forjar Capítulo</h2>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">📋 Dados da Obra</div>
+    <div class="bloco-campo">
+      <label>Título da Obra</label>
+      <input type="text" id="c-titulo" placeholder="Ex: O Segredo da Montanha Escarlate">
     </div>
-    <div class="secao">
-        <h3 class="secao-titulo">📋 Dados do Capítulo</h3>
-        <div class="bloco-campo">
-            <label>Título da Obra</label>
-            <input type="text" id="tituloCap" placeholder="Ex: O Segredo da Montanha">
-        </div>
-        <div class="bloco-campo">
-            <label>Quantidade de palavras</label>
-            <input type="number" id="palavrasCap" min="300" max="5000" value="1200">
-        </div>
-        <div class="bloco-campo">
-            <label>Ponto de Vista</label>
-            <select id="pontoVistaCap">
-                <option value="prot_1">Protagonista 1</option>
-                <option value="prot_2">Protagonista 2</option>
-                <option value="alternado">Alternado entre os dois</option>
-                <option value="onisciente">Narrador Onisciente</option>
-            </select>
-        </div>
+    <div class="bloco-campo">
+      <label>Número e título do capítulo</label>
+      <input type="text" id="c-numero" placeholder="Ex: Capítulo 7 — A Noite Que Não Passou">
     </div>
-    <div class="secao">
-        <h3 class="secao-titulo">👥 Personagens</h3>
-        <div class="bloco-campo">
-            <label>Protagonista 1</label>
-            <textarea class="grande" id="prot1Cap" placeholder="Detalhes completos: aparência, personalidade, histórico, desejos e conflitos..."></textarea>
-        </div>
-        <div class="bloco-campo">
-            <label>Protagonista 2 / Personagem Principal</label>
-            <textarea class="grande" id="prot2Cap" placeholder="Detalhes completos, relação com o outro personagem e função na história..."></textarea>
-        </div>
+    <div class="bloco-campo">
+      <label>Quantidade de palavras</label>
+      <input type="number" id="c-palavras" min="300" max="8000" value="1500">
     </div>
-    <div class="secao">
-        <h3 class="secao-titulo">🎚️ Nível de Intensidade</h3>
-        <div class="controle-linha">
-            <label>Drama</label>
-            <input type="range" min="0" max="100" value="60" id="dramaCap" oninput="atualizarValor('dramaCap', 'valDramaCap')">
-            <span class="valor-controle" id="valDramaCap">60</span>
-        </div>
-        <div class="controle-linha">
-            <label>Emoção</label>
-            <input type="range" min="0" max="100" value="70" id="emocaoCap" oninput="atualizarValor('emocaoCap', 'valEmocaoCap')">
-            <span class="valor-controle" id="valEmocaoCap">70</span>
-        </div>
+    <div class="bloco-campo">
+      <label>Ponto de Vista</label>
+      <select id="c-pov">
+        <option value="1ª pessoa — Protagonista 1">1ª Pessoa — Protagonista 1</option>
+        <option value="1ª pessoa — Protagonista 2">1ª Pessoa — Protagonista 2</option>
+        <option value="3ª pessoa limitada — Protagonista 1">3ª Pessoa Limitada — Protagonista 1</option>
+        <option value="3ª pessoa limitada — alternado">3ª Pessoa — Alternado</option>
+        <option value="narrador onisciente">Narrador Onisciente</option>
+      </select>
     </div>
-    <div class="secao">
-        <h3 class="secao-titulo">✍️ Conteúdo do Capítulo</h3>
-        <div class="bloco-campo">
-            <textarea class="grande" id="ideiaCap" placeholder="Descreva tudo o que deve acontecer neste capítulo: cenas, diálogos, ações, emoções, reviravoltas e o objetivo do trecho..."></textarea>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">👤 Perfil dos Personagens</div>
+    <div class="bloco-campo">
+      <label>Protagonista 1 — nome, aparência, personalidade e estado emocional AGORA</label>
+      <textarea class="grande" id="c-p1" placeholder="Quem é essa pessoa hoje, neste capítulo? Como está emocionalmente? O que aconteceu antes que ainda pesa nela?"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>Protagonista 2 / Personagem principal — mesmos detalhes</label>
+      <textarea class="grande" id="c-p2" placeholder="Como está? O que quer neste momento específico? O que esconde?"></textarea>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">🌍 Contexto e Cenário</div>
+    <div class="bloco-campo">
+      <label>Onde e quando este capítulo se passa?</label>
+      <textarea class="media" id="c-cenario" placeholder="Lugar, hora do dia, clima, atmosfera... detalhes sensoriais que a IA deve tecer na narrativa"></textarea>
+    </div>
+    <div class="bloco-campo">
+      <label>O que aconteceu antes deste capítulo? (contexto acumulado)</label>
+      <textarea class="media" id="c-antes" placeholder="Resuma os eventos anteriores relevantes para manter coerência narrativa..."></textarea>
+    </div>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">🎚️ Ritmo e Intensidade</div>
+    <div class="bloco-campo">
+      <label>Como este capítulo começa?</label>
+      <select id="c-abertura">
+        <option value="in medias res — direto em ação ou conflito">In medias res — direto em ação</option>
+        <option value="atmosférico e lento — construção de tensão">Atmosférico — construção de tensão</option>
+        <option value="diálogo — dois personagens já interagindo">Diálogo — personagens já interagindo</option>
+        <option value="pensamento interno — mergulho na mente do protagonista">Pensamento interno — mente do protagonista</option>
+        <option value="descrição de cena — estabelece lugar e tempo">Descrição de cena</option>
+      </select>
+    </div>
+    <div class="bloco-campo">
+      <label>Como este capítulo termina?</label>
+      <select id="c-fechamento">
+        <option value="cliffhanger — algo surpreendente ou revelador deixa o leitor suspenso">Cliffhanger — suspense no ar</option>
+        <option value="resolução emocional — algo se resolve, mas nem tudo">Resolução emocional parcial</option>
+        <option value="virada de expectativa — o oposto do que se esperava acontece">Virada — oposto do esperado</option>
+        <option value="calmaria tensa — silêncio carregado de significado">Calmaria tensa</option>
+        <option value="revelação de informação crucial">Revelação crucial</option>
+      </select>
+    </div>
+    <div class="controles-grid" style="margin-top:1rem">
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Drama</span>
+          <span class="controle-valor" id="cv-drama">70</span>
         </div>
+        <input type="range" min="0" max="100" value="70" oninput="document.getElementById('cv-drama').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Emoção</span>
+          <span class="controle-valor" id="cv-emocao">75</span>
+        </div>
+        <input type="range" min="0" max="100" value="75" oninput="document.getElementById('cv-emocao').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Tensão</span>
+          <span class="controle-valor" id="cv-tensao">65</span>
+        </div>
+        <input type="range" min="0" max="100" value="65" oninput="document.getElementById('cv-tensao').innerText=this.value">
+      </div>
+      <div class="controle-item">
+        <div class="controle-topo">
+          <span class="controle-label">Romance</span>
+          <span class="controle-valor" id="cv-romance">55</span>
+        </div>
+        <input type="range" min="0" max="100" value="55" oninput="document.getElementById('cv-romance').innerText=this.value">
+      </div>
     </div>
-    <button class="btn-principal" onclick="gerarCapituloUnico()">Gerar Capítulo</button>
-    <div class="caixa-resultado" id="resultadoCap">O capítulo gerado aparecerá aqui...</div>
-    <div class="grupo-acoes" style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-        <button class="btn-acao" onclick="copiarTexto('resultadoCap')">📋 Copiar</button>
-        <button class="btn-acao" onclick="salvarConteudo('capitulo', document.getElementById('tituloCap').value)">💾 Salvar</button>
-        <button class="btn-acao" onclick="limparFormulario('telaHistoria')">🗑️ Limpar</button>
+  </div>
+
+  <div class="secao">
+    <div class="secao-titulo">✍️ O Capítulo em Si</div>
+    <div class="bloco-campo">
+      <label>O que acontece neste capítulo — cenas, viradas, diálogos importantes</label>
+      <textarea class="grande" id="c-ideia" placeholder="Seja detalhista. Quanto mais você descrever — cenas específicas, falas que quer que existam, momentos que não podem faltar — mais preciso e poderoso será o resultado."></textarea>
     </div>
+    <div class="bloco-campo">
+      <label>Qual a função emocional deste capítulo na história toda?</label>
+      <textarea class="media" id="c-funcao" placeholder="Ex: Estabelecer que Lyra tem medo de ser amada. Ou: mostrar que Kael não é o vilão que parecia. Ou: criar a primeira faísca real entre os dois."></textarea>
+    </div>
+  </div>
+
+  <button class="btn-principal" id="btn-gerar-cap" onclick="gerarCapitulo()">📖 Forjar Capítulo</button>
+  <div id="c-status"></div>
+  <div class="resultado-cap" id="c-resultado">O capítulo forjado aparecerá aqui...</div>
+  <div class="grupo-acoes">
+    <button class="btn-acao" onclick="copiarTexto('c-resultado')">📋 Copiar</button>
+    <button class="btn-acao" onclick="salvarCapituloUnico()">💾 Salvar na Gaveta</button>
+    <button class="btn-acao" onclick="limparCapitulo()">🗑️ Limpar</button>
+  </div>
 </div>
 
+<!-- ════════════════════════════════════════ -->
 <!-- TELA GAVETA LITERÁRIA -->
+<!-- ════════════════════════════════════════ -->
 <div id="telaGaveta" class="tela">
-    <div class="cabecalho-tela">
-        <button class="btn-voltar" onclick="voltarMenu()">←</button>
-        <h2 class="titulo-tela">🗄️ Gaveta Literária</h2>
-    </div>
-    <p style="color: var(--texto-cinza); margin-bottom: 1.5rem;">Todas as suas criações ficam armazenadas aqui, organizadas por título:</p>
-    <div id="listaItensSalvos" style="display: flex; flex-direction: column; gap: 1.2rem;"></div>
+  <div class="cab-tela">
+    <button class="btn-voltar" onclick="voltarMenu()">←</button>
+    <h2 class="titulo-tela">🗄️ Gaveta Literária</h2>
+  </div>
+  <p style="color:var(--texto-sec);margin-bottom:1.5rem;font-family:'Crimson Pro',serif;font-size:1rem;">
+    Todas as suas obras, organizadas por saga. Cada capítulo pode ser lido, copiado ou apagado individualmente.
+  </p>
+  <div id="gaveta-conteudo"></div>
 </div>
+
+</div><!-- /wrapper -->
+
+<!-- MODAL LEITURA -->
+<div class="modal-overlay" id="modal-leitura">
+  <div class="modal-cab">
+    <span class="modal-titulo" id="modal-titulo-texto">—</span>
+    <div class="grupo-acoes">
+      <button class="btn-acao" onclick="copiarModal()">📋 Copiar</button>
+      <button class="btn-acao" onclick="fecharModal()">✕ Fechar</button>
+    </div>
+  </div>
+  <div class="modal-corpo">
+    <div class="modal-texto" id="modal-corpo-texto"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-let sagaGerada = [];
-let configuracaoSaga = {};
-let blocoAtual = 0;
+// ═══════════════════════════════════════════
+// ESTADO GLOBAL
+// ═══════════════════════════════════════════
+let provedorAtivo = 'gemini';
+let sagaConfig = {};
+let sagaCapitulos = [];
+let blocoAtualIdx = 0;
+let resumoNarrativo = '';
 
-// Navegação
+// ═══════════════════════════════════════════
+// CANVAS — PARTÍCULAS CENTELHA
+// ═══════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('canvas-centelhas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particulas = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function criarParticula() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H + H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: -(Math.random() * 0.6 + 0.2),
+      vida: Math.random() * 0.6 + 0.2,
+      tamanho: Math.random() * 1.5 + 0.3,
+      cor: Math.random() > 0.5 ? '#C9A84C' : '#F0D080'
+    };
+  }
+
+  for (let i = 0; i < 40; i++) {
+    const p = criarParticula();
+    p.y = Math.random() * H;
+    particulas.push(p);
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    particulas.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vida -= 0.003;
+      ctx.globalAlpha = Math.max(0, p.vida);
+      ctx.fillStyle = p.cor;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.tamanho, 0, Math.PI * 2);
+      ctx.fill();
+      if (p.vida <= 0 || p.y < -10) particulas[i] = criarParticula();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(tick);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  tick();
+})();
+
+// ═══════════════════════════════════════════
+// NAVEGAÇÃO
+// ═══════════════════════════════════════════
 function abrirTela(id) {
-    document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
-    document.getElementById(id).classList.add('ativa');
-    if(id === 'telaGaveta') carregarItensSalvos();
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+  window.scrollTo(0, 0);
+  if (id === 'telaGaveta') renderGaveta();
 }
 
-function voltarMenu() {
-    abrirTela('menuInicial');
+function voltarMenu() { abrirTela('telaMenu'); }
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.innerText = msg;
+  el.classList.add('visivel');
+  setTimeout(() => el.classList.remove('visivel'), 2500);
 }
 
-function atualizarValor(idCampo, idTexto) {
-    document.getElementById(idTexto).innerText = document.getElementById(idCampo).value;
+// ═══════════════════════════════════════════
+// PROVEDOR E CHAVE
+// ═══════════════════════════════════════════
+function selecionarProvedor(p) {
+  provedorAtivo = p;
+  document.getElementById('btn-gemini').classList.toggle('ativo', p === 'gemini');
+  document.getElementById('btn-gemini1').classList.toggle('ativo', p === 'gemini1');
+  document.getElementById('btn-claude').classList.toggle('ativo', p === 'claude');
+  
+  // Como Gemini 1.0 e 2.5 usam a mesma chave da Google AI Studio, salvamos e carregamos do mesmo local
+  const chaveChave = (p === 'gemini' || p === 'gemini1') ? 'chave_gemini' : 'chave_' + p;
+  const chave = localStorage.getItem(chaveChave) || '';
+  document.getElementById('inputChave').value = chave;
+  
+  if (p === 'gemini') {
+    document.getElementById('inputChave').placeholder = 'Cole sua chave do Google AI Studio (Gemini 2.5)';
+  } else if (p === 'gemini1') {
+    document.getElementById('inputChave').placeholder = 'Cole sua chave do Google AI Studio (Gemini 1.0)';
+  } else {
+    document.getElementById('inputChave').placeholder = 'Cole sua chave da Anthropic (Claude)';
+  }
 }
 
-function mostrarOpcoesBlocos() {
-    const total = parseInt(document.getElementById('qtdCapSaga').value) || 0;
-    const div = document.getElementById('divConfigBlocos');
-    if (total >= 10) {
-        div.style.display = 'block';
-        calcularCapitulosPorBloco();
-        gerarCamposInstrucoes();
+function salvarChave() {
+  const chave = document.getElementById('inputChave').value.trim();
+  if (!chave) { toast('⚠️ Digite uma chave válida'); return; }
+  
+  // Salva no local correto respeitando o compartilhamento de chave do ecossistema Google
+  const pSalvar = (provedorAtivo === 'gemini' || provadorAtivo === 'gemini1') ? 'gemini' : provedorAtivo;
+  localStorage.setItem('chave_' + pSalvar, chave);
+  toast('✅ Chave salva!');
+}
+
+function pegarChave() {
+  const pBuscar = (provedorAtivo === 'gemini' || provedorAtivo === 'gemini1') ? 'gemini' : provedorAtivo;
+  return localStorage.getItem('chave_' + pBuscar) || '';
+}
+
+// Restaura chave do provedor ativo ao carregar
+selecionarProvedor('gemini');
+
+// ═══════════════════════════════════════════
+// CHAMADA À IA
+// ═══════════════════════════════════════════
+async function chamarIA(prompt, idStatus) {
+  const chave = pegarChave();
+  if (!chave) {
+    if (idStatus) document.getElementById(idStatus).innerHTML = `<div class="aviso aviso-erro">⚠️ Insira e salve sua chave da API primeiro.</div>`;
+    toast('⚠️ Sem chave da API');
+    return '';
+  }
+
+  try {
+    if (provedorAtivo === 'gemini') {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${chave}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 65536 }
+        })
+      });
+      const dados = await resp.json();
+      if (dados.error) throw new Error(dados.error.message);
+      return dados.candidates[0].content.parts[0].text;
+
+    } else if (provedorAtivo === 'gemini1') {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.0-pro:generateContent?key=${chave}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9 }
+        })
+      });
+      const dados = await resp.json();
+      if (dados.error) throw new Error(dados.error.message);
+      return dados.candidates[0].content.parts[0].text;
+
     } else {
-        div.style.display = 'none';
+      // Claude via proxy (usuário precisa de chave Anthropic)
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': chave,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 16000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const dados = await resp.json();
+      if (dados.error) throw new Error(dados.error.message || JSON.stringify(dados.error));
+      return dados.content[0].text;
     }
+  } catch (err) {
+    if (idStatus) document.getElementById(idStatus).innerHTML = `<div class="aviso aviso-erro">❌ Erro: ${err.message}</div>`;
+    toast('❌ Erro na API');
+    return '';
+  }
 }
 
-function calcularCapitulosPorBloco() {
-    const total = parseInt(document.getElementById('qtdCapSaga').value) || 1;
-    const blocos = parseInt(document.getElementById('qtdBlocos').value) || 1;
-    const porBloco = Math.ceil(total / blocos);
-    document.getElementById('capPorBloco').value = porBloco;
+// ═══════════════════════════════════════════
+// SISTEMA DE BLOCOS
+// ═══════════════════════════════════════════
+function recalcularBlocos() {
+  const total = parseInt(document.getElementById('s-total-cap').value) || 20;
+  const porBloco = parseInt(document.getElementById('s-cap-bloco').value) || 20;
+  const qtdBlocos = Math.ceil(total / porBloco);
+
+  document.getElementById('s-resumo-blocos').innerText =
+    `${qtdBlocos} bloco${qtdBlocos > 1 ? 's' : ''} de geração · ${porBloco} cap/bloco · ${total} capítulos no total`;
+
+  const lista = document.getElementById('s-lista-blocos');
+  lista.innerHTML = '';
+
+  for (let i = 1; i <= qtdBlocos; i++) {
+    const inicio = (i - 1) * porBloco + 1;
+    const fim = Math.min(i * porBloco, total);
+    const div = document.createElement('div');
+    div.className = 'bloco-instrucao';
+    div.innerHTML = `
+      <div class="bloco-instrucao-titulo">Bloco ${i} — Capítulos ${inicio} a ${fim}</div>
+      <textarea class="media" id="bloco-inst-${i}" placeholder="O que acontece neste trecho da história? Quais eventos, encontros, reviravoltas, tensões e progressos? Seja específica — isso guia a IA por ${fim - inicio + 1} capítulos."></textarea>
+    `;
+    lista.appendChild(div);
+  }
 }
 
-function gerarCamposInstrucoes() {
-    const qtdBlocos = parseInt(document.getElementById('qtdBlocos').value) || 1;
-    const totalCap = parseInt(document.getElementById('qtdCapSaga').value) || 1;
-    const capPorBloco = parseInt(document.getElementById('capPorBloco').value) || 1;
-    const div = document.getElementById('divInstrucoesBlocos');
-    div.innerHTML = '';
+// Inicializar blocos ao carregar
+window.addEventListener('DOMContentLoaded', () => {
+  recalcularBlocos();
+});
 
-    for (let i = 1; i <= qtdBlocos; i++) {
-        const inicio = (i - 1) * capPorBloco + 1;
-        let fim = i * capPorBloco;
-        if (fim > totalCap) fim = totalCap;
+// ═══════════════════════════════════════════
+// PROMPT LITERÁRIO DE ELITE
+// ═══════════════════════════════════════════
+function promptSistemaLiterario() {
+  return `
+Você é uma escritora literária de elite — pense em Donna Tartt, Leigh Bardugo, Patrick Rothfuss e George R.R. Martin fundidos em uma única voz.
 
-        const campo = document.createElement('div');
-        campo.className = 'instrucao-bloco';
-        campo.innerHTML = `
-            <label>Instruções para o Bloco ${i} — Capítulos ${inicio} a ${fim}</label>
-            <textarea rows="3" id="instrucaoBloco${i}" placeholder="Ex: Nos capítulos 1 a 20 os personagens se encontram, começam a se aproximar e surgem os primeiros sentimentos. Sem muita ação ainda, foco no desenvolvimento do vínculo."></textarea>
-        `;
-        div.appendChild(campo);
-    }
+SEUS PRINCÍPIOS INEGOCIÁVEIS:
+1. NUNCA use clichês ou frases prontas. Cada metáfora deve ser específica e original.
+2. MOSTRE, não conte. Em vez de "ela estava triste", mostre o que a tristeza faz no corpo dela, na forma como segura uma xícara, no que ela não consegue dizer.
+3. Diálogos têm SUBTEXTO. O que os personagens dizem raramente é o que querem dizer de verdade.
+4. Cada cena tem um objetivo emocional além do narrativo. O leitor deve sentir algo que talvez não consiga nomear.
+5. O RITMO é uma ferramenta. Frases curtas criam urgência. Frases longas e sinuosas criam contemplação. Use isso com intenção.
+6. Os SENTIDOS ancoram o leitor na cena. Use cheiros, texturas, sons e temperaturas — não apenas o visual.
+7. Os PERSONAGENS contradizem a si mesmos porque pessoas reais fazem isso.
+8. NUNCA quebre a imersão com meta-comentários, resumos externos ou explicações desnecessárias.
+`;
 }
 
-// Gerenciamento da chave
-function salvarChaveUsuario() {
-    const chave = document.getElementById('chaveUsuario').value.trim();
-    if (!chave) {
-        alert('⚠️ Digite uma chave válida da API!');
-        return;
-    }
-    localStorage.setItem('chaveApiUsuario', chave);
-    alert('✅ Chave salva com sucesso!');
+// ═══════════════════════════════════════════
+// FORJAR SAGA
+// ═══════════════════════════════════════════
+function coletarConfigSaga() {
+  return {
+    nome: document.getElementById('s-nome').value || 'Saga Sem Nome',
+    genero: document.getElementById('s-genero').value,
+    tom: document.getElementById('s-tom').value,
+    pov: document.getElementById('s-pov').value,
+    palavras: document.getElementById('s-palavras').value,
+    totalCap: parseInt(document.getElementById('s-total-cap').value) || 20,
+    capPorBloco: parseInt(document.getElementById('s-cap-bloco').value) || 20,
+    p1nome: document.getElementById('s-p1-nome').value,
+    p1aparencia: document.getElementById('s-p1-aparencia').value,
+    p1personalidade: document.getElementById('s-p1-personalidade').value,
+    p1historia: document.getElementById('s-p1-historia').value,
+    p1poderes: document.getElementById('s-p1-poderes').value,
+    p2nome: document.getElementById('s-p2-nome').value,
+    p2aparencia: document.getElementById('s-p2-aparencia').value,
+    p2personalidade: document.getElementById('s-p2-personalidade').value,
+    p2historia: document.getElementById('s-p2-historia').value,
+    p2poderes: document.getElementById('s-p2-poderes').value,
+    mundo: document.getElementById('s-mundo').value,
+    magia: document.getElementById('s-magia').value,
+    locais: document.getElementById('s-locais').value,
+    faccoes: document.getElementById('s-faccoes').value,
+    encontro: document.getElementById('s-encontro').value,
+    conexao: document.getElementById('s-conexao').value,
+    drama: document.getElementById('r-drama').value,
+    emocao: document.getElementById('r-emocao').value,
+    tensao: document.getElementById('r-tensao').value,
+    acao: document.getElementById('r-acao').value,
+    romance: document.getElementById('r-romance').value,
+    misterio: document.getElementById('r-misterio').value,
+    enredo: document.getElementById('s-enredo').value,
+    fim: document.getElementById('s-fim').value,
+    qtdBlocos: Math.ceil((parseInt(document.getElementById('s-total-cap').value) || 20) / (parseInt(document.getElementById('s-cap-bloco').value) || 20))
+  };
 }
 
-function pegarChaveAtual() {
-    return localStorage.getItem('chaveApiUsuario') || '';
+function iniciarSaga() {
+  sagaConfig = coletarConfigSaga();
+  sagaCapitulos = [];
+  blocoAtualIdx = 1;
+  resumoNarrativo = '';
+
+  document.getElementById('s-lista-caps').innerHTML = '';
+  document.getElementById('s-status').innerHTML = '';
+  document.getElementById('btn-gerar-saga').disabled = true;
+
+  gerarBlocoSaga();
 }
 
-// Funções gerais
-function copiarTexto(idElemento) {
-    const elemento = document.getElementById(idElemento);
-    if (!elemento) return;
-    const texto = elemento.innerText;
-    navigator.clipboard.writeText(texto)
-        .then(() => alert('✅ Texto copiado!'))
-        .catch(() => alert('❌ Não foi possível copiar.'));
-}
+async function gerarBlocoSaga() {
+  const total = sagaConfig.totalCap;
+  const porBloco = sagaConfig.capPorBloco;
+  const inicio = (blocoAtualIdx - 1) * porBloco + 1;
+  const fim = Math.min(blocoAtualIdx * porBloco, total);
+  const instEl = document.getElementById(`bloco-inst-${blocoAtualIdx}`);
+  const instrucao = instEl ? instEl.value : 'Desenvolva a narrativa de forma coerente com o que veio antes.';
 
-function limparFormulario(idTela) {
-    document.querySelectorAll(`#${idTela} input, #${idTela} textarea, #${idTela} select`).forEach(campo => {
-        if (campo.tagName === 'SELECT') campo.selectedIndex = 0;
-        else campo.value = '';
-    });
-    document.querySelectorAll(`#${idTela} .caixa-resultado`).forEach(caixa => caixa.innerText = '');
-}
+  const statusEl = document.getElementById('s-status');
+  statusEl.innerHTML = `
+    <div class="aviso aviso-aguarde">
+      🔄 Gerando Bloco ${blocoAtualIdx} de ${sagaConfig.qtdBlocos} — Capítulos ${inicio} a ${fim}...
+      <div class="barra-progresso-wrap" style="margin-top:0.6rem">
+        <div class="barra-progresso" style="width:${((blocoAtualIdx-1)/sagaConfig.qtdBlocos)*100}%"></div>
+      </div>
+    </div>
+  `;
 
-// Funções da Gaveta
-function salvarConteudo(tipo, nome = '') {
-    let conteudo = '';
-    let tituloFinal = nome;
+  const prompt = `
+${promptSistemaLiterario()}
 
-    if (tipo === 'capitulo') {
-        conteudo = document.getElementById('resultadoCap').innerText;
-        if (!tituloFinal) tituloFinal = 'Capítulo sem título';
-    }
-    if (tipo === 'saga') {
-        conteudo = sagaGerada.map(c => `${c.titulo}\n\n${c.conteudo}`).join('\n\n---\n\n');
-        tituloFinal = configuracaoSaga.nome || 'Saga sem nome';
-    }
+═══════════════════════════════════════════
+SAGA: "${sagaConfig.nome}"
+Gênero: ${sagaConfig.genero}
+Tom e atmosfera: ${sagaConfig.tom}
+Ponto de vista: ${sagaConfig.pov}
+Palavras por capítulo: ~${sagaConfig.palavras}
+═══════════════════════════════════════════
 
-    if (!conteudo || conteudo.length < 20) {
-        alert('⚠️ Gere o conteúdo primeiro antes de salvar!');
-        return;
-    }
+PROTAGONISTA 1 — ${sagaConfig.p1nome}
+Aparência: ${sagaConfig.p1aparencia}
+Personalidade: ${sagaConfig.p1personalidade}
+História e traumas: ${sagaConfig.p1historia}
+Poderes/habilidades: ${sagaConfig.p1poderes}
 
-    const dados = {
-        nome: tituloFinal,
-        tipo: tipo === 'saga' ? 'Saga Completa' : 'Capítulo',
-        conteudo: conteudo,
-        data: new Date().toLocaleString('pt-BR')
-    };
+PROTAGONISTA 2 — ${sagaConfig.p2nome}
+Aparência: ${sagaConfig.p2aparencia}
+Personalidade: ${sagaConfig.p2personalidade}
+História e relação: ${sagaConfig.p2historia}
+Poderes/habilidades: ${sagaConfig.p2poderes}
 
-    const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    salvos.push(dados);
-    localStorage.setItem('obrasSalvas', JSON.stringify(salvos));
-    alert('💾 Salvo na Gaveta Literária!');
-}
+MUNDO E CENÁRIO
+${sagaConfig.mundo}
 
-function carregarItensSalvos() {
-    const lista = document.getElementById('listaItensSalvos');
-    const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    if (salvos.length === 0) {
-        lista.innerHTML = `<p style="color: var(--texto-cinza); text-align: center; padding: 2rem;">Nenhuma criação salva ainda.</p>`;
-        return;
-    }
-    lista.innerHTML = '';
-    salvos.forEach((item, indice) => {
-        const div = document.createElement('div');
-        div.style = `border: 1px solid var(--borda); border-radius: 10px; padding: 1.2rem; background: rgba(18, 15, 12, 0.92); margin-bottom: 1rem;`;
-        div.innerHTML = `
-            <strong style="color: var(--dourado-brilhante); font-size: 1.1rem;">${item.nome}</strong><br>
-            <span style="color: var(--texto-cinza); font-size: 0.9rem;">${item.tipo} • ${item.data}</span>
-            <div style="margin-top: 1rem; display: flex; gap: 0.8rem; flex-wrap: wrap;">
-                <button class="btn-acao" onclick="verItemSalvo(${indice})">👁️ Ver</button>
-                <button class="btn-acao" onclick="copiarItemSalvo(${indice})">📋 Copiar</button>
-                <button class="btn-acao btn-perigo" onclick="apagarItemSalvo(${indice})">🗑️ Apagar</button>
-            </div>
-        `;
-        lista.appendChild(div);
-    });
-}
+SISTEMA DE MAGIA/PODER
+${sagaConfig.magia}
 
-function verItemSalvo(indice) {
-    const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    if (salvos[indice]) {
-        const janela = window.open('', '_blank', 'width=800,height=600');
-        janela.document.write(`<html><head><style>body{background:#050403;color:#F2EDE4;padding:2rem;font-family:Inter;}pre{white-space:pre-wrap;line-height:1.8;}</style></head><body><h2>${salvos[indice].nome}</h2><p>${salvos[indice].tipo} - ${salvos[indice].data}</p><pre>${salvos[indice].conteudo}</pre></body></html>`);
-        janela.document.close();
-    }
-}
+LOCAIS PRINCIPAIS
+${sagaConfig.locais}
 
-function copiarItemSalvo(indice) {
-    const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    if (salvos[indice]) {
-        navigator.clipboard.writeText(salvos[indice].conteudo)
-            .then(() => alert('✅ Conteúdo copiado!'))
-            .catch(() => alert('❌ Erro ao copiar.'));
-    }
-}
+FACÇÕES E CONFLITOS
+${sagaConfig.faccoes}
 
-function apagarItemSalvo(indice) {
-    if (!confirm('Tem certeza que deseja apagar esta obra?')) return;
-    const salvos = JSON.parse(localStorage.getItem('obrasSalvas') || '[]');
-    salvos.splice(indice, 1);
-    localStorage.setItem('obrasSalvas', JSON.stringify(salvos));
-    carregarItensSalvos();
-}
+O ENCONTRO DOS PROTAGONISTAS
+${sagaConfig.encontro}
+Natureza da conexão: ${sagaConfig.conexao}
 
-// Integração com IA
-async function chamarIA(textoPrompt) {
-    const chave = pegarChaveAtual();
-    if (!chave) {
-        const status = document.getElementById('statusGeracao');
-        if (status) status.innerHTML = `<div class="aviso-erro">⚠️ Insira e salve sua chave da API primeiro!</div>`;
-        alert('⚠️ Insira e salve sua chave da API no topo da página!');
-        return '';
-    }
-    try {
-        const resposta = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${chave}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: textoPrompt }] }],
-                generationConfig: { temperature: 0.85, maxOutputTokens: 32768 }
-            })
-        });
-        const dados = await resposta.json();
-        if (dados.error) throw new Error(dados.error.message);
-        return dados.candidates[0].content.parts[0].text;
-    } catch (erro) {
-        const status = document.getElementById('statusGeracao');
-        if (status) status.innerHTML = `<div class="aviso-erro">❌ Erro: ${erro.message}</div>`;
-        alert(`❌ Erro: ${erro.message}`);
-        return '';
-    }
-}
+CALIBRAÇÃO NARRATIVA
+Drama: ${sagaConfig.drama}% | Emoção: ${sagaConfig.emocao}% | Tensão: ${sagaConfig.tensao}%
+Ação: ${sagaConfig.acao}% | Romance/Conexão: ${sagaConfig.romance}% | Mistério: ${sagaConfig.misterio}%
 
-// Funções Forjar Saga
-function iniciarGeracaoSaga() {
-    const totalCapitulos = parseInt(document.getElementById('qtdCapSaga').value);
-    if (totalCapitulos < 1 || totalCapitulos > 150) {
-        alert('⚠️ Quantidade entre 1 e 150 capítulos!');
-        return;
-    }
-    configuracaoSaga = {
-        nome: document.getElementById('nomeSaga').value || 'Saga sem nome',
-        total: totalCapitulos,
-        palavras: document.getElementById('palavrasCapSaga').value,
-        pontoVista: document.getElementById('pontoVistaSaga').value,
-        genero: document.getElementById('generoSaga').value,
-        prot1: document.getElementById('prot1Saga').value,
-        prot2: document.getElementById('prot2Saga').value,
-        mundo: document.getElementById('mundoSaga').value,
-        locais: document.getElementById('locaisSaga').value,
-        encontro: document.getElementById('encontroSaga').value,
-        destino: document.getElementById('destinoSaga').value,
-        drama: document.getElementById('nivelDrama').value,
-        emocao: document.getElementById('nivelEmocao').value,
-        tensao: document.getElementById('nivelTensao').value,
-        acao: document.getElementById('nivelAcao').value,
-        enredo: document.getElementById('enredoSaga').value,
-        qtdBlocos: parseInt(document.getElementById('qtdBlocos').value) || 1,
-        capPorBloco: parseInt(document.getElementById('capPorBloco').value) || totalCapitulos
-    };
+ENREDO GERAL E CONFLITO CENTRAL
+${sagaConfig.enredo}
 
-    sagaGerada = [];
-    blocoAtual = 1;
-    document.getElementById('listaCapitulosSaga').innerHTML = '';
-    document.getElementById('statusGeracao').innerHTML = '';
-    gerarBloco();
-}
+COMO A SAGA TERMINA (direção geral)
+${sagaConfig.fim || 'Não especificado — use seu julgamento criativo'}
 
-async function gerarBloco() {
-    const inicio = (blocoAtual - 1) * configuracaoSaga.capPorBloco + 1;
-    let fim = blocoAtual * configuracaoSaga.capPorBloco;
-    if (fim > configuracaoSaga.total) fim = configuracaoSaga.total;
+${resumoNarrativo ? `RESUMO DO QUE JÁ ACONTECEU (blocos anteriores):\n${resumoNarrativo}\n` : ''}
 
-    const instrucao = document.getElementById(`instrucaoBloco${blocoAtual}`)?.value || 'Desenvolva normalmente a sequência da história.';
+═══════════════════════════════════════════
+TAREFA: Escreva os capítulos ${inicio} a ${fim} da saga.
 
-    document.getElementById('statusGeracao').innerHTML = `<div class="aviso-aguarde">🔄 Gerando Bloco ${blocoAtual}: Capítulos ${inicio} a ${fim}...</div>`;
-
-    const prompt = `
-Crie os capítulos de ${inicio} a ${fim} da saga: "${configuracaoSaga.nome}".
-Gênero: ${configuracaoSaga.genero}
-Ponto de vista: ${configuracaoSaga.pontoVista}
-Quantidade de palavras por capítulo: cerca de ${configuracaoSaga.palavras} palavras.
-
---- DETALHES GERAIS ---
-Personagem 1: ${configuracaoSaga.prot1}
-Personagem 2: ${configuracaoSaga.prot2}
-Mundo e regras: ${configuracaoSaga.mundo}
-Locais principais: ${configuracaoSaga.locais}
-Como se encontram: ${configuracaoSaga.encontro}
-Destino: ${configuracaoSaga.destino}
-
---- NÍVEIS ---
-Drama: ${configuracaoSaga.drama}% | Emoção: ${configuracaoSaga.emocao}%
-Tensão: ${configuracaoSaga.tensao}% | Ação: ${configuracaoSaga.acao}%
-
---- ENREDO GERAL ---
-${configuracaoSaga.enredo}
-
---- INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO ---
+INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO:
 ${instrucao}
 
---- REGRAS ---
-- Mantenha total coerência com tudo o que foi definido
-- Cada capítulo com título próprio e desenvolvimento completo
-- Use linguagem envolvente e fluida
-- Não repita acontecimentos
-- Formato exato:
-Capítulo X - Título
-[conteúdo completo]
+REGRAS DE FORMATO:
+- Cada capítulo começa exatamente assim: "Capítulo [NÚMERO] — [TÍTULO CRIATIVO]"
+- Seguido de uma linha em branco
+- Depois o texto completo do capítulo (~${sagaConfig.palavras} palavras)
+- Depois três hífens: ---
+- Repita para cada capítulo
 
----
+REGRAS NARRATIVAS:
+- Mantenha coerência absoluta com tudo que foi definido
+- Desenvolva os personagens — eles devem crescer, falhar, aprender
+- Cada capítulo deve ter um arco próprio (começo, meio, fim emocional)
+- O último capítulo deste bloco deve criar antecipação para o próximo
+- Nunca resuma, sempre narre
 `;
 
-    const resultado = await chamarIA(prompt);
-    if (!resultado) return;
+  const resultado = await chamarIA(prompt, 's-status');
+  if (!resultado) {
+    document.getElementById('btn-gerar-saga').disabled = false;
+    return;
+  }
 
-    processarCapitulosBloco(resultado, inicio);
+  // Processa e exibe
+  processarBlocoTexto(resultado, inicio, fim);
 
-    blocoAtual++;
-    if (blocoAtual <= configuracaoSaga.qtdBlocos) {
-        setTimeout(gerarBloco, 2000);
-    } else {
-        document.getElementById('statusGeracao').innerHTML = `<div class="aviso-sucesso">✅ Saga completa gerada! <button class="btn-acao" onclick="salvarConteudo('saga')">💾 Salvar toda a saga</button></div>`;
-    }
+  // Gera resumo do bloco para memória narrativa
+  await atualizarResumoNarrativo(resultado, inicio, fim);
+
+  blocoAtualIdx++;
+
+  if (blocoAtualIdx <= sagaConfig.qtdBlocos) {
+    setTimeout(gerarBlocoSaga, 3000);
+  } else {
+    const pct = Math.round((sagaCapitulos.length / sagaConfig.totalCap) * 100);
+    statusEl.innerHTML = `
+      <div class="aviso aviso-sucesso">
+        ✅ Saga completa! ${sagaCapitulos.length} capítulos gerados.
+        <div class="grupo-acoes" style="margin-top:0.8rem">
+          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar toda a saga na Gaveta</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('btn-gerar-saga').disabled = false;
+  }
 }
 
-function processarCapitulosBloco(texto, numeroInicio) {
-    // Divide o texto nos marcadores de capítulo
-    const partes = texto.split(/(?=Capítulo\s+\d+\s*[-–])/i);
+async function atualizarResumoNarrativo(texto, inicio, fim) {
+  const promptResumo = `
+Resuma em até 200 palavras o que aconteceu nos capítulos ${inicio} a ${fim} da saga "${sagaConfig.nome}". 
+Foque em: eventos principais, desenvolvimento dos personagens, mudanças no status quo, revelações importantes e onde os personagens estão emocionalmente ao final deste bloco.
+Seja preciso e factual — este resumo será usado para manter coerência narrativa nos próximos capítulos.
 
-    partes.forEach(parte => {
-        parte = parte.trim();
-        if (!parte) return;
-
-        // Extrai número e título do capítulo
-        const linhasTitulo = parte.match(/^Capítulo\s*(\d+)\s*[-–]\s*(.+)/i);
-        if (!linhasTitulo) return;
-
-        const numero = parseInt(linhasTitulo[1]);
-        const titulo = linhasTitulo[2].split('\n')[0].trim();
-        const conteudo = parte.replace(/^Capítulo\s*\d+\s*[-–]\s*.+\n?/i, '').trim();
-
-        // Evita duplicatas
-        const jaExiste = sagaGerada.find(c => c.numero === numero);
-        if (jaExiste) return;
-
-        sagaGerada.push({ numero, titulo, conteudo });
-
-        // Renderiza na tela
-        const lista = document.getElementById('listaCapitulosSaga');
-        const item = document.createElement('div');
-        item.className = 'item-capitulo';
-        item.id = `cap-${numero}`;
-        item.innerHTML = `
-            <div class="cabecalho-capitulo">
-                <span class="titulo-capitulo">Capítulo ${numero} — ${titulo}</span>
-                <div class="acoes-capitulo">
-                    <button class="btn-acao" onclick="toggleCapitulo(${numero})">👁️ Ver</button>
-                    <button class="btn-acao" onclick="copiarCapitulo(${numero})">📋 Copiar</button>
-                </div>
-            </div>
-            <div id="conteudo-cap-${numero}" style="display: none; margin-top: 1rem; white-space: pre-wrap; line-height: 1.9; color: var(--texto-claro);">${conteudo}</div>
-        `;
-        lista.appendChild(item);
-    });
+TEXTO DOS CAPÍTULOS:
+${texto.substring(0, 3000)}...
+`;
+  const resumo = await chamarIA(promptResumo, null);
+  if (resumo) {
+    resumoNarrativo += `\n[Blocos ${inicio}-${fim}]: ${resumo}`;
+  }
 }
 
-function toggleCapitulo(numero) {
-    const div = document.getElementById(`conteudo-cap-${numero}`);
-    if (!div) return;
-    div.style.display = div.style.display === 'none' ? 'block' : 'none';
+function processarBlocoTexto(texto, inicio, fim) {
+  const partes = texto.split(/\n---\n/);
+  const lista = document.getElementById('s-lista-caps');
+
+  partes.forEach(parte => {
+    parte = parte.trim();
+    if (!parte || parte.length < 50) return;
+
+    const match = parte.match(/^Capítulo\s*(\d+)\s*[—\-]\s*(.+?)(\n|$)/i);
+    if (!match) return;
+
+    const numero = parseInt(match[1]);
+    const titulo = match[2].trim();
+    const conteudo = parte.replace(/^Capítulo\s*\d+\s*[—\-]\s*.+?(\n|$)/i, '').trim();
+
+    if (sagaCapitulos.find(c => c.numero === numero)) return;
+
+    sagaCapitulos.push({ numero, titulo, conteudo });
+
+    const item = document.createElement('div');
+    item.className = 'item-cap';
+    item.id = `cap-item-${numero}`;
+    item.innerHTML = `
+      <div class="item-cap-cab">
+        <span class="item-cap-titulo">Capítulo ${numero} — ${titulo}</span>
+        <div class="item-cap-acoes">
+          <button class="btn-acao" onclick="toggleCap(${numero})">👁️</button>
+          <button class="btn-acao" onclick="copiarCap(${numero})">📋</button>
+          <button class="btn-acao btn-perigo" onclick="apagarCapSaga(${numero})">🗑️</button>
+        </div>
+      </div>
+      <div class="item-cap-conteudo" id="cap-conteudo-${numero}">${conteudo}</div>
+    `;
+    lista.appendChild(item);
+  });
 }
 
-function copiarCapitulo(numero) {
-    const cap = sagaGerada.find(c => c.numero === numero);
-    if (!cap) return;
-    const texto = `Capítulo ${cap.numero} — ${cap.titulo}\n\n${cap.conteudo}`;
-    navigator.clipboard.writeText(texto)
-        .then(() => alert('✅ Capítulo copiado!'))
-        .catch(() => alert('❌ Erro ao copiar.'));
+function toggleCap(n) {
+  const el = document.getElementById(`cap-conteudo-${n}`);
+  if (!el) return;
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
 }
 
-// Função Forjar Capítulo Único
-async function gerarCapituloUnico() {
-    const titulo = document.getElementById('tituloCap').value.trim();
-    const palavras = document.getElementById('palavrasCap').value;
-    const pontoVista = document.getElementById('pontoVistaCap').value;
-    const prot1 = document.getElementById('prot1Cap').value.trim();
-    const prot2 = document.getElementById('prot2Cap').value.trim();
-    const drama = document.getElementById('dramaCap').value;
-    const emocao = document.getElementById('emocaoCap').value;
-    const ideia = document.getElementById('ideiaCap').value.trim();
-    const resultado = document.getElementById('resultadoCap');
+function copiarCap(n) {
+  const cap = sagaCapitulos.find(c => c.numero === n);
+  if (!cap) return;
+  navigator.clipboard.writeText(`Capítulo ${cap.numero} — ${cap.titulo}\n\n${cap.conteudo}`)
+    .then(() => toast('📋 Capítulo copiado!'));
+}
 
-    if (!ideia) {
-        alert('⚠️ Descreva o que deve acontecer no capítulo!');
-        return;
-    }
+function apagarCapSaga(n) {
+  if (!confirm(`Apagar o Capítulo ${n}?`)) return;
+  sagaCapitulos = sagaCapitulos.filter(c => c.numero !== n);
+  const el = document.getElementById(`cap-item-${n}`);
+  if (el) el.remove();
+  toast('🗑️ Capítulo removido');
+}
 
-    resultado.innerText = '🔄 Gerando capítulo... aguarde.';
+function salvarSagaCompleta() {
+  if (sagaCapitulos.length === 0) { toast('⚠️ Nenhum capítulo gerado'); return; }
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  const chave = sagaConfig.nome || 'Saga Sem Nome';
+  if (!salvos[chave]) salvos[chave] = { tipo: 'saga', capitulos: [], data: new Date().toLocaleString('pt-BR') };
+  sagaCapitulos.forEach(cap => {
+    const existe = salvos[chave].capitulos.find(c => c.numero === cap.numero);
+    if (!existe) salvos[chave].capitulos.push(cap);
+  });
+  salvos[chave].data = new Date().toLocaleString('pt-BR');
+  localStorage.setItem('nucleo_gaveta', JSON.stringify(salvos));
+  toast('💾 Saga salva na Gaveta!');
+}
 
-    const prompt = `
-Escreva um capítulo literário completo com as seguintes especificações:
+// ═══════════════════════════════════════════
+// FORJAR CAPÍTULO ÚNICO
+// ═══════════════════════════════════════════
+async function gerarCapitulo() {
+  const titulo = document.getElementById('c-titulo').value;
+  const numero = document.getElementById('c-numero').value;
+  const palavras = document.getElementById('c-palavras').value;
+  const pov = document.getElementById('c-pov').value;
+  const p1 = document.getElementById('c-p1').value;
+  const p2 = document.getElementById('c-p2').value;
+  const cenario = document.getElementById('c-cenario').value;
+  const antes = document.getElementById('c-antes').value;
+  const abertura = document.getElementById('c-abertura').value;
+  const fechamento = document.getElementById('c-fechamento').value;
+  const ideia = document.getElementById('c-ideia').value;
+  const funcao = document.getElementById('c-funcao').value;
 
-Título da obra: ${titulo || 'Não informado'}
-Quantidade de palavras: cerca de ${palavras} palavras
-Ponto de vista narrativo: ${pontoVista}
+  if (!ideia.trim()) { toast('⚠️ Descreva o que acontece no capítulo'); return; }
 
---- PERSONAGENS ---
-Protagonista 1: ${prot1 || 'Não informado'}
-Protagonista 2 / Personagem principal: ${prot2 || 'Não informado'}
+  const statusEl = document.getElementById('c-status');
+  const resultEl = document.getElementById('c-resultado');
+  statusEl.innerHTML = '<div class="aviso aviso-aguarde">🔄 Forjando capítulo... isso pode levar alguns instantes.</div>';
+  resultEl.innerText = '';
+  document.getElementById('btn-gerar-cap').disabled = true;
 
---- NÍVEIS DE INTENSIDADE ---
-Drama: ${drama}%
-Emoção: ${emocao}%
+  const prompt = `
+${promptSistemaLiterario()}
 
---- O QUE DEVE ACONTECER NESTE CAPÍTULO ---
+═══════════════════════════════════════════
+OBRA: "${titulo || 'Sem título'}"
+CAPÍTULO: ${numero || 'Sem número'}
+Ponto de vista: ${pov}
+Palavras: ~${palavras}
+═══════════════════════════════════════════
+
+PROTAGONISTA 1:
+${p1 || 'Não especificado'}
+
+PROTAGONISTA 2 / PERSONAGEM PRINCIPAL:
+${p2 || 'Não especificado'}
+
+CENÁRIO E CONTEXTO:
+${cenario || 'Não especificado'}
+
+O QUE ACONTECEU ANTES:
+${antes || 'Início da história ou não informado'}
+
+ESTRUTURA DO CAPÍTULO:
+- Abertura: ${abertura}
+- Fechamento: ${fechamento}
+
+CALIBRAÇÃO:
+Drama: ${document.getElementById('cv-drama').innerText}% | Emoção: ${document.getElementById('cv-emocao').innerText}%
+Tensão: ${document.getElementById('cv-tensao').innerText}% | Romance: ${document.getElementById('cv-romance').innerText}%
+
+O QUE ACONTECE NESTE CAPÍTULO:
 ${ideia}
 
---- REGRAS ---
-- Escreva com linguagem literária envolvente, rica em detalhes sensoriais e emocionais
-- Desenvolva diálogos naturais e autênticos
-- Mantenha coerência com os personagens e a proposta
-- Não quebre a imersão com comentários externos
-- Entregue o capítulo completo, do início ao fim, sem truncar
+FUNÇÃO EMOCIONAL DO CAPÍTULO:
+${funcao || 'Não especificado'}
+
+═══════════════════════════════════════════
+Escreva o capítulo completo, do início ao fim, sem cortar, sem resumir, sem comentários externos.
+Entregue apenas o texto literário puro — nenhuma introdução, nenhuma explicação, nenhum meta-comentário.
 `;
 
-    const texto = await chamarIA(prompt);
-    if (texto) {
-        resultado.innerText = texto;
-    } else {
-        resultado.innerText = 'O capítulo gerado aparecerá aqui...';
-    }
+  const resultado = await chamarIA(prompt, 'c-status');
+  document.getElementById('btn-gerar-cap').disabled = false;
+
+  if (resultado) {
+    statusEl.innerHTML = '<div class="aviso aviso-sucesso">✅ Capítulo forjado!</div>';
+    resultEl.innerText = resultado;
+  } else {
+    resultEl.innerText = 'O capítulo gerado aparecerá aqui...';
+  }
+}
+
+function salvarCapituloUnico() {
+  const titulo = document.getElementById('c-titulo').value || 'Obra Sem Título';
+  const numero = document.getElementById('c-numero').value || 'Capítulo';
+  const conteudo = document.getElementById('c-resultado').innerText;
+  if (!conteudo || conteudo.length < 50) { toast('⚠️ Gere o capítulo primeiro'); return; }
+
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  if (!salvos[titulo]) salvos[titulo] = { tipo: 'capitulos', capitulos: [], data: new Date().toLocaleString('pt-BR') };
+
+  const cap = { numero: salvos[titulo].capitulos.length + 1, titulo: numero, conteudo };
+  salvos[titulo].capitulos.push(cap);
+  salvos[titulo].data = new Date().toLocaleString('pt-BR');
+  localStorage.setItem('nucleo_gaveta', JSON.stringify(salvos));
+  toast('💾 Salvo na Gaveta!');
+}
+
+function limparCapitulo() {
+  document.getElementById('c-resultado').innerText = 'O capítulo forjado aparecerá aqui...';
+  document.getElementById('c-status').innerHTML = '';
+}
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => toast('📋 Copiado!'));
+}
+
+// ═══════════════════════════════════════════
+// GAVETA LITERÁRIA
+// ═══════════════════════════════════════════
+function renderGaveta() {
+  const cont = document.getElementById('gaveta-conteudo');
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  const obras = Object.keys(salvos);
+
+  if (obras.length === 0) {
+    cont.innerHTML = `<p style="color:var(--texto-sec);text-align:center;padding:3rem;font-family:'Crimson Pro',serif;font-size:1.1rem;">Nenhuma obra salva ainda.</p>`;
+    return;
+  }
+
+  cont.innerHTML = '';
+  obras.forEach(nomeObra => {
+    const obra = salvos[nomeObra];
+    const caps = obra.capitulos || [];
+
+    const div = document.createElement('div');
+    div.className = 'gaveta-saga';
+
+    div.innerHTML = `
+      <div class="gaveta-saga-cab" onclick="toggleGaveta('gaveta-caps-${encodeURIComponent(nomeObra).replace(/%/g,'_')}')">
+        <div>
+          <div class="gaveta-saga-titulo">${nomeObra}</div>
+          <div class="gaveta-saga-info">${caps.length} capítulo${caps.length !== 1 ? 's' : ''} · ${obra.data}</div>
+        </div>
+        <div class="gaveta-saga-acoes" onclick="event.stopPropagation()">
+          <button class="btn-acao" onclick="copiarObra('${nomeObra.replace(/'/g,"\\'")}')">📋 Copiar tudo</button>
+          <button class="btn-acao btn-perigo" onclick="apagarObra('${nomeObra.replace(/'/g,"\\'")}')">🗑️ Apagar obra</button>
+        </div>
+      </div>
+      <div class="gaveta-caps" id="gaveta-caps-${encodeURIComponent(nomeObra).replace(/%/g,'_')}">
+        ${caps.map((cap, i) => `
+          <div class="gaveta-cap-item">
+            <span class="gaveta-cap-nome">${cap.titulo || ('Capítulo ' + (i+1))}</span>
+            <div class="gaveta-cap-acoes">
+              <button class="btn-acao" onclick="lerCap('${nomeObra.replace(/'/g,"\\'")}', ${i})">👁️ Ler</button>
+              <button class="btn-acao" onclick="copiarCapGaveta('${nomeObra.replace(/'/g,"\\'")}', ${i})">📋</button>
+              <button class="btn-acao btn-perigo" onclick="apagarCapGaveta('${nomeObra.replace(/'/g,"\\'")}', ${i})">🗑️</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function toggleGaveta(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = el.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function copiarObra(nome) {
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  const obra = salvos[nome];
+  if (!obra) return;
+  const texto = obra.capitulos.map(c => `${c.titulo || 'Capítulo'}\n\n${c.conteudo}`).join('\n\n---\n\n');
+  navigator.clipboard.writeText(texto).then(() => toast('📋 Obra completa copiada!'));
+}
+
+function apagarObra(nome) {
+  if (!confirm(`Apagar toda a obra "${nome}"? Esta ação não pode ser desfeita.`)) return;
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  delete salvos[nome];
+  localStorage.setItem('nucleo_gaveta', JSON.stringify(salvos));
+  toast('🗑️ Obra apagada');
+  renderGaveta();
+}
+
+function lerCap(nomeObra, idx) {
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  const obra = salvos[nomeObra];
+  if (!obra || !obra.capitulos[idx]) return;
+  const cap = obra.capitulos[idx];
+  document.getElementById('modal-titulo-texto').innerText = `${nomeObra} · ${cap.titulo || ('Capítulo ' + (idx+1))}`;
+  document.getElementById('modal-corpo-texto').innerText = cap.conteudo;
+  document.getElementById('modal-leitura').classList.add('aberto');
+}
+
+function copiarCapGaveta(nomeObra, idx) {
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  const obra = salvos[nomeObra];
+  if (!obra || !obra.capitulos[idx]) return;
+  const cap = obra.capitulos[idx];
+  navigator.clipboard.writeText(`${cap.titulo}\n\n${cap.conteudo}`).then(() => toast('📋 Capítulo copiado!'));
+}
+
+function apagarCapGaveta(nomeObra, idx) {
+  if (!confirm('Apagar este capítulo?')) return;
+  const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
+  if (!salvos[nomeObra]) return;
+  salvos[nomeObra].capitulos.splice(idx, 1);
+  localStorage.setItem('nucleo_gaveta', JSON.stringify(salvos));
+  toast('🗑️ Capítulo apagado');
+  renderGaveta();
+}
+
+function fecharModal() {
+  document.getElementById('modal-leitura').classList.remove('aberto');
+}
+
+function copiarModal() {
+  const texto = document.getElementById('modal-corpo-texto').innerText;
+  navigator.clipboard.writeText(texto).then(() => toast('📋 Copiado!'));
 }
 </script>
 </body>
 </html>
+
+```
