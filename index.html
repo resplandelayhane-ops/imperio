@@ -37,7 +37,6 @@ body {
   overflow-x: hidden;
 }
 
-/* CANVAS DE PARTÍCULAS */
 #canvas-centelhas {
   position: fixed;
   top: 0; left: 0;
@@ -47,10 +46,8 @@ body {
   opacity: 0.4;
 }
 
-/* WRAPPER GERAL */
 .wrapper { position: relative; z-index: 1; }
 
-/* HEADER */
 header {
   padding: 2rem 1.5rem 1.5rem;
   text-align: center;
@@ -91,7 +88,6 @@ header {
   font-style: italic;
 }
 
-/* SELETOR DE IA */
 .painel-ia {
   display: flex;
   gap: 0.8rem;
@@ -169,7 +165,6 @@ header {
 
 .btn-salvar-chave:hover { box-shadow: var(--glow); }
 
-/* DIVISOR ORNAMENTAL */
 .divisor {
   display: flex;
   align-items: center;
@@ -180,7 +175,6 @@ header {
 .divisor-linha { flex: 1; height: 1px; background: var(--borda); }
 .divisor-ornamento { color: var(--dourado); font-size: 0.8rem; opacity: 0.6; }
 
-/* TELAS */
 .tela { display: none; padding: 2rem 1.5rem; max-width: 980px; margin: 0 auto; }
 .tela.ativa { display: block; animation: surgir 0.35s ease; }
 
@@ -189,7 +183,6 @@ header {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* MENU */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -247,7 +240,6 @@ header {
   line-height: 1.6;
 }
 
-/* CABEÇALHO DE TELA */
 .cab-tela {
   display: flex;
   align-items: center;
@@ -278,7 +270,6 @@ header {
   text-shadow: 0 0 12px rgba(240,208,128,0.25);
 }
 
-/* SEÇÕES */
 .secao {
   background: rgba(14,11,8,0.9);
   border: 1px solid var(--borda);
@@ -348,7 +339,6 @@ textarea {
 textarea.grande { min-height: 220px; }
 textarea.media { min-height: 120px; }
 
-/* CONTROLES DE RANGE */
 .controles-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -396,7 +386,6 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 8px rgba(201,168,76,0.7);
 }
 
-/* SISTEMA DE BLOCOS */
 .blocos-config {
   background: rgba(201,168,76,0.07);
   border: 1px solid rgba(201,168,76,0.2);
@@ -435,7 +424,6 @@ input[type="range"]::-webkit-slider-thumb {
   font-size: 0.95rem;
 }
 
-/* BOTÕES */
 .btn-principal {
   width: 100%;
   padding: 1.2rem;
@@ -484,7 +472,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 .grupo-acoes { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.8rem; }
 
-/* AVISOS */
 .aviso {
   padding: 1rem 1.2rem;
   border-radius: 10px;
@@ -512,7 +499,6 @@ input[type="range"]::-webkit-slider-thumb {
   color: #f4a4a4;
 }
 
-/* RESULTADO CAPÍTULO */
 .resultado-cap {
   padding: 1.5rem;
   background: rgba(8,6,4,0.95);
@@ -527,7 +513,6 @@ input[type="range"]::-webkit-slider-thumb {
   margin-bottom: 1rem;
 }
 
-/* LISTA DE CAPÍTULOS (SAGA) */
 .lista-caps { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
 
 .item-cap {
@@ -568,7 +553,6 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--texto);
 }
 
-/* GAVETA */
 .gaveta-saga {
   background: rgba(12,10,8,0.95);
   border: 1px solid var(--borda);
@@ -635,7 +619,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 .gaveta-cap-acoes { display: flex; gap: 0.5rem; flex-shrink: 0; }
 
-/* PROGRESS BAR */
 .barra-progresso-wrap {
   background: rgba(26,21,16,0.8);
   border-radius: 6px;
@@ -652,7 +635,6 @@ input[type="range"]::-webkit-slider-thumb {
   width: 0%;
 }
 
-/* MODAL LEITURA */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -699,7 +681,6 @@ input[type="range"]::-webkit-slider-thumb {
   white-space: pre-wrap;
 }
 
-/* RESPONSIVO */
 @media(max-width:768px) {
   .tela { padding: 1.2rem 1rem; }
   .secao { padding: 1.1rem; }
@@ -707,7 +688,6 @@ input[type="range"]::-webkit-slider-thumb {
   .card-menu { padding: 2rem 1.5rem; }
 }
 
-/* TOAST */
 .toast {
   position: fixed;
   bottom: 1.5rem;
@@ -819,7 +799,7 @@ input[type="range"]::-webkit-slider-thumb {
 
   <div class="secao" style="border: 1px solid var(--dourado); box-shadow: var(--glow);">
     <div class="secao-titulo" style="color: var(--dourado-brilho);">✍️ Sinopse Geral e Diretriz Mestra</div>
-    <p style="color:var(--texto-sec);font-size:0.95rem;margin-bottom:12rem;font-family:'Crimson Pro',serif; line-height: 1.6;">
+    <p style="color:var(--texto-sec);font-size:0.95rem;margin-bottom:1rem;font-family:'Crimson Pro',serif; line-height: 1.6;">
       Descreva aqui o enredo completo, o objetivo mestre, o estilo narrativo e a alma da história. Todos os blocos gerados a seguir respeitarão rigorosamente este panorama geral como um guia soberano.
     </p>
     <div class="bloco-campo">
@@ -831,16 +811,16 @@ input[type="range"]::-webkit-slider-thumb {
   <div class="secao">
     <div class="secao-titulo">🧩 Planejamento por Blocos</div>
     <p style="color:var(--texto-sec);font-size:0.9rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">
-      Divida a saga em blocos para evitar travamentos e garantir coerência narrativa. Cada bloco é gerado separadamente com memória do que veio antes.
+      Divida a saga em blocos. Cada bloco guiará a IA de forma sequencial (ex: no Bloco 1 descreva o primeiro encontro; no Bloco 2 descreva o início do conflito). A IA criará os capítulos correspondentes seguindo rigorosamente estas caixas.
     </p>
     <div class="blocos-cabecalho">
       <div class="bloco-campo" style="margin:0">
-        <label>Total de Capítulos (máx. 150)</label>
+        <label>Total de Capítulos (padrão 80 para 8 blocos)</label>
         <input type="number" id="s-total-cap" min="1" max="150" value="80" oninput="recalcularBlocos()">
       </div>
       <div class="bloco-campo" style="margin:0">
-        <label>Capítulos por Bloco</label>
-        <input type="number" id="s-cap-bloco" min="5" max="50" value="20" oninput="recalcularBlocos()">
+        <label>Capítulos por Bloco (padrão 10 para 8 blocos)</label>
+        <input type="number" id="s-cap-bloco" min="5" max="50" value="10" oninput="recalcularBlocos()">
       </div>
     </div>
     <div id="s-resumo-blocos" style="color:var(--dourado);font-size:0.88rem;margin:0.8rem 0;font-family:'Inter',sans-serif;"></div>
@@ -911,7 +891,7 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
     <div class="bloco-campo">
       <label>Facções, organizações ou forças em conflito</label>
-      <textarea class="media" id="s-faccoes" placeholder="Quem são os lados? O que cada um quer? Como isso afeta os protagonists?"></textarea>
+      <textarea class="media" id="s-faccoes" placeholder="Quem são os lados? O que cada um quer? Como isso afeta os protagonistas?"></textarea>
     </div>
   </div>
 
@@ -1060,7 +1040,7 @@ input[type="range"]::-webkit-slider-thumb {
       <label>Como este capítulo começa?</label>
       <select id="c-abertura">
         <option value="in medias res — direto em ação ou conflito">In medias res — direto em ação</option>
-        <option value="atmosférico e lento — construction de tensão">Atmosférico — construção de tensão</option>
+        <option value="atmosférico e lento — construção de tensão">Atmosférico — construção de tensão</option>
         <option value="diálogo — dois personagens já interagindo">Diálogo — personagens já interagindo</option>
         <option value="pensamento interno — mergulho na mente do protagonista">Pensamento interno — mente do protagonista</option>
         <option value="descrição de cena — estabelece lugar e tempo">Descrição de cena</option>
@@ -1141,7 +1121,9 @@ input[type="range"]::-webkit-slider-thumb {
   <div id="gaveta-conteudo"></div>
 </div>
 
-</div><div class="modal-overlay" id="modal-leitura">
+</div>
+
+<div class="modal-overlay" id="modal-leitura">
   <div class="modal-cab">
     <span class="modal-titulo" id="modal-titulo-texto">—</span>
     <div class="grupo-acoes">
@@ -1157,18 +1139,12 @@ input[type="range"]::-webkit-slider-thumb {
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════
-// ESTADO GLOBAL
-// ═══════════════════════════════════════════
 let provedorAtivo = 'gemini';
 let sagaConfig = {};
 let sagaCapitulos = [];
 let blocoAtualIdx = 0;
 let resumoNarrativo = '';
 
-// ═══════════════════════════════════════════
-// CANVAS — PARTÍCULAS CENTELHA
-// ═══════════════════════════════════════════
 (function() {
   const canvas = document.getElementById('canvas-centelhas');
   const ctx = canvas.getContext('2d');
@@ -1219,15 +1195,11 @@ let resumoNarrativo = '';
   tick();
 })();
 
-// ═══════════════════════════════════════════
-// NAVEGAÇÃO
-// ═══════════════════════════════════════════
 function abrirTela(id) {
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById(id).classList.add('ativa');
   window.scrollTo(0, 0);
 
-  // Controlar exibição do painel-ia (motor de criação) para que apareça apenas no Menu Inicial
   const painelIa = document.querySelector('.painel-ia');
   if (painelIa) {
     if (id === 'telaMenu') {
@@ -1242,9 +1214,6 @@ function abrirTela(id) {
 
 function voltarMenu() { abrirTela('telaMenu'); }
 
-// ═══════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════
 function toast(msg) {
   const el = document.getElementById('toast');
   el.innerText = msg;
@@ -1252,34 +1221,20 @@ function toast(msg) {
   setTimeout(() => el.classList.remove('visivel'), 2500);
 }
 
-// ═══════════════════════════════════════════
-// PROVEDOR E CHAVE
-// ═══════════════════════════════════════════
 function selecionarProvedor(p) {
   provedorAtivo = p;
   document.getElementById('btn-gemini').classList.toggle('ativo', p === 'gemini');
   document.getElementById('btn-gemini1').classList.toggle('ativo', p === 'gemini1');
   document.getElementById('btn-claude').classList.toggle('ativo', p === 'claude');
   
-  // Como Gemini 1.0 e 2.5 usam a mesma chave da Google AI Studio, salvamos e carregamos do mesmo local
   const chaveChave = (p === 'gemini' || p === 'gemini1') ? 'chave_gemini' : 'chave_' + p;
   const chave = localStorage.getItem(chaveChave) || '';
   document.getElementById('inputChave').value = chave;
-  
-  if (p === 'gemini') {
-    document.getElementById('inputChave').placeholder = 'Cole sua chave do Google AI Studio (Gemini 2.5)';
-  } else if (p === 'gemini1') {
-    document.getElementById('inputChave').placeholder = 'Cole sua chave do Google AI Studio (Gemini 1.0)';
-  } else {
-    document.getElementById('inputChave').placeholder = 'Cole sua chave da Anthropic (Claude)';
-  }
 }
 
 function salvarChave() {
   const chave = document.getElementById('inputChave').value.trim();
   if (!chave) { toast('⚠️ Digite uma chave válida'); return; }
-  
-  // Salva no local correto respeitando o compartilhamento de chave do ecossistema Google
   const pSalvar = (provedorAtivo === 'gemini' || provedorAtivo === 'gemini1') ? 'gemini' : provedorAtivo;
   localStorage.setItem('chave_' + pSalvar, chave);
   toast('✅ Chave salva!');
@@ -1290,12 +1245,8 @@ function pegarChave() {
   return localStorage.getItem('chave_' + pBuscar) || '';
 }
 
-// Restaura chave do provedor ativo ao carregar
 selecionarProvedor('gemini');
 
-// ═══════════════════════════════════════════
-// CHAMADA À IA
-// ═══════════════════════════════════════════
 async function chamarIA(prompt, idStatus) {
   const chave = pegarChave();
   if (!chave) {
@@ -1306,7 +1257,6 @@ async function chamarIA(prompt, idStatus) {
 
   try {
     if (provedorAtivo === 'gemini') {
-      // Modelo corrigido para a versão de produção estável oficial do Google AI Studio
       const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1358,34 +1308,9 @@ async function chamarIA(prompt, idStatus) {
   }
 }
 
-// ═══════════════════════════════════════════
-// INICIAR FORJA DA SAGA
-// ═══════════════════════════════════════════
-function iniciarSaga() {
-  sagaConfig = coletarConfigSaga();
-  
-  const instPrimeiroBloco = document.getElementById('bloco-inst-1');
-  if (!instPrimeiroBloco || !instPrimeiroBloco.value.trim()) {
-    toast('⚠️ Digite o enredo no Bloco 1 para começar');
-    document.getElementById('s-status').innerHTML = `<div class="aviso aviso-erro">⚠️ Preencha as instruções do Bloco 1 antes de forjar.</div>`;
-    return;
-  }
-
-  sagaCapitulos = [];
-  blocoAtualIdx = 1;
-  resumoNarrativo = '';
-  document.getElementById('s-lista-caps').innerHTML = '';
-  document.getElementById('btn-gerar-saga').disabled = true;
-
-  gerarBlocoSaga();
-}
-
-// ═══════════════════════════════════════════
-// SISTEMA DE BLOCOS
-// ═══════════════════════════════════════════
 function recalcularBlocos() {
-  const total = parseInt(document.getElementById('s-total-cap').value) || 20;
-  const porBloco = parseInt(document.getElementById('s-cap-bloco').value) || 20;
+  const total = parseInt(document.getElementById('s-total-cap').value) || 80;
+  const porBloco = parseInt(document.getElementById('s-cap-bloco').value) || 10;
   const qtdBlocos = Math.ceil(total / porBloco);
 
   document.getElementById('s-resumo-blocos').innerText =
@@ -1401,20 +1326,16 @@ function recalcularBlocos() {
     div.className = 'bloco-instrucao';
     div.innerHTML = `
       <div class="bloco-instrucao-titulo">Bloco ${i} — Capítulos ${inicio} a ${fim}</div>
-      <textarea class="media" id="bloco-inst-${i}" placeholder="Descreva aqui unicamente o que acontece de específico nesta fase (Ex: Neste bloco os protagonistas se conhecem e brigam pela primeira vez...)."></textarea>
+      <textarea class="media" id="bloco-inst-${i}" placeholder="O que acontece especificamente neste bloco de capítulos? Quais eventos, encontros, reviravoltas ou progressões devem acontecer aqui? Isso guia a IA por esses ${fim - inicio + 1} capítulos específicos."></textarea>
     `;
     lista.appendChild(div);
   }
 }
 
-// Inicializar blocos ao carregar
 window.addEventListener('DOMContentLoaded', () => {
   recalcularBlocos();
 });
 
-// ═══════════════════════════════════════════
-// PROMPT LITERÁRIO DE ELITE
-// ═══════════════════════════════════════════
 function promptSistemaLiterario() {
   return `
 Você é uma escritora literária de elite — pense em Donna Tartt, Leigh Bardugo, Patrick Rothfuss e George R.R. Martin fundidos em uma única voz.
@@ -1431,9 +1352,6 @@ SEUS PRINCÍPIOS INEGOCIÁVEIS:
 `;
 }
 
-// ═══════════════════════════════════════════
-// FORJAR SAGA
-// ═══════════════════════════════════════════
 function coletarConfigSaga() {
   return {
     nome: document.getElementById('s-nome').value || 'Saga Sem Nome',
@@ -1441,8 +1359,8 @@ function coletarConfigSaga() {
     tom: document.getElementById('s-tom').value,
     pov: document.getElementById('s-pov').value,
     palavras: document.getElementById('s-palavras').value,
-    totalCap: parseInt(document.getElementById('s-total-cap').value) || 20,
-    capPorBloco: parseInt(document.getElementById('s-cap-bloco').value) || 20,
+    totalCap: parseInt(document.getElementById('s-total-cap').value) || 80,
+    capPorBloco: parseInt(document.getElementById('s-cap-bloco').value) || 10,
     sinopseGeral: document.getElementById('s-sinopse-geral').value,
     p1nome: document.getElementById('s-p1-nome').value,
     p1aparencia: document.getElementById('s-p1-aparencia').value,
@@ -1468,8 +1386,31 @@ function coletarConfigSaga() {
     misterio: document.getElementById('r-misterio').value,
     enredo: document.getElementById('s-enredo').value,
     fim: document.getElementById('s-fim').value,
-    qtdBlocos: Math.ceil((parseInt(document.getElementById('s-total-cap').value) || 20) / (parseInt(document.getElementById('s-cap-bloco').value) || 20))
+    qtdBlocos: Math.ceil((parseInt(document.getElementById('s-total-cap').value) || 80) / (parseInt(document.getElementById('s-cap-bloco').value) || 10))
   };
+}
+
+function iniciarSaga() {
+  if (!document.getElementById('s-sinopse-geral').value.trim()) {
+    toast('⚠️ A Sinopse Geral Gigante é obrigatória!');
+    return;
+  }
+  
+  // Garante que o usuário digitou enredo no primeiro bloco que vai ser gerado
+  const instPrimeiroBloco = document.getElementById('bloco-inst-1');
+  if (!instPrimeiroBloco || !instPrimeiroBloco.value.trim()) {
+    toast('⚠️ Escreva o enredo do Bloco 1 antes de forjar');
+    return;
+  }
+
+  sagaConfig = coletarConfigSaga();
+  sagaCapitulos = [];
+  blocoAtualIdx = 1;
+  resumoNarrativo = '';
+  document.getElementById('s-lista-caps').innerHTML = '';
+  document.getElementById('s-status').innerHTML = '';
+  
+  gerarBlocoSaga();
 }
 
 async function gerarBlocoSaga() {
@@ -1477,15 +1418,18 @@ async function gerarBlocoSaga() {
   const porBloco = sagaConfig.capPorBloco;
   const inicio = (blocoAtualIdx - 1) * porBloco + 1;
   const fim = Math.min(blocoAtualIdx * porBloco, total);
+  
   const instEl = document.getElementById(`bloco-inst-${blocoAtualIdx}`);
-  const instrucao = instEl ? instEl.value : 'Desenvolva a narrativa de forma coerente com o que veio antes.';
+  const instrucao = instEl ? instEl.value.trim() : '';
 
   const statusEl = document.getElementById('s-status');
+  document.getElementById('btn-gerar-saga').disabled = true;
+  
   statusEl.innerHTML = `
     <div class="aviso aviso-aguarde">
-      🔄 Gerando Bloco ${blocoAtualIdx} de ${sagaConfig.qtdBlocos} — Capítulos ${inicio} a ${fim}...
+      🔄 Tecendo o Bloco ${blocoAtualIdx} de ${sagaConfig.qtdBlocos} — Capítulos ${inicio} a ${fim}...
       <div class="barra-progresso-wrap" style="margin-top:0.6rem">
-        <div class="barra-progresso" style="width:${((blocoAtualIdx-1)/sagaConfig.qtdBlocos)*100}%"></div>
+        <div class="barra-progresso" style="width:${((blocoAtualIdx - 1) / sagaConfig.qtdBlocos) * 100}%"></div>
       </div>
     </div>
   `;
@@ -1501,11 +1445,10 @@ Ponto de vista: ${sagaConfig.pov}
 Palavras por capítulo: ~${sagaConfig.palavras}
 ═══════════════════════════════════════════
 
-DIRETRIZ MESTRA / SINOPSE GERAL DA HISTÓRIA (Siga isso em absolutamente todos os blocos):
+DIRETRIZ MESTRA / SINOPSE GERAL DA HISTÓRIA (Este é o tema mestre e pano de fundo de toda a obra):
 ${sagaConfig.sinopseGeral}
 
 ═══════════════════════════════════════════
-
 PROTAGONISTA 1 — ${sagaConfig.p1nome}
 Aparência: ${sagaConfig.p1aparencia}
 Personalidade: ${sagaConfig.p1personalidade}
@@ -1544,28 +1487,29 @@ ${sagaConfig.enredo}
 COMO A SAGA TERMINA (direção geral)
 ${sagaConfig.fim || 'Não especificado — use seu julgamento criativo'}
 
-${resumoNarrativo ? `RESUMO DO QUE JÁ ACONTECEU (blocos anteriores):\n${resumoNarrativo}\n` : ''}
+${resumoNarrativo ? `MEMÓRIA CRUCIAL DO QUE JÁ FOI ESCRITO NOS BLOCOS ANTERIORES:\n${resumoNarrativo}\n` : ''}
 
 ═══════════════════════════════════════════
 TAREFA: Escreva os capítulos ${inicio} a ${fim} da saga.
 
-INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO ATUAL:
+INSTRUÇÕES DESTE BLOCO ATUAL (ROTEIRO OBRIGATÓRIO DE EVENTOS CRONOLÓGICOS DESTE BLOCO):
 ${instrucao}
 
 REGRAS DE FORMATO:
 - Cada capítulo começa exatamente assim: "Capítulo [NÚMERO] — [TÍTULO CRIATIVO]"
 - Seguido de uma linha em branco
 - Depois o texto completo do capítulo (~${sagaConfig.palavras} palavras)
-- Depois três hífens: ---
-- Repita para cada capítulo
+- Depois três hífens em uma linha isolada: ---
+- Repita para cada capítulo deste bloco
 
 REGRAS NARRATIVAS E DE SOBERANIA:
-- SOBERANIA DE PONTO DE VISTA (POV) POR BLOCO: Se nas instruções específicas do bloco atual for ditado que o ponto de vista pertence a um personagem específico até determinado capítulo (ex: 'Apenas ponto de vista de Charlotte até o capítulo 4'), esta regra anula e sobrepõe o ponto de vista geral selecionado. A IA deve ajustar o foco narrativo cirurgicamente e manter a transição de sentimentos, ritmo cinematográfico e emoção sem misturar ou bagunçar os pontos de vista.
-- Mantenha coerência absoluta com tudo que foi definido e com a SINOPSE GERAL DA HISTÓRIA
-- Desenvolva os personagens — eles devem crescer, falhar, aprender
-- Cada capítulo deve ter um arco próprio (começo, meio, fim emocional)
-- O último capítulo deste bloco deve criar antecipação para o próximo
-- Nunca resuma, sempre narre
+- SOBERANIA DE ENREDO DO BLOCO: A 'Sinopse Geral Gigante' é o pano de fundo mestre de todo o universo da história. No entanto, as 'Instruções deste bloco atual' ditam exatamente os acontecimentos reais e a sequência lógica que deve ocorrer nestes capítulos atuais. Escreva a história com base no roteiro deste bloco, encaixando-o harmoniosamente no universo geral.
+- SOBERANIA DE PONTO DE VISTA (POV) POR BLOCO: Se nas instruções do bloco atual for ditado que o ponto de vista pertence a um personagem específico até determinado capítulo (ex: 'Apenas ponto de vista de Charlotte até o capítulo 4'), esta regra anula e sobrepõe o ponto de vista geral selecionado. A IA deve ajustar o foco narrativo cirurgicamente e manter a transição de sentimentos, ritmo cinematográfico e emoção sem misturar ou bagunçar os pontos de vista.
+- Mantenha coerência absoluta com tudo que foi definido.
+- Desenvolva os personagens — eles devem crescer, falhar, aprender.
+- Cada capítulo deve ter um arco próprio (começo, meio, fim emocional).
+- O último capítulo deste bloco deve criar antecipação para o próximo.
+- Nunca resuma, sempre narre.
 `;
 
   const resultado = await chamarIA(prompt, 's-status');
@@ -1577,16 +1521,23 @@ REGRAS NARRATIVAS E DE SOBERANIA:
   processarBlocoTexto(resultado, inicio, fim);
   await atualizarResumoNarrativo(resultado, inicio, fim);
 
-  blocoAtualIdx++;
-
-  if (blocoAtualIdx <= sagaConfig.qtdBlocos) {
-    setTimeout(gerarBlocoSaga, 3000);
+  if (blocoAtualIdx < sagaConfig.qtdBlocos) {
+    statusEl.innerHTML = `
+      <div class="aviso aviso-sucesso">
+        🎉 Bloco ${blocoAtualIdx} concluído com sucesso! (Capítulos ${inicio} a ${fim} gerados).
+        <p style="font-size:0.9rem; margin-top:0.5rem; color:var(--texto);">Revise os capítulos gerados abaixo. Escreva as instruções para o Bloco ${blocoAtualIdx + 1} se necessário e clique no botão para autorizar a IA a continuar.</p>
+        <div class="grupo-acoes" style="margin-top:0.8rem">
+          <button class="btn-principal" style="margin:0" onclick="avancarProximoBlocoComando()">⚔️ Avançar e Forjar o Bloco ${blocoAtualIdx + 1}</button>
+          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar o progresso atual na Gaveta</button>
+        </div>
+      </div>
+    `;
   } else {
     statusEl.innerHTML = `
       <div class="aviso aviso-sucesso">
-        ✅ Saga completa! ${sagaCapitulos.length} capítulos gerados.
+        ✅ SAGA COMPLETA CONCLUÍDA! Todos os ${sagaCapitulos.length} capítulos foram forjados com maestria.
         <div class="grupo-acoes" style="margin-top:0.8rem">
-          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar toda a saga na Gaveta</button>
+          <button class="btn-acao" onclick="salvarSagaCompleta()">💾 Salvar toda a saga na Gaveta Literária</button>
         </div>
       </div>
     `;
@@ -1594,10 +1545,23 @@ REGRAS NARRATIVAS E DE SOBERANIA:
   }
 }
 
+function avancarProximoBlocoComando() {
+  blocoAtualIdx++;
+  
+  // Verifica se o usuário preencheu as instruções para o novo bloco antes de continuar
+  const instProximoBloco = document.getElementById(`bloco-inst-${blocoAtualIdx}`);
+  if (!instProximoBloco || !instProximoBloco.value.trim()) {
+    toast(`⚠️ Escreva o enredo do Bloco ${blocoAtualIdx} antes de avançar`);
+    return;
+  }
+  
+  gerarBlocoSaga();
+}
+
 async function atualizarResumoNarrativo(texto, inicio, fim) {
   const promptResumo = `
 Resuma em até 200 palavras o que aconteceu nos capítulos ${inicio} a ${fim} da saga "${sagaConfig.nome}". 
-Foque em: eventos principais, desenvolvimento dos personagens, mudanças no status quo, revelações importantes e onde os personagens estão emocionalmente ao final deste bloco.
+Foque em: eventos principais, desenvolvimento dos personagens e onde os personagens estão emocionalmente ao final deste bloco.
 
 TEXTO DOS CAPÍTULOS:
 ${texto.substring(0, 3000)}...
@@ -1677,12 +1641,9 @@ function salvarSagaCompleta() {
   });
   salvos[chave].data = new Date().toLocaleString('pt-BR');
   localStorage.setItem('nucleo_gaveta', JSON.stringify(salvos));
-  toast('💾 Saga salva na Gaveta!');
+  toast('💾 Progresso salvo na Gaveta!');
 }
 
-// ═══════════════════════════════════════════
-// FORJAR CAPÍTULO ÚNICO
-// ═══════════════════════════════════════════
 async function gerarCapitulo() {
   const titulo = document.getElementById('c-titulo').value;
   const numero = document.getElementById('c-numero').value;
@@ -1778,9 +1739,6 @@ function limparCapitulo() {
   document.getElementById('c-status').innerHTML = '';
 }
 
-// ═══════════════════════════════════════════
-// GAVETA LITERÁRIA
-// ═══════════════════════════════════════════
 function renderGaveta() {
   const cont = document.getElementById('gaveta-conteudo');
   const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
@@ -1860,7 +1818,6 @@ function lerCap(nomeObra, idx) {
   document.getElementById('modal-leitura').classList.add('aberto');
 }
 
-// Corrigido tratamento de strings para evitar quebra de aspas nas chamadas das funções da Gaveta
 function copiarCapGaveta(nomeObra, idx) {
   const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
   const obra = salvos[nomeObra];
@@ -1879,23 +1836,11 @@ function apagarCapGaveta(nomeObra, idx) {
   renderGaveta();
 }
 
-function fecharModal() {
-  document.getElementById('modal-leitura').classList.remove('aberto');
-}
-
-function copiarModal() {
-  const texto = document.getElementById('modal-corpo-texto').innerText;
-  navigator.clipboard.writeText(texto).then(() => toast('📋 Copiado!'));
-}
-
-function copiarTexto(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  navigator.clipboard.writeText(el.innerText).then(() => toast('📋 Copiado!'));
-}
+function fecharModal() { document.getElementById('modal-leitura').classList.remove('aberto'); }
+function copiarModal() { navigator.clipboard.writeText(document.getElementById('modal-corpo-texto').innerText).then(() => toast('📋 Copiado!')); }
+function copiarTexto(id) { navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => toast('📋 Copiado!')); }
 </script>
 </body>
 </html>
-
 
 ```
