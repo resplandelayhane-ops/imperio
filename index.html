@@ -871,7 +871,8 @@ function apagarItemSalvo(indice) {
 async function chamarIA(textoPrompt) {
     const chave = pegarChaveAtual();
     if (!chave) {
-        document.getElementById('statusGeracao')?.innerHTML = `<div class="aviso-erro">⚠️ Insira e salve sua chave da API primeiro!</div>`;
+        const status = document.getElementById('statusGeracao');
+        if (status) status.innerHTML = `<div class="aviso-erro">⚠️ Insira e salve sua chave da API primeiro!</div>`;
         alert('⚠️ Insira e salve sua chave da API no topo da página!');
         return '';
     }
@@ -989,6 +990,113 @@ Capítulo X - Título
 }
 
 function processarCapitulosBloco(texto, numeroInicio) {
-    const regex = /Capítulo\s*(\d+)\s*-\s*(.+?)\s*\n/g;
-    let correspondencia;
-    while ((correspondencia = regex.exec(texto))
+    // Divide o texto nos marcadores de capítulo
+    const partes = texto.split(/(?=Capítulo\s+\d+\s*[-–])/i);
+
+    partes.forEach(parte => {
+        parte = parte.trim();
+        if (!parte) return;
+
+        // Extrai número e título do capítulo
+        const linhasTitulo = parte.match(/^Capítulo\s*(\d+)\s*[-–]\s*(.+)/i);
+        if (!linhasTitulo) return;
+
+        const numero = parseInt(linhasTitulo[1]);
+        const titulo = linhasTitulo[2].split('\n')[0].trim();
+        const conteudo = parte.replace(/^Capítulo\s*\d+\s*[-–]\s*.+\n?/i, '').trim();
+
+        // Evita duplicatas
+        const jaExiste = sagaGerada.find(c => c.numero === numero);
+        if (jaExiste) return;
+
+        sagaGerada.push({ numero, titulo, conteudo });
+
+        // Renderiza na tela
+        const lista = document.getElementById('listaCapitulosSaga');
+        const item = document.createElement('div');
+        item.className = 'item-capitulo';
+        item.id = `cap-${numero}`;
+        item.innerHTML = `
+            <div class="cabecalho-capitulo">
+                <span class="titulo-capitulo">Capítulo ${numero} — ${titulo}</span>
+                <div class="acoes-capitulo">
+                    <button class="btn-acao" onclick="toggleCapitulo(${numero})">👁️ Ver</button>
+                    <button class="btn-acao" onclick="copiarCapitulo(${numero})">📋 Copiar</button>
+                </div>
+            </div>
+            <div id="conteudo-cap-${numero}" style="display: none; margin-top: 1rem; white-space: pre-wrap; line-height: 1.9; color: var(--texto-claro);">${conteudo}</div>
+        `;
+        lista.appendChild(item);
+    });
+}
+
+function toggleCapitulo(numero) {
+    const div = document.getElementById(`conteudo-cap-${numero}`);
+    if (!div) return;
+    div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+
+function copiarCapitulo(numero) {
+    const cap = sagaGerada.find(c => c.numero === numero);
+    if (!cap) return;
+    const texto = `Capítulo ${cap.numero} — ${cap.titulo}\n\n${cap.conteudo}`;
+    navigator.clipboard.writeText(texto)
+        .then(() => alert('✅ Capítulo copiado!'))
+        .catch(() => alert('❌ Erro ao copiar.'));
+}
+
+// Função Forjar Capítulo Único
+async function gerarCapituloUnico() {
+    const titulo = document.getElementById('tituloCap').value.trim();
+    const palavras = document.getElementById('palavrasCap').value;
+    const pontoVista = document.getElementById('pontoVistaCap').value;
+    const prot1 = document.getElementById('prot1Cap').value.trim();
+    const prot2 = document.getElementById('prot2Cap').value.trim();
+    const drama = document.getElementById('dramaCap').value;
+    const emocao = document.getElementById('emocaoCap').value;
+    const ideia = document.getElementById('ideiaCap').value.trim();
+    const resultado = document.getElementById('resultadoCap');
+
+    if (!ideia) {
+        alert('⚠️ Descreva o que deve acontecer no capítulo!');
+        return;
+    }
+
+    resultado.innerText = '🔄 Gerando capítulo... aguarde.';
+
+    const prompt = `
+Escreva um capítulo literário completo com as seguintes especificações:
+
+Título da obra: ${titulo || 'Não informado'}
+Quantidade de palavras: cerca de ${palavras} palavras
+Ponto de vista narrativo: ${pontoVista}
+
+--- PERSONAGENS ---
+Protagonista 1: ${prot1 || 'Não informado'}
+Protagonista 2 / Personagem principal: ${prot2 || 'Não informado'}
+
+--- NÍVEIS DE INTENSIDADE ---
+Drama: ${drama}%
+Emoção: ${emocao}%
+
+--- O QUE DEVE ACONTECER NESTE CAPÍTULO ---
+${ideia}
+
+--- REGRAS ---
+- Escreva com linguagem literária envolvente, rica em detalhes sensoriais e emocionais
+- Desenvolva diálogos naturais e autênticos
+- Mantenha coerência com os personagens e a proposta
+- Não quebre a imersão com comentários externos
+- Entregue o capítulo completo, do início ao fim, sem truncar
+`;
+
+    const texto = await chamarIA(prompt);
+    if (texto) {
+        resultado.innerText = texto;
+    } else {
+        resultado.innerText = 'O capítulo gerado aparecerá aqui...';
+    }
+}
+</script>
+</body>
+</html>
