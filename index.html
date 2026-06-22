@@ -819,7 +819,7 @@ input[type="range"]::-webkit-slider-thumb {
 
   <div class="secao" style="border: 1px solid var(--dourado); box-shadow: var(--glow);">
     <div class="secao-titulo" style="color: var(--dourado-brilho);">✍️ Sinopse Geral e Diretriz Mestra</div>
-    <p style="color:var(--texto-sec);font-size:0.95rem;margin-bottom:1.2rem;font-family:'Crimson Pro',serif; line-height: 1.6;">
+    <p style="color:var(--texto-sec);font-size:0.95rem;margin-bottom:12rem;font-family:'Crimson Pro',serif; line-height: 1.6;">
       Descreva aqui o enredo completo, o objetivo mestre, o estilo narrativo e a alma da história. Todos os blocos gerados a seguir respeitarão rigorosamente este panorama geral como um guia soberano.
     </p>
     <div class="bloco-campo">
@@ -1060,7 +1060,7 @@ input[type="range"]::-webkit-slider-thumb {
       <label>Como este capítulo começa?</label>
       <select id="c-abertura">
         <option value="in medias res — direto em ação ou conflito">In medias res — direto em ação</option>
-        <option value="atmosférico e lento — construção de tensão">Atmosférico — construção de tensão</option>
+        <option value="atmosférico e lento — construction de tensão">Atmosférico — construção de tensão</option>
         <option value="diálogo — dois personagens já interagindo">Diálogo — personagens já interagindo</option>
         <option value="pensamento interno — mergulho na mente do protagonista">Pensamento interno — mente do protagonista</option>
         <option value="descrição de cena — estabelece lugar e tempo">Descrição de cena</option>
@@ -1306,12 +1306,13 @@ async function chamarIA(prompt, idStatus) {
 
   try {
     if (provedorAtivo === 'gemini') {
-      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${chave}`, {
+      // Modelo corrigido para a versão de produção estável oficial do Google AI Studio
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chave}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.9, maxOutputTokens: 65536 }
+          generationConfig: { temperature: 0.9 }
         })
       });
       const dados = await resp.json();
@@ -1319,7 +1320,6 @@ async function chamarIA(prompt, idStatus) {
       return dados.candidates[0].content.parts[0].text;
 
     } else if (provedorAtivo === 'gemini1') {
-      // Endpoint corrigido de v1 para v1beta para garantir compatibilidade impecável
       const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${chave}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1333,7 +1333,6 @@ async function chamarIA(prompt, idStatus) {
       return dados.candidates[0].content.parts[0].text;
 
     } else {
-      // Claude via proxy (usuário precisa de chave Anthropic)
       const resp = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -1357,6 +1356,28 @@ async function chamarIA(prompt, idStatus) {
     toast('❌ Erro na API');
     return '';
   }
+}
+
+// ═══════════════════════════════════════════
+// INICIAR FORJA DA SAGA
+// ═══════════════════════════════════════════
+function iniciarSaga() {
+  sagaConfig = coletarConfigSaga();
+  
+  const instPrimeiroBloco = document.getElementById('bloco-inst-1');
+  if (!instPrimeiroBloco || !instPrimeiroBloco.value.trim()) {
+    toast('⚠️ Digite o enredo no Bloco 1 para começar');
+    document.getElementById('s-status').innerHTML = `<div class="aviso aviso-erro">⚠️ Preencha as instruções do Bloco 1 antes de forjar.</div>`;
+    return;
+  }
+
+  sagaCapitulos = [];
+  blocoAtualIdx = 1;
+  resumoNarrativo = '';
+  document.getElementById('s-lista-caps').innerHTML = '';
+  document.getElementById('btn-gerar-saga').disabled = true;
+
+  gerarBlocoSaga();
 }
 
 // ═══════════════════════════════════════════
@@ -1422,7 +1443,7 @@ function coletarConfigSaga() {
     palavras: document.getElementById('s-palavras').value,
     totalCap: parseInt(document.getElementById('s-total-cap').value) || 20,
     capPorBloco: parseInt(document.getElementById('s-cap-bloco').value) || 20,
-    sinopseGeral: document.getElementById('s-sinopse-geral').value, // Coleta da nova sinopse master
+    sinopseGeral: document.getElementById('s-sinopse-geral').value,
     p1nome: document.getElementById('s-p1-nome').value,
     p1aparencia: document.getElementById('s-p1-aparencia').value,
     p1personalidade: document.getElementById('s-p1-personalidade').value,
@@ -1553,10 +1574,7 @@ REGRAS NARRATIVAS E DE SOBERANIA:
     return;
   }
 
-  // Processa e exibe
   processarBlocoTexto(resultado, inicio, fim);
-
-  // Gera resumo do bloco para memória narrativa
   await atualizarResumoNarrativo(resultado, inicio, fim);
 
   blocoAtualIdx++;
@@ -1564,7 +1582,6 @@ REGRAS NARRATIVAS E DE SOBERANIA:
   if (blocoAtualIdx <= sagaConfig.qtdBlocos) {
     setTimeout(gerarBlocoSaga, 3000);
   } else {
-    const pct = Math.round((sagaCapitulos.length / sagaConfig.totalCap) * 100);
     statusEl.innerHTML = `
       <div class="aviso aviso-sucesso">
         ✅ Saga completa! ${sagaCapitulos.length} capítulos gerados.
@@ -1581,7 +1598,6 @@ async function atualizarResumoNarrativo(texto, inicio, fim) {
   const promptResumo = `
 Resuma em até 200 palavras o que aconteceu nos capítulos ${inicio} a ${fim} da saga "${sagaConfig.nome}". 
 Foque em: eventos principais, desenvolvimento dos personagens, mudanças no status quo, revelações importantes e onde os personagens estão emocionalmente ao final deste bloco.
-Seja preciso e factual — este resumo será usado para manter coerência narrativa nos próximos capítulos.
 
 TEXTO DOS CAPÍTULOS:
 ${texto.substring(0, 3000)}...
@@ -1844,6 +1860,7 @@ function lerCap(nomeObra, idx) {
   document.getElementById('modal-leitura').classList.add('aberto');
 }
 
+// Corrigido tratamento de strings para evitar quebra de aspas nas chamadas das funções da Gaveta
 function copiarCapGaveta(nomeObra, idx) {
   const salvos = JSON.parse(localStorage.getItem('nucleo_gaveta') || '{}');
   const obra = salvos[nomeObra];
