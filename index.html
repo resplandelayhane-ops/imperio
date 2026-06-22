@@ -100,6 +100,7 @@ header {
   flex-wrap: wrap;
   max-width: 800px;
   margin: 0 auto 1rem;
+  transition: opacity 0.3s ease;
 }
 
 .seletor-provedor {
@@ -734,7 +735,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 <div class="wrapper">
 
-<!-- HEADER -->
 <header>
   <div class="logo-linha">
     <span class="logo-ornamento">◆</span>
@@ -756,7 +756,6 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 </header>
 
-<!-- MENU INICIAL -->
 <div id="telaMenu" class="tela ativa">
   <div class="divisor">
     <div class="divisor-linha"></div>
@@ -782,16 +781,12 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 </div>
 
-<!-- ════════════════════════════════════════ -->
-<!-- TELA FORJAR SAGA -->
-<!-- ════════════════════════════════════════ -->
 <div id="telaSaga" class="tela">
   <div class="cab-tela">
     <button class="btn-voltar" onclick="voltarMenu()">←</button>
     <h2 class="titulo-tela">⚔️ Forjar Saga</h2>
   </div>
 
-  <!-- DADOS GERAIS -->
   <div class="secao">
     <div class="secao-titulo">📋 Identidade da Saga</div>
     <div class="bloco-campo">
@@ -822,7 +817,17 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
   </div>
 
-  <!-- SISTEMA DE BLOCOS -->
+  <div class="secao" style="border: 1px solid var(--dourado); box-shadow: var(--glow);">
+    <div class="secao-titulo" style="color: var(--dourado-brilho);">✍️ Sinopse Geral e Diretriz Mestra</div>
+    <p style="color:var(--texto-sec);font-size:0.95rem;margin-bottom:1.2rem;font-family:'Crimson Pro',serif; line-height: 1.6;">
+      Descreva aqui o enredo completo, o objetivo mestre, o estilo narrativo e a alma da história. Todos os blocos gerados a seguir respeitarão rigorosamente este panorama geral como um guia soberano.
+    </p>
+    <div class="bloco-campo">
+      <label style="color: var(--dourado-brilho); font-weight: 700; font-size: 0.95rem;">SINOPSE GERAL GIGANTE</label>
+      <textarea class="grande" id="s-sinopse-geral" style="min-height: 280px; border-color: var(--dourado); background: rgba(8, 6, 4, 0.98); font-size: 1.05rem; line-height: 1.8;" placeholder="Ex: Narre aqui a jornada de forma global (Ex: Uma história sobre um CEO misterioso que na verdade lidera uma organização secreta de magia de runas. Ele conhece Lyra na chuva...). Escreva detalhadamente o desenrolar que deseja para a obra..."></textarea>
+    </div>
+  </div>
+
   <div class="secao">
     <div class="secao-titulo">🧩 Planejamento por Blocos</div>
     <p style="color:var(--texto-sec);font-size:0.9rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">
@@ -842,7 +847,6 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="blocos-lista" id="s-lista-blocos"></div>
   </div>
 
-  <!-- PERSONAGENS -->
   <div class="secao">
     <div class="secao-titulo">👤 Perfil Psicológico — Protagonista 1</div>
     <div class="bloco-campo">
@@ -891,7 +895,6 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
   </div>
 
-  <!-- MUNDO -->
   <div class="secao">
     <div class="secao-titulo">🌍 Motor de Worldbuilding</div>
     <div class="bloco-campo">
@@ -912,7 +915,6 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
   </div>
 
-  <!-- ENCONTRO E DESTINO -->
   <div class="secao">
     <div class="secao-titulo">🤝 O Encontro</div>
     <div class="bloco-campo">
@@ -931,7 +933,6 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
   </div>
 
-  <!-- INTENSIDADE -->
   <div class="secao">
     <div class="secao-titulo">🎚️ Calibração Narrativa</div>
     <div class="controles-grid">
@@ -980,7 +981,6 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
   </div>
 
-  <!-- ENREDO -->
   <div class="secao">
     <div class="secao-titulo">📜 Enredo e Arco Geral</div>
     <div class="bloco-campo">
@@ -998,9 +998,6 @@ input[type="range"]::-webkit-slider-thumb {
   <div id="s-lista-caps" class="lista-caps"></div>
 </div>
 
-<!-- ════════════════════════════════════════ -->
-<!-- TELA FORJAR CAPÍTULO -->
-<!-- ════════════════════════════════════════ -->
 <div id="telaCapitulo" class="tela">
   <div class="cab-tela">
     <button class="btn-voltar" onclick="voltarMenu()">←</button>
@@ -1074,7 +1071,7 @@ input[type="range"]::-webkit-slider-thumb {
       <select id="c-fechamento">
         <option value="cliffhanger — algo surpreendente ou revelador deixa o leitor suspenso">Cliffhanger — suspense no ar</option>
         <option value="resolução emocional — algo se resolve, mas nem tudo">Resolução emocional parcial</option>
-        <option value="virada de expectativa — o oposto do que se esperava acontece">Virada — oposto do esperado</option>
+        <option value="virada de expectation — o oposto do que se esperava acontece">Virada — oposto do esperado</option>
         <option value="calmaria tensa — silêncio carregado de significado">Calmaria tensa</option>
         <option value="revelação de informação crucial">Revelação crucial</option>
       </select>
@@ -1133,9 +1130,6 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 </div>
 
-<!-- ════════════════════════════════════════ -->
-<!-- TELA GAVETA LITERÁRIA -->
-<!-- ════════════════════════════════════════ -->
 <div id="telaGaveta" class="tela">
   <div class="cab-tela">
     <button class="btn-voltar" onclick="voltarMenu()">←</button>
@@ -1147,10 +1141,7 @@ input[type="range"]::-webkit-slider-thumb {
   <div id="gaveta-conteudo"></div>
 </div>
 
-</div><!-- /wrapper -->
-
-<!-- MODAL LEITURA -->
-<div class="modal-overlay" id="modal-leitura">
+</div><div class="modal-overlay" id="modal-leitura">
   <div class="modal-cab">
     <span class="modal-titulo" id="modal-titulo-texto">—</span>
     <div class="grupo-acoes">
@@ -1163,7 +1154,6 @@ input[type="range"]::-webkit-slider-thumb {
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1236,6 +1226,17 @@ function abrirTela(id) {
   document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
   document.getElementById(id).classList.add('ativa');
   window.scrollTo(0, 0);
+
+  // Controlar exibição do painel-ia (motor de criação) para que apareça apenas no Menu Inicial
+  const painelIa = document.querySelector('.painel-ia');
+  if (painelIa) {
+    if (id === 'telaMenu') {
+      painelIa.style.display = 'flex';
+    } else {
+      painelIa.style.display = 'none';
+    }
+  }
+
   if (id === 'telaGaveta') renderGaveta();
 }
 
@@ -1279,7 +1280,7 @@ function salvarChave() {
   if (!chave) { toast('⚠️ Digite uma chave válida'); return; }
   
   // Salva no local correto respeitando o compartilhamento de chave do ecossistema Google
-  const pSalvar = (provedorAtivo === 'gemini' || provadorAtivo === 'gemini1') ? 'gemini' : provedorAtivo;
+  const pSalvar = (provedorAtivo === 'gemini' || provedorAtivo === 'gemini1') ? 'gemini' : provedorAtivo;
   localStorage.setItem('chave_' + pSalvar, chave);
   toast('✅ Chave salva!');
 }
@@ -1318,7 +1319,8 @@ async function chamarIA(prompt, idStatus) {
       return dados.candidates[0].content.parts[0].text;
 
     } else if (provedorAtivo === 'gemini1') {
-      const resp = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.0-pro:generateContent?key=${chave}`, {
+      // Endpoint corrigido de v1 para v1beta para garantir compatibilidade impecável
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${chave}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1378,7 +1380,7 @@ function recalcularBlocos() {
     div.className = 'bloco-instrucao';
     div.innerHTML = `
       <div class="bloco-instrucao-titulo">Bloco ${i} — Capítulos ${inicio} a ${fim}</div>
-      <textarea class="media" id="bloco-inst-${i}" placeholder="O que acontece neste trecho da história? Quais eventos, encontros, reviravoltas, tensões e progressos? Seja específica — isso guia a IA por ${fim - inicio + 1} capítulos."></textarea>
+      <textarea class="media" id="bloco-inst-${i}" placeholder="Descreva aqui unicamente o que acontece de específico nesta fase (Ex: Neste bloco os protagonistas se conhecem e brigam pela primeira vez...)."></textarea>
     `;
     lista.appendChild(div);
   }
@@ -1420,6 +1422,7 @@ function coletarConfigSaga() {
     palavras: document.getElementById('s-palavras').value,
     totalCap: parseInt(document.getElementById('s-total-cap').value) || 20,
     capPorBloco: parseInt(document.getElementById('s-cap-bloco').value) || 20,
+    sinopseGeral: document.getElementById('s-sinopse-geral').value, // Coleta da nova sinopse master
     p1nome: document.getElementById('s-p1-nome').value,
     p1aparencia: document.getElementById('s-p1-aparencia').value,
     p1personalidade: document.getElementById('s-p1-personalidade').value,
@@ -1446,19 +1449,6 @@ function coletarConfigSaga() {
     fim: document.getElementById('s-fim').value,
     qtdBlocos: Math.ceil((parseInt(document.getElementById('s-total-cap').value) || 20) / (parseInt(document.getElementById('s-cap-bloco').value) || 20))
   };
-}
-
-function iniciarSaga() {
-  sagaConfig = coletarConfigSaga();
-  sagaCapitulos = [];
-  blocoAtualIdx = 1;
-  resumoNarrativo = '';
-
-  document.getElementById('s-lista-caps').innerHTML = '';
-  document.getElementById('s-status').innerHTML = '';
-  document.getElementById('btn-gerar-saga').disabled = true;
-
-  gerarBlocoSaga();
 }
 
 async function gerarBlocoSaga() {
@@ -1488,6 +1478,11 @@ Gênero: ${sagaConfig.genero}
 Tom e atmosfera: ${sagaConfig.tom}
 Ponto de vista: ${sagaConfig.pov}
 Palavras por capítulo: ~${sagaConfig.palavras}
+═══════════════════════════════════════════
+
+DIRETRIZ MESTRA / SINOPSE GERAL DA HISTÓRIA (Siga isso em absolutamente todos os blocos):
+${sagaConfig.sinopseGeral}
+
 ═══════════════════════════════════════════
 
 PROTAGONISTA 1 — ${sagaConfig.p1nome}
@@ -1533,7 +1528,7 @@ ${resumoNarrativo ? `RESUMO DO QUE JÁ ACONTECEU (blocos anteriores):\n${resumoN
 ═══════════════════════════════════════════
 TAREFA: Escreva os capítulos ${inicio} a ${fim} da saga.
 
-INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO:
+INSTRUÇÕES ESPECÍFICAS PARA ESTE BLOCO ATUAL:
 ${instrucao}
 
 REGRAS DE FORMATO:
@@ -1543,8 +1538,9 @@ REGRAS DE FORMATO:
 - Depois três hífens: ---
 - Repita para cada capítulo
 
-REGRAS NARRATIVAS:
-- Mantenha coerência absoluta com tudo que foi definido
+REGRAS NARRATIVAS E DE SOBERANIA:
+- SOBERANIA DE PONTO DE VISTA (POV) POR BLOCO: Se nas instruções específicas do bloco atual for ditado que o ponto de vista pertence a um personagem específico até determinado capítulo (ex: 'Apenas ponto de vista de Charlotte até o capítulo 4'), esta regra anula e sobrepõe o ponto de vista geral selecionado. A IA deve ajustar o foco narrativo cirurgicamente e manter a transição de sentimentos, ritmo cinematográfico e emoção sem misturar ou bagunçar os pontos de vista.
+- Mantenha coerência absoluta com tudo que foi definido e com a SINOPSE GERAL DA HISTÓRIA
 - Desenvolva os personagens — eles devem crescer, falhar, aprender
 - Cada capítulo deve ter um arco próprio (começo, meio, fim emocional)
 - O último capítulo deste bloco deve criar antecipação para o próximo
@@ -1766,12 +1762,6 @@ function limparCapitulo() {
   document.getElementById('c-status').innerHTML = '';
 }
 
-function copiarTexto(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  navigator.clipboard.writeText(el.innerText).then(() => toast('📋 Copiado!'));
-}
-
 // ═══════════════════════════════════════════
 // GAVETA LITERÁRIA
 // ═══════════════════════════════════════════
@@ -1880,8 +1870,15 @@ function copiarModal() {
   const texto = document.getElementById('modal-corpo-texto').innerText;
   navigator.clipboard.writeText(texto).then(() => toast('📋 Copiado!'));
 }
+
+function copiarTexto(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => toast('📋 Copiado!'));
+}
 </script>
 </body>
 </html>
+
 
 ```
