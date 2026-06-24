@@ -1,5 +1,4 @@
- ```html
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -444,6 +443,32 @@ input[type=range]::-webkit-slider-thumb{
   box-shadow:0 0 6px rgba(184,148,42,.7);
 }
 
+/* BLOCOS */
+.blocos-wrap{
+  background:rgba(184,148,42,.06);
+  border:1px solid rgba(184,148,42,.18);
+  border-radius:12px;padding:1.1rem;margin-top:1rem;
+}
+
+.blocos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:480px){.blocos-grid{grid-template-columns:1fr;}}
+
+.bloco-resumo{
+  font-size:.83rem;color:var(--dourado);
+  font-family:'Inter',sans-serif;margin-bottom:.8rem;
+}
+
+.bloco-inst{
+  background:rgba(8,6,4,.8);
+  border:1px solid rgba(184,148,42,.12);
+  border-radius:10px;padding:.9rem;margin-bottom:.7rem;
+}
+
+.bloco-inst-titulo{
+  font-family:'Cinzel',serif;color:var(--dourado);
+  font-size:.82rem;margin-bottom:.5rem;
+}
+
 /* BOTÕES */
 .btn-p{
   width:100%;padding:1.15rem;border:none;border-radius:12px;
@@ -489,10 +514,6 @@ input[type=range]::-webkit-slider-thumb{
   white-space:pre-wrap;color:var(--texto);margin-bottom:1rem;
 }
 
-/* BARRA PROGRESSO */
-.prog-wrap{background:rgba(26,20,10,.8);border-radius:4px;height:6px;overflow:hidden;margin-top:.5rem;}
-.prog-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--dourado),var(--dourado-b));transition:width .5s ease;width:0%;}
-
 /* LISTA CAPS SAGA */
 .lista-caps{display:flex;flex-direction:column;gap:.9rem;margin-top:1.4rem;}
 
@@ -518,8 +539,12 @@ input[type=range]::-webkit-slider-thumb{
   line-height:2;white-space:pre-wrap;color:var(--texto);
 }
 
+/* BARRA PROGRESSO */
+.prog-wrap{background:rgba(26,20,10,.8);border-radius:4px;height:6px;overflow:hidden;margin-top:.5rem;}
+.prog-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--dourado),var(--dourado-b));transition:width .5s ease;width:0%;}
+
 /* ══════════════════════════════
-   GAVETA / BIBLIOTECA
+   GAVETA
 ══════════════════════════════ */
 .gav-obra{
   background:rgba(10,8,6,.95);border:1px solid var(--borda);
@@ -601,6 +626,17 @@ input[type=range]::-webkit-slider-thumb{
 .biblio-card-titulo{font-family:'Cinzel',serif;color:var(--dourado-b);font-size:.95rem;margin-bottom:.5rem;}
 .biblio-card-texto{font-family:'Crimson Pro',serif;font-style:italic;color:var(--texto-s);font-size:.92rem;line-height:1.6;}
 
+/* ══════════════════════════════
+   ARCO EMOCIONAL — VISUAL
+══════════════════════════════ */
+.arco-visual{
+  background:rgba(8,6,4,.95);border:1px solid var(--borda);
+  border-radius:12px;padding:1.5rem;margin:1rem 0;
+  min-height:200px;
+  font-family:'Crimson Pro',serif;font-size:1rem;
+  line-height:1.9;white-space:pre-wrap;color:var(--texto);
+}
+
 /* RESPONSIVO */
 @media(max-width:768px){
   .tela{padding:1.2rem 1rem;}
@@ -640,772 +676,1439 @@ input[type=range]::-webkit-slider-thumb{
     <div class="header-logo" onclick="voltarMenu()">◆ NÚCLEO LITERÁRIO</div>
     <div class="header-ia">
       <div class="seletor-ia">
-        <button class="btn-ia on" id="btnGemini" onclick="selecionarIA('gemini')">Gemini 2.5</button>
+        <button class="btn-ia on" id="btn-gem" onclick="setIA('gemini25')">✦ Gemini 2.5</button>
+        <button class="btn-ia" id="btn-gem15" onclick="setIA('gemini15')">✦ Gemini 1.5</button>
+        <button class="btn-ia" id="btn-cla" onclick="setIA('claude')">◈ Claude</button>
       </div>
       <div class="hdr-chave">
-        <input type="password" id="inputApiKey" placeholder="Sua Chave API..." oninput="salvarChave(this.value)">
+        <input type="password" id="inp-chave" placeholder="Chave da API">
+        <button class="btn-salvar" onclick="salvarChave()">Salvar</button>
       </div>
     </div>
   </header>
 
-  <!-- TELA MENU (HUB) -->
+  <!-- ══ MENU ══ -->
   <div id="telaMenu" class="tela on">
     <div class="menu-hero">
-      <h2 class="menu-hero-titulo">Escolha o Seu Portal de Criação</h2>
-      <p class="menu-hero-sub">Selecione uma mecânica narrativa para começar a moldar a sua nova obra prima.</p>
+      <p class="menu-hero-titulo">Escolha seu destino</p>
+      <p class="menu-hero-sub">Oito portais. Possibilidades infinitas.</p>
     </div>
-
     <div class="div-ornamental">
       <div class="div-linha"></div>
-      <span class="div-icone">✦ ✦ ✦</span>
+      <span class="div-icone">◆ ◆ ◆</span>
       <div class="div-linha"></div>
     </div>
-
     <div class="portais-grid">
-      <!-- Portal 1: Saga Épica -->
-      <div class="portal" onclick="irParaPortal('saga')">
-        <span class="portal-tag">Saga de Capítulos</span>
-        <span class="portal-icone">⚔️</span>
-        <h3 class="portal-nome">Saga Literária</h3>
-        <p class="portal-desc">Crie histórias profundas capituladas passo a passo, definindo personagens, conflitos e mantendo a continuidade cronológica impecável.</p>
-        <span class="portal-seta">Abrir Portal →</span>
+
+      <div class="portal" onclick="ir('telaSaga')">
+        <span class="portal-tag">Épico</span>
+        <div class="portal-icone">⚔️</div>
+        <div class="portal-nome">Forjar Saga</div>
+        <div class="portal-desc">Sagas completas até 150 capítulos com geração em blocos, memória narrativa viva e controle absoluto de universo.</div>
+        <div class="portal-seta">Entrar →</div>
       </div>
 
-      <!-- Portal 2: Conto Único -->
-      <div class="portal" onclick="irParaPortal('conto')">
-        <span class="portal-tag">Narrativa Curta</span>
-        <span class="portal-icone">📜</span>
-        <h3 class="portal-nome">Contos & Crônicas</h3>
-        <p class="portal-desc">Gere narrativas completas de uma só vez, focando no desenvolvimento rápido e marcante de um único acontecimento centralizado.</p>
-        <span class="portal-seta">Abrir Portal →</span>
+      <div class="portal" onclick="ir('telaCap')">
+        <span class="portal-tag">Narrativa</span>
+        <div class="portal-icone">📖</div>
+        <div class="portal-nome">Forjar Capítulo</div>
+        <div class="portal-desc">Capítulos únicos com ritmo calibrado, abertura e fechamento controlados, e profundidade psicológica real.</div>
+        <div class="portal-seta">Entrar →</div>
       </div>
 
-      <!-- Portal 3: Biblioteca -->
-      <div class="portal" onclick="irParaPortal('biblioteca')">
-        <span class="portal-tag">Acervo Criado</span>
-        <span class="portal-icone">📚</span>
-        <h3 class="portal-nome">Sua Biblioteca</h3>
-        <p class="portal-desc">Acesse todas as histórias geradas anteriormente. Suas s恢復as literárias, contos e registros salvos localmente.</p>
-        <span class="portal-seta">Abrir Portal →</span>
+      <div class="portal" onclick="ir('telaMundo')">
+        <span class="portal-tag">Worldbuilding</span>
+        <div class="portal-icone">🌍</div>
+        <div class="portal-nome">Construtor de Mundo</div>
+        <div class="portal-desc">Crie universos completos: sistemas de magia, política, religiões, facções, geografias e lendas fundadoras.</div>
+        <div class="portal-seta">Entrar →</div>
       </div>
+
+      <div class="portal" onclick="ir('telaDialogo')">
+        <span class="portal-tag">Cena</span>
+        <div class="portal-icone">💬</div>
+        <div class="portal-nome">Gerador de Diálogos</div>
+        <div class="portal-desc">Cenas de conversa com subtexto real. O que os personagens dizem raramente é o que querem dizer.</div>
+        <div class="portal-seta">Entrar →</div>
+      </div>
+
+      <div class="portal" onclick="ir('telaArco')">
+        <span class="portal-tag">Estrutura</span>
+        <div class="portal-icone">🎭</div>
+        <div class="portal-nome">Arco Emocional</div>
+        <div class="portal-desc">Planeje a jornada interior do seu personagem: feridas, pontos de virada, transformação e resolução.</div>
+        <div class="portal-seta">Entrar →</div>
+      </div>
+
+      <div class="portal" onclick="ir('telaBiblio')">
+        <span class="portal-tag">Inspiração</span>
+        <div class="portal-icone">📚</div>
+        <div class="portal-nome">Biblioteca de Inspiração</div>
+        <div class="portal-desc">Prompts literários curados, geradores de premissa, técnicas de grandes autores e faíscas criativas.</div>
+        <div class="portal-seta">Entrar →</div>
+      </div>
+
+      <div class="portal" onclick="ir('telaCapa')">
+        <span class="portal-tag">Premium</span>
+        <div class="portal-icone">🎨</div>
+        <div class="portal-nome">Criador de Capa</div>
+        <div class="portal-desc">Gera conceito visual de capa literária premium com paleta, composição, tipografia e prompt pronto para geração de imagem.</div>
+        <div class="portal-seta">Entrar →</div>
+      </div>
+
+      <div class="portal" onclick="ir('telaGaveta')">
+        <span class="portal-tag">Acervo</span>
+        <div class="portal-icone">🗄️</div>
+        <div class="portal-nome">Gaveta Literária</div>
+        <div class="portal-desc">Todas as suas obras organizadas. Gerencie sagas, capítulos e criações com controle individual de cada parte.</div>
+        <div class="portal-seta">Entrar →</div>
+      </div>
+
     </div>
   </div>
 
-  <!-- TELA PORTAL SAGA -->
+  <!-- ══ FORJAR SAGA ══ -->
   <div id="telaSaga" class="tela">
     <div class="cab-tela">
       <button class="btn-voltar" onclick="voltarMenu()">←</button>
-      <h2 class="titulo-tela">Saga Literária Multicapítulos</h2>
+      <h2 class="titulo-tela">⚔️ Forjar Saga</h2>
     </div>
 
     <div class="secao">
-      <div class="sec-titulo">📝 Configurações da Saga</div>
+      <div class="sec-titulo">📋 Identidade da Saga</div>
+      <div class="campo"><label>Nome da Saga</label><input type="text" id="sn" placeholder="Ex: As Crônicas do Reino Esquecido"></div>
+      <div class="campo"><label>Gênero e Estilo</label><input type="text" id="sg" placeholder="Ex: Fantasia Épica Dark, Romance Sobrenatural, Suspense Histórico"></div>
+      <div class="campo"><label>Tom e Atmosfera</label><input type="text" id="st" placeholder="Ex: Melancólico e grandioso. Inspirado em GRRM e Leigh Bardugo."></div>
       <div class="campo">
-        <label>Título da Obra</label>
-        <input type="text" id="sagaTitulo" placeholder="Ex: O Último Suspiro de Cronos">
-      </div>
-      <div class="campo">
-        <label>Sinopse ou Premissa Geral</label>
-        <textarea id="sagaSinopse" placeholder="Escreva a ideia central do enredo, universo e objetivos principais da história..."></textarea>
-      </div>
-      <div class="campo">
-        <label>Protagonista e Personagens Relevantes</label>
-        <textarea class="p" id="sagaPersonagens" placeholder="Ex: Alistair, um alquimista amaldiçoado pelo tempo que busca redenção..."></textarea>
-      </div>
-
-      <div class="ranges">
-        <div class="range-item">
-          <div class="range-topo">
-            <span class="range-label">Criatividade (Temperatura)</span>
-            <span class="range-val" id="valSagaTemp">0.7</span>
-          </div>
-          <input type="range" id="sagaTemp" min="0.1" max="1" step="0.1" value="0.7" oninput="document.getElementById('valSagaTemp').innerText = this.value">
-        </div>
-        <div class="range-item">
-          <div class="range-topo">
-            <span class="range-label">Tamanho Estimado (Capítulo)</span>
-            <span class="range-val" id="valSagaTamanho">Misto</span>
-          </div>
-          <select id="sagaTamanho">
-            <option value="curto">Curto (~500 palavras)</option>
-            <option value="medio" selected>Médio (~1000 palavras)</option>
-            <option value="longo">Longo (~1800 palavras)</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-p" id="btnIniciarSaga" onclick="iniciarSaga()">Iniciar Jornada Literária</button>
-
-    <div id="sagaEmAndamento" style="display:none;">
-      <div class="secao">
-        <div class="sec-titulo">📖 Painel da Jornada: <span id="sagaTituloAtivo" style="color:var(--dourado-b);">---</span></div>
-        <div id="avisoSaga" class="aviso" style="display:none;"></div>
-        
-        <div class="campo">
-          <label>Instruções para o Próximo Capítulo (Capítulo <span id="numCapProximo">1</span>)</label>
-          <textarea class="p" id="sagaInstrucoesCap" placeholder="O que deve acontecer neste capítulo? Ex: 'Alistair descobre um mapa secreto na velha biblioteca e foge dos guardas realistas...'"></textarea>
-        </div>
-
-        <button class="btn-p" id="btnGerarCapitulo" onclick="gerarCapituloSaga()">Escrever Capítulo <span id="numCapBotao">1</span></button>
-        <div class="prog-wrap"><div class="prog-bar" id="sagaProgresso"></div></div>
-      </div>
-
-      <div class="secao">
-        <div class="sec-titulo">📚 Capítulos Escritos</div>
-        <div class="lista-caps" id="sagaListaCaps">
-          <!-- Dinâmico -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TELA PORTAL CONTO -->
-  <div id="telaConto" class="tela">
-    <div class="cab-tela">
-      <button class="btn-voltar" onclick="voltarMenu()">←</button>
-      <h2 class="titulo-tela">Contos & Crônicas</h2>
-    </div>
-
-    <div class="secao">
-      <div class="sec-titulo">✒️ Parâmetros do Conto</div>
-      <div class="campo">
-        <label>Título do Conto</label>
-        <input type="text" id="contoTitulo" placeholder="Ex: Chuva de Prata sobre Paris">
-      </div>
-      <div class="campo">
-        <label>Gênero Literário</label>
-        <select id="contoGenero">
-          <option value="fantasia">Alta Fantasia</option>
-          <option value="sci-fi">Ficção Científica / Cyberpunk</option>
-          <option value="terror">Terror / Suspense Gótico</option>
-          <option value="romance">Drama / Romance Clássico</option>
-          <option value="realismo">Realismo Mágico</option>
+        <label>Ponto de Vista</label>
+        <select id="spv">
+          <option value="1ª pessoa — Protagonista 1">1ª Pessoa — Protagonista 1</option>
+          <option value="1ª pessoa — Protagonista 2">1ª Pessoa — Protagonista 2</option>
+          <option value="3ª pessoa limitada — Protagonista 1">3ª Pessoa Limitada — Prot. 1</option>
+          <option value="3ª pessoa limitada alternado">3ª Pessoa — Alternado</option>
+          <option value="narrador onisciente">Narrador Onisciente</option>
         </select>
       </div>
-      <div class="campo">
-        <label>Ideia Central / O que acontece no conto</label>
-        <textarea class="g" id="contoIdeia" placeholder="Descreva os acontecimentos de forma livre. O tom que deseja impor, mistérios a revelar, reviravoltas..."></textarea>
-      </div>
-
-      <div class="ranges">
-        <div class="range-item">
-          <div class="range-topo">
-            <span class="range-label">Ousadia Narrativa</span>
-            <span class="range-val" id="valContoTemp">0.8</span>
-          </div>
-          <input type="range" id="contoTemp" min="0.1" max="1" step="0.1" value="0.8" oninput="document.getElementById('valContoTemp').innerText = this.value">
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-p" id="btnGerarConto" onclick="gerarContoUnico()">Manifestar Conto por Completo</button>
-    <div class="prog-wrap" style="margin-bottom:1.5rem;"><div class="prog-bar" id="contoProgresso"></div></div>
-
-    <div id="contoResultadoContainer" style="display:none;" class="secao">
-      <div class="sec-titulo">✨ Manuscrito Revelado</div>
-      <div class="resultado" id="contoTextoResultado"></div>
-      <div class="grupo">
-        <button class="btn-a" onclick="copiarTexto('contoTextoResultado')">Copiar Manuscrito</button>
-        <button class="btn-a" onclick="salvarContoNaBiblioteca()">Salvar na Biblioteca</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TELA BIBLIOTECA -->
-  <div id="telaBiblioteca" class="tela">
-    <div class="cab-tela">
-      <button class="btn-voltar" onclick="voltarMenu()">←</button>
-      <h2 class="titulo-tela">Sua Biblioteca Suprema</h2>
+      <div class="campo"><label>Palavras por capítulo</label><input type="number" id="spal" min="500" max="5000" value="2000"></div>
     </div>
 
     <div class="secao">
-      <div class="sec-titulo">📖 Acervo Literário</div>
-      <div id="bibliotecaVazia" class="aviso av-wait">Nenhuma obra materializada no momento. Comece a criar para preencher as suas prateleiras secretas.</div>
-      <div id="bibliotecaGrid" class="biblio-grid">
-        <!-- Dinâmico -->
+      <div class="sec-titulo">🧩 Sistema de Blocos</div>
+      <p style="color:var(--texto-s);font-size:.88rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">Use <strong style="color:var(--dourado)">10 capítulos por bloco</strong> para respeitar o limite de tokens da API e evitar travamentos. Cada bloco é gerado com memória do que veio antes. Descreva o que acontece em cada bloco para guiar a IA.</p>
+      <div class="blocos-grid">
+        <div class="campo" style="margin:0"><label>Total de Capítulos (máx. 150)</label><input type="number" id="stot" min="1" max="150" value="100" oninput="recalcBlocos()"></div>
+        <div class="campo" style="margin:0"><label>Capítulos por Bloco (recomendado: 10)</label><input type="number" id="scpb" min="1" max="30" value="10" oninput="recalcBlocos()"></div>
       </div>
+      <div class="blocos-wrap">
+        <div class="bloco-resumo" id="sresumoblocos"></div>
+        <div id="sblocos"></div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">👤 Protagonista 1</div>
+      <div class="campo"><label>Nome e idade</label><input type="text" id="sp1n" placeholder="Ex: Lyra Ashveil, 22 anos"></div>
+      <div class="campo"><label>Aparência física</label><textarea class="p" id="sp1a" placeholder="Olhos, cabelo, altura, marcas, como se veste..."></textarea></div>
+      <div class="campo"><label>Personalidade, virtudes e defeitos</label><textarea class="p" id="sp1p" placeholder="Como age sob pressão? Ponto cego? O que os outros amam e odeiam nela?"></textarea></div>
+      <div class="campo"><label>Traumas, medos e motivação profunda</label><textarea id="sp1h" placeholder="O que a moldou? Qual ferida carrega? O que ela quer e teme acima de tudo?"></textarea></div>
+      <div class="campo"><label>Poderes, habilidades ou talentos</label><textarea class="p" id="sp1po" placeholder="Magia, combate, intelecto, influência..."></textarea></div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">👤 Protagonista 2 / Antagonista</div>
+      <div class="campo"><label>Nome e idade</label><input type="text" id="sp2n" placeholder="Ex: Kael Draveth, 27 anos"></div>
+      <div class="campo"><label>Aparência física</label><textarea class="p" id="sp2a" placeholder="Como ele aparece para o mundo? O que sua presença transmite?"></textarea></div>
+      <div class="campo"><label>Personalidade e contradições internas</label><textarea class="p" id="sp2p" placeholder="O que esconde? Como age sozinho vs. observado?"></textarea></div>
+      <div class="campo"><label>História e relação com o Protagonista 1</label><textarea id="sp2h" placeholder="Por que estão conectados? O que cada um representa para o outro?"></textarea></div>
+      <div class="campo"><label>Poderes e papel na trama</label><textarea class="p" id="sp2po" placeholder="Força, estratégia, influência..."></textarea></div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">🌍 Worldbuilding</div>
+      <div class="campo"><label>Visão geral do universo</label><textarea class="g" id="smundo" placeholder="Épocas, tecnologia, magia, política, religiões, o que está em jogo..."></textarea></div>
+      <div class="campo"><label>Sistema de magia ou poder</label><textarea class="p" id="smagia" placeholder="Como funciona? Tem custo? Limites e perigos?"></textarea></div>
+      <div class="campo"><label>Locais principais</label><textarea class="p" id="slocais" placeholder="Lugares importantes, atmosfera, história, perigos..."></textarea></div>
+      <div class="campo"><label>Facções e forças em conflito</label><textarea class="p" id="sfacc" placeholder="Quem são os lados? O que cada um quer?"></textarea></div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">🤝 O Encontro</div>
+      <div class="campo"><label>Como os protagonistas se encontram?</label><textarea id="sencontro" placeholder="Contexto, emoção do momento, o que cada um sente..."></textarea></div>
+      <div class="campo">
+        <label>Natureza da conexão</label>
+        <select id="sconex">
+          <option value="destino inevitável">Destino — forças maiores os trouxeram juntos</option>
+          <option value="coincidência que mudou tudo">Coincidência — nenhum esperava</option>
+          <option value="inimigos que se tornam algo mais complexo">Inimigos que se tornam algo mais</option>
+          <option value="atração e desconfiança simultâneas">Atração e desconfiança simultâneas</option>
+          <option value="escolha deliberada de um sobre o outro">Escolha deliberada</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">🎚️ Calibração</div>
+      <div class="ranges">
+        <div class="range-item"><div class="range-topo"><span class="range-label">Drama</span><span class="range-val" id="sv-dr">75</span></div><input type="range" min="0" max="100" value="75" oninput="document.getElementById('sv-dr').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Emoção</span><span class="range-val" id="sv-em">85</span></div><input type="range" min="0" max="100" value="85" oninput="document.getElementById('sv-em').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Tensão</span><span class="range-val" id="sv-te">70</span></div><input type="range" min="0" max="100" value="70" oninput="document.getElementById('sv-te').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Ação</span><span class="range-val" id="sv-ac">65</span></div><input type="range" min="0" max="100" value="65" oninput="document.getElementById('sv-ac').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Romance</span><span class="range-val" id="sv-ro">60</span></div><input type="range" min="0" max="100" value="60" oninput="document.getElementById('sv-ro').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Mistério</span><span class="range-val" id="sv-mi">80</span></div><input type="range" min="0" max="100" value="80" oninput="document.getElementById('sv-mi').innerText=this.value"></div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">📜 Enredo</div>
+      <div class="campo"><label>Conflito central e arco geral</label><textarea class="g" id="senredo" placeholder="O que está em jogo? Objetivo final? Como a relação entre os protagonistas evolui?"></textarea></div>
+      <div class="campo"><label>Direção do final (opcional)</label><textarea class="p" id="sfim" placeholder="Uma direção geral ajuda a IA a construir um arco coerente..."></textarea></div>
+    </div>
+
+    <button class="btn-p" id="btn-saga" onclick="iniciarSaga()">⚔️ Iniciar Forja da Saga</button>
+    <div id="saga-status"></div>
+    <div class="lista-caps" id="saga-caps"></div>
+  </div>
+
+  <!-- ══ FORJAR CAPÍTULO ══ -->
+  <div id="telaCap" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">📖 Forjar Capítulo</h2>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">📋 Dados</div>
+      <div class="campo"><label>Título da Obra</label><input type="text" id="cn" placeholder="Ex: O Segredo da Montanha Escarlate"></div>
+      <div class="campo"><label>Número e título do capítulo</label><input type="text" id="cnum" placeholder="Ex: Capítulo 7 — A Noite Que Não Passou"></div>
+      <div class="campo"><label>Palavras</label><input type="number" id="cpal" min="300" max="8000" value="1500"></div>
+      <div class="campo"><label>Ponto de Vista</label>
+        <select id="cpv">
+          <option value="1ª pessoa — Protagonista 1">1ª Pessoa — Prot. 1</option>
+          <option value="1ª pessoa — Protagonista 2">1ª Pessoa — Prot. 2</option>
+          <option value="3ª pessoa limitada — Protagonista 1">3ª Pessoa Limitada — Prot. 1</option>
+          <option value="3ª pessoa limitada alternado">3ª Pessoa Alternado</option>
+          <option value="narrador onisciente">Onisciente</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">👤 Personagens</div>
+      <div class="campo"><label>Protagonista 1 — quem é, estado emocional AGORA</label><textarea class="g" id="cp1" placeholder="Aparência, personalidade, o que carrega emocionalmente neste momento..."></textarea></div>
+      <div class="campo"><label>Protagonista 2 — idem</label><textarea class="g" id="cp2" placeholder="Como está? O que quer? O que esconde?"></textarea></div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">🌍 Contexto</div>
+      <div class="campo"><label>Cenário — onde, quando, atmosfera</label><textarea class="p" id="ccen" placeholder="Lugar, hora, clima, detalhes sensoriais..."></textarea></div>
+      <div class="campo"><label>O que aconteceu antes?</label><textarea class="p" id="cant" placeholder="Contexto acumulado para manter coerência..."></textarea></div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">🎚️ Ritmo e Estrutura</div>
+      <div class="campo"><label>Como o capítulo começa?</label>
+        <select id="cab">
+          <option value="in medias res — direto em ação ou conflito">In medias res — direto em ação</option>
+          <option value="atmosférico e lento — construção de tensão">Atmosférico — construção de tensão</option>
+          <option value="diálogo — dois personagens já interagindo">Diálogo em andamento</option>
+          <option value="pensamento interno — mente do protagonista">Pensamento interno</option>
+          <option value="descrição de cenário — estabelece lugar e tempo">Descrição de cenário</option>
+        </select>
+      </div>
+      <div class="campo"><label>Como o capítulo termina?</label>
+        <select id="cfec">
+          <option value="cliffhanger — algo surpreendente deixa o leitor suspenso">Cliffhanger</option>
+          <option value="resolução emocional parcial — algo se resolve mas nem tudo">Resolução emocional parcial</option>
+          <option value="virada de expectativa — o oposto do esperado acontece">Virada de expectativa</option>
+          <option value="calmaria tensa — silêncio carregado de significado">Calmaria tensa</option>
+          <option value="revelação de informação crucial">Revelação crucial</option>
+        </select>
+      </div>
+      <div class="ranges" style="margin-top:.8rem">
+        <div class="range-item"><div class="range-topo"><span class="range-label">Drama</span><span class="range-val" id="cv-dr">70</span></div><input type="range" min="0" max="100" value="70" oninput="document.getElementById('cv-dr').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Emoção</span><span class="range-val" id="cv-em">75</span></div><input type="range" min="0" max="100" value="75" oninput="document.getElementById('cv-em').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Tensão</span><span class="range-val" id="cv-te">65</span></div><input type="range" min="0" max="100" value="65" oninput="document.getElementById('cv-te').innerText=this.value"></div>
+        <div class="range-item"><div class="range-topo"><span class="range-label">Romance</span><span class="range-val" id="cv-ro">55</span></div><input type="range" min="0" max="100" value="55" oninput="document.getElementById('cv-ro').innerText=this.value"></div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="sec-titulo">✍️ O Capítulo</div>
+      <div class="campo"><label>O que acontece — cenas, diálogos, viradas</label><textarea class="g" id="cid" placeholder="Seja detalhista. Cenas específicas, falas que quer que existam, momentos que não podem faltar..."></textarea></div>
+      <div class="campo"><label>Função emocional deste capítulo</label><textarea class="p" id="cfunc" placeholder="Ex: Mostrar que Lyra tem medo de ser amada. Criar a primeira faísca real entre os dois."></textarea></div>
+    </div>
+
+    <button class="btn-p" id="btn-cap" onclick="gerarCap()">📖 Forjar Capítulo</button>
+    <div id="cap-status"></div>
+    <div class="resultado" id="cap-res">O capítulo forjado aparecerá aqui...</div>
+    <div class="grupo">
+      <button class="btn-a" onclick="copiarEl('cap-res')">📋 Copiar</button>
+      <button class="btn-a" onclick="salvarCapUnico()">💾 Salvar</button>
+      <button class="btn-a" onclick="document.getElementById('cap-res').innerText='O capítulo forjado aparecerá aqui...';document.getElementById('cap-status').innerHTML=''">🗑️ Limpar</button>
     </div>
   </div>
 
-</div>
-
-<!-- MODAL LEITURA -->
-<div id="modalLeitura" class="modal">
-  <div class="modal-cab">
-    <h3 class="modal-titulo" id="modalTituloText">Título do Capítulo</h3>
-    <button class="btn-voltar" onclick="fecharModalLeitura()">×</button>
+  <!-- ══ CONSTRUTOR DE MUNDO ══ -->
+  <div id="telaMundo" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">🌍 Construtor de Mundo</h2>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">🗺️ Fundação do Universo</div>
+      <div class="campo"><label>Nome do mundo / universo</label><input type="text" id="mn" placeholder="Ex: Valdris, o Continente dos Três Sóis"></div>
+      <div class="campo"><label>Era histórica e nível tecnológico</label><input type="text" id="mera" placeholder="Ex: Era Medieval com resquícios de tecnologia antiga, pós-colapso do Império Áureo"></div>
+      <div class="campo"><label>O grande evento que moldou tudo</label><textarea class="p" id="mevento" placeholder="A catástrofe, a guerra, a queda ou o milagre que definiu como esse mundo é hoje..."></textarea></div>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">✨ Sistema de Magia e Poder</div>
+      <div class="campo"><label>Como a magia funciona?</label><textarea id="mmagia" placeholder="Origem, como se acessa, quem pode usar, regras básicas..."></textarea></div>
+      <div class="campo"><label>Custo e limitações</label><textarea class="p" id="mcusto" placeholder="O que a magia custa ao usuário? O que é impossível? O que acontece quando os limites são quebrados?"></textarea></div>
+      <div class="campo"><label>Tipos, escolas ou variantes do poder</label><textarea class="p" id="mtipos" placeholder="Há diferentes tipos? Como interagem? Algum é proibido?"></textarea></div>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">🏛️ Estrutura Política</div>
+      <div class="campo"><label>Governos e estruturas de poder</label><textarea id="mpol" placeholder="Quem governa o quê? Monarquias, repúblicas, teocracia, anarquia, corporações?"></textarea></div>
+      <div class="campo"><label>Conflitos políticos ativos</label><textarea class="p" id="mconf" placeholder="Guerras, disputas de herança, rebeliões, tensões entre facções..."></textarea></div>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">⛪ Religião e Mitologia</div>
+      <div class="campo"><label>Deuses, entidades ou forças divinas</label><textarea id="mrel" placeholder="Existem deuses? São reais? Como interagem com os mortais? Há profecias?"></textarea></div>
+      <div class="campo"><label>Lendas e mitos populares</label><textarea class="p" id="mmitos" placeholder="Histórias que o povo conta. O que acreditam sobre a origem do mundo?"></textarea></div>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">📍 Locais Fundamentais</div>
+      <div class="campo"><label>Descreva os lugares mais importantes</label><textarea class="g" id="mloc" placeholder="Para cada lugar: nome, atmosfera, história, por que importa para a história..."></textarea></div>
+    </div>
+    <button class="btn-p" onclick="gerarMundo()">🌍 Gerar Biblia do Mundo</button>
+    <div id="mundo-status"></div>
+    <div class="resultado" id="mundo-res">A bíblia do seu mundo aparecerá aqui...</div>
+    <div class="grupo">
+      <button class="btn-a" onclick="copiarEl('mundo-res')">📋 Copiar</button>
+      <button class="btn-a" onclick="salvarNaGaveta('mundo-res','Bíblia do Mundo','Worldbuilding')">💾 Salvar</button>
+    </div>
   </div>
-  <div class="modal-corpo">
-    <div class="modal-texto" id="modalTextoConteudo"></div>
+
+  <!-- ══ GERADOR DE DIÁLOGOS ══ -->
+  <div id="telaDialogo" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">💬 Gerador de Diálogos</h2>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">👥 Os Dois Lados da Conversa</div>
+      <div class="campo"><label>Personagem A — quem é, o que quer NESTA cena</label><textarea id="da" placeholder="Nome, personalidade, estado emocional agora, o que quer conseguir ou esconder neste diálogo..."></textarea></div>
+      <div class="campo"><label>Personagem B — idem</label><textarea id="db" placeholder="Quem é, o que sente, o que quer ou evita dizer..."></textarea></div>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">🎭 A Cena</div>
+      <div class="campo"><label>Onde e quando ocorre?</label><input type="text" id="dcen" placeholder="Ex: Corredor do castelo, meia-noite, após a batalha"></div>
+      <div class="campo"><label>O que aconteceu antes que gerou essa conversa?</label><textarea class="p" id="dantes" placeholder="O contexto que trouxe os dois até esse momento..."></textarea></div>
+      <div class="campo"><label>Sobre o que é a conversa — tema aparente</label><input type="text" id="dtema" placeholder="Ex: Dividir a rota de fuga / devolver um objeto / pedir desculpas"></div>
+      <div class="campo"><label>O que a conversa é de verdade — subtexto</label><textarea class="p" id="dsub" placeholder="Ex: A é tentativa de Kael de entender se Lyra ainda confia nele depois da traição. Mas nenhum dos dois nomeia isso."></textarea></div>
+      <div class="campo"><label>Como termina a cena?</label>
+        <select id="dfim">
+          <option value="sem resolução — a tensão permanece e ninguém sai satisfeito">Sem resolução — tensão permanece</option>
+          <option value="aproximação — algo se resolve e os dois ficam mais próximos">Aproximação emocional</option>
+          <option value="ruptura — um vai embora ou corta a conversa bruscamente">Ruptura</option>
+          <option value="revelação — algo importante vem à tona no final">Revelação no final</option>
+          <option value="ambíguo — o leitor não sabe ao certo o que aconteceu entre os dois">Ambíguo</option>
+        </select>
+      </div>
+      <div class="campo"><label>Extensão aproximada</label>
+        <select id="dext">
+          <option value="curta (até 400 palavras) — tensa e direta">Curta — tensa e direta</option>
+          <option value="média (600-900 palavras) — desenvolvida">Média — desenvolvida</option>
+          <option value="longa (1000-1500 palavras) — cena completa com nuances">Longa — cena completa</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-p" onclick="gerarDialogo()">💬 Gerar Cena de Diálogo</button>
+    <div id="dial-status"></div>
+    <div class="resultado" id="dial-res">A cena de diálogo aparecerá aqui...</div>
+    <div class="grupo">
+      <button class="btn-a" onclick="copiarEl('dial-res')">📋 Copiar</button>
+      <button class="btn-a" onclick="salvarNaGaveta('dial-res','Diálogo','Cena de Diálogo')">💾 Salvar</button>
+    </div>
   </div>
-</div>
 
-<!-- TOAST -->
-<div id="toast" class="toast">Mensagem do Sistema</div>
+  <!-- ══ ARCO EMOCIONAL ══ -->
+  <div id="telaArco" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">🎭 Arco Emocional</h2>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">👤 O Personagem</div>
+      <div class="campo"><label>Nome e dados gerais</label><input type="text" id="an" placeholder="Ex: Lyra Ashveil, 22 anos, protagonista"></div>
+      <div class="campo"><label>Ferida central (o que o define internamente)</label><textarea class="p" id="aferida" placeholder="Ex: Abandonada aos 8 anos. Acredita que não merece ser amada. Qualquer vínculo profundo a aterroriza."></textarea></div>
+      <div class="campo"><label>Crença limitante (mentira que acredita sobre si)</label><textarea class="p" id="amentira" placeholder="Ex: 'Se eu mostrar quem sou de verdade, as pessoas vão embora.' Ou: 'Força significa não precisar de ninguém.'"></textarea></div>
+      <div class="campo"><label>Desejo externo (o que quer visivelmente)</label><textarea class="p" id="adesejo" placeholder="Ex: Recuperar o trono. Vencer a guerra. Encontrar o irmão desaparecido."></textarea></div>
+      <div class="campo"><label>Necessidade real (o que precisa, mas não sabe)</label><textarea class="p" id="anecess" placeholder="Ex: Aprender a confiar. Aceitar ajuda. Perdoar a si mesma."></textarea></div>
+    </div>
+    <div class="secao">
+      <div class="sec-titulo">📈 A Jornada</div>
+      <div class="campo"><label>Onde começa emocionalmente (estado inicial)</label><textarea class="p" id="ainicio" placeholder="Como o personagem está no início da história? Fechado? Arrogante? Quebrado?"></textarea></div>
+      <div class="campo"><label>Total de capítulos ou partes da obra</label><input type="number" id="acaps" min="5" max="150" value="30"></div>
+      <div class="campo"><label>Qual a transformação ao final?</label><textarea class="p" id="afim" placeholder="Onde o personagem chega emocionalmente? Curado? Derrotado mas sábio? Transformado mas com cicatrizes?"></textarea></div>
+    </div>
+    <button class="btn-p" onclick="gerarArco()">🎭 Mapear Arco Emocional</button>
+    <div id="arco-status"></div>
+    <div class="arco-visual" id="arco-res">O mapa emocional do personagem aparecerá aqui...</div>
+    <div class="grupo">
+      <button class="btn-a" onclick="copiarEl('arco-res')">📋 Copiar</button>
+      <button class="btn-a" onclick="salvarNaGaveta('arco-res','Arco Emocional','Planejamento')">💾 Salvar</button>
+    </div>
+  </div>
 
-<script>
-/* ══════════════════════════════
-   ESTADO GLOBAL & DADOS
-══════════════════════════════ */
-let appState = {
-  selectedIA: 'gemini',
-  apiKey: '',
-  sagaAtiva: null, // {titulo, sinopse, personagens, capitulos: [], temp, tamanho}
-  biblioteca: [] // Array de obras geradas
-};
+  <!-- ══ BIBLIOTECA ══ -->
+  <div id="telaBiblio" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">📚 Biblioteca de Inspiração</h2>
+    </div>
 
-// Carregar Dados Salvos
-window.onload = function() {
-  const salvaKey = localStorage.getItem('nucleo_literario_apikey');
-  if (salvaKey) {
-    document.getElementById('inputApiKey').value = salvaKey;
-    appState.apiKey = salvaKey;
-  }
-  
-  const salvaBiblio = localStorage.getItem('nucleo_literario_biblio');
-  if (salvaBiblio) {
-    try {
-      appState.biblioteca = JSON.parse(salvaBiblio);
-    } catch(e) {
-      appState.biblioteca = [];
-    }
-  }
+    <div class="secao">
+      <div class="sec-titulo">✨ Gerador de Premissa</div>
+      <div class="campo"><label>Gênero</label>
+        <select id="bgen">
+          <option value="Fantasia Épica">Fantasia Épica</option>
+          <option value="Romance Sobrenatural">Romance Sobrenatural</option>
+          <option value="Suspense Psicológico">Suspense Psicológico</option>
+          <option value="Ficção Científica">Ficção Científica</option>
+          <option value="Dark Romance">Dark Romance</option>
+          <option value="Mistério Histórico">Mistério Histórico</option>
+          <option value="Horror Literário">Horror Literário</option>
+        </select>
+      </div>
+      <div class="campo"><label>Elemento obrigatório na história</label><input type="text" id="belem" placeholder="Ex: uma profecia quebrada, dois inimigos presos juntos, um espelho que mostra o futuro"></div>
+      <button class="btn-p" style="margin-top:1rem" onclick="gerarPremissas()">✨ Gerar 5 Premissas</button>
+      <div id="biblio-status"></div>
+      <div id="biblio-premissas"></div>
+    </div>
 
-  // Inicializa o Fundo Espacial Estiloso (Canvas)
-  initCanvasBackground();
-};
+    <div class="secao" style="margin-top:1.5rem">
+      <div class="sec-titulo">📖 Técnicas de Grandes Autores</div>
+      <div class="biblio-grid" id="biblio-tecnicas"></div>
+    </div>
+  </div>
 
-/* ══════════════════════════════
-   CANVAS DE ESTRELAS / NÉBULA
-══════════════════════════════ */
-function initCanvasBackground() {
-  const canvas = document.getElementById('cv');
-  const ctx = canvas.getContext('2d');
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-
-  const estrelas = [];
-  for(let i=0; i<70; i++) {
-    estrelas.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 1.5,
-      alpha: Math.random(),
-      speed: 0.005 + Math.random() * 0.015
-    });
-  }
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-
-  function animar() {
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#030202';
-    ctx.fillRect(0, 0, width, height);
-
-    // Desenhar estrelas com brilho suave
-    estrelas.forEach(star => {
-      star.alpha += star.speed;
-      if(star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
-      ctx.fillStyle = `rgba(184, 148, 42, ${Math.max(0.1, star.alpha * 0.7)})`;
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    requestAnimationFrame(animar);
-  }
-  animar();
-}
-
-/* ══════════════════════════════
-   NAVEGAÇÃO & INTERFACE
-══════════════════════════════ */
-function entrarApp() {
-  document.getElementById('landing').classList.add('saindo');
-  const app = document.getElementById('app');
-  app.classList.add('visivel');
-  showToast("Bem-vindo ao Núcleo Literário!");
-}
-
-function irParaPortal(portalId) {
-  // Esconde todas as telas
-  document.querySelectorAll('.tela').forEach(t => t.classList.remove('on'));
-  
-  if (portalId === 'saga') {
-    document.getElementById('telaSaga').classList.add('on');
-    atualizarPainelSagaUI();
-  } else if (portalId === 'conto') {
-    document.getElementById('telaConto').classList.add('on');
-  } else if (portalId === 'biblioteca') {
-    document.getElementById('telaBiblioteca').classList.add('on');
-    renderizarBiblioteca();
-  }
-}
-
-function voltarMenu() {
-  document.querySelectorAll('.tela').forEach(t => t.classList.remove('on'));
-  document.getElementById('telaMenu').classList.add('on');
-}
-
-function selecionarIA(ia) {
-  appState.selectedIA = ia;
-  document.getElementById('btnGemini').classList.add('on');
-}
-
-function salvarChave(val) {
-  appState.apiKey = val.trim();
-  localStorage.setItem('nucleo_literario_apikey', appState.apiKey);
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.classList.add('on');
-  setTimeout(() => {
-    t.classList.remove('on');
-  }, 3500);
-}
-
-/* ══════════════════════════════
-   REQUISIÇÃO INTELIGENTE GEMINI (Com Backoff e Tratamento de Erros)
-══════════════════════════════ */
-async function chamarGeminiAPI(systemPrompt, userPrompt, temperature) {
-  const apiKey = appState.apiKey.trim();
-  if (!apiKey) {
-    throw new Error("Chave API não configurada. Por favor, insira uma Chave API válida no cabeçalho.");
-  }
-
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-  const payload = {
-    contents: [
-      {
-        parts: [
-          { text: userPrompt }
-        ]
-      }
-    ],
-    systemInstruction: {
-      parts: [
-        { text: systemPrompt }
-      ]
-    },
-    generationConfig: {
-      temperature: parseFloat(temperature) || 0.7,
-      maxOutputTokens: 8192
-    }
-  };
-
-  let delay = 1000;
-  const maxRetries = 5;
-
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.status === 403 || response.status === 400) {
-        const errData = await response.json().catch(() => ({}));
-        const msg = errData?.error?.message || "Requisição rejeitada. Verifique sua chave API.";
-        throw new Error(`[Status ${response.status}] ${msg}`);
-      }
-
-      if (!response.ok) {
-        throw new Error(`Erro na API (Status ${response.status})`);
-      }
-
-      const result = await response.json();
-      const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
-      
-      if (!textResponse) {
-        throw new Error("Estrutura de resposta inválida da API do Gemini.");
-      }
-
-      return textResponse;
-
-    } catch (error) {
-      if (attempt === maxRetries || error.message.includes("403") || error.message.includes("400")) {
-        throw error;
-      }
-      // Backoff exponencial para erros de rate limit ou instabilidade de rede
-      await new Promise(resolve => setTimeout(resolve, delay));
-      delay *= 2;
-    }
-  }
-}
-
-/* ══════════════════════════════
-   LÓGICA: SAGA LITERÁRIA
-══════════════════════════════ */
-function iniciarSaga() {
-  const titulo = document.getElementById('sagaTitulo').value.trim();
-  const sinopse = document.getElementById('sagaSinopse').value.trim();
-  const personagens = document.getElementById('sagaPersonagens').value.trim();
-  const temp = document.getElementById('sagaTemp').value;
-  const tamanho = document.getElementById('sagaTamanho').value;
-
-  if (!titulo || !sinopse) {
-    showToast("Por favor, preencha o Título e a Sinopse para iniciar.");
-    return;
-  }
-
-  appState.sagaAtiva = {
-    titulo,
-    sinopse,
-    personagens,
-    temp,
-    tamanho,
-    capitulos: []
-  };
-
-  document.getElementById('sagaTituloAtivo').innerText = titulo;
-  document.getElementById('sagaEmAndamento').style.display = 'block';
-  document.getElementById('btnIniciarSaga').style.display = 'none';
-  
-  atualizarPainelSagaUI();
-  showToast("Saga iniciada com sucesso!");
-}
-
-function atualizarPainelSagaUI() {
-  if (!appState.sagaAtiva) {
-    document.getElementById('sagaEmAndamento').style.display = 'none';
-    document.getElementById('btnIniciarSaga').style.display = 'block';
-    return;
-  }
-
-  const numCap = appState.sagaAtiva.capitulos.length + 1;
-  document.getElementById('numCapProximo').innerText = numCap;
-  document.getElementById('numCapBotao').innerText = numCap;
-  document.getElementById('sagaTituloAtivo').innerText = appState.sagaAtiva.titulo;
-  
-  // Renderizar Capítulos Já Escritos
-  const lista = document.getElementById('sagaListaCaps');
-  lista.innerHTML = '';
-
-  appState.sagaAtiva.capitulos.forEach((cap, index) => {
-    const item = document.createElement('div');
-    item.className = 'cap-item';
-    item.innerHTML = `
-      <div class="cap-cab">
-        <div class="cap-titulo">Capítulo ${index + 1}: ${cap.tituloCap}</div>
-        <div class="cap-acoes">
-          <button class="btn-a" onclick="alternarVisibilidadeCap(${index})">Ler</button>
-          <button class="btn-a" onclick="copiarTextoCap(${index})">Copiar</button>
+  <!-- ══ CRIADOR DE CAPA ══ -->
+  <div id="telaCapa" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">🎨 Criador de Capa Premium</h2>
+    </div>
+    <!-- FONTE: GAVETA -->
+    <div class="secao">
+      <div class="sec-titulo">📚 Fonte da História</div>
+      <p style="color:var(--texto-s);font-size:.88rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">Selecione uma obra salva na Gaveta e a IA lê o conteúdo para criar uma capa fiel à história. Ou preencha manualmente abaixo.</p>
+      <div class="campo">
+        <label>Selecionar obra da Gaveta Literária</label>
+        <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
+          <select id="cap-gaveta-sel" style="flex:1;" onchange="preencherTituloDaGaveta()">
+            <option value="">— Escolha uma obra salva —</option>
+          </select>
+          <button class="btn-a" onclick="popularSelectGaveta()" style="white-space:nowrap;">🔄 Atualizar lista</button>
         </div>
       </div>
-      <div class="cap-corpo" id="conteudoCap-${index}">${cap.texto}</div>
-    `;
-    lista.appendChild(item);
-  });
-}
+      <div id="cap-gaveta-info" style="display:none;" class="aviso av-wait" style="margin-top:.5rem;"></div>
+    </div>
 
-function alternarVisibilidadeCap(idx) {
-  const corpo = document.getElementById(`conteudoCap-${idx}`);
-  if (corpo.style.display === 'block') {
-    corpo.style.display = 'none';
-  } else {
-    corpo.style.display = 'block';
-  }
-}
+    <!-- DADOS DA OBRA -->
+    <div class="secao">
+      <div class="sec-titulo">📋 Dados da Obra</div>
+      <div class="campo"><label>Título da obra</label><input type="text" id="capn" placeholder="Ex: As Crônicas do Reino Esquecido"></div>
+      <div class="campo"><label>Subtítulo ou tagline (opcional)</label><input type="text" id="capst" placeholder="Ex: Nem toda chama ilumina. Algumas apenas consomem."></div>
+      <div class="campo"><label>Nome do autor</label><input type="text" id="capaut" placeholder="Seu nome ou pseudônimo"></div>
+      <div class="campo"><label>Gênero</label><input type="text" id="capgen" placeholder="Ex: Fantasia Épica Dark"></div>
+    </div>
 
-async function gerarCapituloSaga() {
-  const saga = appState.sagaAtiva;
-  if (!saga) return;
-
-  const btn = document.getElementById('btnGerarCapitulo');
-  const prog = document.getElementById('sagaProgresso');
-  const aviso = document.getElementById('avisoSaga');
-  const inst = document.getElementById('sagaInstrucoesCap').value.trim();
-
-  aviso.style.display = 'none';
-  btn.disabled = true;
-  prog.style.width = '30%';
-
-  const numCap = saga.capitulos.length + 1;
-
-  // Montar Contexto Narrativo para manter coesão
-  let contextoAnterior = "";
-  if (saga.capitulos.length > 0) {
-    contextoAnterior = "Resumos dos capítulos anteriores:\n";
-    saga.capitulos.forEach((c, idx) => {
-      contextoAnterior += `- Capítulo ${idx + 1}: ${c.resumo}\n`;
-    });
-  }
-
-  const systemPrompt = `Você é um romancista de elite e escritor best-seller. Escreva o Capítulo ${numCap} para uma saga literária complexa e imersiva. Use vocabulário rico, figuras de linguagem impactantes e descrições profundas.
-Sua resposta deve ter obrigatoriamente duas partes separadas exatamente pela palavra chave "---SPLIT---":
-PARTE 1: Título Criativo do Capítulo
-PARTE 2: O capítulo em si completo (mínimo de 800 palavras, respeitando o estilo selecionado).
-PARTE 3 (opcional, após outro "---SPLIT---"): Um resumo de 3 linhas das principais consequências deste capítulo para continuidade de enredo.`;
-
-  const userPrompt = `
-Título da Obra Geral: ${saga.titulo}
-Sinopse Geral: ${saga.sinopse}
-Personagens do Universo: ${saga.personagens}
-Estilo e Extensão: Capítulo do tipo ${saga.tamanho}.
-${contextoAnterior}
-
-CONCEITO DO CAPÍTULO ATUAL (Capítulo ${numCap}):
-${inst || "Escreva uma introdução magnífica ou uma continuação imersiva que desenvolva o enredo organicamente."}
-
-Instruções fundamentais: Escreva em Português de alta literatura. Nunca quebre a consistência dos fatos anteriores. Encerre com um gancho misterioso ou dramático para o próximo capítulo.
-Separe o Título, o Capítulo e o Resumo por "---SPLIT---".
-`;
-
-  try {
-    prog.style.width = '60%';
-    const resposta = await chamarGeminiAPI(systemPrompt, userPrompt, saga.temp);
-    prog.style.width = '90%';
-
-    const partes = resposta.split("---SPLIT---");
-    const tituloCap = partes[0] ? partes[0].replace(/Título/i, '').replace(/Capítulo \d+:?/i, '').trim() : `O Despertar da Jornada`;
-    const texto = partes[1] ? partes[1].trim() : resposta;
-    const resumo = partes[2] ? partes[2].trim() : "Desenvolvimento narrativo importante.";
-
-    saga.capitulos.push({
-      tituloCap,
-      texto,
-      resumo
-    });
-
-    document.getElementById('sagaInstrucoesCap').value = '';
-    prog.style.width = '100%';
-    
-    // Salva a saga na biblioteca geral
-    salvarSagaNaBiblioteca();
-
-    setTimeout(() => {
-      prog.style.width = '0%';
-      atualizarPainelSagaUI();
-      btn.disabled = false;
-      showToast(`Capítulo ${numCap} escrito com sucesso!`);
-    }, 600);
-
-  } catch (error) {
-    prog.style.width = '0%';
-    btn.disabled = false;
-    aviso.className = 'aviso av-err';
-    aviso.innerText = `Erro ao Materializar Capítulo: ${error.message}`;
-    aviso.style.display = 'block';
-  }
-}
-
-function salvarSagaNaBiblioteca() {
-  const saga = appState.sagaAtiva;
-  if (!saga) return;
-
-  // Busca se já existe uma obra com o mesmo título para atualizar, se não adiciona
-  const index = appState.biblioteca.findIndex(o => o.titulo === saga.titulo && o.tipo === 'saga');
-  
-  const obra = {
-    tipo: 'saga',
-    titulo: saga.titulo,
-    sinopse: saga.sinopse,
-    personagens: saga.personagens,
-    capitulos: saga.capitulos,
-    data: new Date().toLocaleDateString('pt-BR')
-  };
-
-  if (index >= 0) {
-    appState.biblioteca[index] = obra;
-  } else {
-    appState.biblioteca.push(obra);
-  }
-
-  localStorage.setItem('nucleo_literario_biblio', JSON.stringify(appState.biblioteca));
-}
-
-function copiarTextoCap(idx) {
-  const txt = appState.sagaAtiva.capitulos[idx].texto;
-  copiarClipboardDirect(txt);
-}
-
-/* ══════════════════════════════
-   LÓGICA: CONTO ÚNICO
-══════════════════════════════ */
-async function gerarContoUnico() {
-  const titulo = document.getElementById('contoTitulo').value.trim();
-  const genero = document.getElementById('contoGenero').value;
-  const ideia = document.getElementById('contoIdeia').value.trim();
-  const temp = document.getElementById('contoTemp').value;
-
-  if (!ideia) {
-    showToast("Por favor, forneça pelo menos a Ideia Central para o conto.");
-    return;
-  }
-
-  const btn = document.getElementById('btnGerarConto');
-  const prog = document.getElementById('contoProgresso');
-  
-  btn.disabled = true;
-  prog.style.width = '30%';
-
-  const systemPrompt = `Você é um mestre dos contos literários e crônicas. Escreva um conto completo, arrebatador e de altíssimo nível, usando ritmo, metáforas magníficas e uma atmosfera vívida baseada no gênero selecionado.`;
-  const userPrompt = `
-Título Desejado: ${titulo || 'Manuscrito Sem Título'}
-Gênero Literário: ${genero}
-Premissa Narrativa: ${ideia}
-
-Orientações: Escreva um conto completo do início ao fim (mínimo de 1000 palavras). O conto deve prender a atenção do início ao fim e finalizar com um desfecho esteticamente impecável.`;
-
-  try {
-    prog.style.width = '65%';
-    const conto = await chamarGeminiAPI(systemPrompt, userPrompt, temp);
-    prog.style.width = '100%';
-
-    document.getElementById('contoTextoResultado').innerText = conto;
-    document.getElementById('contoResultadoContainer').style.display = 'block';
-
-    setTimeout(() => {
-      prog.style.width = '0%';
-      btn.disabled = false;
-      showToast("Conto gerado com sucesso!");
-    }, 600);
-
-  } catch(error) {
-    prog.style.width = '0%';
-    btn.disabled = false;
-    showToast(`Erro ao gerar: ${error.message}`);
-  }
-}
-
-function salvarContoNaBiblioteca() {
-  const titulo = document.getElementById('contoTitulo').value.trim() || 'Conto Sem Título';
-  const texto = document.getElementById('contoTextoResultado').innerText;
-
-  if (!texto) return;
-
-  const obra = {
-    tipo: 'conto',
-    titulo: titulo,
-    texto: texto,
-    data: new Date().toLocaleDateString('pt-BR')
-  };
-
-  appState.biblioteca.push(obra);
-  localStorage.setItem('nucleo_literario_biblio', JSON.stringify(appState.biblioteca));
-  showToast("Conto guardado na Biblioteca Suprema!");
-}
-
-/* ══════════════════════════════
-   LÓGICA: BIBLIOTECA & LEITURA
-══════════════════════════════ */
-function renderizarBiblioteca() {
-  const grid = document.getElementById('bibliotecaGrid');
-  const vazia = document.getElementById('bibliotecaVazia');
-
-  grid.innerHTML = '';
-
-  if (appState.biblioteca.length === 0) {
-    vazia.style.display = 'block';
-    return;
-  }
-  vazia.style.display = 'none';
-
-  appState.biblioteca.forEach((obra, index) => {
-    const card = document.createElement('div');
-    card.className = 'biblio-card';
-    
-    if (obra.tipo === 'saga') {
-      card.innerHTML = `
-        <div class="biblio-card-tipo">SAGA LITERÁRIA (${obra.capitulos.length} Caps)</div>
-        <h4 class="biblio-card-titulo">${obra.titulo}</h4>
-        <p class="biblio-card-texto">${obra.sinopse.substring(0, 130)}...</p>
-        <div class="grupo" style="margin-top:1rem;">
-          <button class="btn-a" onclick="event.stopPropagation(); carregarSagaAtiva(${index})">Continuar Escrita</button>
-          <button class="btn-a btn-danger" onclick="event.stopPropagation(); excluirObra(${index})">Apagar</button>
+    <!-- IMAGEM DE REFERÊNCIA -->
+    <div class="secao">
+      <div class="sec-titulo">🖼️ Imagem de Referência (opcional)</div>
+      <p style="color:var(--texto-s);font-size:.88rem;margin-bottom:1rem;font-family:'Crimson Pro',serif;">Envie uma foto da galeria — personagem, paisagem, mood, estética, qualquer referência visual. A IA analisa e incorpora na capa.</p>
+      <div class="campo">
+        <label>Escolher imagem da galeria</label>
+        <div id="cap-img-area" style="border:1px dashed var(--borda);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;" onclick="document.getElementById('cap-img-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--dourado-b)'" ondrop="capDropImagem(event)">
+          <input type="file" id="cap-img-input" accept="image/*" style="display:none" onchange="capCarregarImagem(event)">
+          <div id="cap-img-preview-wrap">
+            <div style="font-size:2rem;margin-bottom:.5rem;">📷</div>
+            <div style="color:var(--texto-s);font-size:.88rem;">Toque para escolher da galeria ou arraste uma imagem aqui</div>
+            <div style="color:var(--texto-s);font-size:.78rem;margin-top:.3rem;opacity:.6;">JPG, PNG, WEBP — qualquer referência visual serve</div>
+          </div>
+          <img id="cap-img-preview" style="display:none;max-width:100%;max-height:220px;border-radius:8px;margin-top:.5rem;object-fit:contain;" alt="preview">
         </div>
-      `;
-      card.onclick = () => abrirLeituraCompletaSaga(index);
-    } else {
-      card.innerHTML = `
-        <div class="biblio-card-tipo">CONTO ÚNICO</div>
-        <h4 class="biblio-card-titulo">${obra.titulo}</h4>
-        <p class="biblio-card-texto">${obra.texto.substring(0, 130)}...</p>
-        <div class="grupo" style="margin-top:1rem;">
-          <button class="btn-a" onclick="event.stopPropagation(); abrirModalLeitura('${obra.titulo}', \`${obra.texto.replace(/`/g, '\\`').replace(/\${/g, '\\${')}\`)">Ler Conto</button>
-          <button class="btn-a btn-danger" onclick="event.stopPropagation(); excluirObra(${index})">Apagar</button>
+        <div id="cap-img-acoes" style="display:none;margin-top:.6rem;">
+          <button class="btn-a btn-danger" onclick="removerImagemCapa()">🗑️ Remover imagem</button>
         </div>
-      `;
+      </div>
+      <div class="campo">
+        <label>O que é essa imagem? (ajuda a IA a entender)</label>
+        <input type="text" id="cap-img-desc" placeholder="Ex: Foto da protagonista / Paleta de cores que quero / Paisagem de referência para o cenário">
+      </div>
+    </div>
+
+    <!-- DIREÇÃO VISUAL -->
+    <div class="secao">
+      <div class="sec-titulo">🎨 Direção Visual</div>
+      <div class="campo"><label>Personagem ou elemento central da capa</label><textarea class="p" id="cappers" placeholder="Ex: Uma jovem de cabelos negros com chamas douradas nas mãos, olhando para uma cidade em ruínas ao horizonte"></textarea></div>
+      <div class="campo"><label>Paleta de cores desejada</label><input type="text" id="cappaleta" placeholder="Ex: Preto, dourado e vermelho profundo. Ou: Azul noite e prateado."></div>
+      <div class="campo"><label>Atmosfera / sensação</label>
+        <select id="capatm">
+          <option value="épico e grandioso — poder e destino">Épico e grandioso</option>
+          <option value="sombrio e misterioso — segredos e perigo">Sombrio e misterioso</option>
+          <option value="romântico com tensão — atração perigosa">Romântico com tensão</option>
+          <option value="elegante e luxuoso — mundo de elite">Elegante e luxuoso</option>
+          <option value="melancólico e poético — beleza na dor">Melancólico e poético</option>
+          <option value="urgente e intenso — ação e conflito">Urgente e intenso</option>
+        </select>
+      </div>
+      <div class="campo"><label>Referências visuais (livros, filmes ou artistas)</label><textarea class="p" id="capref" placeholder="Ex: Estética de Six of Crows + atmosfera de Dune + arte de Martina Fačková"></textarea></div>
+    </div>
+
+    <button class="btn-p" onclick="gerarCapa()">🎨 Criar Conceito de Capa</button>
+    <div id="capa-status"></div>
+    <div class="resultado" id="capa-res">O conceito visual da sua capa aparecerá aqui...</div>
+    <div class="grupo">
+      <button class="btn-a" onclick="copiarEl('capa-res')">📋 Copiar conceito</button>
+      <button class="btn-a" onclick="salvarNaGaveta('capa-res','Capa','Conceito de Capa')">💾 Salvar</button>
+    </div>
+  </div>
+
+  <!-- ══ GAVETA ══ -->
+  <div id="telaGaveta" class="tela">
+    <div class="cab-tela">
+      <button class="btn-voltar" onclick="voltarMenu()">←</button>
+      <h2 class="titulo-tela">🗄️ Gaveta Literária</h2>
+    </div>
+    <p style="color:var(--texto-s);margin-bottom:1.5rem;font-family:'Crimson Pro',serif;font-size:1rem;">Todas as suas obras organizadas. Gerencie cada parte individualmente.</p>
+    <div id="gav-cont"></div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- MODAL LEITURA -->
+<div class="modal" id="modal">
+  <div class="modal-cab">
+    <span class="modal-titulo" id="modal-tit">—</span>
+    <div class="grupo">
+      <button class="btn-a" onclick="copiarEl('modal-txt')">📋 Copiar</button>
+      <button class="btn-a" onclick="fecharModal()">✕ Fechar</button>
+    </div>
+  </div>
+  <div class="modal-corpo"><div class="modal-texto" id="modal-txt"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// CANVAS PARTÍCULAS
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('cv');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  function nova(){return{x:Math.random()*W,y:H+10,vx:(Math.random()-.5)*.5,vy:-(Math.random()*.8+.2),a:Math.random()*.5+.15,r:Math.random()*1.2+.3,cor:Math.random()>.5?'#B8942A':'#E8C84A'};}
+  for(let i=0;i<50;i++){const p=nova();p.y=Math.random()*H;pts.push(p);}
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach((p,i)=>{
+      p.x+=p.vx;p.y+=p.vy;p.a-=.002;
+      ctx.globalAlpha=Math.max(0,p.a);
+      ctx.fillStyle=p.cor;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+      if(p.a<=0||p.y<-10)pts[i]=nova();
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(tick);
+  }
+  resize();window.addEventListener('resize',resize);tick();
+})();
+
+// ═══════════════════════════════════════════
+// LANDING → APP
+// ═══════════════════════════════════════════
+function entrarApp(){
+  document.getElementById('landing').classList.add('saindo');
+  const app=document.getElementById('app');
+  app.style.pointerEvents='all';
+  setTimeout(()=>{
+    document.getElementById('landing').style.display='none';
+    app.classList.add('visivel');
+  },800);
+}
+
+// ═══════════════════════════════════════════
+// NAVEGAÇÃO
+// ═══════════════════════════════════════════
+function ir(id){
+  document.querySelectorAll('.tela').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='telaGaveta')renderGaveta();
+  if(id==='telaBiblio')renderTecnicas();
+  if(id==='telaCapa')popularSelectGaveta();
+  if(id==='telaSaga')verificarSagaEmAndamento();
+}
+function voltarMenu(){ir('telaMenu');}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(m){
+  const el=document.getElementById('toast');
+  el.innerText=m;el.classList.add('on');
+  setTimeout(()=>el.classList.remove('on'),2600);
+}
+
+// ═══════════════════════════════════════════
+// IA — PROVEDOR E CHAVE
+// ═══════════════════════════════════════════
+let iaAtiva='gemini25';
+
+function setIA(p){
+  iaAtiva=p;
+  document.getElementById('btn-gem').classList.toggle('on',p==='gemini25');
+  document.getElementById('btn-gem15').classList.toggle('on',p==='gemini15');
+  document.getElementById('btn-cla').classList.toggle('on',p==='claude');
+  document.getElementById('inp-chave').value=localStorage.getItem('chv_'+p)||'';
+  const ph={
+    gemini25:'Chave do Google AI Studio (Gemini 2.5)',
+    gemini15:'Chave do Google AI Studio (Gemini 1.5)',
+    claude:'Chave da Anthropic (Claude)'
+  };
+  document.getElementById('inp-chave').placeholder=ph[p]||'Chave da API';
+}
+function salvarChave(){
+  const v=document.getElementById('inp-chave').value.trim();
+  if(!v){toast('⚠️ Digite uma chave válida');return;}
+  localStorage.setItem('chv_'+iaAtiva,v);toast('✅ Chave salva!');
+}
+function chave(){return localStorage.getItem('chv_'+iaAtiva)||'';}
+setIA('gemini25');
+
+// ── PROXY CLOUDFLARE WORKER ──────────────────
+const PROXY_URL = '';
+
+function urlGemini(k, modelo) {
+  return `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${k}`;
+}
+
+function modeloGemini() {
+  if (iaAtiva === 'gemini15') return 'gemini-1.5-flash';
+  return 'gemini-2.5-flash';
+}
+
+// ═══════════════════════════════════════════
+// CHAMAR IA
+// ═══════════════════════════════════════════
+async function ia(prompt,idStatus){
+  const k=chave();
+  if(!k){
+    if(idStatus)document.getElementById(idStatus).innerHTML=`<div class="aviso av-err">⚠️ Insira e salve sua chave da API.</div>`;
+    toast('⚠️ Sem chave da API');return'';
+  }
+  try{
+    if(iaAtiva==='gemini25'||iaAtiva==='gemini15'){
+      const r=await fetch(urlGemini(k, modeloGemini()),{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.9,maxOutputTokens:65536}})
+      });
+      const d=await r.json();
+      if(d.error)throw new Error(d.error.message);
+      return d.candidates[0].content.parts[0].text;
+    }else{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:16000,messages:[{role:'user',content:prompt}]})
+      });
+      const d=await r.json();
+      if(d.error)throw new Error(d.error.message||JSON.stringify(d.error));
+      return d.content[0].text;
     }
-    grid.appendChild(card);
-  });
+  }catch(e){
+    if(idStatus)document.getElementById(idStatus).innerHTML=`<div class="aviso av-err">❌ Erro: ${e.message}</div>`;
+    toast('❌ Erro na API');return'';
+  }
 }
 
-function carregarSagaAtiva(idx) {
-  const obra = appState.biblioteca[idx];
-  appState.sagaAtiva = {
-    titulo: obra.titulo,
-    sinopse: obra.sinopse,
-    personagens: obra.personagens || "",
-    temp: 0.7,
-    tamanho: 'medio',
-    capitulos: obra.capitulos
+// ═══════════════════════════════════════════
+// PROMPT LITERÁRIO DE ELITE
+// ═══════════════════════════════════════════
+function elite(){return`
+Você é uma escritora literária de elite — pense em Donna Tartt, Leigh Bardugo, Patrick Rothfuss e George R.R. Martin em uma única voz.
+
+PRINCÍPIOS INEGOCIÁVEIS:
+1. NUNCA use clichês. Cada metáfora deve ser original e específica.
+2. MOSTRE, não conte. Tristeza aparece no corpo, não em palavras.
+3. Diálogos têm SUBTEXTO — o que dizem raramente é o que querem dizer.
+4. Cada cena tem objetivo emocional além do narrativo.
+5. RITMO é ferramenta: frases curtas = urgência; longas = contemplação.
+6. SENTIDOS ancoram o leitor: cheiros, texturas, sons, temperatura.
+7. Personagens se CONTRADIZEM porque pessoas reais fazem isso.
+8. NUNCA quebre a imersão com meta-comentários.
+`;}
+
+// ═══════════════════════════════════════════
+// SAGA — BLOCOS
+// ═══════════════════════════════════════════
+let sagaCfg={},sagaCaps=[],blocoIdx=0,resumoAcum='';
+const SAGA_KEY='nucleo_saga_andamento';
+
+// ── PERSISTÊNCIA ──────────────────────────────
+function salvarEstadoSaga(){
+  localStorage.setItem(SAGA_KEY,JSON.stringify({sagaCfg,sagaCaps,blocoIdx,resumoAcum}));
+}
+
+function limparEstadoSaga(){
+  localStorage.removeItem(SAGA_KEY);
+}
+
+function estadoSagaSalvo(){
+  const raw=localStorage.getItem(SAGA_KEY);
+  if(!raw)return null;
+  try{return JSON.parse(raw);}catch{return null;}
+}
+
+// ── RETOMADA ──────────────────────────────────
+function verificarSagaEmAndamento(){
+  const estado=estadoSagaSalvo();
+  if(!estado||!estado.sagaCfg?.nome||estado.blocoIdx>estado.sagaCfg?.qtdBlocos)return;
+  const nome=estado.sagaCfg.nome;
+  const blocoProx=estado.blocoIdx;
+  const total=estado.sagaCfg.qtdBlocos;
+  const capsFeitos=estado.sagaCaps?.length||0;
+
+  const statusEl=document.getElementById('saga-status');
+  statusEl.innerHTML=`
+    <div class="aviso av-wait" style="margin-bottom:1rem;">
+      ⚡ <strong>Saga em andamento encontrada:</strong> "${nome}"<br>
+      <span style="font-size:.88rem;opacity:.8;">${capsFeitos} capítulos gerados · Próximo: Bloco ${blocoProx} de ${total}</span>
+      <div class="grupo" style="margin-top:.8rem;">
+        <button class="btn-p" style="width:auto;padding:.7rem 1.5rem;font-size:.9rem;margin:0;" onclick="retomarSaga()">▶️ Continuar do Bloco ${blocoProx}</button>
+        <button class="btn-a btn-danger" onclick="descartarSaga()">🗑️ Descartar e começar do zero</button>
+      </div>
+    </div>`;
+}
+
+function retomarSaga(){
+  const estado=estadoSagaSalvo();
+  if(!estado)return;
+  sagaCfg=estado.sagaCfg;
+  sagaCaps=estado.sagaCaps||[];
+  blocoIdx=estado.blocoIdx;
+  resumoAcum=estado.resumoAcum||'';
+
+  // Reconstrói os campos de blocos
+  document.getElementById('stot').value=sagaCfg.tot;
+  document.getElementById('scpb').value=sagaCfg.cpb;
+  recalcBlocos();
+
+  // Renderiza capítulos já gerados
+  document.getElementById('saga-caps').innerHTML='';
+  sagaCaps.forEach(c=>renderCapItem(c));
+
+  document.getElementById('saga-status').innerHTML='';
+  document.getElementById('btn-saga').disabled=true;
+  toast(`▶️ Retomando do Bloco ${blocoIdx}...`);
+  setTimeout(gerarBloco, 800);
+}
+
+function descartarSaga(){
+  if(!confirm('Descartar a saga em andamento e começar do zero?'))return;
+  limparEstadoSaga();
+  sagaCfg={};sagaCaps=[];blocoIdx=0;resumoAcum='';
+  document.getElementById('saga-caps').innerHTML='';
+  document.getElementById('saga-status').innerHTML='';
+  toast('🗑️ Saga descartada. Preencha os dados e inicie uma nova.');
+}
+
+// ── BLOCOS ────────────────────────────────────
+function recalcBlocos(){
+  const tot=parseInt(document.getElementById('stot').value)||100;
+  const cpb=parseInt(document.getElementById('scpb').value)||10;
+  const qtd=Math.ceil(tot/cpb);
+  document.getElementById('sresumoblocos').innerText=`${qtd} bloco${qtd>1?'s':''} · ${cpb} cap/bloco · ${tot} capítulos`;
+  const div=document.getElementById('sblocos');div.innerHTML='';
+  for(let i=1;i<=qtd;i++){
+    const ini=(i-1)*cpb+1;const fim=Math.min(i*cpb,tot);
+    const d=document.createElement('div');d.className='bloco-inst';
+    d.innerHTML=`<div class="bloco-inst-titulo">Bloco ${i} — Capítulos ${ini} a ${fim}</div><textarea class="p" id="bi${i}" placeholder="O que acontece aqui? Eventos, encontros, reviravoltas, progressos emocionais..."></textarea>`;
+    div.appendChild(d);
+  }
+}
+
+// ── INICIAR ───────────────────────────────────
+function iniciarSaga(){
+  // Se há saga em andamento, bloqueia início sem confirmação
+  if(estadoSagaSalvo()){
+    if(!confirm('Há uma saga em andamento salva. Iniciar uma nova vai descartar o progresso. Continuar?'))return;
+    limparEstadoSaga();
+  }
+  const tot=parseInt(document.getElementById('stot').value)||100;
+  const cpb=parseInt(document.getElementById('scpb').value)||10;
+  sagaCfg={
+    nome:document.getElementById('sn').value||'Saga Sem Nome',
+    genero:document.getElementById('sg').value,tom:document.getElementById('st').value,
+    pov:document.getElementById('spv').value,palavras:document.getElementById('spal').value,
+    tot,cpb,qtdBlocos:Math.ceil(tot/cpb),
+    p1n:document.getElementById('sp1n').value,p1a:document.getElementById('sp1a').value,
+    p1p:document.getElementById('sp1p').value,p1h:document.getElementById('sp1h').value,
+    p1po:document.getElementById('sp1po').value,
+    p2n:document.getElementById('sp2n').value,p2a:document.getElementById('sp2a').value,
+    p2p:document.getElementById('sp2p').value,p2h:document.getElementById('sp2h').value,
+    p2po:document.getElementById('sp2po').value,
+    mundo:document.getElementById('smundo').value,magia:document.getElementById('smagia').value,
+    locais:document.getElementById('slocais').value,facc:document.getElementById('sfacc').value,
+    encontro:document.getElementById('sencontro').value,conex:document.getElementById('sconex').value,
+    dr:document.getElementById('sv-dr').innerText,em:document.getElementById('sv-em').innerText,
+    te:document.getElementById('sv-te').innerText,ac:document.getElementById('sv-ac').innerText,
+    ro:document.getElementById('sv-ro').innerText,mi:document.getElementById('sv-mi').innerText,
+    enredo:document.getElementById('senredo').value,fim:document.getElementById('sfim').value
   };
-  irParaPortal('saga');
+  sagaCaps=[];blocoIdx=1;resumoAcum='';
+  document.getElementById('saga-caps').innerHTML='';
+  document.getElementById('saga-status').innerHTML='';
+  document.getElementById('btn-saga').disabled=true;
+  salvarEstadoSaga();
+  gerarBloco();
 }
 
-function excluirObra(idx) {
-  if (confirm("Deseja realmente apagar esta obra do acervo perpétuo?")) {
-    appState.biblioteca.splice(idx, 1);
-    localStorage.setItem('nucleo_literario_biblio', JSON.stringify(appState.biblioteca));
-    renderizarBiblioteca();
-    showToast("Obra removida.");
+// ── GERAR BLOCO ───────────────────────────────
+// capAtual rastreia qual capítulo está sendo gerado dentro do bloco
+let capAtualNoBloco = 0;
+
+async function gerarBloco(){
+  const ini=(blocoIdx-1)*sagaCfg.cpb+1;
+  const fim=Math.min(blocoIdx*sagaCfg.cpb,sagaCfg.tot);
+  const inst=document.getElementById(`bi${blocoIdx}`)?.value||'Desenvolva a narrativa com coerência.';
+  capAtualNoBloco = ini;
+  await gerarCapituloPorChamada(ini, fim, inst);
+}
+
+async function gerarCapituloPorChamada(capNum, fimBloco, instrucaoBloco){
+  const totalCaps = sagaCfg.tot;
+  const capsNoBloco = fimBloco - ((blocoIdx-1)*sagaCfg.cpb);
+  const capDentroDoBloco = capNum - ((blocoIdx-1)*sagaCfg.cpb);
+  const pct = Math.round(((sagaCaps.length) / totalCaps) * 100);
+
+  document.getElementById('saga-status').innerHTML=`
+    <div class="aviso av-wait">
+      🔄 Bloco ${blocoIdx} de ${sagaCfg.qtdBlocos} — Gerando Capítulo ${capNum} de ${fimBloco} (${capDentroDoBloco}/${capsNoBloco} neste bloco)
+      <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%"></div></div>
+      <div style="font-size:.8rem;margin-top:.4rem;opacity:.7;">${sagaCaps.length} capítulos gerados de ${totalCaps}</div>
+    </div>`;
+
+  // Resumo do capítulo anterior para continuidade
+  const ultCap = sagaCaps.length > 0 ? sagaCaps[sagaCaps.length-1] : null;
+  const contextoCap = ultCap
+    ? `CAPÍTULO ANTERIOR (${ultCap.num} — ${ultCap.tit}):\n${ultCap.corpo.substring(0,800)}...\n`
+    : '';
+
+  const prompt=`${elite()}
+
+SAGA: "${sagaCfg.nome}" | Gênero: ${sagaCfg.genero} | Tom: ${sagaCfg.tom}
+POV: ${sagaCfg.pov} | ~${sagaCfg.palavras} palavras
+
+PROTAGONISTA 1 — ${sagaCfg.p1n}
+Aparência: ${sagaCfg.p1a} | Personalidade: ${sagaCfg.p1p}
+Traumas/motivação: ${sagaCfg.p1h} | Poderes: ${sagaCfg.p1po}
+
+PROTAGONISTA 2 — ${sagaCfg.p2n}
+Aparência: ${sagaCfg.p2a} | Personalidade: ${sagaCfg.p2p}
+História/relação: ${sagaCfg.p2h} | Poderes: ${sagaCfg.p2po}
+
+MUNDO: ${sagaCfg.mundo}
+MAGIA: ${sagaCfg.magia} | LOCAIS: ${sagaCfg.locais}
+FACÇÕES: ${sagaCfg.facc} | ENCONTRO: ${sagaCfg.encontro} | Conexão: ${sagaCfg.conex}
+
+CALIBRAÇÃO: Drama ${sagaCfg.dr}% | Emoção ${sagaCfg.em}% | Tensão ${sagaCfg.te}% | Ação ${sagaCfg.ac}% | Romance ${sagaCfg.ro}% | Mistério ${sagaCfg.mi}%
+
+ENREDO GERAL: ${sagaCfg.enredo}
+DIREÇÃO DO FINAL: ${sagaCfg.fim||'use seu julgamento'}
+
+${resumoAcum?`MEMÓRIA NARRATIVA (história até agora):\n${resumoAcum}\n`:''}
+${contextoCap}
+INSTRUÇÕES DO BLOCO ${blocoIdx} (caps ${(blocoIdx-1)*sagaCfg.cpb+1} a ${fimBloco}): ${instrucaoBloco}
+
+TAREFA: Escreva APENAS o Capítulo ${capNum} completo.
+${capNum === fimBloco ? 'Este é o ÚLTIMO capítulo deste bloco — termine com antecipação para o próximo.' : ''}
+${capNum === totalCaps ? 'Este é o ÚLTIMO capítulo da saga — entregue uma conclusão satisfatória.' : ''}
+
+FORMATO OBRIGATÓRIO:
+Capítulo ${capNum} — [TÍTULO CRIATIVO]
+
+[texto completo com ~${sagaCfg.palavras} palavras]
+
+REGRAS: coerência absoluta com tudo que veio antes · desenvolva os personagens · nunca resuma, sempre narre · sem meta-comentários`;
+
+  const res = await ia(prompt, 'saga-status');
+  if(!res){ document.getElementById('btn-saga').disabled=false; return; }
+
+  // Extrai título e corpo
+  const m = res.match(/^Capítulo\s*\d+\s*[—\-]\s*(.+?)(\n|$)/i);
+  const tit = m ? m[1].trim() : `Capítulo ${capNum}`;
+  const corpo = res.replace(/^Capítulo\s*\d+\s*[—\-]\s*.+?(\n|$)/i,'').trim();
+
+  sagaCaps.push({num:capNum, tit, corpo});
+  renderCapItem({num:capNum, tit, corpo});
+  salvarEstadoSaga();
+
+  // Próximo capítulo no bloco
+  if(capNum < fimBloco){
+    await new Promise(r => setTimeout(r, 1500));
+    await gerarCapituloPorChamada(capNum+1, fimBloco, instrucaoBloco);
+  } else {
+    // Bloco concluído — gera resumo e avança
+    await gerarResumo(sagaCaps.slice(-sagaCfg.cpb).map(c=>c.corpo).join('\n\n'), (blocoIdx-1)*sagaCfg.cpb+1, fimBloco);
+    blocoIdx++;
+    salvarEstadoSaga();
+
+    if(blocoIdx <= sagaCfg.qtdBlocos){
+      document.getElementById('saga-status').innerHTML=`<div class="aviso av-wait">⏳ Bloco ${blocoIdx-1} concluído. Iniciando Bloco ${blocoIdx} em 3s...</div>`;
+      setTimeout(gerarBloco, 3000);
+    } else {
+      limparEstadoSaga();
+      document.getElementById('saga-status').innerHTML=`<div class="aviso av-ok">✅ Saga completa! ${sagaCaps.length} capítulos gerados.<div class="grupo" style="margin-top:.6rem"><button class="btn-a" onclick="salvarSagaToda()">💾 Salvar toda a saga</button></div></div>`;
+      document.getElementById('btn-saga').disabled=false;
+    }
   }
 }
 
-function abrirLeituraCompletaSaga(idx) {
-  const obra = appState.biblioteca[idx];
-  let textoCompleto = "";
-  obra.capitulos.forEach((cap, cIdx) => {
-    textoCompleto += `CAPÍTULO ${cIdx + 1}: ${cap.tituloCap}\n\n${cap.texto}\n\n════════════════════════════════\n\n`;
+async function gerarResumo(txt,ini,fim){
+  const r=await ia(`Resuma em até 150 palavras o que aconteceu nos capítulos ${ini}-${fim} da saga "${sagaCfg.nome}". Seja factual: eventos principais, estado emocional dos personagens ao final, revelações.\n\nTEXTO:\n${txt.substring(0,2500)}`,null);
+  if(r)resumoAcum+=`\n[Caps ${ini}-${fim}]: ${r}`;
+}
+
+function renderCapItem(c){
+  const lista=document.getElementById('saga-caps');
+  if(document.getElementById(`ci${c.num}`))return;
+  const el=document.createElement('div');el.className='cap-item';el.id=`ci${c.num}`;
+  el.innerHTML=`<div class="cap-cab"><span class="cap-titulo">Capítulo ${c.num} — ${c.tit}</span><div class="cap-acoes"><button class="btn-a" onclick="toggleCap(${c.num})">👁️</button><button class="btn-a" onclick="copiarCap(${c.num})">📋</button><button class="btn-a btn-danger" onclick="apagarCapSaga(${c.num})">🗑️</button></div></div><div class="cap-corpo" id="cc${c.num}">${c.corpo}</div>`;
+  lista.appendChild(el);
+}
+
+function processarBlocoSaga(txt){
+  const partes=txt.split(/\n---\n/);
+  partes.forEach(p=>{
+    p=p.trim();if(p.length<50)return;
+    const m=p.match(/^Capítulo\s*(\d+)\s*[—\-]\s*(.+?)(\n|$)/i);
+    if(!m)return;
+    const num=parseInt(m[1]),tit=m[2].trim();
+    const corpo=p.replace(/^Capítulo\s*\d+\s*[—\-]\s*.+?(\n|$)/i,'').trim();
+    if(sagaCaps.find(c=>c.num===num))return;
+    sagaCaps.push({num,tit,corpo});
+    renderCapItem({num,tit,corpo});
   });
-
-  abrirModalLeitura(obra.titulo, textoCompleto);
 }
 
-function abrirModalLeitura(titulo, texto) {
-  document.getElementById('modalTituloText').innerText = titulo;
-  document.getElementById('modalTextoConteudo').innerText = texto;
-  document.getElementById('modalLeitura').classList.add('on');
+function toggleCap(n){const e=document.getElementById(`cc${n}`);if(e)e.style.display=e.style.display==='block'?'none':'block';}
+function copiarCap(n){const c=sagaCaps.find(x=>x.num===n);if(c)navigator.clipboard.writeText(`Capítulo ${c.num} — ${c.tit}\n\n${c.corpo}`).then(()=>toast('📋 Copiado!'));}
+function apagarCapSaga(n){if(!confirm(`Apagar Capítulo ${n}?`))return;sagaCaps=sagaCaps.filter(c=>c.num!==n);document.getElementById(`ci${n}`)?.remove();salvarEstadoSaga();toast('🗑️ Removido');}
+function salvarSagaToda(){
+  if(!sagaCaps.length){toast('⚠️ Nenhum capítulo');return;}
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  const k=sagaCfg.nome;
+  if(!gav[k])gav[k]={tipo:'Saga',caps:[],data:''};
+  sagaCaps.forEach(c=>{if(!gav[k].caps.find(x=>x.num===c.num))gav[k].caps.push(c);});
+  gav[k].data=new Date().toLocaleString('pt-BR');
+  localStorage.setItem('nucleo_gav',JSON.stringify(gav));
+  toast('💾 Saga salva na Gaveta!');
 }
 
-function fecharModalLeitura() {
-  document.getElementById('modalLeitura').classList.remove('on');
+// ═══════════════════════════════════════════
+// FORJAR CAPÍTULO
+// ═══════════════════════════════════════════
+async function gerarCap(){
+  const ideia=document.getElementById('cid').value.trim();
+  if(!ideia){toast('⚠️ Descreva o que acontece no capítulo');return;}
+  document.getElementById('cap-status').innerHTML='<div class="aviso av-wait">🔄 Forjando capítulo...</div>';
+  document.getElementById('cap-res').innerText='';
+  document.getElementById('btn-cap').disabled=true;
+  const prompt=`${elite()}
+
+OBRA: "${document.getElementById('cn').value||'Sem título'}"
+CAPÍTULO: ${document.getElementById('cnum').value||'Sem número'}
+POV: ${document.getElementById('cpv').value} | ~${document.getElementById('cpal').value} palavras
+
+PROTAGONISTA 1: ${document.getElementById('cp1').value||'Não informado'}
+PROTAGONISTA 2: ${document.getElementById('cp2').value||'Não informado'}
+CENÁRIO: ${document.getElementById('ccen').value||'Não informado'}
+ANTES: ${document.getElementById('cant').value||'Início ou não informado'}
+
+ABERTURA: ${document.getElementById('cab').value}
+FECHAMENTO: ${document.getElementById('cfec').value}
+Drama ${document.getElementById('cv-dr').innerText}% | Emoção ${document.getElementById('cv-em').innerText}% | Tensão ${document.getElementById('cv-te').innerText}% | Romance ${document.getElementById('cv-ro').innerText}%
+
+O QUE ACONTECE: ${ideia}
+FUNÇÃO EMOCIONAL: ${document.getElementById('cfunc').value||'Não informado'}
+
+Escreva o capítulo completo. Apenas o texto literário puro — sem introduções, sem meta-comentários.`;
+
+  const res=await ia(prompt,'cap-status');
+  document.getElementById('btn-cap').disabled=false;
+  if(res){document.getElementById('cap-status').innerHTML='<div class="aviso av-ok">✅ Capítulo forjado!</div>';document.getElementById('cap-res').innerText=res;}
 }
 
-/* ══════════════════════════════
-   UTILITÁRIOS
-══════════════════════════════ */
-function copiarTexto(elementId) {
-  const text = document.getElementById(elementId).innerText;
-  copiarClipboardDirect(text);
+function salvarCapUnico(){
+  const titulo=document.getElementById('cn').value||'Obra Sem Título';
+  const num=document.getElementById('cnum').value||'Capítulo';
+  const corpo=document.getElementById('cap-res').innerText;
+  if(!corpo||corpo.length<50){toast('⚠️ Gere o capítulo primeiro');return;}
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  if(!gav[titulo])gav[titulo]={tipo:'Capítulos',caps:[],data:''};
+  gav[titulo].caps.push({num:gav[titulo].caps.length+1,tit:num,corpo});
+  gav[titulo].data=new Date().toLocaleString('pt-BR');
+  localStorage.setItem('nucleo_gav',JSON.stringify(gav));
+  toast('💾 Salvo na Gaveta!');
 }
 
-function copiarClipboardDirect(text) {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand('copy');
-    showToast("Conteúdo copiado com sucesso!");
-  } catch (err) {
-    showToast("Erro ao tentar copiar.");
+// ═══════════════════════════════════════════
+// CONSTRUTOR DE MUNDO
+// ═══════════════════════════════════════════
+async function gerarMundo(){
+  document.getElementById('mundo-status').innerHTML='<div class="aviso av-wait">🔄 Construindo a bíblia do mundo...</div>';
+  document.getElementById('mundo-res').innerText='';
+  const prompt=`${elite()}
+
+Crie uma Bíblia Completa do Mundo com os seguintes dados:
+
+NOME DO MUNDO: ${document.getElementById('mn').value||'Não informado'}
+ERA E TECNOLOGIA: ${document.getElementById('mera').value||'Não informado'}
+EVENTO FUNDADOR: ${document.getElementById('mevento').value||'Não informado'}
+SISTEMA DE MAGIA: ${document.getElementById('mmagia').value||'Não informado'}
+CUSTO E LIMITES DA MAGIA: ${document.getElementById('mcusto').value||'Não informado'}
+TIPOS DE PODER: ${document.getElementById('mtipos').value||'Não informado'}
+ESTRUTURA POLÍTICA: ${document.getElementById('mpol').value||'Não informado'}
+CONFLITOS ATIVOS: ${document.getElementById('mconf').value||'Não informado'}
+RELIGIÃO E DEUSES: ${document.getElementById('mrel').value||'Não informado'}
+MITOS E LENDAS: ${document.getElementById('mmitos').value||'Não informado'}
+LOCAIS IMPORTANTES: ${document.getElementById('mloc').value||'Não informado'}
+
+Entregue um documento completo, rico e coerente que sirva de referência para um escritor durante toda a criação da obra. Organize em seções claras. Use linguagem literária, não burocrática.`;
+
+  const res=await ia(prompt,'mundo-status');
+  if(res){document.getElementById('mundo-status').innerHTML='<div class="aviso av-ok">✅ Bíblia do mundo criada!</div>';document.getElementById('mundo-res').innerText=res;}
+}
+
+// ═══════════════════════════════════════════
+// GERADOR DE DIÁLOGOS
+// ═══════════════════════════════════════════
+async function gerarDialogo(){
+  if(!document.getElementById('da').value.trim()){toast('⚠️ Descreva os personagens');return;}
+  document.getElementById('dial-status').innerHTML='<div class="aviso av-wait">🔄 Escrevendo a cena...</div>';
+  document.getElementById('dial-res').innerText='';
+  const prompt=`${elite()}
+
+Escreva uma cena de diálogo literário com as seguintes especificações:
+
+PERSONAGEM A: ${document.getElementById('da').value}
+PERSONAGEM B: ${document.getElementById('db').value}
+CENÁRIO: ${document.getElementById('dcen').value||'Não informado'}
+CONTEXTO (o que aconteceu antes): ${document.getElementById('dantes').value||'Não informado'}
+TEMA APARENTE DA CONVERSA: ${document.getElementById('dtema').value||'Não informado'}
+SUBTEXTO REAL: ${document.getElementById('dsub').value||'Não informado'}
+COMO TERMINA: ${document.getElementById('dfim').value}
+EXTENSÃO: ${document.getElementById('dext').value}
+
+REGRAS PARA ESTA CENA:
+- O subtexto nunca deve ser nomeado explicitamente pelos personagens
+- As falas devem revelar personalidade através do que não é dito
+- Use ações, pausas, gestos e silêncios entre as falas
+- A tensão deve ser tangível mesmo nas frases mais simples
+- Entregue apenas o texto da cena, sem introduções externas`;
+
+  const res=await ia(prompt,'dial-status');
+  if(res){document.getElementById('dial-status').innerHTML='<div class="aviso av-ok">✅ Cena criada!</div>';document.getElementById('dial-res').innerText=res;}
+}
+
+// ═══════════════════════════════════════════
+// ARCO EMOCIONAL
+// ═══════════════════════════════════════════
+async function gerarArco(){
+  if(!document.getElementById('an').value.trim()){toast('⚠️ Informe o personagem');return;}
+  document.getElementById('arco-status').innerHTML='<div class="aviso av-wait">🔄 Mapeando o arco emocional...</div>';
+  document.getElementById('arco-res').innerText='';
+  const caps=document.getElementById('acaps').value||30;
+  const prompt=`Você é uma especialista em estrutura narrativa e psicologia de personagens.
+
+Crie um mapa de arco emocional completo para o personagem abaixo, distribuído em ${caps} capítulos/partes.
+
+PERSONAGEM: ${document.getElementById('an').value}
+FERIDA CENTRAL: ${document.getElementById('aferida').value||'Não informado'}
+CRENÇA LIMITANTE: ${document.getElementById('amentira').value||'Não informado'}
+DESEJO EXTERNO: ${document.getElementById('adesejo').value||'Não informado'}
+NECESSIDADE REAL: ${document.getElementById('anecess').value||'Não informado'}
+ESTADO INICIAL: ${document.getElementById('ainicio').value||'Não informado'}
+TRANSFORMAÇÃO FINAL: ${document.getElementById('afim').value||'Não informado'}
+
+Entregue:
+1. A FERIDA E SEU IMPACTO — como a ferida molda cada decisão do personagem
+2. PONTOS DE VIRADA — os 5-7 momentos que mudam o arco (com número de capítulo aproximado)
+3. O MOMENTO MAIS SOMBRIO — onde tudo parece perdido (dark night of the soul)
+4. A TRANSFORMAÇÃO — o que exatamente muda nele e por quê
+5. MAPA CAPÍTULO A CAPÍTULO — para cada 10% da história, descreva o estado emocional do personagem
+6. PERIGOS A EVITAR — armadilhas narrativas que tornariam o arco artificial
+
+Seja específico, profundo e literário. Evite generalidades.`;
+
+  const res=await ia(prompt,'arco-status');
+  if(res){document.getElementById('arco-status').innerHTML='<div class="aviso av-ok">✅ Arco mapeado!</div>';document.getElementById('arco-res').innerText=res;}
+}
+
+// ═══════════════════════════════════════════
+// BIBLIOTECA DE INSPIRAÇÃO
+// ═══════════════════════════════════════════
+async function gerarPremissas(){
+  document.getElementById('biblio-status').innerHTML='<div class="aviso av-wait">🔄 Gerando premissas...</div>';
+  document.getElementById('biblio-premissas').innerHTML='';
+  const gen=document.getElementById('bgen').value;
+  const elem=document.getElementById('belem').value;
+  const prompt=`Você é uma editora literária de elite especializada em ${gen}.
+
+Crie 5 premissas originais e instigantes para histórias de ${gen}.
+${elem?`Elemento obrigatório em todas: ${elem}`:''}
+
+Para cada premissa entregue:
+- TÍTULO PROVISÓRIO
+- A PREMISSA (2-3 frases que capturam o coração da história)
+- A TENSÃO CENTRAL (o conflito irresolúvel no núcleo)
+- A PERGUNTA QUE O LEITOR FICA QUERENDO RESPONDER
+
+Seja ousada. Evite premissas que já existem. Cada uma deve ser imediatamente intrigante.`;
+
+  const res=await ia(prompt,'biblio-status');
+  if(res){
+    document.getElementById('biblio-status').innerHTML='<div class="aviso av-ok">✅ Premissas geradas!</div>';
+    const div=document.createElement('div');
+    div.style='margin-top:1rem;font-family:Crimson Pro,serif;font-size:1rem;line-height:1.9;white-space:pre-wrap;color:var(--texto);background:rgba(8,6,4,.95);border:1px solid var(--borda);border-radius:12px;padding:1.3rem;';
+    div.innerText=res;
+    document.getElementById('biblio-premissas').appendChild(div);
   }
-  document.body.removeChild(textarea);
 }
+
+function renderTecnicas(){
+  const tecnicas=[
+    {tipo:'Donna Tartt',titulo:'O Detalhe que Carrega o Mundo',texto:'Um único objeto — um copo, um casaco, uma canção — descrito com precisão absoluta ancora o leitor na realidade emocional da cena melhor do que qualquer explicação.'},
+    {tipo:'Leigh Bardugo',titulo:'O Antagonista que Tem Razão',texto:'O vilão mais memorável não é malévolo por natureza — ele quer algo compreensível e usou o caminho errado. O leitor deve entender, mesmo que não apoie.'},
+    {tipo:'Patrick Rothfuss',titulo:'A Voz Que Nunca Para',texto:'A personalidade do narrador deve estar presente em cada frase. Não apenas no que conta, mas em como conta: a ironia, os silêncios, as digressões revelam o personagem sem uma única linha de descrição direta.'},
+    {tipo:'George R.R. Martin',titulo:'Consequências Reais',texto:'Toda escolha tem custo. Quando personagens agem sem pagar por isso, o mundo perde peso. Deixe as consequências aparecerem — mesmo as de capítulos atrás.'},
+    {tipo:'Técnica Clássica',titulo:'A Cena Pivot',texto:'Em cada ato, há uma cena onde o personagem poderia escolher diferente mas não escolhe. Essa é a cena que define quem ele é. Identifique-a e escreva-a com o máximo de cuidado.'},
+    {tipo:'Técnica Clássica',titulo:'Silêncio como Diálogo',texto:'O que não é dito em uma conversa carrega tanto peso quanto o que é dito. Pause. Deixe o personagem não responder. Deixe o silêncio existir na página.'},
+  ];
+  const grid=document.getElementById('biblio-tecnicas');
+  if(grid.children.length>0)return;
+  tecnicas.forEach(t=>{
+    const d=document.createElement('div');d.className='biblio-card';
+    d.innerHTML=`<div class="biblio-card-tipo">${t.tipo}</div><div class="biblio-card-titulo">${t.titulo}</div><div class="biblio-card-texto">${t.texto}</div>`;
+    grid.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════════
+// CRIADOR DE CAPA
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// CAPA — IMAGEM
+// ═══════════════════════════════════════════
+let capaImagemBase64 = '';
+let capaImagemTipo = '';
+
+function capCarregarImagem(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const result = e.target.result;
+    capaImagemBase64 = result.split(',')[1];
+    capaImagemTipo = file.type;
+    document.getElementById('cap-img-preview').src = result;
+    document.getElementById('cap-img-preview').style.display = 'block';
+    document.getElementById('cap-img-preview-wrap').style.display = 'none';
+    document.getElementById('cap-img-acoes').style.display = 'block';
+    document.getElementById('cap-img-area').style.borderColor = 'var(--dourado)';
+    toast('🖼️ Imagem carregada!');
+  };
+  reader.readAsDataURL(file);
+}
+
+function capDropImagem(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  const fakeEvent = { target: { files: [file] } };
+  capCarregarImagem(fakeEvent);
+}
+
+function removerImagemCapa() {
+  capaImagemBase64 = '';
+  capaImagemTipo = '';
+  document.getElementById('cap-img-preview').style.display = 'none';
+  document.getElementById('cap-img-preview-wrap').style.display = 'block';
+  document.getElementById('cap-img-acoes').style.display = 'none';
+  document.getElementById('cap-img-area').style.borderColor = 'var(--borda)';
+  document.getElementById('cap-img-input').value = '';
+  toast('🗑️ Imagem removida');
+}
+
+// ═══════════════════════════════════════════
+// CAPA — GAVETA
+// ═══════════════════════════════════════════
+function popularSelectGaveta() {
+  const sel = document.getElementById('cap-gaveta-sel');
+  const gav = JSON.parse(localStorage.getItem('nucleo_gav') || '{}');
+  const obras = Object.keys(gav);
+  sel.innerHTML = '<option value="">— Escolha uma obra salva —</option>';
+  obras.forEach(nome => {
+    const op = document.createElement('option');
+    op.value = nome;
+    op.innerText = `${nome} (${gav[nome].caps?.length || 0} itens)`;
+    sel.appendChild(op);
+  });
+  if (!obras.length) toast('⚠️ Nenhuma obra na Gaveta ainda');
+  else toast(`✅ ${obras.length} obra${obras.length>1?'s':''} encontrada${obras.length>1?'s':''}`);
+}
+
+function preencherTituloDaGaveta() {
+  const nome = document.getElementById('cap-gaveta-sel').value;
+  if (!nome) { document.getElementById('cap-gaveta-info').style.display='none'; return; }
+  document.getElementById('capn').value = nome;
+  const gav = JSON.parse(localStorage.getItem('nucleo_gav') || '{}');
+  const obra = gav[nome];
+  const info = document.getElementById('cap-gaveta-info');
+  if (obra) {
+    info.style.display = 'block';
+    info.innerText = `✦ "${nome}" selecionada — ${obra.caps?.length||0} capítulos serão lidos pela IA para criar a capa.`;
+  }
+}
+
+function extrairConteudoGaveta(nome) {
+  const gav = JSON.parse(localStorage.getItem('nucleo_gav') || '{}');
+  const obra = gav[nome];
+  if (!obra || !obra.caps?.length) return '';
+  // Pega os primeiros 3 capítulos e o último — suficiente para a IA entender a obra
+  const caps = obra.caps;
+  const selecionados = caps.length <= 4
+    ? caps
+    : [caps[0], caps[1], caps[2], caps[caps.length - 1]];
+  return selecionados.map(c => `${c.tit}\n\n${c.corpo}`).join('\n\n---\n\n');
+}
+
+// ═══════════════════════════════════════════
+// CAPA — GERAR
+// ═══════════════════════════════════════════
+async function gerarCapa() {
+  const titulo = document.getElementById('capn').value.trim();
+  if (!titulo) { toast('⚠️ Informe o título da obra'); return; }
+
+  const statusEl = document.getElementById('capa-status');
+  statusEl.innerHTML = '<div class="aviso av-wait">🔄 Analisando e criando conceito visual...</div>';
+  document.getElementById('capa-res').innerText = '';
+
+  const obraSelecionada = document.getElementById('cap-gaveta-sel').value;
+  const conteudoGaveta = obraSelecionada ? extrairConteudoGaveta(obraSelecionada) : '';
+  const imgDesc = document.getElementById('cap-img-desc').value;
+
+  const contextoObra = conteudoGaveta
+    ? `\nCONTEÚDO DA OBRA (leia para entender personagens, tom e universo):\n${conteudoGaveta.substring(0, 4000)}\n`
+    : '';
+
+  const contextoImagem = capaImagemBase64
+    ? `\nIMAGEM ENVIADA: ${imgDesc || 'Referência visual livre'} — analise a imagem e incorpore seus elementos (cores, atmosfera, composição ou personagem) no conceito da capa.\n`
+    : '';
+
+  const promptTexto = `Você é uma diretora de arte literária especializada em capas de livros premium de nível internacional.
+${contextoObra}${contextoImagem}
+Crie um conceito completo e sofisticado de capa para:
+TÍTULO: ${titulo}
+SUBTÍTULO/TAGLINE: ${document.getElementById('capst').value||'Nenhum'}
+AUTOR: ${document.getElementById('capaut').value||'Não informado'}
+GÊNERO: ${document.getElementById('capgen').value||'Não informado'}
+ELEMENTO CENTRAL: ${document.getElementById('cappers').value||'A IA decide com base na obra'}
+PALETA DESEJADA: ${document.getElementById('cappaleta').value||'A IA decide com base no tom da obra'}
+ATMOSFERA: ${document.getElementById('capatm').value}
+REFERÊNCIAS VISUAIS: ${document.getElementById('capref').value||'Nenhuma informada'}
+
+Entregue:
+1. CONCEITO GERAL — a visão criativa e o que a capa deve comunicar emocionalmente ao leitor antes de abrir o livro
+2. COMPOSIÇÃO — distribuição exata de elementos (foreground, midground, background, margens)
+3. PALETA FINAL — 5-6 cores com código hex aproximado e função de cada uma na composição
+4. TIPOGRAFIA — estilo, peso, tamanho relativo e posição do título, subtítulo e nome do autor
+5. ELEMENTOS VISUAIS — descrição detalhada do que aparece na ilustração central
+6. LUZ E SOMBRA — origem da luz, tipo de iluminação, gradientes e clima visual geral
+7. PROMPT MIDJOURNEY — prompt completo em inglês otimizado para Midjourney v6, pronto para copiar e usar
+8. PROMPT DALL-E — variação do prompt adaptada para DALL-E 3
+
+Seja audaciosa, específica e visualmente precisa. Uma capa de elite vende o livro antes da primeira palavra.`;
+
+  let res = '';
+
+  // Se tem imagem E está usando Gemini → envia como multimodal
+  if (capaImagemBase64 && (iaAtiva === 'gemini25' || iaAtiva === 'gemini15')) {
+    const k = chave();
+    if (!k) { statusEl.innerHTML = '<div class="aviso av-err">⚠️ Insira sua chave da API</div>'; return; }
+    try {
+      const resp = await fetch(urlGemini(k, modeloGemini()), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: promptTexto },
+              { inline_data: { mime_type: capaImagemTipo, data: capaImagemBase64 } }
+            ]
+          }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 8192 }
+        })
+      });
+      const d = await resp.json();
+      if (d.error) throw new Error(d.error.message);
+      res = d.candidates[0].content.parts[0].text;
+    } catch(e) {
+      statusEl.innerHTML = `<div class="aviso av-err">❌ Erro: ${e.message}</div>`;
+      return;
+    }
+
+  } else if (capaImagemBase64 && iaAtiva === 'claude') {
+    // Claude com imagem
+    const k = chave();
+    if (!k) { statusEl.innerHTML = '<div class="aviso av-err">⚠️ Insira sua chave da API</div>'; return; }
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': k,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 8000,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image', source: { type: 'base64', media_type: capaImagemTipo, data: capaImagemBase64 } },
+              { type: 'text', text: promptTexto }
+            ]
+          }]
+        })
+      });
+      const d = await resp.json();
+      if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+      res = d.content[0].text;
+    } catch(e) {
+      statusEl.innerHTML = `<div class="aviso av-err">❌ Erro: ${e.message}</div>`;
+      return;
+    }
+
+  } else {
+    // Sem imagem — chamada normal
+    res = await ia(promptTexto, 'capa-status');
+  }
+
+  if (res) {
+    statusEl.innerHTML = '<div class="aviso av-ok">✅ Conceito de capa criado!</div>';
+    document.getElementById('capa-res').innerText = res;
+  }
+}
+
+// ═══════════════════════════════════════════
+// GAVETA
+// ═══════════════════════════════════════════
+function salvarNaGaveta(idEl,titulo,tipo){
+  const corpo=document.getElementById(idEl)?.innerText;
+  if(!corpo||corpo.length<30){toast('⚠️ Gere o conteúdo primeiro');return;}
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  const k=titulo||'Sem título';
+  if(!gav[k])gav[k]={tipo,caps:[],data:''};
+  gav[k].caps.push({num:gav[k].caps.length+1,tit:tipo+' — '+new Date().toLocaleString('pt-BR'),corpo});
+  gav[k].data=new Date().toLocaleString('pt-BR');
+  localStorage.setItem('nucleo_gav',JSON.stringify(gav));
+  toast('💾 Salvo na Gaveta!');
+}
+
+function renderGaveta(){
+  const cont=document.getElementById('gav-cont');
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  const obras=Object.keys(gav);
+  if(!obras.length){cont.innerHTML=`<p style="color:var(--texto-s);text-align:center;padding:3rem;font-family:'Crimson Pro',serif;font-size:1.05rem;">Nenhuma obra salva ainda.</p>`;return;}
+  cont.innerHTML='';
+  obras.forEach(nome=>{
+    const obra=gav[nome];const caps=obra.caps||[];
+    const id='gc_'+nome.replace(/\W/g,'_');
+    const div=document.createElement('div');div.className='gav-obra';
+    div.innerHTML=`
+      <div class="gav-obra-cab" onclick="toggleGav('${id}')">
+        <div><div class="gav-obra-titulo">${nome}</div><div class="gav-obra-info">${obra.tipo} · ${caps.length} item${caps.length!==1?'s':''} · ${obra.data}</div></div>
+        <div class="gav-obra-acoes" onclick="event.stopPropagation()">
+          <button class="btn-a" onclick="copiarObra('${nome.replace(/'/g,"\\'")}')">📋 Tudo</button>
+          <button class="btn-a btn-danger" onclick="apagarObra('${nome.replace(/'/g,"\\'")}')">🗑️</button>
+        </div>
+      </div>
+      <div class="gav-caps" id="${id}">
+        ${caps.map((c,i)=>`
+          <div class="gav-cap">
+            <span class="gav-cap-nome">${c.tit||('Item '+(i+1))}</span>
+            <div class="gav-cap-acoes">
+              <button class="btn-a" onclick="lerItem('${nome.replace(/'/g,"\\'")}',${i})">👁️</button>
+              <button class="btn-a" onclick="copiarItem('${nome.replace(/'/g,"\\'")}',${i})">📋</button>
+              <button class="btn-a btn-danger" onclick="apagarItem('${nome.replace(/'/g,"\\'")}',${i})">🗑️</button>
+            </div>
+          </div>`).join('')}
+      </div>`;
+    cont.appendChild(div);
+  });
+}
+
+function toggleGav(id){const e=document.getElementById(id);if(e)e.style.display=e.style.display==='flex'?'none':'flex';}
+
+function copiarObra(nome){
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  const obra=gav[nome];if(!obra)return;
+  const txt=obra.caps.map(c=>`${c.tit}\n\n${c.corpo}`).join('\n\n---\n\n');
+  navigator.clipboard.writeText(txt).then(()=>toast('📋 Obra copiada!'));
+}
+
+function apagarObra(nome){
+  if(!confirm(`Apagar "${nome}"? Não pode ser desfeito.`))return;
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  delete gav[nome];localStorage.setItem('nucleo_gav',JSON.stringify(gav));
+  toast('🗑️ Obra apagada');renderGaveta();
+}
+
+function lerItem(nome,i){
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  const c=gav[nome]?.caps[i];if(!c)return;
+  document.getElementById('modal-tit').innerText=`${nome} · ${c.tit||'Item'}`;
+  document.getElementById('modal-txt').innerText=c.corpo;
+  document.getElementById('modal').classList.add('on');
+}
+
+function copiarItem(nome,i){
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  const c=gav[nome]?.caps[i];if(!c)return;
+  navigator.clipboard.writeText(`${c.tit}\n\n${c.corpo}`).then(()=>toast('📋 Copiado!'));
+}
+
+function apagarItem(nome,i){
+  if(!confirm('Apagar este item?'))return;
+  const gav=JSON.parse(localStorage.getItem('nucleo_gav')||'{}');
+  if(!gav[nome])return;
+  gav[nome].caps.splice(i,1);
+  localStorage.setItem('nucleo_gav',JSON.stringify(gav));
+  toast('🗑️ Item apagado');renderGaveta();
+}
+
+function fecharModal(){document.getElementById('modal').classList.remove('on');}
+function copiarEl(id){const e=document.getElementById(id);if(e)navigator.clipboard.writeText(e.innerText).then(()=>toast('📋 Copiado!'));}
+
+// Init
+recalcBlocos();
 </script>
 </body>
 </html>
-
-```
