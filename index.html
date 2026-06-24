@@ -1,4 +1,5 @@
- <!DOCTYPE html>
+ ```html
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -969,7 +970,7 @@ input[type=range]::-webkit-slider-thumb{
     <div class="secao">
       <div class="sec-titulo">🏛️ Estrutura Política</div>
       <div class="campo"><label>Governos e estruturas de poder</label><textarea id="mpol" placeholder="Quem governa o quê? Monarquias, repúblicas, teocracia, anarquia, corporações?"></textarea></div>
-      <div class="campo"><label>Conflitos políticos ativos</label><textarea class="p" id="mconf" placeholder="Guerras, disputas de herança, rebeliões, tensões entre facções..."></textarea></div>
+      <div class="campo"><label>Conflitos políticos activos</label><textarea class="p" id="mconf" placeholder="Guerras, disputas de herança, rebeliões, tensões entre facções..."></textarea></div>
     </div>
     <div class="secao">
       <div class="sec-titulo">⛪ Religião e Mitologia</div>
@@ -1290,11 +1291,10 @@ function salvarChave(){
 function chave(){return localStorage.getItem('chv_'+iaAtiva)||'';}
 setIA('gemini25');
 
-// ── PROXY CLOUDFLARE WORKER ──────────────────
-const PROXY_URL = '';
-
+// ── ENDPOINTS DINÂMICOS DO GEMINI ──────────────────
 function urlGemini(k, modelo) {
-  return `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${k}`;
+  const apiVersion = modelo.includes('2.5') ? 'v1beta' : 'v1';
+  return `https://generativelanguage.googleapis.com/${apiVersion}/models/${modelo}:generateContent?key=${k}`;
 }
 
 function modeloGemini() {
@@ -1303,37 +1303,94 @@ function modeloGemini() {
 }
 
 // ═══════════════════════════════════════════
-// CHAMAR IA
+// CHAMAR IA COM EXPONENTIAL BACKOFF (RETENTATIVAS)
 // ═══════════════════════════════════════════
-async function ia(prompt,idStatus){
-  const k=chave();
-  if(!k){
-    if(idStatus)document.getElementById(idStatus).innerHTML=`<div class="aviso av-err">⚠️ Insira e salve sua chave da API.</div>`;
-    toast('⚠️ Sem chave da API');return'';
+async function ia(prompt, idStatus) {
+  const k = chave();
+  if (!k) {
+    if (idStatus) document.getElementById(idStatus).innerHTML = `<div class="aviso av-err">⚠️ Insira e salve sua chave da API.</div>`;
+    toast('⚠️ Sem chave da API');
+    return '';
   }
-  try{
-    if(iaAtiva==='gemini25'||iaAtiva==='gemini15'){
-      const r=await fetch(urlGemini(k, modeloGemini()),{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:.9,maxOutputTokens:65536}})
-      });
-      const d=await r.json();
-      if(d.error)throw new Error(d.error.message);
-      return d.candidates[0].content.parts[0].text;
-    }else{
-      const r=await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-        body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:16000,messages:[{role:'user',content:prompt}]})
-      });
-      const d=await r.json();
-      if(d.error)throw new Error(d.error.message||JSON.stringify(d.error));
-      return d.content[0].text;
+
+  const maxRetries = 5;
+  let attempt = 0;
+
+  while (attempt < maxRetries) {
+    try {
+      if (iaAtiva === 'gemini25' || iaAtiva === 'gemini15') {
+        const response = await fetch(urlGemini(k, modeloGemini()), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.9,
+              maxOutputTokens: 8192
+            }
+          })
+        });
+
+        if (response.status === 429 || response.status === 503 || response.status === 500) {
+          attempt++;
+          if (attempt >= maxRetries) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error?.message || `Servidor do Google ocupado (Erro ${response.status})`);
+          }
+          const backoffDelay = Math.pow(2, attempt) * 1000;
+          if (idStatus) {
+            document.getElementById(idStatus).innerHTML = `
+              <div class="aviso av-wait">
+                ⏳ Google AI Studio ocupado. Tentando novamente em ${backoffDelay / 1000}s (Tentativa ${attempt}/${maxRetries-1})...
+              </div>`;
+          }
+          await new Promise(resolve => setTimeout(resolve, backoffDelay));
+          continue;
+        }
+
+        const d = await response.json();
+        if (d.error) throw new Error(d.error.message);
+        if (!d.candidates || d.candidates.length === 0) throw new Error("A API não retornou resposta. Verifique as políticas de conteúdo.");
+        return d.candidates[0].content.parts[0].text;
+
+      } else {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': k,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-3-5-sonnet-20241022',
+            max_tokens: 4000,
+            messages: [{ role: 'user', content: prompt }]
+          })
+        });
+
+        if (response.status === 429 || response.status === 503) {
+          attempt++;
+          if (attempt >= maxRetries) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error?.message || `Servidor Anthropic ocupado (Erro ${response.status})`);
+          }
+          const backoffDelay = Math.pow(2, attempt) * 1000;
+          await new Promise(resolve => setTimeout(resolve, backoffDelay));
+          continue;
+        }
+
+        const d = await response.json();
+        if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+        return d.content[0].text;
+      }
+    } catch (e) {
+      if (idStatus) document.getElementById(idStatus).innerHTML = `<div class="aviso av-err">❌ Erro: ${e.message}</div>`;
+      toast('❌ Erro na API');
+      return '';
     }
-  }catch(e){
-    if(idStatus)document.getElementById(idStatus).innerHTML=`<div class="aviso av-err">❌ Erro: ${e.message}</div>`;
-    toast('❌ Erro na API');return'';
   }
+  return '';
 }
 
 // ═══════════════════════════════════════════
@@ -1359,7 +1416,6 @@ PRINCÍPIOS INEGOCIÁVEIS:
 let sagaCfg={},sagaCaps=[],blocoIdx=0,resumoAcum='';
 const SAGA_KEY='nucleo_saga_andamento';
 
-// ── PERSISTÊNCIA ──────────────────────────────
 function salvarEstadoSaga(){
   localStorage.setItem(SAGA_KEY,JSON.stringify({sagaCfg,sagaCaps,blocoIdx,resumoAcum}));
 }
@@ -1374,7 +1430,6 @@ function estadoSagaSalvo(){
   try{return JSON.parse(raw);}catch{return null;}
 }
 
-// ── RETOMADA ──────────────────────────────────
 function verificarSagaEmAndamento(){
   const estado=estadoSagaSalvo();
   if(!estado||!estado.sagaCfg?.nome||estado.blocoIdx>estado.sagaCfg?.qtdBlocos)return;
@@ -1403,12 +1458,10 @@ function retomarSaga(){
   blocoIdx=estado.blocoIdx;
   resumoAcum=estado.resumoAcum||'';
 
-  // Reconstrói os campos de blocos
   document.getElementById('stot').value=sagaCfg.tot;
   document.getElementById('scpb').value=sagaCfg.cpb;
   recalcBlocos();
 
-  // Renderiza capítulos já gerados
   document.getElementById('saga-caps').innerHTML='';
   sagaCaps.forEach(c=>renderCapItem(c));
 
@@ -1427,7 +1480,6 @@ function descartarSaga(){
   toast('🗑️ Saga descartada. Preencha os dados e inicie uma nova.');
 }
 
-// ── BLOCOS ────────────────────────────────────
 function recalcBlocos(){
   const tot=parseInt(document.getElementById('stot').value)||100;
   const cpb=parseInt(document.getElementById('scpb').value)||10;
@@ -1437,14 +1489,12 @@ function recalcBlocos(){
   for(let i=1;i<=qtd;i++){
     const ini=(i-1)*cpb+1;const fim=Math.min(i*cpb,tot);
     const d=document.createElement('div');d.className='bloco-inst';
-    d.innerHTML=`<div class="bloco-inst-titulo">Bloco ${i} — Capítulos ${ini} a ${fim}</div><textarea class="p" id="bi${i}" placeholder="O que acontece aqui? Eventos, encontros, reviravoltas, progressos emocionais..."></textarea>`;
+    d.innerHTML=`<div class="bloco-inst-titulo">Bloco ${i} — Capítulos ${ini} a ${fim}</div><textarea class="p" id="bi${i}" placeholder="O que acontece aqui? Eventos, encontros, reviravoltas..."></textarea>`;
     div.appendChild(d);
   }
 }
 
-// ── INICIAR ───────────────────────────────────
 function iniciarSaga(){
-  // Se há saga em andamento, bloqueia início sem confirmação
   if(estadoSagaSalvo()){
     if(!confirm('Há uma saga em andamento salva. Iniciar uma nova vai descartar o progresso. Continuar?'))return;
     limparEstadoSaga();
@@ -1478,8 +1528,6 @@ function iniciarSaga(){
   gerarBloco();
 }
 
-// ── GERAR BLOCO ───────────────────────────────
-// capAtual rastreia qual capítulo está sendo gerado dentro do bloco
 let capAtualNoBloco = 0;
 
 async function gerarBloco(){
@@ -1491,7 +1539,7 @@ async function gerarBloco(){
 }
 
 async function gerarCapituloPorChamada(capNum, fimBloco, instrucaoBloco){
-  const totalCaps = sagaCfg.tot;
+  const totalCaps = sagaCfg.tot || 1;
   const capsNoBloco = fimBloco - ((blocoIdx-1)*sagaCfg.cpb);
   const capDentroDoBloco = capNum - ((blocoIdx-1)*sagaCfg.cpb);
   const pct = Math.round(((sagaCaps.length) / totalCaps) * 100);
@@ -1503,7 +1551,6 @@ async function gerarCapituloPorChamada(capNum, fimBloco, instrucaoBloco){
       <div style="font-size:.8rem;margin-top:.4rem;opacity:.7;">${sagaCaps.length} capítulos gerados de ${totalCaps}</div>
     </div>`;
 
-  // Resumo do capítulo anterior para continuidade
   const ultCap = sagaCaps.length > 0 ? sagaCaps[sagaCaps.length-1] : null;
   const contextoCap = ultCap
     ? `CAPÍTULO ANTERIOR (${ultCap.num} — ${ultCap.tit}):\n${ultCap.corpo.substring(0,800)}...\n`
@@ -1549,7 +1596,6 @@ REGRAS: coerência absoluta com tudo que veio antes · desenvolva os personagens
   const res = await ia(prompt, 'saga-status');
   if(!res){ document.getElementById('btn-saga').disabled=false; return; }
 
-  // Extrai título e corpo
   const m = res.match(/^Capítulo\s*\d+\s*[—\-]\s*(.+?)(\n|$)/i);
   const tit = m ? m[1].trim() : `Capítulo ${capNum}`;
   const corpo = res.replace(/^Capítulo\s*\d+\s*[—\-]\s*.+?(\n|$)/i,'').trim();
@@ -1558,12 +1604,10 @@ REGRAS: coerência absoluta com tudo que veio antes · desenvolva os personagens
   renderCapItem({num:capNum, tit, corpo});
   salvarEstadoSaga();
 
-  // Próximo capítulo no bloco
   if(capNum < fimBloco){
     await new Promise(r => setTimeout(r, 1500));
     await gerarCapituloPorChamada(capNum+1, fimBloco, instrucaoBloco);
   } else {
-    // Bloco concluído — gera resumo e avança
     await gerarResumo(sagaCaps.slice(-sagaCfg.cpb).map(c=>c.corpo).join('\n\n'), (blocoIdx-1)*sagaCfg.cpb+1, fimBloco);
     blocoIdx++;
     salvarEstadoSaga();
@@ -1812,9 +1856,6 @@ function renderTecnicas(){
 // ═══════════════════════════════════════════
 // CRIADOR DE CAPA
 // ═══════════════════════════════════════════
-// ═══════════════════════════════════════════
-// CAPA — IMAGEM
-// ═══════════════════════════════════════════
 let capaImagemBase64 = '';
 let capaImagemTipo = '';
 
@@ -1855,9 +1896,6 @@ function removerImagemCapa() {
   toast('🗑️ Imagem removida');
 }
 
-// ═══════════════════════════════════════════
-// CAPA — GAVETA
-// ═══════════════════════════════════════════
 function popularSelectGaveta() {
   const sel = document.getElementById('cap-gaveta-sel');
   const gav = JSON.parse(localStorage.getItem('nucleo_gav') || '{}');
@@ -1890,7 +1928,6 @@ function extrairConteudoGaveta(nome) {
   const gav = JSON.parse(localStorage.getItem('nucleo_gav') || '{}');
   const obra = gav[nome];
   if (!obra || !obra.caps?.length) return '';
-  // Pega os primeiros 3 capítulos e o último — suficiente para a IA entender a obra
   const caps = obra.caps;
   const selecionados = caps.length <= 4
     ? caps
@@ -1898,9 +1935,6 @@ function extrairConteudoGaveta(nome) {
   return selecionados.map(c => `${c.tit}\n\n${c.corpo}`).join('\n\n---\n\n');
 }
 
-// ═══════════════════════════════════════════
-// CAPA — GERAR
-// ═══════════════════════════════════════════
 async function gerarCapa() {
   const titulo = document.getElementById('capn').value.trim();
   if (!titulo) { toast('⚠️ Informe o título da obra'); return; }
@@ -1947,7 +1981,6 @@ Seja audaciosa, específica e visualmente precisa. Uma capa de elite vende o liv
 
   let res = '';
 
-  // Se tem imagem E está usando Gemini → envia como multimodal
   if (capaImagemBase64 && (iaAtiva === 'gemini25' || iaAtiva === 'gemini15')) {
     const k = chave();
     if (!k) { statusEl.innerHTML = '<div class="aviso av-err">⚠️ Insira sua chave da API</div>'; return; }
@@ -1959,7 +1992,7 @@ Seja audaciosa, específica e visualmente precisa. Uma capa de elite vende o liv
           contents: [{
             parts: [
               { text: promptTexto },
-              { inline_data: { mime_type: capaImagemTipo, data: capaImagemBase64 } }
+              { inlineData: { mimeType: capaImagemTipo, data: capaImagemBase64 } }
             ]
           }],
           generationConfig: { temperature: 0.9, maxOutputTokens: 8192 }
@@ -1974,7 +2007,6 @@ Seja audaciosa, específica e visualmente precisa. Uma capa de elite vende o liv
     }
 
   } else if (capaImagemBase64 && iaAtiva === 'claude') {
-    // Claude com imagem
     const k = chave();
     if (!k) { statusEl.innerHTML = '<div class="aviso av-err">⚠️ Insira sua chave da API</div>'; return; }
     try {
@@ -1987,8 +2019,8 @@ Seja audaciosa, específica e visualmente precisa. Uma capa de elite vende o liv
           'anthropic-dangerous-direct-browser-access': 'true'
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 8000,
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 4000,
           messages: [{
             role: 'user',
             content: [
@@ -2007,7 +2039,6 @@ Seja audaciosa, específica e visualmente precisa. Uma capa de elite vende o liv
     }
 
   } else {
-    // Sem imagem — chamada normal
     res = await ia(promptTexto, 'capa-status');
   }
 
@@ -2107,8 +2138,9 @@ function apagarItem(nome,i){
 function fecharModal(){document.getElementById('modal').classList.remove('on');}
 function copiarEl(id){const e=document.getElementById(id);if(e)navigator.clipboard.writeText(e.innerText).then(()=>toast('📋 Copiado!'));}
 
-// Init
 recalcBlocos();
 </script>
 </body>
 </html>
+
+```
