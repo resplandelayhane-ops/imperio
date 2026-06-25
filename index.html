@@ -1159,7 +1159,7 @@ input[type=range]::-webkit-slider-thumb{
         <select id="capatm">
           <option value="épico e grandioso — poder e destino">Épico e grandioso</option>
           <option value="sombrio e misterioso — segredos e perigo">Sombrio e misterioso</option>
-          <option value="romântico com tensão — atração perigosa">Romântico com tensão</option>
+          <option value="romântico com tension — atração perigosa">Romântico com tensão</option>
           <option value="elegante e luxuoso — mundo de elite">Elegante e luxuoso</option>
           <option value="melancólico e poético — beleza na dor">Melancólico e poético</option>
           <option value="urgente e intenso — ação e conflito">Urgente e intenso</option>
@@ -1293,7 +1293,8 @@ setIA('gemini25');
 
 // ── ENDPOINTS DINÂMICOS DO GEMINI ──────────────────
 function urlGemini(k, modelo) {
-  const apiVersion = modelo.includes('2.5') ? 'v1beta' : 'v1';
+  // O Gemini 1.5 (estável) exige estritamente a rota /v1/ para evitar o erro NOT_FOUND. O 2.5 aceita v1beta.
+  const apiVersion = modelo.includes('1.5') ? 'v1' : 'v1beta';
   return `https://generativelanguage.googleapis.com/${apiVersion}/models/${modelo}:generateContent?key=${k}`;
 }
 
@@ -1303,7 +1304,7 @@ function modeloGemini() {
 }
 
 // ═══════════════════════════════════════════
-// CHAMAR IA COM EXPONENTIAL BACKOFF (RETENTATIVAS)
+// CHAMAR IA COM TIMEOUT, RETENTATIVAS E CONTROLE DE FLUXO (ABORT CONTROLLER)
 // ═══════════════════════════════════════════
 async function ia(prompt, idStatus) {
   const k = chave();
@@ -1317,6 +1318,10 @@ async function ia(prompt, idStatus) {
   let attempt = 0;
 
   while (attempt < maxRetries) {
+    // AbortController impede conexões presas que causam o erro de High Demand (Alta Demanda) no Google
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 segundos de timeout estrito por tentativa
+
     try {
       if (iaAtiva === 'gemini25' || iaAtiva === 'gemini15') {
         const response = await fetch(urlGemini(k, modeloGemini()), {
@@ -1328,8 +1333,11 @@ async function ia(prompt, idStatus) {
               temperature: 0.9,
               maxOutputTokens: 8192
             }
-          })
+          }),
+          signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
 
         if (response.status === 429 || response.status === 503 || response.status === 500) {
           attempt++;
@@ -1341,7 +1349,7 @@ async function ia(prompt, idStatus) {
           if (idStatus) {
             document.getElementById(idStatus).innerHTML = `
               <div class="aviso av-wait">
-                ⏳ Google AI Studio ocupado. Tentando novamente em ${backoffDelay / 1000}s (Tentativa ${attempt}/${maxRetries-1})...
+                ⏳ Conexão ocupada. Reconfigurando fluxo e tentando novamente em ${backoffDelay / 1000}s (Tentativa ${attempt}/${maxRetries-1})...
               </div>`;
           }
           await new Promise(resolve => setTimeout(resolve, backoffDelay));
@@ -1366,8 +1374,11 @@ async function ia(prompt, idStatus) {
             model: 'claude-3-5-sonnet-20241022',
             max_tokens: 4000,
             messages: [{ role: 'user', content: prompt }]
-          })
+          }),
+          signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
 
         if (response.status === 429 || response.status === 503) {
           attempt++;
@@ -1385,6 +1396,18 @@ async function ia(prompt, idStatus) {
         return d.content[0].text;
       }
     } catch (e) {
+      clearTimeout(timeoutId);
+      if (e.name === 'AbortError') {
+        attempt++;
+        if (attempt < maxRetries) {
+          const backoffDelay = Math.pow(2, attempt) * 1000;
+          if (idStatus) {
+            document.getElementById(idStatus).innerHTML = `<div class="aviso av-wait">⏳ Tempo esgotado na tentativa anterior. Reabrindo fluxo em ${backoffDelay / 1000}s...</div>`;
+          }
+          await new Promise(resolve => setTimeout(resolve, backoffDelay));
+          continue;
+        }
+      }
       if (idStatus) document.getElementById(idStatus).innerHTML = `<div class="aviso av-err">❌ Erro: ${e.message}</div>`;
       toast('❌ Erro na API');
       return '';
@@ -1489,7 +1512,7 @@ function recalcBlocos(){
   for(let i=1;i<=qtd;i++){
     const ini=(i-1)*cpb+1;const fim=Math.min(i*cpb,tot);
     const d=document.createElement('div');d.className='bloco-inst';
-    d.innerHTML=`<div class="bloco-inst-titulo">Bloco ${i} — Capítulos ${ini} a ${fim}</div><textarea class="p" id="bi${i}" placeholder="O que acontece aqui? Eventos, encontros, reviravoltas..."></textarea>`;
+    d.innerHTML=`<div class="bloco-inst-titulo">Bloco ${i} — Capítulos ${ini} a ${fim}</div><textarea class="p" id="bi${i}" placeholder="O que acontece aqui? Eventos, encontros, reviravoltas, progressos emocionais..."></textarea>`;
     div.appendChild(d);
   }
 }
@@ -1837,7 +1860,7 @@ Seja ousada. Evite premissas que já existem. Cada uma deve ser imediatamente in
 
 function renderTecnicas(){
   const tecnicas=[
-    {tipo:'Donna Tartt',titulo:'O Detalhe que Carrega o Mundo',texto:'Um único objeto — um copo, um casaco, uma canção — descrito com precisão absoluta ancora o leitor na realidade emocional da cena melhor do que qualquer explicação.'},
+    {tipo:'Donna Tartt',titulo:'O Detalhe que Carrega o Mundo',texto:'Um único objeto — um copo, um casaco, uma canção — descrito com precisão absoluta ancora o leitor na realidade emocional della cena melhor do que qualquer explicação.'},
     {tipo:'Leigh Bardugo',titulo:'O Antagonista que Tem Razão',texto:'O vilão mais memorável não é malévolo por natureza — ele quer algo compreensível e usou o caminho errado. O leitor deve entender, mesmo que não apoie.'},
     {tipo:'Patrick Rothfuss',titulo:'A Voz Que Nunca Para',texto:'A personalidade do narrador deve estar presente em cada frase. Não apenas no que conta, mas em como conta: a ironia, os silêncios, as digressões revelam o personagem sem uma única linha de descrição direta.'},
     {tipo:'George R.R. Martin',titulo:'Consequências Reais',texto:'Toda escolha tem custo. Quando personagens agem sem pagar por isso, o mundo perde peso. Deixe as consequências aparecerem — mesmo as de capítulos atrás.'},
